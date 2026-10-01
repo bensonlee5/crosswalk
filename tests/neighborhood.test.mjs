@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {actions,player,move,reason,effects,score,pathPoints,neighbors,projectGoal,projectProgress,availableActions,opportunity} from '../lib/game.ts';
+const game=(n=2)=>({code:'TEST',rulesVersion:2,mode:'hotseat',players:Array.from({length:n},(_,i)=>player('Player '+(i+1))),turn:0,turnsTaken:0,round:1,maxRounds:8,status:'playing',log:[],seen:[],event:0,members:{},host:'test'});
+const act=(g,id)=>{const a=actions.find(a=>a.id===id);move(g,'visit',a.place);move(g,id);};
+let previewCount=0;
+for(const a of actions){const g=game();const p=g.players[0];Object.assign(p,{cash:3000,skill:4,social:12,craft:4,job:1,joy:85,energy:70,place:a.place});if(a.story)p.stories[a.story]=a.stage-1;const before=structuredClone(p),v=effects(p,a,g);if(reason(p,a.id,g))continue;move(g,a.id);for(const k of ['cash','skill','social','joy','energy','craft'])assert.equal(p[k],before[k]+v[k],a.id+' '+k);assert.equal(p.hours,before.hours-a.time);previewCount++;}
+for(const n of [1,2,3,4]){const g=game(n);const turns=[];while(g.status==='playing'){turns.push([g.round,g.turn]);move(g,'end');}assert.equal(turns.length,n*8);for(let w=1;w<=8;w++){const order=turns.filter(x=>x[0]===w).map(x=>x[1]);assert.equal(order[0],(w-1)%n);assert.equal(new Set(order).size,n);}}
+{
+ const g=game();act(g,'weekly_opportunity');assert.equal(g.players[0].cash,1100+opportunity(g).earn);assert.match(reason(g.players[0],'weekly_opportunity',g),/Claimed/);move(g,'end');assert.match(reason(g.players[1],'weekly_opportunity',g),/Claimed/);assert.throws(()=>act(g,'weekly_opportunity'),/Claimed/);move(g,'end');assert.equal(reason(g.players[g.turn],'weekly_opportunity',g),'');act(g,'weekly_opportunity');assert.equal(g.opportunityClaim.round,2);
+}
+for(const n of [1,2,3,4]){const g=game(n);assert.equal(projectGoal(g),2*n);for(let i=0;i<n*2;i++){const p=g.players[g.turn];act(g,'garden_project');assert.match(reason(p,'garden_project',g),i===n*2-1?/complete/:/already/);move(g,'end');}assert.equal(projectProgress(g),2*n);assert.equal(g.project.completed,true);for(const p of g.players)assert.equal(p.legacy,4);const before=g.players.map(p=>p.cash);assert.throws(()=>act(g,'garden_project'),/complete/);assert.deepEqual(g.players.map(p=>p.cash),before);}
+for(const n of neighbors){const g=game(1),p=g.players[0];assert.match(reason(p,`story_${n.id}_2`,g),/earlier/);for(let stage=1;stage<=3;stage++){act(g,`story_${n.id}_${stage}`);assert.equal(p.stories[n.id],stage);assert.match(reason(p,`story_${n.id}_${stage}`,g),/complete/);if(stage<3){assert.match(reason(p,`story_${n.id}_${stage+1}`,g),/next week/);move(g,'end');}}assert.equal(p.legacy,2);assert.equal(availableActions(p,n.place).some(a=>a.story===n.id),false);const restored=JSON.parse(JSON.stringify(g));assert.equal(restored.players[0].stories[n.id],3);}
+{
+ const g=game(1),p=g.players[0];Object.assign(p,{job:3,skill:6,social:24,craft:8,cash:5000,joy:100,legacy:10});assert.equal(score(p),100);p.social=100;p.craft=8;p.legacy=100;p.cash=99999;assert.equal(score(p),100);assert.equal(Math.max(...pathPoints(p).map(v=>v.points)),40);
+ const base=()=>Object.assign(player('Path'),{cash:0,joy:0});assert.equal(score(Object.assign(base(),{job:3,skill:6})),40);assert.equal(score(Object.assign(base(),{social:24})),40);assert.equal(score(Object.assign(base(),{craft:8})),40);
+ const legacy=base();delete legacy.rulesVersion;legacy.social=24;legacy.craft=8;assert.equal(score(legacy),0);assert.match(reason(legacy,'creative_practice'),/new neighborhood/);assert.equal(availableActions(legacy,'MAKERSPACE').length,4);
+}
+{
+ const g=game(1),p=g.players[0];p.social=4;p.skill=0;assert.equal(reason(p,'career_contract',g),'');const e=effects(p,actions.find(a=>a.id==='career_contract'),g);assert.equal(e.cash,440);p.craft=2;assert.match(reason(p,'creative_commission',g),/3 craft/);p.craft=8;assert.match(reason(p,'creative_practice',g),/eight/);p.hours=0;assert.match(reason(p,'weekly_opportunity',g),/time/);
+}
+console.log(`PASS: ${previewCount} v2 effect previews; 1–4-player rotation and 8-week finish; shared opportunity claim/reset; 1–4-player project scaling and single payout; all 9 story chapters/weekly gates/save persistence; equal path caps; classic compatibility; creative/social gates`);

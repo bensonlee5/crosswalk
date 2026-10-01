@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import ts from 'typescript';
-import {player,actions,move,reason,score} from '../lib/game.ts';
+import {player as modernPlayer,actions as allActions,move,reason,score} from '../lib/game.ts';
 const source=readFileSync(new URL('../lib/game-view.ts',import.meta.url),'utf8').replaceAll("'./game'",JSON.stringify(new URL('../lib/game.ts',import.meta.url).href));
 const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText;
 const {actionPreview,weekPreview,snapshotIsCurrent}=await import('data:text/javascript;base64,'+Buffer.from(code).toString('base64'));
+const actions=allActions.filter(a=>!a.modernOnly);
+const player=name=>{const p=modernPlayer(name);delete p.rulesVersion;return p;};
 let tested=0;
 for(const a of actions){const p=player('Preview test');Object.assign(p,{cash:1800,skill:4,social:10,job:1,energy:65,joy:95,place:a.place});const before=structuredClone(p),v=actionPreview(p,a.id);if(reason(p,a.id))continue;const g={players:[p,player('Other')],turn:0,round:1,maxRounds:8,status:'playing',log:[]};move(g,a.id);assert.equal(p.cash,before.cash+v.cash);assert.equal(p.hours,before.hours+v.hours);assert.equal(p.energy,before.energy+v.energy);assert.equal(p.joy,before.joy+v.joy);assert.equal(p.skill,before.skill+v.skill);assert.equal(p.social,before.social+v.social);tested++;}
 for(const cash of [-500,0,505,2000])for(const joy of [0,3,99])for(const housing of [0,1]){const p=player('Bills');Object.assign(p,{cash,joy,housing,energy:95});const v=weekPreview(p);const g={players:[p,player('Other')],turn:0,round:1,maxRounds:8,status:'playing',log:[]};move(g,'end');assert.equal(p.cash,v.cash);assert.equal(p.joy,v.joy);assert.equal(p.energy,v.energy);}

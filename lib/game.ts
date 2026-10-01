@@ -1,8 +1,8 @@
-export type Player={id:string;name:string;cash:number;skill:number;job:number;joy:number;energy:number;hours:number;social:number;housing:number;place:string};
-export type Game={code:string;mode:'hotseat'|'online';host:string;members:Record<string,string[]>;players:Player[];status:'lobby'|'playing'|'finished';round:number;turn:number;maxRounds:number;log:string[];seen:string[];event:number};
+export type Player={id:string;name:string;cash:number;skill:number;job:number;joy:number;energy:number;hours:number;social:number;housing:number;place:string;rulesVersion?:number;craft?:number;legacy?:number;stories?:Record<string,number>;storyWeeks?:Record<string,number>};
+export type Game={code:string;mode:'hotseat'|'online';host:string;members:Record<string,string[]>;players:Player[];status:'lobby'|'playing'|'finished';round:number;turn:number;maxRounds:number;log:string[];seen:string[];event:number;rulesVersion?:number;turnsTaken?:number;opportunityClaim?:{round:number;playerId:string;name:string};project?:{contributions:Record<string,number>;lastWeek:Record<string,number>;completed:boolean}};
 export const jobs=[{name:'Café crew',rate:20,need:0},{name:'IT support',rate:29,need:2},{name:'UX specialist',rate:43,need:4},{name:'Project lead',rate:58,need:6}];
 export const events=[{title:'The little wins',text:'Someone remembered your coffee order. Everyone gets +4 happiness.',cash:0,joy:4},{title:'Transit fare week',text:'A city pass costs everyone $30 this week.',cash:-30,joy:0},{title:'Neighborhood night',text:'The block throws a free movie night. Everyone gets +6 happiness.',cash:0,joy:6},{title:'Energy bill bump',text:'Heating, cooling, and an extra $45 for everyone.',cash:-45,joy:0},{title:'Found money',text:'An old deposit is returned. Everyone gets $90.',cash:90,joy:0},{title:'Group chat gold',text:'The memes are exceptionally good. Everyone gets +3 happiness.',cash:0,joy:3},{title:'Groceries on sale',text:'Seasonal produce saves everyone $35.',cash:35,joy:0},{title:'A sunny finish',text:'A beautiful final week. Everyone gets +5 happiness.',cash:0,joy:5}];
-export type Activity={id:string;title:string;place:string;icon:string;time:number;cost:number;desc:string;color:string;energy?:number;joy?:number;skill?:number;social?:number;earn?:number;workHours?:number;needSkill?:number;needSocial?:number;housing?:number;promote?:boolean};
+export type Activity={id:string;title:string;place:string;icon:string;time:number;cost:number;desc:string;color:string;energy?:number;joy?:number;skill?:number;social?:number;earn?:number;workHours?:number;needSkill?:number;needSocial?:number;housing?:number;promote?:boolean;craft?:number;needCraft?:number;modernOnly?:boolean;story?:string;stage?:number;special?:'opportunity'|'project'};
 const activity=(place:string,color:string,rows:Omit<Activity,'place'|'color'|'icon'>[]):Activity[]=>rows.map(a=>({...a,place,color,icon:'spark'}));
 export const actions:Activity[]=[
 ...activity('APARTMENTS','mint',[
@@ -81,10 +81,88 @@ export const actions:Activity[]=[
 {id:'arcade_host',title:'Host a game meetup',time:2,cost:25,joy:24,social:3,energy:-8,needSocial:4,desc:'Four connections help fill the seats'},
 {id:'arcade_shift',title:'Cover the evening desk',time:2,cost:0,earn:250,social:1,energy:-14,desc:'Keep the games running and meet the regulars'}])
 ];
-export function effects(p:Player,a:Activity){return{cash:(a.workHours?jobs[p.job].rate*a.workHours:(a.earn||0))-a.cost,energy:Math.max(-p.energy,Math.min(a.energy||0,100-p.energy)),joy:Math.max(-p.joy,Math.min(a.joy||0,100-p.joy)),skill:Math.min(a.skill||0,6-p.skill),social:a.social||0};}
-export function player(name:string):Player{return{id:crypto.randomUUID(),name,cash:1100,skill:0,job:0,joy:40,energy:70,hours:6,social:0,housing:0,place:'APARTMENTS'};}
-export function score(p:Player){return Math.round(Math.min(30,Math.max(0,p.cash)/200)+p.job/3*20+Math.min(6,p.skill)/6*20+p.joy/100*30);}
-export function reason(p:Player,id:string){const a=actions.find(x=>x.id===id);if(!a)return'Unknown action';if(p.hours<a.time)return'Not enough time this week';if(a.cost>0&&p.cash<a.cost)return'Not enough cash for the upfront cost';if(a.housing===p.housing)return'You already have a studio';if((a.energy||0)<0&&p.energy<-(a.energy||0))return'Rest before this activity';if(a.skill&&p.skill>=6)return'All six skills earned';if(a.needSkill&&p.skill<a.needSkill)return`Needs ${a.needSkill} skills (you have ${p.skill})`;if(a.needSocial&&p.social<a.needSocial)return`Needs ${a.needSocial} connections (you have ${p.social})`;if(a.promote&&(p.job===3||p.skill<jobs[p.job+1].need))return p.job===3?'You already have the top role':`Needs ${jobs[p.job+1].need} skills`;return'';}
-export function move(g:Game,id:string,destination?:string){if(g.status!=='playing')throw Error('The game is not running');const p=g.players[g.turn];if(p.place==='HOME')p.place='APARTMENTS';if(id==='visit'){if(!actions.some(a=>a.place===destination))throw Error('Choose a place on the map');p.place=destination!;g.log.unshift(`${p.name} arrived at ${destination}`);g.log=g.log.slice(0,32);return;}if(id==='end'){p.cash-=p.housing?705:505;p.joy=Math.min(100,p.joy+(p.housing?6:0));p.energy=Math.min(100,p.energy+16);p.joy=Math.max(0,p.joy-4);if(p.cash<0)p.joy=Math.max(0,p.joy-8);g.log.unshift(`${p.name} paid $${p.housing?620:420} rent + $85 food. ${p.cash<0?'Overdraft: −8 happiness.':''}`);g.turn++;if(g.turn>=g.players.length){g.turn=0;g.round++;if(g.round>g.maxRounds){g.status='finished';g.round=g.maxRounds;g.log.unshift('Eight weeks, a thousand little choices. Time to compare lives!');return;}g.event=(g.round-1)%events.length;const e=events[g.event];for(const q of g.players){q.cash+=e.cash;q.joy=Math.min(100,Math.max(0,q.joy+e.joy));}g.log.unshift(e.title+': '+e.text);}g.players[g.turn].hours=6;return;}
-const error=reason(p,id);if(error)throw Error(error);const a=actions.find(x=>x.id===id)!;if(p.place!==a.place)throw Error('Visit this place on the map first');const e=effects(p,a);p.hours-=a.time;p.cash+=e.cash;p.energy+=e.energy;p.joy+=e.joy;p.skill+=e.skill;p.social+=e.social;if(a.housing!==undefined)p.housing=a.housing;if(a.promote)p.job++;
-g.log.unshift(`${p.name}: ${a.title}${e.cash>0?` (+$${e.cash})`:''}`);g.log=g.log.slice(0,32);}
+export const neighbors=[
+ {id:'mina',name:'Mina',place:'CORNER CAFÉ',keepsake:'Sunrise pin',chapters:[
+  {title:'Meet Mina over closing-time coffee',text:'Mina has a folder full of songs but has never played one outside her kitchen. Sit down and hear the first verse.',joy:8,social:1,cost:10},
+  {title:'Rehearse with Mina',text:'She kept your table free. Help her try the chorus again before the café opens.',joy:10,social:2,cost:0},
+  {title:'Be there for Mina’s first set',text:'Mina spots you in the front row. After the applause, she gives you the little sunrise pin from her guitar case.',joy:15,social:2,cost:15}]},
+ {id:'eli',name:'Eli',place:'GARDEN',keepsake:'Leaf charm',chapters:[
+  {title:'Meet Eli by the empty beds',text:'Eli wants to grow food for the block, but the first seedlings failed. Help work out what the soil needs.',joy:8,social:1,cost:0},
+  {title:'Help Eli save the seedlings',text:'The new shoots are up. Eli needs a second pair of hands to protect them before the cold night.',joy:10,social:2,cost:15},
+  {title:'Share Eli’s first harvest',text:'A whole crate of tomatoes goes to the pantry. Eli presses a carved leaf charm into your hand: a reminder that you helped this grow.',joy:15,social:2,cost:0}]},
+ {id:'jo',name:'Jo',place:'MAKERSPACE',keepsake:'Copper halo',chapters:[
+  {title:'Meet Jo at the repair bench',text:'Jo inherited a broken neighborhood sign. Find the missing letters together over a bench covered in copper scraps.',joy:8,social:1,cost:0},
+  {title:'Help Jo rebuild the sign',text:'The letters fit. Spend an evening smoothing the edges while Jo tells you who used to live on the block.',joy:10,social:2,cost:20},
+  {title:'Light Jo’s restored sign',text:'The sign glows again. Jo makes you a copper halo from the offcuts, and insists you take the first photo.',joy:15,social:2,cost:0}]}
+];
+const newActions:Activity[]=[
+ {id:'creative_practice',title:'Practice your craft',place:'MAKERSPACE',icon:'spark',color:'blue',time:2,cost:30,energy:-7,craft:1,joy:4,modernOnly:true,desc:'One craft level. Reach 3 to take commissions; 8 completes the creative path.'},
+ {id:'creative_commission',title:'Deliver a creative commission',place:'MAKERSPACE',icon:'spark',color:'blue',time:2,cost:40,energy:-16,needCraft:3,modernOnly:true,desc:'Payout grows with craft: $380 + $65 per level, less $40 materials.'},
+ {id:'community_organize',title:'Coordinate a paid community day',place:'COMMUNITY',icon:'spark',color:'yellow',time:2,cost:0,energy:-14,joy:5,social:1,needSocial:6,modernOnly:true,desc:'Earn $420 + $15 per connection (up to 20). Community work can support your life.'},
+ {id:'weekly_opportunity',title:'Claim this week’s opportunity',place:'COMMUNITY',icon:'spark',color:'yellow',time:2,cost:0,energy:-12,modernOnly:true,special:'opportunity',desc:'One opening for the whole table. Check the neighborhood board for this week’s exact reward.'},
+ {id:'garden_project',title:'Build the neighborhood garden',place:'GARDEN',icon:'spark',color:'mint',time:1,cost:0,energy:-6,joy:5,modernOnly:true,special:'project',desc:'One contribution per player per week. Finish together: every contributor earns $180 and 4 legacy points.'},
+ ...neighbors.flatMap(n=>n.chapters.map((c,i)=>({id:`story_${n.id}_${i+1}`,title:c.title,place:n.place,icon:'spark',color:'mint',time:1,cost:c.cost,joy:c.joy,social:c.social,modernOnly:true,story:n.id,stage:i+1,desc:c.text})))
+];
+actions.push(...newActions);
+export const opportunities=[
+ {title:'Pop-up welcome market',text:'A small stall needs a friendly host.',earn:520,joy:8,social:2,craft:0},
+ {title:'Design the festival poster',text:'The block needs a fresh look.',earn:560,joy:6,social:0,craft:1},
+ {title:'Neighborhood research day',text:'Listen to what your neighbors want next.',earn:540,joy:8,social:2,craft:0},
+ {title:'Weekend craft showcase',text:'Take the last table at the makers’ fair.',earn:620,joy:8,social:0,craft:1},
+ {title:'Local business launch',text:'Help a new shop welcome the street.',earn:680,joy:6,social:2,craft:0},
+ {title:'Community mural day',text:'Leave a little color behind.',earn:640,joy:10,social:0,craft:1},
+ {title:'Harvest supper host',text:'Bring the whole block to the table.',earn:700,joy:10,social:2,craft:0},
+ {title:'The neighborhood finale',text:'Make the last week a good memory.',earn:760,joy:12,social:1,craft:1}
+];
+export const opportunity=(g:Pick<Game,'round'>)=>opportunities[[1,0,3,2,4,5,6,7][(g.round-1)%opportunities.length]];
+export const projectGoal=(g:Pick<Game,'players'>)=>g.players.length*2;
+export const projectProgress=(g:Pick<Game,'project'>)=>Object.values(g.project?.contributions||{}).reduce((a,b)=>a+b,0);
+export function pathPoints(p:Player){return[{name:'Career',points:p.job/3*20+Math.min(6,p.skill)/6*20},{name:'Community',points:Math.min(24,p.social)/24*40},{name:'Creative',points:Math.min(8,p.craft||0)/8*40}];}
+export function effects(p:Player,a:Activity,g?:Game){
+ let earn=a.workHours?jobs[p.job].rate*a.workHours:(a.earn||0),craft=a.craft||0,social=a.social||0,joy=a.joy||0;
+ if(p.rulesVersion===2){
+  if(a.id==='career_contract')earn=360+Math.min(20,p.social)*20;
+  if(a.id==='garden_harvest')earn=230+Math.min(20,p.social)*12;
+  if(a.id==='community_organize')earn=420+Math.min(20,p.social)*15;
+  if(a.id==='creative_commission')earn=380+Math.min(8,p.craft||0)*65;
+  if(a.special==='opportunity'&&g){const o=opportunity(g);earn=o.earn;craft=o.craft;social=o.social;joy=o.joy;}
+ }
+ return{cash:earn-a.cost,energy:Math.max(-p.energy,Math.min(a.energy||0,100-p.energy)),joy:Math.max(-p.joy,Math.min(joy,100-p.joy)),skill:Math.min(a.skill||0,6-p.skill),social,craft:Math.min(craft,8-(p.craft||0))};
+}
+export function player(name:string):Player{return{id:crypto.randomUUID(),name,cash:1100,skill:0,job:0,joy:40,energy:70,hours:6,social:0,housing:0,place:'APARTMENTS',rulesVersion:2,craft:0,legacy:0,stories:{},storyWeeks:{}};}
+export function score(p:Player){if(p.rulesVersion!==2)return Math.round(Math.min(30,Math.max(0,p.cash)/200)+p.job/3*20+Math.min(6,p.skill)/6*20+p.joy/100*30);return Math.round(Math.min(25,Math.max(0,p.cash)/200)+Math.max(...pathPoints(p).map(v=>v.points))+p.joy/100*25+Math.min(10,p.legacy||0));}
+export function reason(p:Player,id:string,g?:Game){
+ const a=actions.find(x=>x.id===id);if(!a)return'Unknown action';
+ if(a.modernOnly&&p.rulesVersion!==2)return'Available in new neighborhood games';
+ if(a.story){const stage=p.stories?.[a.story]||0;if(stage>=(a.stage||0))return'Chapter complete';if(stage!==(a.stage||1)-1)return'Meet this neighbor’s earlier chapter first';if(g&&p.storyWeeks?.[a.story]===g.round)return'Come back next week for the next chapter';}
+ if(a.special&& !g)return'Open the neighborhood board';
+ if(a.special==='opportunity'&&g&&g.opportunityClaim&&g.opportunityClaim.round===g.round)return`Claimed by ${g.opportunityClaim.name}`;
+ if(a.special==='project'&&g){if(g.project?.completed)return'The garden is complete';if(g.project?.lastWeek[p.id]===g.round)return'You already helped this week';}
+ if(p.hours<a.time)return'Not enough time this week';if(a.cost>0&&p.cash<a.cost)return'Not enough cash for the upfront cost';if(a.housing===p.housing)return'You already have a studio';if((a.energy||0)<0&&p.energy<-(a.energy||0))return'Rest before this activity';if(a.skill&&p.skill>=6)return'All six skills earned';if(a.craft&&(p.craft||0)>=8)return'All eight craft levels earned';
+ if(a.needSkill&&p.skill<a.needSkill&&!(p.rulesVersion===2&&a.id==='career_contract'))return`Needs ${a.needSkill} skills (you have ${p.skill})`;if(a.needSocial&&p.social<a.needSocial)return`Needs ${a.needSocial} connections (you have ${p.social})`;if(a.needCraft&&(p.craft||0)<a.needCraft)return`Needs ${a.needCraft} craft levels`;
+ if(a.promote&&(p.job===3||p.skill<jobs[p.job+1].need))return p.job===3?'You already have the top role':`Needs ${jobs[p.job+1].need} skills`;return'';
+}
+export function availableActions(p:Player,place:string){return actions.filter(a=>a.place===place&&(!a.modernOnly||p.rulesVersion===2)&&(!a.story||(p.stories?.[a.story]||0)===(a.stage||1)-1));}
+export function move(g:Game,id:string,destination?:string){
+ if(g.status!=='playing')throw Error('The game is not running');const p=g.players[g.turn];if(p.place==='HOME')p.place='APARTMENTS';
+ if(id==='visit'){if(!actions.some(a=>a.place===destination))throw Error('Choose a place on the map');p.place=destination!;g.log.unshift(`${p.name} arrived at ${destination}`);g.log=g.log.slice(0,32);return;}
+ if(id==='end'){
+  p.cash-=p.housing?705:505;p.joy=Math.min(100,p.joy+(p.housing?6:0));p.energy=Math.min(100,p.energy+16);p.joy=Math.max(0,p.joy-4);if(p.cash<0)p.joy=Math.max(0,p.joy-8);
+  g.log.unshift(`${p.name} paid $${p.housing?620:420} rent + $85 food. ${p.cash<0?'Overdraft: −8 happiness.':''}`);
+  let nextWeek=false;
+  if(g.rulesVersion===2){g.turnsTaken=(g.turnsTaken||0)+1;nextWeek=g.turnsTaken>=g.players.length;g.turn=(g.turn+1)%g.players.length;}else{g.turn++;nextWeek=g.turn>=g.players.length;}
+  if(nextWeek){g.turn=0;g.round++;if(g.round>g.maxRounds){g.status='finished';g.round=g.maxRounds;g.log.unshift('Eight weeks, a thousand little choices. Time to compare lives!');return;}
+   if(g.rulesVersion===2){g.turnsTaken=0;g.turn=(g.round-1)%g.players.length;g.log.unshift(`${g.players[g.turn].name} has first choice this week.`);}
+   g.event=(g.round-1)%events.length;const e=events[g.event];for(const q of g.players){q.cash+=e.cash;q.joy=Math.min(100,Math.max(0,q.joy+e.joy));}g.log.unshift(e.title+': '+e.text);
+  }
+  g.players[g.turn].hours=6;g.log=g.log.slice(0,32);return;
+ }
+ const error=reason(p,id,g);if(error)throw Error(error);const a=actions.find(x=>x.id===id)!;if(p.place!==a.place)throw Error('Visit this place on the map first');const e=effects(p,a,g);p.hours-=a.time;p.cash+=e.cash;p.energy+=e.energy;p.joy+=e.joy;p.skill+=e.skill;p.social+=e.social;if(p.rulesVersion===2)p.craft=(p.craft||0)+e.craft;if(a.housing!==undefined)p.housing=a.housing;if(a.promote)p.job++;
+ if(a.story){p.stories={...p.stories,[a.story]:a.stage!};p.storyWeeks={...p.storyWeeks,[a.story]:g.round};if(a.stage===3){p.legacy=Math.min(10,(p.legacy||0)+2);g.log.unshift(`${p.name} completed ${neighbors.find(n=>n.id===a.story)!.name}’s story: +2 legacy and a keepsake.`);}}
+ if(a.special==='opportunity')g.opportunityClaim={round:g.round,playerId:p.id,name:p.name};
+ if(a.special==='project'){
+  g.project??={contributions:{},lastWeek:{},completed:false};g.project.contributions[p.id]=(g.project.contributions[p.id]||0)+1;g.project.lastWeek[p.id]=g.round;
+  if(projectProgress(g)>=projectGoal(g)){g.project.completed=true;for(const q of g.players)if(g.project.contributions[q.id]){q.cash+=180;q.legacy=Math.min(10,(q.legacy||0)+4);}g.log.unshift('The shared garden is open! Every contributor earned $180 and +4 legacy.');}
+ }
+ g.log.unshift(`${p.name}: ${a.title}${e.cash>0?` (+$${e.cash})`:''}${a.promote?` — ${jobs[p.job].name}, $${jobs[p.job].rate}/hour`:''}`);g.log=g.log.slice(0,32);
+}

@@ -6,12 +6,24 @@ A 3D small-town life-simulation board game for **1–4 players**. Spend eight we
 
 ## Features
 
-- 15 modeled destinations and 60 activities
+- 15 modeled destinations and 74 activities, including neighbor chapters and shared projects
 - Solo/pass-and-play on one device and online rooms across browsers
 - Server-authoritative turns and persistent Cloudflare D1 room state
 - Guest seats without account signup
 - Three.js camera controls, keyboard and Places navigation
 - Battery-saver and reduced-motion settings, plus software 3D rendering when WebGL is unavailable
+
+## Neighborhood gameplay update
+
+New games support career, community and creative life paths. Your strongest path earns up to 40 points, savings and happiness 25 each, and neighborhood legacy 10. There is no permanent class choice.
+
+The weekly opportunity is shared by the room, with a rotating first player. Build the neighborhood garden together, and meet Mina, Eli and Jo across three chapters each. Their keepsakes and the growing garden appear in the 3D world. Activity menus stay open for deliberate repeats, and promotions announce the new role and wage.
+
+Old rooms keep their original scoring, economy and turn order. Start a new game to use the neighborhood rules.
+
+- [Detailed improvement plan](docs/GAMEPLAY-IMPROVEMENT-PLAN.md)
+- [Verification and balance notes](docs/GAMEPLAY-VERIFICATION.md)
+- `npm run test:balance` runs illustrative eight-week strategies; it is not an optimal-balance proof
 
 ## Local setup
 
@@ -38,7 +50,7 @@ npm run typecheck
 npm run build
 ```
 
-Tests cover all 60 activity previews, weekly bills, resource gates, travel enforcement, legacy saves, stale snapshots and game completion. See [verification](docs/verification.md) for checks performed and device limitations.
+Tests cover classic and new activity previews, weekly bills, resource gates, shared claims/projects, story progression, rotating turns, legacy saves, stale snapshots, API ownership/idempotency and game completion. See [verification](docs/verification.md) for checks performed and device limitations.
 
 ## Source layout
 
@@ -51,7 +63,7 @@ Tests cover all 60 activity previews, weekly bills, resource gates, travel enfor
 - `tests/`: rules regression tests
 - `build/`, `scripts/`: Worker build and local-development support
 
-This repository preserves the current 3D game application source. Repository packaging adds a game README, setup/test commands and sanitized deployment configuration. Game implementation and rules are unchanged. The previous Phaser dependency and old illustrated town maps are retained; the active game uses Three.js meshes.
+This repository preserves the current 3D game application source. Repository packaging adds a game README, setup/test commands and sanitized deployment configuration. The neighborhood gameplay update adds versioned rules while keeping classic saved games compatible. The previous Phaser dependency and old illustrated town maps are retained; the active game uses Three.js meshes.
 
 ## Deployment
 
