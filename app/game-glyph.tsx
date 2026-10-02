@@ -1,0 +1,6 @@
+import type {CSSProperties} from 'react';
+/** Small original ink-and-enamel symbols for the player instruments. */
+export default function GameGlyph({kind,size=22,style}:{kind:'cash'|'time'|'energy'|'joy';size?:number;style?:CSSProperties}){
+ const paths={cash:<><path d="M4 7 18 5l2 13-15 1z" fill="currentColor" opacity=".2"/><path d="m4 7 14-2 2 13-15 1zM5 7l-1-3 13-1 1 2M15 10l6-1 .5 6-6 1z"/><circle cx="18.2" cy="12.4" r=".8" fill="currentColor" stroke="none"/></>,time:<><path d="M7 3h11M7 21h11M8 4c0 5 2 6 4 8-2 2-4 3-4 8M17 4c0 5-2 6-4 8 2 2 4 3 4 8"/><path d="m9 6 7 .2-3.5 4zM9 19l3.5-4L16 19z" fill="currentColor" stroke="none"/></>,energy:<><path d="m13.6 2-8 12 6-.6L10 22l9-13-6 .6z" fill="currentColor" opacity=".85"/><path d="m13.6 2-8 12 6-.6L10 22l9-13-6 .6z"/></>,joy:<><path d="M12 21C9 18 2 14 3 8c.7-4.7 6.2-5 9-.8 3.1-4 8.2-3.6 9 1 1 5-5 10-9 12.8Z" fill="currentColor" opacity=".85"/><path d="M12 21C9 18 2 14 3 8c.7-4.7 6.2-5 9-.8 3.1-4 8.2-3.6 9 1 1 5-5 10-9 12.8Z"/><path d="M6 9c0-1 .8-2 2-2" stroke="#fff1c0" opacity=".7"/></>};
+ return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={style} aria-hidden="true">{paths[kind]}</svg>;
+}

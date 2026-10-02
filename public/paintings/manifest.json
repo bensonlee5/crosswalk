@@ -1,0 +1,447 @@
+[
+  {
+    "path": "/paintings/locations/cafe.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 119782,
+    "alt": "A blue marble beside a warm coffee table in the sunny corner caf\u00e9",
+    "source": "exec-a32ecd0f-9dcf-4570-aeb9-33b40c301ea6.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "Imagegen edit: clear dry windows and mild sunshine, preserve caf\u00e9 objects and style"
+  },
+  {
+    "path": "/paintings/locations/apartments.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 113000,
+    "alt": "Oil-painted apartments scene with a blue glass marble player",
+    "source": "exec-79202b9a-c9a3-491f-bb22-be0e80883a82.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: green-cabinet brick cafe, blue marble on chair cushion by wood table, warm lamps, inviting empty space for conversation; do not include Mina here. TOP RIGHT: cozy modest apartment kitchen and sitting room, plants, music player and meal preparation, blue marble by small table. BOTTOM LEFT: welcoming neighborhood coworking office desks with a human colleague showing a marble a computer screen with abstract unlettered shapes. BOTTOM RIGHT: adult learning campus classroom with books and warm windows, small study group of adults and a blue marble by a desk."
+  },
+  {
+    "path": "/paintings/locations/work.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 83246,
+    "alt": "Oil-painted work scene with a blue glass marble player",
+    "source": "exec-79202b9a-c9a3-491f-bb22-be0e80883a82.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: green-cabinet brick cafe, blue marble on chair cushion by wood table, warm lamps, inviting empty space for conversation; do not include Mina here. TOP RIGHT: cozy modest apartment kitchen and sitting room, plants, music player and meal preparation, blue marble by small table. BOTTOM LEFT: welcoming neighborhood coworking office desks with a human colleague showing a marble a computer screen with abstract unlettered shapes. BOTTOM RIGHT: adult learning campus classroom with books and warm windows, small study group of adults and a blue marble by a desk."
+  },
+  {
+    "path": "/paintings/locations/campus.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 82536,
+    "alt": "Oil-painted campus scene with a blue glass marble player",
+    "source": "exec-79202b9a-c9a3-491f-bb22-be0e80883a82.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: green-cabinet brick cafe, blue marble on chair cushion by wood table, warm lamps, inviting empty space for conversation; do not include Mina here. TOP RIGHT: cozy modest apartment kitchen and sitting room, plants, music player and meal preparation, blue marble by small table. BOTTOM LEFT: welcoming neighborhood coworking office desks with a human colleague showing a marble a computer screen with abstract unlettered shapes. BOTTOM RIGHT: adult learning campus classroom with books and warm windows, small study group of adults and a blue marble by a desk."
+  },
+  {
+    "path": "/paintings/locations/careers.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 96546,
+    "alt": "Oil-painted careers scene with a blue glass marble player",
+    "source": "exec-4020ec2d-f399-4ecb-85af-8b20f0116684.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: small career center workspace, portfolio sketches pinned without text, friendly adult advisor talking to blue marble beside table. TOP RIGHT: warm neighborhood community pantry, diverse adults sorting produce crates, marble participating in foreground. BOTTOM LEFT: leafy town park with fountain, shaded bench, picnic blanket and blue marble resting under tree. BOTTOM RIGHT: classical neighborhood library interior, high shelves, green reading lamps, human reading and blue marble at desk."
+  },
+  {
+    "path": "/paintings/locations/community.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 88452,
+    "alt": "Oil-painted community scene with a blue glass marble player",
+    "source": "exec-4020ec2d-f399-4ecb-85af-8b20f0116684.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: small career center workspace, portfolio sketches pinned without text, friendly adult advisor talking to blue marble beside table. TOP RIGHT: warm neighborhood community pantry, diverse adults sorting produce crates, marble participating in foreground. BOTTOM LEFT: leafy town park with fountain, shaded bench, picnic blanket and blue marble resting under tree. BOTTOM RIGHT: classical neighborhood library interior, high shelves, green reading lamps, human reading and blue marble at desk."
+  },
+  {
+    "path": "/paintings/locations/park.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 146334,
+    "alt": "Oil-painted park scene with a blue glass marble player",
+    "source": "exec-4020ec2d-f399-4ecb-85af-8b20f0116684.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: small career center workspace, portfolio sketches pinned without text, friendly adult advisor talking to blue marble beside table. TOP RIGHT: warm neighborhood community pantry, diverse adults sorting produce crates, marble participating in foreground. BOTTOM LEFT: leafy town park with fountain, shaded bench, picnic blanket and blue marble resting under tree. BOTTOM RIGHT: classical neighborhood library interior, high shelves, green reading lamps, human reading and blue marble at desk."
+  },
+  {
+    "path": "/paintings/locations/library.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 92648,
+    "alt": "Oil-painted library scene with a blue glass marble player",
+    "source": "exec-4020ec2d-f399-4ecb-85af-8b20f0116684.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: small career center workspace, portfolio sketches pinned without text, friendly adult advisor talking to blue marble beside table. TOP RIGHT: warm neighborhood community pantry, diverse adults sorting produce crates, marble participating in foreground. BOTTOM LEFT: leafy town park with fountain, shaded bench, picnic blanket and blue marble resting under tree. BOTTOM RIGHT: classical neighborhood library interior, high shelves, green reading lamps, human reading and blue marble at desk."
+  },
+  {
+    "path": "/paintings/locations/market.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 140310,
+    "alt": "Oil-painted market scene with a blue glass marble player",
+    "source": "exec-12fbaeb7-e849-41bf-a185-579117dec5ea.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: covered produce market with timber stalls, seasonal vegetables, adult vendor and blue marble on cobbled path. BOTTOM LEFT: makerspace warm repair workshop, copper scraps, tools, half-repaired lamp, blue marble near workbench. TOP RIGHT: welcoming fitness studio with yoga mats, wood floor, plants, two adults stretching and marble near foreground mat. BOTTOM RIGHT: small neighborhood cinema, red velvet seats, projector beam, audience and blue marble on foreground seat; screen blank diffuse cream without imagery or text."
+  },
+  {
+    "path": "/paintings/locations/gym.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 103784,
+    "alt": "Oil-painted gym scene with a blue glass marble player",
+    "source": "exec-12fbaeb7-e849-41bf-a185-579117dec5ea.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: covered produce market with timber stalls, seasonal vegetables, adult vendor and blue marble on cobbled path. BOTTOM LEFT: makerspace warm repair workshop, copper scraps, tools, half-repaired lamp, blue marble near workbench. TOP RIGHT: welcoming fitness studio with yoga mats, wood floor, plants, two adults stretching and marble near foreground mat. BOTTOM RIGHT: small neighborhood cinema, red velvet seats, projector beam, audience and blue marble on foreground seat; screen blank diffuse cream without imagery or text."
+  },
+  {
+    "path": "/paintings/locations/makers.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 97584,
+    "alt": "Oil-painted makers scene with a blue glass marble player",
+    "source": "exec-12fbaeb7-e849-41bf-a185-579117dec5ea.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: covered produce market with timber stalls, seasonal vegetables, adult vendor and blue marble on cobbled path. BOTTOM LEFT: makerspace warm repair workshop, copper scraps, tools, half-repaired lamp, blue marble near workbench. TOP RIGHT: welcoming fitness studio with yoga mats, wood floor, plants, two adults stretching and marble near foreground mat. BOTTOM RIGHT: small neighborhood cinema, red velvet seats, projector beam, audience and blue marble on foreground seat; screen blank diffuse cream without imagery or text."
+  },
+  {
+    "path": "/paintings/locations/cinema.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 50736,
+    "alt": "Oil-painted cinema scene with a blue glass marble player",
+    "source": "exec-12fbaeb7-e849-41bf-a185-579117dec5ea.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: covered produce market with timber stalls, seasonal vegetables, adult vendor and blue marble on cobbled path. BOTTOM LEFT: makerspace warm repair workshop, copper scraps, tools, half-repaired lamp, blue marble near workbench. TOP RIGHT: welcoming fitness studio with yoga mats, wood floor, plants, two adults stretching and marble near foreground mat. BOTTOM RIGHT: small neighborhood cinema, red velvet seats, projector beam, audience and blue marble on foreground seat; screen blank diffuse cream without imagery or text."
+  },
+  {
+    "path": "/paintings/locations/transit.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 133332,
+    "alt": "Oil-painted transit scene with a blue glass marble player",
+    "source": "exec-4b390dde-615b-4323-9d58-9584bd98e4a8.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: neighborhood transit hub, parked bicycles and small tram, covered stop, blue marble on platform, calm everyday life. TOP RIGHT: community garden raised beds, glass greenhouse, potting tools, blue marble by watering can, lush productive plants. BOTTOM LEFT: cozy retro arcade, pinball and cabinets displaying abstract colored lights WITHOUT ANY LETTERING, boardgame table and blue marble, warm amber and subdued teal glow. BOTTOM RIGHT: rainy green-cabinet cafe from reference, rain-streaked windows, steaming cup at table, blue marble on chair cushion, beautiful warm and cool contrast; no person needed."
+  },
+  {
+    "path": "/paintings/locations/garden.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 150566,
+    "alt": "Oil-painted garden scene with a blue glass marble player",
+    "source": "exec-4b390dde-615b-4323-9d58-9584bd98e4a8.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: neighborhood transit hub, parked bicycles and small tram, covered stop, blue marble on platform, calm everyday life. TOP RIGHT: community garden raised beds, glass greenhouse, potting tools, blue marble by watering can, lush productive plants. BOTTOM LEFT: cozy retro arcade, pinball and cabinets displaying abstract colored lights WITHOUT ANY LETTERING, boardgame table and blue marble, warm amber and subdued teal glow. BOTTOM RIGHT: rainy green-cabinet cafe from reference, rain-streaked windows, steaming cup at table, blue marble on chair cushion, beautiful warm and cool contrast; no person needed."
+  },
+  {
+    "path": "/paintings/locations/arcade.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 86660,
+    "alt": "Oil-painted arcade scene with a blue glass marble player",
+    "source": "exec-4b390dde-615b-4323-9d58-9584bd98e4a8.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: neighborhood transit hub, parked bicycles and small tram, covered stop, blue marble on platform, calm everyday life. TOP RIGHT: community garden raised beds, glass greenhouse, potting tools, blue marble by watering can, lush productive plants. BOTTOM LEFT: cozy retro arcade, pinball and cabinets displaying abstract colored lights WITHOUT ANY LETTERING, boardgame table and blue marble, warm amber and subdued teal glow. BOTTOM RIGHT: rainy green-cabinet cafe from reference, rain-streaked windows, steaming cup at table, blue marble on chair cushion, beautiful warm and cool contrast; no person needed."
+  },
+  {
+    "path": "/paintings/locations/cafe-rain.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 106294,
+    "alt": "Oil-painted cafe rain scene with a blue glass marble player",
+    "source": "exec-4b390dde-615b-4323-9d58-9584bd98e4a8.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT: neighborhood transit hub, parked bicycles and small tram, covered stop, blue marble on platform, calm everyday life. TOP RIGHT: community garden raised beds, glass greenhouse, potting tools, blue marble by watering can, lush productive plants. BOTTOM LEFT: cozy retro arcade, pinball and cabinets displaying abstract colored lights WITHOUT ANY LETTERING, boardgame table and blue marble, warm amber and subdued teal glow. BOTTOM RIGHT: rainy green-cabinet cafe from reference, rain-streaked windows, steaming cup at table, blue marble on chair cushion, beautiful warm and cool contrast; no person needed."
+  },
+  {
+    "path": "/paintings/news/week-1.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 117918,
+    "alt": "A barista remembers the marble player\u2019s coffee order in spring",
+    "source": "exec-49872ee9-3e06-45d0-b875-be9334a9c54b.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT, spring: kind barista remembers blue marble player's coffee order and places steaming cup by its seat, blossoms outside caf\u00e9 window, touching small act of friendship. TOP RIGHT, steady spring rain: city tram conductor offers a transit pass with abstract blank shapes to blue marble on platform, umbrellas, puddles, clearly transit story. BOTTOM LEFT, clear summer evening: free outdoor neighborhood movie night, white screen without lettering, human neighbors and blue marble seated on picnic blanket watching movie shapes, string lights, lush trees. BOTTOM RIGHT, hot summer: open apartment windows, electric fan and radiator, household bill envelope WITHOUT letters/numbers on table beside blue marble, gentle warm haze, narrative of energy costs."
+  },
+  {
+    "path": "/paintings/news/week-2.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 112168,
+    "alt": "A conductor offers a transit pass during spring rain",
+    "source": "exec-49872ee9-3e06-45d0-b875-be9334a9c54b.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT, spring: kind barista remembers blue marble player's coffee order and places steaming cup by its seat, blossoms outside caf\u00e9 window, touching small act of friendship. TOP RIGHT, steady spring rain: city tram conductor offers a transit pass with abstract blank shapes to blue marble on platform, umbrellas, puddles, clearly transit story. BOTTOM LEFT, clear summer evening: free outdoor neighborhood movie night, white screen without lettering, human neighbors and blue marble seated on picnic blanket watching movie shapes, string lights, lush trees. BOTTOM RIGHT, hot summer: open apartment windows, electric fan and radiator, household bill envelope WITHOUT letters/numbers on table beside blue marble, gentle warm haze, narrative of energy costs."
+  },
+  {
+    "path": "/paintings/news/week-3.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 102602,
+    "alt": "Neighbors and a blue marble enjoy a free summer movie night",
+    "source": "exec-49872ee9-3e06-45d0-b875-be9334a9c54b.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT, spring: kind barista remembers blue marble player's coffee order and places steaming cup by its seat, blossoms outside caf\u00e9 window, touching small act of friendship. TOP RIGHT, steady spring rain: city tram conductor offers a transit pass with abstract blank shapes to blue marble on platform, umbrellas, puddles, clearly transit story. BOTTOM LEFT, clear summer evening: free outdoor neighborhood movie night, white screen without lettering, human neighbors and blue marble seated on picnic blanket watching movie shapes, string lights, lush trees. BOTTOM RIGHT, hot summer: open apartment windows, electric fan and radiator, household bill envelope WITHOUT letters/numbers on table beside blue marble, gentle warm haze, narrative of energy costs."
+  },
+  {
+    "path": "/paintings/news/week-4.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 82810,
+    "alt": "A fan and energy bill during a hot summer week",
+    "source": "exec-49872ee9-3e06-45d0-b875-be9334a9c54b.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT, spring: kind barista remembers blue marble player's coffee order and places steaming cup by its seat, blossoms outside caf\u00e9 window, touching small act of friendship. TOP RIGHT, steady spring rain: city tram conductor offers a transit pass with abstract blank shapes to blue marble on platform, umbrellas, puddles, clearly transit story. BOTTOM LEFT, clear summer evening: free outdoor neighborhood movie night, white screen without lettering, human neighbors and blue marble seated on picnic blanket watching movie shapes, string lights, lush trees. BOTTOM RIGHT, hot summer: open apartment windows, electric fan and radiator, household bill envelope WITHOUT letters/numbers on table beside blue marble, gentle warm haze, narrative of energy costs."
+  },
+  {
+    "path": "/paintings/news/week-5.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 87670,
+    "alt": "An old deposit returned on an autumn afternoon",
+    "source": "exec-8bb04dca-2afa-4e82-b8b2-0df302459287.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT, crisp autumn: returned old deposit, opened envelope and few unmarked banknotes on kitchen table, blue marble beside envelope, amber tree beyond window, quietly hopeful. TOP RIGHT, windy autumn showers: friendly adult neighbors laughing around a phone in a sheltered cafe, blue marble also at table; phone has a silly little illustrated cat image but NO TEXT OR letters. BOTTOM LEFT, winter light snow: grocery produce sale, crates of winter vegetables in warm covered market, vendor helping blue marble, snowy street beyond; no tags or lettering. BOTTOM RIGHT, clear cold winter: sunny finale in familiar town square with central fountain, warm low sunshine, frost and thin snow, blue marble and two other colored marbles, neighbors gathering, satisfying warm ending."
+  },
+  {
+    "path": "/paintings/news/week-6.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 93160,
+    "alt": "Neighbors laugh together over a funny group chat image",
+    "source": "exec-8bb04dca-2afa-4e82-b8b2-0df302459287.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT, crisp autumn: returned old deposit, opened envelope and few unmarked banknotes on kitchen table, blue marble beside envelope, amber tree beyond window, quietly hopeful. TOP RIGHT, windy autumn showers: friendly adult neighbors laughing around a phone in a sheltered cafe, blue marble also at table; phone has a silly little illustrated cat image but NO TEXT OR letters. BOTTOM LEFT, winter light snow: grocery produce sale, crates of winter vegetables in warm covered market, vendor helping blue marble, snowy street beyond; no tags or lettering. BOTTOM RIGHT, clear cold winter: sunny finale in familiar town square with central fountain, warm low sunshine, frost and thin snow, blue marble and two other colored marbles, neighbors gathering, satisfying warm ending."
+  },
+  {
+    "path": "/paintings/news/week-7.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 112644,
+    "alt": "Winter produce bargains at the neighborhood market",
+    "source": "exec-8bb04dca-2afa-4e82-b8b2-0df302459287.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT, crisp autumn: returned old deposit, opened envelope and few unmarked banknotes on kitchen table, blue marble beside envelope, amber tree beyond window, quietly hopeful. TOP RIGHT, windy autumn showers: friendly adult neighbors laughing around a phone in a sheltered cafe, blue marble also at table; phone has a silly little illustrated cat image but NO TEXT OR letters. BOTTOM LEFT, winter light snow: grocery produce sale, crates of winter vegetables in warm covered market, vendor helping blue marble, snowy street beyond; no tags or lettering. BOTTOM RIGHT, clear cold winter: sunny finale in familiar town square with central fountain, warm low sunshine, frost and thin snow, blue marble and two other colored marbles, neighbors gathering, satisfying warm ending."
+  },
+  {
+    "path": "/paintings/news/week-8.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 109804,
+    "alt": "Marble players and neighbors celebrate in clear winter sunshine",
+    "source": "exec-8bb04dca-2afa-4e82-b8b2-0df302459287.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "TOP LEFT, crisp autumn: returned old deposit, opened envelope and few unmarked banknotes on kitchen table, blue marble beside envelope, amber tree beyond window, quietly hopeful. TOP RIGHT, windy autumn showers: friendly adult neighbors laughing around a phone in a sheltered cafe, blue marble also at table; phone has a silly little illustrated cat image but NO TEXT OR letters. BOTTOM LEFT, winter light snow: grocery produce sale, crates of winter vegetables in warm covered market, vendor helping blue marble, snowy street beyond; no tags or lettering. BOTTOM RIGHT, clear cold winter: sunny finale in familiar town square with central fountain, warm low sunshine, frost and thin snow, blue marble and two other colored marbles, neighbors gathering, satisfying warm ending."
+  },
+  {
+    "path": "/paintings/seasons/spring.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 188826,
+    "alt": "Crosswalk town square in spring",
+    "source": "exec-24bbb65e-dfd3-4724-bd2c-28eabee40134.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "Four matched seasonal town establishing illustrations preserving familiar landmark arrangement"
+  },
+  {
+    "path": "/paintings/seasons/summer.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 187732,
+    "alt": "Crosswalk town square in summer",
+    "source": "exec-24bbb65e-dfd3-4724-bd2c-28eabee40134.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "Four matched seasonal town establishing illustrations preserving familiar landmark arrangement"
+  },
+  {
+    "path": "/paintings/seasons/autumn.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 187990,
+    "alt": "Crosswalk town square in autumn",
+    "source": "exec-24bbb65e-dfd3-4724-bd2c-28eabee40134.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "Four matched seasonal town establishing illustrations preserving familiar landmark arrangement"
+  },
+  {
+    "path": "/paintings/seasons/winter.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 178604,
+    "alt": "Crosswalk town square in winter",
+    "source": "exec-24bbb65e-dfd3-4724-bd2c-28eabee40134.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "Four matched seasonal town establishing illustrations preserving familiar landmark arrangement"
+  },
+  {
+    "path": "/paintings/portraits/mina.webp",
+    "width": 384,
+    "height": 384,
+    "bytes": 41914,
+    "alt": "Mina smiles in the corner caf\u00e9",
+    "source": "exec-0560421d-f88b-4d4f-b945-1e31682c5c64.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Mina from reference: friendly young adult woman, warm tan skin, short wavy dark hair, small hoop earrings, rust red cardigan, cream shirt. TOP LEFT: bust portrait of Mina, gentle hopeful smile, caf\u00e9 softly painted behind, centered head with breathing room. TOP RIGHT: Mina meeting the blue marble at closing-time coffee, notebook of song sketches without text, guitar case. BOTTOM LEFT: Mina rehearsing guitar at quiet caf\u00e9 before opening, blue marble listening across table, focused courage. BOTTOM RIGHT: Mina first live guitar set on cafe stage, a few friendly adults applaud, blue marble in front row on chair, small SUNRISE-SHAPED enamel pin visible on guitar case, moving warm performance. Faces consistent. No microphones obstruct face."
+  },
+  {
+    "path": "/paintings/stories/mina-1.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 98390,
+    "alt": "Mina shares her first song over coffee with the marble player",
+    "source": "exec-0560421d-f88b-4d4f-b945-1e31682c5c64.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Mina from reference: friendly young adult woman, warm tan skin, short wavy dark hair, small hoop earrings, rust red cardigan, cream shirt. TOP LEFT: bust portrait of Mina, gentle hopeful smile, caf\u00e9 softly painted behind, centered head with breathing room. TOP RIGHT: Mina meeting the blue marble at closing-time coffee, notebook of song sketches without text, guitar case. BOTTOM LEFT: Mina rehearsing guitar at quiet caf\u00e9 before opening, blue marble listening across table, focused courage. BOTTOM RIGHT: Mina first live guitar set on cafe stage, a few friendly adults applaud, blue marble in front row on chair, small SUNRISE-SHAPED enamel pin visible on guitar case, moving warm performance. Faces consistent. No microphones obstruct face."
+  },
+  {
+    "path": "/paintings/stories/mina-2.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 88726,
+    "alt": "Mina rehearses guitar before the caf\u00e9 opens",
+    "source": "exec-0560421d-f88b-4d4f-b945-1e31682c5c64.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Mina from reference: friendly young adult woman, warm tan skin, short wavy dark hair, small hoop earrings, rust red cardigan, cream shirt. TOP LEFT: bust portrait of Mina, gentle hopeful smile, caf\u00e9 softly painted behind, centered head with breathing room. TOP RIGHT: Mina meeting the blue marble at closing-time coffee, notebook of song sketches without text, guitar case. BOTTOM LEFT: Mina rehearsing guitar at quiet caf\u00e9 before opening, blue marble listening across table, focused courage. BOTTOM RIGHT: Mina first live guitar set on cafe stage, a few friendly adults applaud, blue marble in front row on chair, small SUNRISE-SHAPED enamel pin visible on guitar case, moving warm performance. Faces consistent. No microphones obstruct face."
+  },
+  {
+    "path": "/paintings/stories/mina-3.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 70990,
+    "alt": "Neighbors applaud Mina\u2019s first guitar performance",
+    "source": "exec-0560421d-f88b-4d4f-b945-1e31682c5c64.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Mina from reference: friendly young adult woman, warm tan skin, short wavy dark hair, small hoop earrings, rust red cardigan, cream shirt. TOP LEFT: bust portrait of Mina, gentle hopeful smile, caf\u00e9 softly painted behind, centered head with breathing room. TOP RIGHT: Mina meeting the blue marble at closing-time coffee, notebook of song sketches without text, guitar case. BOTTOM LEFT: Mina rehearsing guitar at quiet caf\u00e9 before opening, blue marble listening across table, focused courage. BOTTOM RIGHT: Mina first live guitar set on cafe stage, a few friendly adults applaud, blue marble in front row on chair, small SUNRISE-SHAPED enamel pin visible on guitar case, moving warm performance. Faces consistent. No microphones obstruct face."
+  },
+  {
+    "path": "/paintings/portraits/eli.webp",
+    "width": 384,
+    "height": 384,
+    "bytes": 39928,
+    "alt": "Eli, the neighborhood gardener",
+    "source": "exec-a2bffb59-28a6-4737-926d-666c5b9df369.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Eli: friendly middle-aged Black man, close cropped curly hair and short salt-and-pepper beard, moss green work overshirt over cream T-shirt, terracotta apron. TOP LEFT: bust portrait of Eli smiling, garden softly painted behind, centered head with breathing room. TOP RIGHT: Eli kneeling by empty raised garden beds, studying soil with trowel, blue marble beside bed, early shoots struggling. BOTTOM LEFT: Eli protecting fresh seedlings with small glass cloches near greenhouse at chilly dusk, blue marble beside watering can. BOTTOM RIGHT: Eli sharing first harvest of red tomatoes in a crate for neighborhood pantry, blue marble beside a small CARVED LEAF charm on worktable, delighted gardener. Faces and clothing consistent. No writing."
+  },
+  {
+    "path": "/paintings/stories/eli-1.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 97400,
+    "alt": "Eli examines struggling seedlings inside the greenhouse",
+    "source": "exec-a2bffb59-28a6-4737-926d-666c5b9df369.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Eli: friendly middle-aged Black man, close cropped curly hair and short salt-and-pepper beard, moss green work overshirt over cream T-shirt, terracotta apron. TOP LEFT: bust portrait of Eli smiling, garden softly painted behind, centered head with breathing room. TOP RIGHT: Eli kneeling by empty raised garden beds, studying soil with trowel, blue marble beside bed, early shoots struggling. BOTTOM LEFT: Eli protecting fresh seedlings with small glass cloches near greenhouse at chilly dusk, blue marble beside watering can. BOTTOM RIGHT: Eli sharing first harvest of red tomatoes in a crate for neighborhood pantry, blue marble beside a small CARVED LEAF charm on worktable, delighted gardener. Faces and clothing consistent. No writing."
+  },
+  {
+    "path": "/paintings/stories/eli-2.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 92100,
+    "alt": "Eli shelters new seedlings under glass cloches",
+    "source": "exec-a2bffb59-28a6-4737-926d-666c5b9df369.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Eli: friendly middle-aged Black man, close cropped curly hair and short salt-and-pepper beard, moss green work overshirt over cream T-shirt, terracotta apron. TOP LEFT: bust portrait of Eli smiling, garden softly painted behind, centered head with breathing room. TOP RIGHT: Eli kneeling by empty raised garden beds, studying soil with trowel, blue marble beside bed, early shoots struggling. BOTTOM LEFT: Eli protecting fresh seedlings with small glass cloches near greenhouse at chilly dusk, blue marble beside watering can. BOTTOM RIGHT: Eli sharing first harvest of red tomatoes in a crate for neighborhood pantry, blue marble beside a small CARVED LEAF charm on worktable, delighted gardener. Faces and clothing consistent. No writing."
+  },
+  {
+    "path": "/paintings/stories/eli-3.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 88812,
+    "alt": "Eli shares a first tomato harvest and carved leaf keepsake",
+    "source": "exec-a2bffb59-28a6-4737-926d-666c5b9df369.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Eli: friendly middle-aged Black man, close cropped curly hair and short salt-and-pepper beard, moss green work overshirt over cream T-shirt, terracotta apron. TOP LEFT: bust portrait of Eli smiling, garden softly painted behind, centered head with breathing room. TOP RIGHT: Eli kneeling by empty raised garden beds, studying soil with trowel, blue marble beside bed, early shoots struggling. BOTTOM LEFT: Eli protecting fresh seedlings with small glass cloches near greenhouse at chilly dusk, blue marble beside watering can. BOTTOM RIGHT: Eli sharing first harvest of red tomatoes in a crate for neighborhood pantry, blue marble beside a small CARVED LEAF charm on worktable, delighted gardener. Faces and clothing consistent. No writing."
+  },
+  {
+    "path": "/paintings/portraits/jo.webp",
+    "width": 384,
+    "height": 384,
+    "bytes": 42348,
+    "alt": "Jo, the neighborhood repairer",
+    "source": "exec-e92f4cf4-de20-420e-afe4-35d01f0b7d50.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Jo: older East Asian woman, short silver bob, round amber glasses, indigo work jacket and ochre carpenter apron, kind expressive face. TOP LEFT: bust portrait of Jo in softly painted repair workshop, centered head with breathing room. TOP RIGHT: Jo at repair bench examining an old broken green enamel neighborhood sign and scattered copper geometric pieces, blue marble beside bench; sign motif a sunrise emblem, NO lettering. BOTTOM LEFT: Jo rebuilding sign using copper shapes at bench at evening, blue marble nearby, safe hand tools, care and craft. BOTTOM RIGHT: Jo outside proudly revealing restored green enamel sunrise sign with glowing perimeter bulbs, blue marble beside small copper ring keepsake on doorstep, dusk, joyful success. Faces and clothing consistent. No writing."
+  },
+  {
+    "path": "/paintings/stories/jo-1.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 100636,
+    "alt": "Jo examines the broken copper sunrise sign",
+    "source": "exec-e92f4cf4-de20-420e-afe4-35d01f0b7d50.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Jo: older East Asian woman, short silver bob, round amber glasses, indigo work jacket and ochre carpenter apron, kind expressive face. TOP LEFT: bust portrait of Jo in softly painted repair workshop, centered head with breathing room. TOP RIGHT: Jo at repair bench examining an old broken green enamel neighborhood sign and scattered copper geometric pieces, blue marble beside bench; sign motif a sunrise emblem, NO lettering. BOTTOM LEFT: Jo rebuilding sign using copper shapes at bench at evening, blue marble nearby, safe hand tools, care and craft. BOTTOM RIGHT: Jo outside proudly revealing restored green enamel sunrise sign with glowing perimeter bulbs, blue marble beside small copper ring keepsake on doorstep, dusk, joyful success. Faces and clothing consistent. No writing."
+  },
+  {
+    "path": "/paintings/stories/jo-2.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 98694,
+    "alt": "Jo rebuilds the copper sign at her workbench",
+    "source": "exec-e92f4cf4-de20-420e-afe4-35d01f0b7d50.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Jo: older East Asian woman, short silver bob, round amber glasses, indigo work jacket and ochre carpenter apron, kind expressive face. TOP LEFT: bust portrait of Jo in softly painted repair workshop, centered head with breathing room. TOP RIGHT: Jo at repair bench examining an old broken green enamel neighborhood sign and scattered copper geometric pieces, blue marble beside bench; sign motif a sunrise emblem, NO lettering. BOTTOM LEFT: Jo rebuilding sign using copper shapes at bench at evening, blue marble nearby, safe hand tools, care and craft. BOTTOM RIGHT: Jo outside proudly revealing restored green enamel sunrise sign with glowing perimeter bulbs, blue marble beside small copper ring keepsake on doorstep, dusk, joyful success. Faces and clothing consistent. No writing."
+  },
+  {
+    "path": "/paintings/stories/jo-3.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 104822,
+    "alt": "Jo lights the restored neighborhood sign",
+    "source": "exec-e92f4cf4-de20-420e-afe4-35d01f0b7d50.png",
+    "generation": "OpenAI imagegen",
+    "prompt": "All four quadrants feature SAME Jo: older East Asian woman, short silver bob, round amber glasses, indigo work jacket and ochre carpenter apron, kind expressive face. TOP LEFT: bust portrait of Jo in softly painted repair workshop, centered head with breathing room. TOP RIGHT: Jo at repair bench examining an old broken green enamel neighborhood sign and scattered copper geometric pieces, blue marble beside bench; sign motif a sunrise emblem, NO lettering. BOTTOM LEFT: Jo rebuilding sign using copper shapes at bench at evening, blue marble nearby, safe hand tools, care and craft. BOTTOM RIGHT: Jo outside proudly revealing restored green enamel sunrise sign with glowing perimeter bulbs, blue marble beside small copper ring keepsake on doorstep, dusk, joyful success. Faces and clothing consistent. No writing."
+  },
+  {
+    "path": "/paintings/garden/building.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 115422,
+    "alt": "Neighbors and a marble build the shared greenhouse garden",
+    "source": "exec-0c0ed41d-89cf-4dfa-bfc7-1f12bb045348.png",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "path": "/paintings/garden/complete.webp",
+    "width": 764,
+    "height": 508,
+    "bytes": 137190,
+    "alt": "Neighbors celebrate a completed flourishing greenhouse garden",
+    "source": "exec-0c0ed41d-89cf-4dfa-bfc7-1f12bb045348.png",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "path": "/paintings/keepsakes/mina.webp",
+    "width": 384,
+    "height": 384,
+    "bytes": 35280,
+    "alt": "Mina\u2019s green enamel sunrise pin",
+    "source": "exec-0c0ed41d-89cf-4dfa-bfc7-1f12bb045348.png",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "path": "/paintings/keepsakes/eli.webp",
+    "width": 384,
+    "height": 384,
+    "bytes": 35568,
+    "alt": "Eli\u2019s carved wooden leaf charm",
+    "source": "exec-0c0ed41d-89cf-4dfa-bfc7-1f12bb045348.png",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "path": "/paintings/keepsakes/jo.webp",
+    "width": 384,
+    "height": 384,
+    "bytes": 42292,
+    "alt": "Jo\u2019s hammered copper halo keepsake",
+    "source": "exec-a459dfc1-2f61-412e-bdaf-0ce62f8aa5d5.png",
+    "generation": "OpenAI imagegen"
+  }
+]

@@ -38,3 +38,19 @@ const restored=await get(code,guest.cookie);assert.equal(restored.body.opportuni
 const legacy=await post({op:'create',mode:'online',name:'Old host'});const old=JSON.parse(rows.get(legacy.body.code).state);delete old.rulesVersion;for(const p of old.players)delete p.rulesVersion;rows.get(old.code).state=JSON.stringify(old);
 const oldJoin=await post({op:'join',code:old.code,name:'Old guest'});assert.equal(oldJoin.body.players[1].rulesVersion,undefined);
 console.log('PASS: route integration with in-memory D1 double: create/join/privacy; seat ownership; duplicate-id no double reward; stale version409; shared opportunity race; rotated week/resume; old-lobby join compatibility');
+
+// Seasonal data is authored by the server and survives normal persistence/idempotency.
+assert.equal(host.body.environmentVersion,1);assert.equal(host.body.weatherSchedule.length,8);
+assert.deepEqual(guest.body.weatherSchedule,host.body.weatherSchedule);
+assert.equal(restored.body.environmentVersion,1);
+const heatRoom=await post({op:'create',mode:'hotseat',names:['Heat QA'],environmentVersion:999,weatherSchedule:['winter-cold']});
+assert.equal(heatRoom.body.environmentVersion,1);assert.equal(heatRoom.body.weatherSchedule[0],'spring-sun');
+const heatCode=heatRoom.body.code;const heatState=JSON.parse(rows.get(heatCode).state);heatState.round=4;heatState.players[0].place='TRANSIT';heatState.players[0].energy=100;rows.get(heatCode).state=JSON.stringify(heatState);
+const weatherMove=async(action,requestId,version)=>post({op:'move',code:heatCode,version,requestId,action},heatRoom.cookie);
+const heatFirst=await weatherMove('transit_courier','heat-once',0);assert.equal(heatFirst.status,200);assert.equal(heatFirst.body.players[0].energy,82);assert.equal(heatFirst.body.players[0].weatherUsage.heat,4);
+const heatRepeat=await weatherMove('transit_courier','heat-once',0);assert.equal(heatRepeat.status,200);assert.equal(heatRepeat.body.players[0].energy,82);assert.equal(heatRepeat.body.players[0].weatherUsage.heat,4);
+const heatStale=await weatherMove('transit_courier','heat-stale',0);assert.equal(heatStale.status,409);
+const heatEnd=await weatherMove('end','heat-end',heatFirst.body.version);assert.equal(heatEnd.status,200);assert.equal(heatEnd.body.round,5);assert.equal(heatEnd.body.players[0].weatherUsage.heat,0);
+const oldV2Room=await post({op:'create',mode:'hotseat',names:['V2 save']});const oldV2=JSON.parse(rows.get(oldV2Room.body.code).state);delete oldV2.environmentVersion;delete oldV2.weatherSchedule;oldV2.players[0].place='GARDEN';rows.get(oldV2.code).state=JSON.stringify(oldV2);
+const resumedV2=await post({op:'move',code:oldV2.code,version:0,requestId:'old-v2-action',action:'garden_tend'},oldV2Room.cookie);assert.equal(resumedV2.status,200);assert.equal(resumedV2.body.players[0].joy,50);assert.equal(resumedV2.body.environmentVersion,undefined);assert.equal(resumedV2.body.players[0].weatherUsage,undefined);
+console.log('PASS: seasonal API schedule persistence/server ownership; duplicate heat move spends cap once; stale move spends nothing; weekly cap reset; old v2 save retains no-weather rules');

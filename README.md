@@ -82,3 +82,12 @@ Clearing cookies or changing browsers can lose access to a seat; there is no acc
 All world meshes were authored for Crosswalk. The illustrated assets were generated for the game, not copied from another game's assets. See [asset provenance](docs/assets.md).
 
 No project-wide license has been selected. Public visibility is not an additional license grant for the original code or artwork. Third-party dependencies and bundled notices retain their own terms; see `public/licenses/`, `build/sites-vite-plugin.LICENSE` and `vendor/`.
+
+
+## Painted seasons
+
+The neighborhood now has 45 oil-painted illustrations, a custom enamel-and-paper game interface, and an illustrated weekly Chronicle. New games use eight representative weeks across spring, summer, autumn and winter, with shared forecasts and capped activity effects. Time skips do not add bills. Existing saves retain their original mechanics.
+
+The live 3D town changes foliage, lighting, roof snow and ground details. Rain and snow particles respect reduced motion and battery-saver mode. [Verification notes](docs/PAINTED-SEASONS-VERIFICATION.md) distinguish automated checks from device testing.
+
+Additional checks: `node tests/weather.test.mjs`, `node tests/artwork.test.mjs`, `node tests/town-renderer.test.mjs`, and `node tests/balance-check.mjs --seasonal`.

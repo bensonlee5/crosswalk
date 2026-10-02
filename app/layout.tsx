@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./game-painted.css";
 
 export const metadata: Metadata = {
   title: "Crosswalk · a little life, together",
