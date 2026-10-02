@@ -443,5 +443,1415 @@
     "alt": "Jo\u2019s hammered copper halo keepsake",
     "source": "exec-a459dfc1-2f61-412e-bdaf-0ce62f8aa5d5.png",
     "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14692,
+    "alt": "Neighbors and a marble build the shared greenhouse garden",
+    "source": "exec-0c0ed41d-89cf-4dfa-bfc7-1f12bb045348.png",
+    "path": "/paintings/actions/thumbs/garden--building.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/garden/building.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 17346,
+    "alt": "Neighbors celebrate a completed flourishing greenhouse garden",
+    "source": "exec-0c0ed41d-89cf-4dfa-bfc7-1f12bb045348.png",
+    "path": "/paintings/actions/thumbs/garden--complete.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/garden/complete.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13796,
+    "alt": "Oil-painted apartments scene with a blue glass marble player",
+    "source": "exec-79202b9a-c9a3-491f-bb22-be0e80883a82.png",
+    "path": "/paintings/actions/thumbs/locations--apartments.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/apartments.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 12948,
+    "alt": "Oil-painted arcade scene with a blue glass marble player",
+    "source": "exec-4b390dde-615b-4323-9d58-9584bd98e4a8.png",
+    "path": "/paintings/actions/thumbs/locations--arcade.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/arcade.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 16582,
+    "alt": "A blue marble beside a warm coffee table in the sunny corner caf\u00e9",
+    "source": "exec-a32ecd0f-9dcf-4570-aeb9-33b40c301ea6.png",
+    "path": "/paintings/actions/thumbs/locations--cafe.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/cafe.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13588,
+    "alt": "Oil-painted cafe rain scene with a blue glass marble player",
+    "source": "exec-4b390dde-615b-4323-9d58-9584bd98e4a8.png",
+    "path": "/paintings/actions/thumbs/locations--cafe-rain.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/cafe-rain.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 11702,
+    "alt": "Oil-painted campus scene with a blue glass marble player",
+    "source": "exec-79202b9a-c9a3-491f-bb22-be0e80883a82.png",
+    "path": "/paintings/actions/thumbs/locations--campus.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/campus.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13636,
+    "alt": "Oil-painted careers scene with a blue glass marble player",
+    "source": "exec-4020ec2d-f399-4ecb-85af-8b20f0116684.png",
+    "path": "/paintings/actions/thumbs/locations--careers.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/careers.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 7192,
+    "alt": "Oil-painted cinema scene with a blue glass marble player",
+    "source": "exec-12fbaeb7-e849-41bf-a185-579117dec5ea.png",
+    "path": "/paintings/actions/thumbs/locations--cinema.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/cinema.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 12924,
+    "alt": "Oil-painted community scene with a blue glass marble player",
+    "source": "exec-4020ec2d-f399-4ecb-85af-8b20f0116684.png",
+    "path": "/paintings/actions/thumbs/locations--community.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/community.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 17276,
+    "alt": "Oil-painted garden scene with a blue glass marble player",
+    "source": "exec-4b390dde-615b-4323-9d58-9584bd98e4a8.png",
+    "path": "/paintings/actions/thumbs/locations--garden.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/garden.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13630,
+    "alt": "Oil-painted gym scene with a blue glass marble player",
+    "source": "exec-12fbaeb7-e849-41bf-a185-579117dec5ea.png",
+    "path": "/paintings/actions/thumbs/locations--gym.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/gym.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13058,
+    "alt": "Oil-painted library scene with a blue glass marble player",
+    "source": "exec-4020ec2d-f399-4ecb-85af-8b20f0116684.png",
+    "path": "/paintings/actions/thumbs/locations--library.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/library.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13498,
+    "alt": "Oil-painted makers scene with a blue glass marble player",
+    "source": "exec-12fbaeb7-e849-41bf-a185-579117dec5ea.png",
+    "path": "/paintings/actions/thumbs/locations--makers.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/makers.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 16648,
+    "alt": "Oil-painted market scene with a blue glass marble player",
+    "source": "exec-12fbaeb7-e849-41bf-a185-579117dec5ea.png",
+    "path": "/paintings/actions/thumbs/locations--market.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/market.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 17292,
+    "alt": "Oil-painted park scene with a blue glass marble player",
+    "source": "exec-4020ec2d-f399-4ecb-85af-8b20f0116684.png",
+    "path": "/paintings/actions/thumbs/locations--park.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/park.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 16424,
+    "alt": "Oil-painted transit scene with a blue glass marble player",
+    "source": "exec-4b390dde-615b-4323-9d58-9584bd98e4a8.png",
+    "path": "/paintings/actions/thumbs/locations--transit.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/transit.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13480,
+    "alt": "Oil-painted work scene with a blue glass marble player",
+    "source": "exec-79202b9a-c9a3-491f-bb22-be0e80883a82.png",
+    "path": "/paintings/actions/thumbs/locations--work.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/locations/work.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14896,
+    "alt": "Eli examines struggling seedlings inside the greenhouse",
+    "source": "exec-a2bffb59-28a6-4737-926d-666c5b9df369.png",
+    "path": "/paintings/actions/thumbs/stories--eli-1.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/stories/eli-1.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13992,
+    "alt": "Eli shelters new seedlings under glass cloches",
+    "source": "exec-a2bffb59-28a6-4737-926d-666c5b9df369.png",
+    "path": "/paintings/actions/thumbs/stories--eli-2.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/stories/eli-2.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14408,
+    "alt": "Eli shares a first tomato harvest and carved leaf keepsake",
+    "source": "exec-a2bffb59-28a6-4737-926d-666c5b9df369.png",
+    "path": "/paintings/actions/thumbs/stories--eli-3.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/stories/eli-3.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13478,
+    "alt": "Jo examines the broken copper sunrise sign",
+    "source": "exec-e92f4cf4-de20-420e-afe4-35d01f0b7d50.png",
+    "path": "/paintings/actions/thumbs/stories--jo-1.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/stories/jo-1.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13590,
+    "alt": "Jo rebuilds the copper sign at her workbench",
+    "source": "exec-e92f4cf4-de20-420e-afe4-35d01f0b7d50.png",
+    "path": "/paintings/actions/thumbs/stories--jo-2.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/stories/jo-2.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14106,
+    "alt": "Jo lights the restored neighborhood sign",
+    "source": "exec-e92f4cf4-de20-420e-afe4-35d01f0b7d50.png",
+    "path": "/paintings/actions/thumbs/stories--jo-3.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/stories/jo-3.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 12676,
+    "alt": "Mina shares her first song over coffee with the marble player",
+    "source": "exec-0560421d-f88b-4d4f-b945-1e31682c5c64.png",
+    "path": "/paintings/actions/thumbs/stories--mina-1.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/stories/mina-1.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 12002,
+    "alt": "Mina rehearses guitar before the caf\u00e9 opens",
+    "source": "exec-0560421d-f88b-4d4f-b945-1e31682c5c64.png",
+    "path": "/paintings/actions/thumbs/stories--mina-2.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/stories/mina-2.webp"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 10078,
+    "alt": "Neighbors applaud Mina\u2019s first guitar performance",
+    "source": "exec-0560421d-f88b-4d4f-b945-1e31682c5c64.png",
+    "path": "/paintings/actions/thumbs/stories--mina-3.webp",
+    "generation": "OpenAI imagegen",
+    "derivedFrom": "/paintings/stories/mina-3.webp"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 98898,
+    "alt": "Oil painting: spring festival poster",
+    "source": "exec-9b5c9fc2-d6b1-4fd5-85c9-f2cd2711348d.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble with white ribbon swirls sits beside a friendly adult artist painting a floral neighborhood festival poster at an easel, blank abstract shapes and spring flowers, cream paper and pigment jars on the table, no lettering.",
+    "path": "/paintings/actions/opportunity_poster.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13552,
+    "alt": "Oil painting: spring festival poster",
+    "source": "exec-9b5c9fc2-d6b1-4fd5-85c9-f2cd2711348d.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble with white ribbon swirls sits beside a friendly adult artist painting a floral neighborhood festival poster at an easel, blank abstract shapes and spring flowers, cream paper and pigment jars on the table, no lettering.",
+    "path": "/paintings/actions/thumbs/opportunity_poster.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 103080,
+    "alt": "Oil painting: rainy-day indoor market",
+    "source": "exec-545906ed-a2d6-45d5-a79f-def6679704f9.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble helps host indoor pop-up stalls in a warmly lit community hall, adults welcoming visitors, cloth-covered table with handmade gifts and plants, umbrellas dripping near rain-streaked windows.",
+    "path": "/paintings/actions/opportunity_market.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13002,
+    "alt": "Oil painting: rainy-day indoor market",
+    "source": "exec-545906ed-a2d6-45d5-a79f-def6679704f9.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble helps host indoor pop-up stalls in a warmly lit community hall, adults welcoming visitors, cloth-covered table with handmade gifts and plants, umbrellas dripping near rain-streaked windows.",
+    "path": "/paintings/actions/thumbs/opportunity_market.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 104756,
+    "alt": "Oil painting: summer craft showcase",
+    "source": "exec-1064d4df-3e3b-482b-9739-4855177db0a5.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble beside a booth at a summer makers fair displaying handmade ceramics, carved wood and textile crafts, friendly adults examining the handcrafted items, leafy shaded courtyard and bunting.",
+    "path": "/paintings/actions/opportunity_showcase.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14144,
+    "alt": "Oil painting: summer craft showcase",
+    "source": "exec-1064d4df-3e3b-482b-9739-4855177db0a5.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble beside a booth at a summer makers fair displaying handmade ceramics, carved wood and textile crafts, friendly adults examining the handcrafted items, leafy shaded courtyard and bunting.",
+    "path": "/paintings/actions/thumbs/opportunity_showcase.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 100726,
+    "alt": "Oil painting: cool-room neighborhood research",
+    "source": "exec-05411adf-7efd-4faf-bf36-ddc1b81cc64f.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble at a round table with three diverse adult neighbors discussing the future of their neighborhood, a researcher listens carefully with a blank clipboard, fan and iced water in a shaded cool meeting room, visible summer heat beyond the window.",
+    "path": "/paintings/actions/opportunity_research.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13124,
+    "alt": "Oil painting: cool-room neighborhood research",
+    "source": "exec-05411adf-7efd-4faf-bf36-ddc1b81cc64f.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble at a round table with three diverse adult neighbors discussing the future of their neighborhood, a researcher listens carefully with a blank clipboard, fan and iced water in a shaded cool meeting room, visible summer heat beyond the window.",
+    "path": "/paintings/actions/thumbs/opportunity_research.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 118468,
+    "alt": "Oil painting: autumn shop welcome",
+    "source": "exec-90a462ea-c978-4fe1-9bd7-8590736cae0b.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble welcomes adult neighbors at the threshold of a newly opened little brick shop, shopkeeper hanging autumn garland, cheerful display table, amber leaves, no sign lettering.",
+    "path": "/paintings/actions/opportunity_shop.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14838,
+    "alt": "Oil painting: autumn shop welcome",
+    "source": "exec-90a462ea-c978-4fe1-9bd7-8590736cae0b.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble welcomes adult neighbors at the threshold of a newly opened little brick shop, shopkeeper hanging autumn garland, cheerful display table, amber leaves, no sign lettering.",
+    "path": "/paintings/actions/thumbs/opportunity_shop.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 102538,
+    "alt": "Oil painting: rainy-day sign workshop",
+    "source": "exec-4df1bc12-4ea2-41bf-beac-2da5e6eafee8.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble beside adult neighbors jointly painting a large green wooden sign with a bright sunrise emblem at an indoor workshop, paintbrushes and colorful cans, rain and amber leaves beyond the windows, no lettering.",
+    "path": "/paintings/actions/opportunity_sign.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13422,
+    "alt": "Oil painting: rainy-day sign workshop",
+    "source": "exec-4df1bc12-4ea2-41bf-beac-2da5e6eafee8.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble beside adult neighbors jointly painting a large green wooden sign with a bright sunrise emblem at an indoor workshop, paintbrushes and colorful cans, rain and amber leaves beyond the windows, no lettering.",
+    "path": "/paintings/actions/thumbs/opportunity_sign.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 124266,
+    "alt": "Oil painting: community mural day",
+    "source": "exec-bb0d1950-bbda-4c68-9ce8-d126f7a28e78.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble beside three adult neighbors using brushes to paint a colorful plant-and-sun mural on an outdoor brick wall, teamwork, buckets of colorful paint, moss green and ochre streetscape, no lettering.",
+    "path": "/paintings/actions/opportunity_mural.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15468,
+    "alt": "Oil painting: community mural day",
+    "source": "exec-bb0d1950-bbda-4c68-9ce8-d126f7a28e78.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble beside three adult neighbors using brushes to paint a colorful plant-and-sun mural on an outdoor brick wall, teamwork, buckets of colorful paint, moss green and ochre streetscape, no lettering.",
+    "path": "/paintings/actions/thumbs/opportunity_mural.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 106974,
+    "alt": "Oil painting: greenhouse harvest supper",
+    "source": "exec-a2d1c879-1bcd-4337-a357-ed4aa65b31bb.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble hosts diverse adult neighbors around a long wooden supper table inside a greenhouse, abundant bowls of fresh food and winter tomato harvest, warm lanterns and frosted windowpanes, close intimate community feast.",
+    "path": "/paintings/actions/opportunity_supper.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13588,
+    "alt": "Oil painting: greenhouse harvest supper",
+    "source": "exec-a2d1c879-1bcd-4337-a357-ed4aa65b31bb.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble hosts diverse adult neighbors around a long wooden supper table inside a greenhouse, abundant bowls of fresh food and winter tomato harvest, warm lanterns and frosted windowpanes, close intimate community feast.",
+    "path": "/paintings/actions/thumbs/opportunity_supper.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 96494,
+    "alt": "Oil painting: winter lantern finale",
+    "source": "exec-9623f134-bde4-4d9b-932b-cbf9003bd3a3.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble with two other colored glass marbles joins adult neighbors celebrating in a town courtyard beneath glowing paper lanterns, lightly frosted brick roofs, warm smiles, mugs and cozy blankets, blue twilight and rich amber glow, joyful final memory.",
+    "path": "/paintings/actions/opportunity_finale.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14574,
+    "alt": "Oil painting: winter lantern finale",
+    "source": "exec-9623f134-bde4-4d9b-932b-cbf9003bd3a3.png",
+    "prompt": "Create one landscape 3:2 oil-painted narrative illustration for Crosswalk, a cozy lived-in neighborhood life game. Rich traditional oil paint brushwork, visible impasto, warm golden amber lighting, deep moss greens, ochres and cream, impressionistic realistic illustration matching the reference game paintings. Activity readable in a thumbnail, strong focal objects and foreground protagonist. The protagonist is a shiny blue glass marble with white ribbon swirls, no limbs and no face; humans are adults only. Full bleed without frame. Absolutely no text, letters, numbers, labels, logos, UI, or watermark. This is a new illustration, not a collage. Subject: The blue glass marble with two other colored glass marbles joins adult neighbors celebrating in a town courtyard beneath glowing paper lanterns, lightly frosted brick roofs, warm smiles, mugs and cozy blankets, blue twilight and rich amber glow, joyful final memory.",
+    "path": "/paintings/actions/thumbs/opportunity_finale.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 85866,
+    "alt": "A blue glass marble beside moving boxes and brass keys in a sunlit first apartment.",
+    "source": "exec-66afb570-e23a-43fe-982f-93508b644a6d.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 oil painting for Crosswalk game action 'Get your own place'. Warm richly brushed traditional oil paint on canvas, golden amber afternoon light, moss green cabinets, warm ochres and cream, charming lived-in neighborhood apartment. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, about grapefruit size, no face and no limbs. Place the marble prominently atop a packed cardboard moving box by a newly opened apartment door; large brass keys and a folded cream throw on the box. Beyond the doorway reveal a cozy mostly unfurnished apartment, a small wooden table, green sofa, a houseplant, glowing tall windows. Two stacked moving boxes make moving into a first home instantly clear. Composition close foreground moving box and keys, apartment beyond. No text, lettering, labels, numbers, symbols, watermark, border, panels, or interface. Handmade visible impasto brushstrokes and painterly atmospheric edges, not flat cartoon or vector. Adult world; no children. Full-bleed standalone image.",
+    "path": "/paintings/actions/move.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 11222,
+    "alt": "A blue glass marble beside moving boxes and brass keys in a sunlit first apartment.",
+    "source": "exec-66afb570-e23a-43fe-982f-93508b644a6d.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 oil painting for Crosswalk game action 'Get your own place'. Warm richly brushed traditional oil paint on canvas, golden amber afternoon light, moss green cabinets, warm ochres and cream, charming lived-in neighborhood apartment. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, about grapefruit size, no face and no limbs. Place the marble prominently atop a packed cardboard moving box by a newly opened apartment door; large brass keys and a folded cream throw on the box. Beyond the doorway reveal a cozy mostly unfurnished apartment, a small wooden table, green sofa, a houseplant, glowing tall windows. Two stacked moving boxes make moving into a first home instantly clear. Composition close foreground moving box and keys, apartment beyond. No text, lettering, labels, numbers, symbols, watermark, border, panels, or interface. Handmade visible impasto brushstrokes and painterly atmospheric edges, not flat cartoon or vector. Adult world; no children. Full-bleed standalone image.",
+    "path": "/paintings/actions/thumbs/move.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 115442,
+    "alt": "A blue glass marble in a freshly tidied living room with folded blankets, a record player and an adult putting books away.",
+    "source": "exec-4746daaf-822e-436c-9484-63e52c172226.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Reset your space. Scene: A restful cozy apartment. The marble rests on a freshly wiped wooden coffee table beside neatly folded cream blankets and a small vase. An adult in rolled sleeves tidies books onto the low shelf while a vinyl record spins on a nearby record player, soft cloth and small cleaning brush visible. Green sofa, houseplants, crisp warm sun, one open window. The focus is satisfying tidying and music, not moving in.",
+    "path": "/paintings/actions/home_reset.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14866,
+    "alt": "A blue glass marble in a freshly tidied living room with folded blankets, a record player and an adult putting books away.",
+    "source": "exec-4746daaf-822e-436c-9484-63e52c172226.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Reset your space. Scene: A restful cozy apartment. The marble rests on a freshly wiped wooden coffee table beside neatly folded cream blankets and a small vase. An adult in rolled sleeves tidies books onto the low shelf while a vinyl record spins on a nearby record player, soft cloth and small cleaning brush visible. Green sofa, houseplants, crisp warm sun, one open window. The focus is satisfying tidying and music, not moving in.",
+    "path": "/paintings/actions/thumbs/home_reset.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 117062,
+    "alt": "Adult neighbors share homemade dishes around an apartment table with a blue glass marble at the nearest place.",
+    "source": "exec-92328ede-35fa-4a76-bc5c-22775a241a84.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Host a potluck. Scene: A cozy apartment dinner party, oval wooden table crowded with mismatched casserole dishes, roast vegetables, crusty bread and bowls shared among four relaxed adult neighbors. Marble occupies its own place at the near edge of the table. One guest offers a home-cooked dish; another passes a salad. String lights, moss-green kitchen, warm evening windows. Welcoming, convivial, clearly a shared potluck at home.",
+    "path": "/paintings/actions/home_host.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14330,
+    "alt": "Adult neighbors share homemade dishes around an apartment table with a blue glass marble at the nearest place.",
+    "source": "exec-92328ede-35fa-4a76-bc5c-22775a241a84.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Host a potluck. Scene: A cozy apartment dinner party, oval wooden table crowded with mismatched casserole dishes, roast vegetables, crusty bread and bowls shared among four relaxed adult neighbors. Marble occupies its own place at the near edge of the table. One guest offers a home-cooked dish; another passes a salad. String lights, moss-green kitchen, warm evening windows. Welcoming, convivial, clearly a shared potluck at home.",
+    "path": "/paintings/actions/thumbs/home_host.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 114148,
+    "alt": "A blue glass marble at a sunlit office desk with a laptop and folders while adult coworkers work nearby.",
+    "source": "exec-8ea94ddb-cf53-4cea-b0ff-738d625a4105.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Work a shift. Scene: A sunlit neighborhood shared office with brick walls, plants and a broad wooden desk. The marble is next to an open laptop showing only abstract shapes, a ceramic coffee cup, pencil cup and a neatly organized tray of work folders. Two adult coworkers concentrate at desks in the midground. Active productive daytime work, wide view with strong desk foreground, friendly and grounded. No specific trade uniform.",
+    "path": "/paintings/actions/work.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15474,
+    "alt": "A blue glass marble at a sunlit office desk with a laptop and folders while adult coworkers work nearby.",
+    "source": "exec-8ea94ddb-cf53-4cea-b0ff-738d625a4105.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Work a shift. Scene: A sunlit neighborhood shared office with brick walls, plants and a broad wooden desk. The marble is next to an open laptop showing only abstract shapes, a ceramic coffee cup, pencil cup and a neatly organized tray of work folders. Two adult coworkers concentrate at desks in the midground. Active productive daytime work, wide view with strong desk foreground, friendly and grounded. No specific trade uniform.",
+    "path": "/paintings/actions/thumbs/work.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 89572,
+    "alt": "A small stack of office tasks beside a blue glass marble, coffee and a lunch box during a short morning shift.",
+    "source": "exec-ece818bb-6837-4326-8bf5-b050ff8ffcb8.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Pick up a short shift. Scene: Early morning in a friendly small neighborhood office. The marble rests beside a compact task tray containing just a few folders, a half-filled coffee cup, a closed lunch box and an open plain notebook with no writing. An adult coworker in a cardigan is cheerfully placing the last thin folder into the tray, ready to finish a brief shift; light coat hanging on chair. Close cropped desk composition, soft morning sunlight and green window frames. Distinct from a full busy workday.",
+    "path": "/paintings/actions/work_short.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13208,
+    "alt": "A small stack of office tasks beside a blue glass marble, coffee and a lunch box during a short morning shift.",
+    "source": "exec-ece818bb-6837-4326-8bf5-b050ff8ffcb8.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Pick up a short shift. Scene: Early morning in a friendly small neighborhood office. The marble rests beside a compact task tray containing just a few folders, a half-filled coffee cup, a closed lunch box and an open plain notebook with no writing. An adult coworker in a cardigan is cheerfully placing the last thin folder into the tray, ready to finish a brief shift; light coat hanging on chair. Close cropped desk composition, soft morning sunlight and green window frames. Distinct from a full busy workday.",
+    "path": "/paintings/actions/thumbs/work_short.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 78412,
+    "alt": "A blue glass marble under a desk lamp with tall work folders and used mugs in a quiet office after dark.",
+    "source": "exec-9c838b8f-9bb8-4afe-9b21-e5e0f443c942.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Take the overtime block. Scene: Late night in the same warm brick-and-wood neighborhood office. Marble on a desk under a single glowing brass lamp, surrounded by taller stacks of folders and three used ceramic mugs, an open laptop with abstract colored shapes. Deep cobalt night through the large window contrasts amber lamplight; vacant desks recede into shadows. One tired adult coworker rubs their eyes in the soft background. Heavy sustained workload, quiet overtime mood, no despair.",
+    "path": "/paintings/actions/work_overtime.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 12232,
+    "alt": "A blue glass marble under a desk lamp with tall work folders and used mugs in a quiet office after dark.",
+    "source": "exec-9c838b8f-9bb8-4afe-9b21-e5e0f443c942.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Take the overtime block. Scene: Late night in the same warm brick-and-wood neighborhood office. Marble on a desk under a single glowing brass lamp, surrounded by taller stacks of folders and three used ceramic mugs, an open laptop with abstract colored shapes. Deep cobalt night through the large window contrasts amber lamplight; vacant desks recede into shadows. One tired adult coworker rubs their eyes in the soft background. Heavy sustained workload, quiet overtime mood, no despair.",
+    "path": "/paintings/actions/thumbs/work_overtime.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 102298,
+    "alt": "A blue glass marble with a workbook and pencils in a small practical class for adult learners.",
+    "source": "exec-53c72569-3272-461f-a46a-2e1286ba3a03.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Take a short course. Scene: A bright small adult-learning classroom on a leafy campus. Marble prominently on front wooden desk beside a single open blank workbook, pencils and a simple wooden geometry model. An adult instructor at front gestures to physical colorful geometric objects on a demonstration table, with three adult learners seated nearby. Warm afternoon windows, green chalkboard blank with no marks. Read as a welcoming practical short class.",
+    "path": "/paintings/actions/study.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13320,
+    "alt": "A blue glass marble with a workbook and pencils in a small practical class for adult learners.",
+    "source": "exec-53c72569-3272-461f-a46a-2e1286ba3a03.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Take a short course. Scene: A bright small adult-learning classroom on a leafy campus. Marble prominently on front wooden desk beside a single open blank workbook, pencils and a simple wooden geometry model. An adult instructor at front gestures to physical colorful geometric objects on a demonstration table, with three adult learners seated nearby. Warm afternoon windows, green chalkboard blank with no marks. Read as a welcoming practical short class.",
+    "path": "/paintings/actions/thumbs/study.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 105260,
+    "alt": "Adult learners work intently around laptops and prototype pieces at an intensive workshop with a blue glass marble.",
+    "source": "exec-b925cbfa-1e83-4cb7-b450-4a70e62a7f5f.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Join an intensive bootcamp. Scene: An energetic intensive adult study workshop, long shared table with several open laptops showing abstract colored blocks only, thick books, sticky notes with no writing and many prototype pieces. Marble prominent in the foreground beside a notebook and a metal desk lamp. Four adult learners collaborate intently on a hands-on project, one standing to point at a large blank planning board with only colored rectangles. Warm indoor lamplight meets blue dusk through campus windows. Visually more intensive than a normal class.",
+    "path": "/paintings/actions/campus_bootcamp.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15228,
+    "alt": "Adult learners work intently around laptops and prototype pieces at an intensive workshop with a blue glass marble.",
+    "source": "exec-b925cbfa-1e83-4cb7-b450-4a70e62a7f5f.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Join an intensive bootcamp. Scene: An energetic intensive adult study workshop, long shared table with several open laptops showing abstract colored blocks only, thick books, sticky notes with no writing and many prototype pieces. Marble prominent in the foreground beside a notebook and a metal desk lamp. Four adult learners collaborate intently on a hands-on project, one standing to point at a large blank planning board with only colored rectangles. Warm indoor lamplight meets blue dusk through campus windows. Visually more intensive than a normal class.",
+    "path": "/paintings/actions/thumbs/campus_bootcamp.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 85968,
+    "alt": "A blue glass marble beside geometric learning materials as an adult learner receives one-to-one tutoring.",
+    "source": "exec-c4a52d9e-f67d-41b6-9645-2007f3030833.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Tutor another learner. Scene: A quiet campus library table, close intimate two-person tutoring composition. The marble sits opposite an adult learner with glasses who leans toward a clear hands-on lesson: a neat arrangement of colored wooden geometric solids and an open workbook with only simple shapes, no marks resembling writing. Another adult mentor's hand points gently to the model while the learner smiles with understanding. Bookshelves and a tall green-framed window softly behind, afternoon amber sun.",
+    "path": "/paintings/actions/campus_tutor.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13064,
+    "alt": "A blue glass marble beside geometric learning materials as an adult learner receives one-to-one tutoring.",
+    "source": "exec-c4a52d9e-f67d-41b6-9645-2007f3030833.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Tutor another learner. Scene: A quiet campus library table, close intimate two-person tutoring composition. The marble sits opposite an adult learner with glasses who leans toward a clear hands-on lesson: a neat arrangement of colored wooden geometric solids and an open workbook with only simple shapes, no marks resembling writing. Another adult mentor's hand points gently to the model while the learner smiles with understanding. Bookshelves and a tall green-framed window softly behind, afternoon amber sun.",
+    "path": "/paintings/actions/thumbs/campus_tutor.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 98138,
+    "alt": "Adult professionals exchange a blank contact card and chat around a tall table with a blue glass marble.",
+    "source": "exec-c79a8dac-03c5-4123-a21d-1dda0717fb3a.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Go to a networking meetup. Scene: A welcoming evening professional meetup in a neighborhood coworking loft. Marble rests on a tall round cocktail table in the foreground beside two glasses of sparkling water and a dish of snacks. Four diverse adult professionals form a loose friendly conversational circle, one exchanging a plain blank small card with another. Warm string lights, green plants, large windows, nobody posed at a desk. Connections and conversation are the clear focus.",
+    "path": "/paintings/actions/career_network.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13870,
+    "alt": "Adult professionals exchange a blank contact card and chat around a tall table with a blue glass marble.",
+    "source": "exec-c79a8dac-03c5-4123-a21d-1dda0717fb3a.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Go to a networking meetup. Scene: A welcoming evening professional meetup in a neighborhood coworking loft. Marble rests on a tall round cocktail table in the foreground beside two glasses of sparkling water and a dish of snacks. Four diverse adult professionals form a loose friendly conversational circle, one exchanging a plain blank small card with another. Warm string lights, green plants, large windows, nobody posed at a desk. Connections and conversation are the clear focus.",
+    "path": "/paintings/actions/thumbs/career_network.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 98244,
+    "alt": "Adult collaborators shake hands over a project folder and model while a blue glass marble rests at the table.",
+    "source": "exec-04a924ba-f0ce-438c-8865-9113fbcf2361.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Take a referral contract. Scene: A neighborhood coworking studio meeting table. The marble rests at foreground beside a tidy rolled plan, laptop with abstract shapes, a closed brown project folder and a plain cream sheet with NO writing. Two adult collaborators shake hands across the side of the table after reviewing a small completed project model, a third adult smiles as the mutual connection. Golden late-afternoon light, brick wall and green plant. Show a professional referral leading to paid skilled project work without currency or symbols.",
+    "path": "/paintings/actions/career_contract.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14080,
+    "alt": "Adult collaborators shake hands over a project folder and model while a blue glass marble rests at the table.",
+    "source": "exec-04a924ba-f0ce-438c-8865-9113fbcf2361.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Take a referral contract. Scene: A neighborhood coworking studio meeting table. The marble rests at foreground beside a tidy rolled plan, laptop with abstract shapes, a closed brown project folder and a plain cream sheet with NO writing. Two adult collaborators shake hands across the side of the table after reviewing a small completed project model, a third adult smiles as the mutual connection. Golden late-afternoon light, brick wall and green plant. Show a professional referral leading to paid skilled project work without currency or symbols.",
+    "path": "/paintings/actions/thumbs/career_contract.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 106178,
+    "alt": "A blue glass marble beside a finished wooden model, an open visual portfolio and creative tools in a studio.",
+    "source": "exec-2a8a05e6-06df-4148-a23a-6a98edb51354.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Build a portfolio project. Scene: A hands-on creative project desk in a neighborhood career studio. The marble sits prominently beside a beautifully finished small architectural wooden model, an open portfolio binder of abstract colored compositions, pencils, cutting mat and laptop showing simple abstract shapes. An adult maker in a moss-green shirt is adjusting the model with concentration. Warm afternoon lamp, pinned artworks without letters behind. Tangible polished project, not paperwork or class.",
+    "path": "/paintings/actions/career_portfolio.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14484,
+    "alt": "A blue glass marble beside a finished wooden model, an open visual portfolio and creative tools in a studio.",
+    "source": "exec-2a8a05e6-06df-4148-a23a-6a98edb51354.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Build a portfolio project. Scene: A hands-on creative project desk in a neighborhood career studio. The marble sits prominently beside a beautifully finished small architectural wooden model, an open portfolio binder of abstract colored compositions, pencils, cutting mat and laptop showing simple abstract shapes. An adult maker in a moss-green shirt is adjusting the model with concentration. Warm afternoon lamp, pinned artworks without letters behind. Tangible polished project, not paperwork or class.",
+    "path": "/paintings/actions/thumbs/career_portfolio.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 110450,
+    "alt": "Three adult friends chat over coffee and pastries at a cafe table with a blue glass marble.",
+    "source": "exec-737bc21b-3440-4ff4-9187-add0fd55001d.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Meet your people. Scene: A charming brick neighborhood cafe with green trim. Marble occupies a cushioned chair beside a round wooden table holding three steaming coffees and shared pastries. Three relaxed adult friends laugh and lean toward one another, one is Mina: tan skin, short wavy dark hair, rust cardigan over cream top. Close warm friendly conversation, sunlight through leafy window, convivial quiet midday connection.",
+    "path": "/paintings/actions/friends.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14802,
+    "alt": "Three adult friends chat over coffee and pastries at a cafe table with a blue glass marble.",
+    "source": "exec-737bc21b-3440-4ff4-9187-add0fd55001d.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Meet your people. Scene: A charming brick neighborhood cafe with green trim. Marble occupies a cushioned chair beside a round wooden table holding three steaming coffees and shared pastries. Three relaxed adult friends laugh and lean toward one another, one is Mina: tan skin, short wavy dark hair, rust cardigan over cream top. Close warm friendly conversation, sunlight through leafy window, convivial quiet midday connection.",
+    "path": "/paintings/actions/thumbs/friends.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 79440,
+    "alt": "A blue glass marble takes the cafe open-mic spotlight beside a microphone while adult neighbors applaud.",
+    "source": "exec-dbadeb3e-b451-4776-930c-4d21b8a1b6ac.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Try the open mic. Scene: A small warm neighborhood cafe evening open-mic stage, full microphone on a stand clearly prominent, a simple wooden stool and acoustic guitar propped nearby. The marble rests on the low round stool directly under the microphone as the featured performer, no limbs or face. Adult audience silhouettes at cafe tables smile and clap. Mina, young adult tan woman with short wavy dark hair, rust cardigan and cream top, encourages from one front table. Amber stage lamps and green cafe walls.",
+    "path": "/paintings/actions/cafe_openmic.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13020,
+    "alt": "A blue glass marble takes the cafe open-mic spotlight beside a microphone while adult neighbors applaud.",
+    "source": "exec-dbadeb3e-b451-4776-930c-4d21b8a1b6ac.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Try the open mic. Scene: A small warm neighborhood cafe evening open-mic stage, full microphone on a stand clearly prominent, a simple wooden stool and acoustic guitar propped nearby. The marble rests on the low round stool directly under the microphone as the featured performer, no limbs or face. Adult audience silhouettes at cafe tables smile and clap. Mina, young adult tan woman with short wavy dark hair, rust cardigan and cream top, encourages from one front table. Amber stage lamps and green cafe walls.",
+    "path": "/paintings/actions/thumbs/cafe_openmic.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 106370,
+    "alt": "A blue glass marble beside a gleaming espresso machine as an adult barista pours latte art behind the cafe counter.",
+    "source": "exec-8436499b-938c-4da1-b33f-bec96fe81dad.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Cover the espresso bar. Scene: Close view behind a cozy neighborhood cafe espresso bar. The marble sits safely on a dry polished wooden counter beside a large gleaming brass-and-steel espresso machine, a pitcher pouring latte art into a ceramic cup held by an adult barista, fresh white cups and coffee beans. The adult in green apron works alongside the marble; no marble limbs. Steam curls in golden morning light, brick background, readable espresso equipment and quick service activity.",
+    "path": "/paintings/actions/cafe_barista.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14738,
+    "alt": "A blue glass marble beside a gleaming espresso machine as an adult barista pours latte art behind the cafe counter.",
+    "source": "exec-8436499b-938c-4da1-b33f-bec96fe81dad.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Cover the espresso bar. Scene: Close view behind a cozy neighborhood cafe espresso bar. The marble sits safely on a dry polished wooden counter beside a large gleaming brass-and-steel espresso machine, a pitcher pouring latte art into a ceramic cup held by an adult barista, fresh white cups and coffee beans. The adult in green apron works alongside the marble; no marble limbs. Steam curls in golden morning light, brick background, readable espresso equipment and quick service activity.",
+    "path": "/paintings/actions/thumbs/cafe_barista.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 113174,
+    "alt": "Adult volunteers arrange bread, vegetables and unlabeled pantry goods on community-hall tables beside a blue glass marble.",
+    "source": "exec-d5d2dead-9988-402c-b547-6bfc93e2bf3c.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Set up the food pantry. Scene: A sunny neighborhood community hall before opening, long wooden folding tables and simple shelves. Marble sits prominently beside a canvas grocery bag and a basket of vegetables while three adult volunteers arrange plain unlabeled food jars, bread, canned goods with unmarked paper covers and produce into welcoming orderly rows. One person carries a shallow crate, another opens a bag. Moss-green shutters and golden window light. Clearly food pantry setup for neighbors, no event party or shop.",
+    "path": "/paintings/actions/community_setup.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15130,
+    "alt": "Adult volunteers arrange bread, vegetables and unlabeled pantry goods on community-hall tables beside a blue glass marble.",
+    "source": "exec-d5d2dead-9988-402c-b547-6bfc93e2bf3c.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 standalone oil painting for a selectable action in Crosswalk, a charming lived-in adult neighborhood. Warm richly brushed traditional oil on canvas, tactile impasto brushwork, golden amber light, moss greens, warm ochres and cream. The protagonist is ONLY a glossy cobalt-blue glass marble with white ribbon swirls, grapefruit size, with NO face or limbs. Include this recognizable marble prominently in the action scene. Not a human substitute. Activity must read clearly even small. Full-bleed painting, no lettering, numbers, labels, writing, currency, floating symbols, watermarks, panels or UI. Do not include children. Action: Set up the food pantry. Scene: A sunny neighborhood community hall before opening, long wooden folding tables and simple shelves. Marble sits prominently beside a canvas grocery bag and a basket of vegetables while three adult volunteers arrange plain unlabeled food jars, bread, canned goods with unmarked paper covers and produce into welcoming orderly rows. One person carries a shallow crate, another opens a bag. Moss-green shutters and golden window light. Clearly food pantry setup for neighbors, no event party or shop.",
+    "path": "/paintings/actions/thumbs/community_setup.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 129812,
+    "alt": "A blue swirled glass marble beside plates and flowers as neighbors prepare a sunny courtyard gathering",
+    "source": "exec-814283db-93fb-43f7-9cdd-fa8510d763de.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 traditional oil painting for a cozy neighborhood life game, the selectable action 'Lead a neighborhood event'. A blue glass marble with flowing white ribbon swirls, no face and no limbs, is the protagonist, prominent on the corner of a preparation table. View across a golden late-afternoon community courtyard toward a lively neighborhood gathering: adult neighbors set long tables, one adult warmly welcomes arriving adults, others hang a simple garland of plain fabric triangles. Plates, seasonal flowers and baskets on the foreground table clearly convey organizing a neighborhood event. The marble remains a glass sphere, never humanoid. Rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in red-brick neighborhood, beautiful material texture. Strong clear shapes legible as small card art. No text, lettering, numbers, signs, logos, UI, borders, watermark, split panels or montage. Landscape 3:2 composition, one single scene.",
+    "path": "/paintings/actions/community_lead.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15772,
+    "alt": "A blue swirled glass marble beside plates and flowers as neighbors prepare a sunny courtyard gathering",
+    "source": "exec-814283db-93fb-43f7-9cdd-fa8510d763de.png",
+    "prompt": "Use case: illustration-story. Create one landscape 3:2 traditional oil painting for a cozy neighborhood life game, the selectable action 'Lead a neighborhood event'. A blue glass marble with flowing white ribbon swirls, no face and no limbs, is the protagonist, prominent on the corner of a preparation table. View across a golden late-afternoon community courtyard toward a lively neighborhood gathering: adult neighbors set long tables, one adult warmly welcomes arriving adults, others hang a simple garland of plain fabric triangles. Plates, seasonal flowers and baskets on the foreground table clearly convey organizing a neighborhood event. The marble remains a glass sphere, never humanoid. Rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in red-brick neighborhood, beautiful material texture. Strong clear shapes legible as small card art. No text, lettering, numbers, signs, logos, UI, borders, watermark, split panels or montage. Landscape 3:2 composition, one single scene.",
+    "path": "/paintings/actions/thumbs/community_lead.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 85384,
+    "alt": "A blue glass marble at a communal workbench where adults learn to build wooden birdhouses",
+    "source": "exec-d94f4f6c-f31b-41f4-9448-7c1fab23df82.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Join a community workshop': adult neighbors gather closely around a broad communal workbench learning a simple repair and woodworking technique from an adult instructor. The instructor demonstrates smoothing a little wooden birdhouse; adults lean in, hold simple hand tools, wood shavings and unfinished birdhouses scattered across the workbench. Blue swirled glass marble prominent at the front edge beside a small hammer. Welcoming sunlit community hall with tall windows, shelves of jars, leafy plants and mugs. Wide close view prioritizing hands and shared making, not a lecture or outdoor party.",
+    "path": "/paintings/actions/community_skill.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13762,
+    "alt": "A blue glass marble at a communal workbench where adults learn to build wooden birdhouses",
+    "source": "exec-d94f4f6c-f31b-41f4-9448-7c1fab23df82.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Join a community workshop': adult neighbors gather closely around a broad communal workbench learning a simple repair and woodworking technique from an adult instructor. The instructor demonstrates smoothing a little wooden birdhouse; adults lean in, hold simple hand tools, wood shavings and unfinished birdhouses scattered across the workbench. Blue swirled glass marble prominent at the front edge beside a small hammer. Welcoming sunlit community hall with tall windows, shelves of jars, leafy plants and mugs. Wide close view prioritizing hands and shared making, not a lecture or outdoor party.",
+    "path": "/paintings/actions/thumbs/community_skill.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 127972,
+    "alt": "A blue swirled glass marble on a quiet winding park path beneath sunlit trees",
+    "source": "exec-360a779c-73b9-4594-9e11-2dfe18c84a34.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Take the slow route': peaceful winding park footpath leads slowly beneath enormous moss-green tree canopies, warm sun dappling the amber gravel and red-brick town glimpsed beyond. Blue swirled glass marble prominent in lower foreground on the pathway, a little rest bench midway, flowers at the verge; a pair of adult neighbors stroll unhurriedly far in the background. Scene feels spacious, restorative and quiet; no exercise equipment, books or picnic blanket. Low viewpoint follows the gentle curving path.",
+    "path": "/paintings/actions/rest.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 16844,
+    "alt": "A blue swirled glass marble on a quiet winding park path beneath sunlit trees",
+    "source": "exec-360a779c-73b9-4594-9e11-2dfe18c84a34.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Take the slow route': peaceful winding park footpath leads slowly beneath enormous moss-green tree canopies, warm sun dappling the amber gravel and red-brick town glimpsed beyond. Blue swirled glass marble prominent in lower foreground on the pathway, a little rest bench midway, flowers at the verge; a pair of adult neighbors stroll unhurriedly far in the background. Scene feels spacious, restorative and quiet; no exercise equipment, books or picnic blanket. Low viewpoint follows the gentle curving path.",
+    "path": "/paintings/actions/thumbs/rest.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 121512,
+    "alt": "A blue glass marble on a golden park trail as two adults go for a morning run",
+    "source": "exec-6a88f387-0db3-448c-af9c-278f1d8f940f.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Go for a morning run': energetic early morning in a neighborhood park. Two adult joggers in simple olive and indigo athletic clothes stride along a curving trail in the middle distance, clearly running rather than walking. Blue swirled glass marble prominent rolling along the foreground path beside the running route, with just a slight scuff of kicked-up leaves suggesting motion, no limbs. Golden low sun lights dew on grass, towering trees and a distant park bridge. Dynamic diagonal composition, visible running shoes and swinging arms, uplifting physical effort.",
+    "path": "/paintings/actions/park_run.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 16412,
+    "alt": "A blue glass marble on a golden park trail as two adults go for a morning run",
+    "source": "exec-6a88f387-0db3-448c-af9c-278f1d8f940f.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Go for a morning run': energetic early morning in a neighborhood park. Two adult joggers in simple olive and indigo athletic clothes stride along a curving trail in the middle distance, clearly running rather than walking. Blue swirled glass marble prominent rolling along the foreground path beside the running route, with just a slight scuff of kicked-up leaves suggesting motion, no limbs. Golden low sun lights dew on grass, towering trees and a distant park bridge. Dynamic diagonal composition, visible running shoes and swinging arms, uplifting physical effort.",
+    "path": "/paintings/actions/thumbs/park_run.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 111760,
+    "alt": "A blue glass marble beside an open book while an adult reads beneath an old oak",
+    "source": "exec-28b0950a-d60e-4e06-b58d-ee1ae8f784fd.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Read under a tree': a quiet intimate reading refuge beneath a magnificent old park oak. An open clothbound novel, a small stack of books, thermos and blue-and-cream checked blanket rest in the foreground among grass and fallen leaves. The blue swirled glass marble sits beside the open book, facing the pages. Behind it an adult person leans comfortably against the trunk reading a book with knees drawn up. Dappled warm light, leafy branches frame the top, distant neighborhood blurred by painterly brushwork. Prioritize the open book and relaxed reading rather than walking or jogging.",
+    "path": "/paintings/actions/park_read.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15908,
+    "alt": "A blue glass marble beside an open book while an adult reads beneath an old oak",
+    "source": "exec-28b0950a-d60e-4e06-b58d-ee1ae8f784fd.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Read under a tree': a quiet intimate reading refuge beneath a magnificent old park oak. An open clothbound novel, a small stack of books, thermos and blue-and-cream checked blanket rest in the foreground among grass and fallen leaves. The blue swirled glass marble sits beside the open book, facing the pages. Behind it an adult person leans comfortably against the trunk reading a book with knees drawn up. Dappled warm light, leafy branches frame the top, distant neighborhood blurred by painterly brushwork. Prioritize the open book and relaxed reading rather than walking or jogging.",
+    "path": "/paintings/actions/thumbs/park_read.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 93618,
+    "alt": "A blue glass marble beside reference books, a notebook and a laptop at a sunny library study table",
+    "source": "exec-233ae1bc-a494-4b43-b6be-004c454667a3.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Learn from free resources': self-directed study at a cozy neighborhood public library. Close three-quarter view of a wooden study table with open illustrated instructional reference volumes, a pencil, blank cream notebook, small geometric wooden model and an unbranded laptop displaying only soft abstract diagrams without glyphs. The blue swirled glass marble is prominent beside the open book. One adult learner in indigo sweater studies a reference volume in middle ground, shelves and green brass-shaded lamp behind. Tall arched window bathes everything in amber sunlight. Quiet focused learning, no meeting group, no scanner, no text on pages or screen.",
+    "path": "/paintings/actions/library_learn.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13496,
+    "alt": "A blue glass marble beside reference books, a notebook and a laptop at a sunny library study table",
+    "source": "exec-233ae1bc-a494-4b43-b6be-004c454667a3.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Learn from free resources': self-directed study at a cozy neighborhood public library. Close three-quarter view of a wooden study table with open illustrated instructional reference volumes, a pencil, blank cream notebook, small geometric wooden model and an unbranded laptop displaying only soft abstract diagrams without glyphs. The blue swirled glass marble is prominent beside the open book. One adult learner in indigo sweater studies a reference volume in middle ground, shelves and green brass-shaded lamp behind. Tall arched window bathes everything in amber sunlight. Quiet focused learning, no meeting group, no scanner, no text on pages or screen.",
+    "path": "/paintings/actions/thumbs/library_learn.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 102786,
+    "alt": "A blue glass marble on a low table surrounded by adults discussing books in a cozy library",
+    "source": "exec-7eae8d7c-6fdf-4d61-b8cc-f036365475e1.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Join the book club': warmly sociable discussion circle in a neighborhood library. Five diverse adult neighbors sit closely in a circle of mismatched armchairs, smiling and gesturing about open and closed novels in their hands. Low circular wooden table between them holds matching plain clothbound books, teacups and a blue swirled glass marble clearly prominent in foreground. Bookshelves, an arched window, green-shaded lamp and leafy plant frame the intimate gathering. One adult speaks while others lean in attentively. Readable scene of a book club, no writing or letter-like marks on covers or pages.",
+    "path": "/paintings/actions/library_club.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14356,
+    "alt": "A blue glass marble on a low table surrounded by adults discussing books in a cozy library",
+    "source": "exec-7eae8d7c-6fdf-4d61-b8cc-f036365475e1.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Join the book club': warmly sociable discussion circle in a neighborhood library. Five diverse adult neighbors sit closely in a circle of mismatched armchairs, smiling and gesturing about open and closed novels in their hands. Low circular wooden table between them holds matching plain clothbound books, teacups and a blue swirled glass marble clearly prominent in foreground. Bookshelves, an arched window, green-shaded lamp and leafy plant frame the intimate gathering. One adult speaks while others lean in attentively. Readable scene of a book club, no writing or letter-like marks on covers or pages.",
+    "path": "/paintings/actions/thumbs/library_club.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 83502,
+    "alt": "A blue glass marble beside historic photographs as a library worker carefully scans the archive",
+    "source": "exec-7b3a5bbd-b97d-4775-9950-b9c0ef2eb89c.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Help digitize the archive': close view of a hands-on historic photograph digitization work station in a beautiful public library archive. An adult archival worker with white cotton gloves gently positions an old sepia photograph on an open flatbed scanner. Beside it an unbranded desktop screen displays a large scanned sepia photograph of an old neighborhood street, without any screen text or UI labels. Archival boxes, loose old photos and a brass desk lamp sit around it. Blue swirled glass marble prominent in foreground on clear wooden desk, not inside scanner. Sunlight glows through tall window and floating dust, bookcases behind. Focus clearly on careful scanning and preservation work.",
+    "path": "/paintings/actions/library_digitize.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 12616,
+    "alt": "A blue glass marble beside historic photographs as a library worker carefully scans the archive",
+    "source": "exec-7b3a5bbd-b97d-4775-9950-b9c0ef2eb89c.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Help digitize the archive': close view of a hands-on historic photograph digitization work station in a beautiful public library archive. An adult archival worker with white cotton gloves gently positions an old sepia photograph on an open flatbed scanner. Beside it an unbranded desktop screen displays a large scanned sepia photograph of an old neighborhood street, without any screen text or UI labels. Archival boxes, loose old photos and a brass desk lamp sit around it. Blue swirled glass marble prominent in foreground on clear wooden desk, not inside scanner. Sunlight glows through tall window and floating dust, bookcases behind. Focus clearly on careful scanning and preservation work.",
+    "path": "/paintings/actions/thumbs/library_digitize.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 110006,
+    "alt": "A blue glass marble beside fresh ingredients as adults practice chopping vegetables in a cooking class",
+    "source": "exec-21f42d40-7036-4c64-b1de-5c4a3acfa168.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Take a cooking class': inviting indoor market cooking school with a large kitchen island. An adult chef in cream apron demonstrates chopping colorful vegetables while two adult students watch attentively and practice at their cutting boards. Simmering copper pot, fresh herbs, ripe tomatoes and a bowl of dough create an abundant delicious foreground; blue swirled glass marble prominent on a dry corner of the counter safely away from flame. Sunlit market windows and shelves of produce, indigo and ochre clothing. Tangible hands-on lesson and good food, not restaurant dining. Thick visible painterly oil brushwork.",
+    "path": "/paintings/actions/market_cook.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15412,
+    "alt": "A blue glass marble beside fresh ingredients as adults practice chopping vegetables in a cooking class",
+    "source": "exec-21f42d40-7036-4c64-b1de-5c4a3acfa168.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Take a cooking class': inviting indoor market cooking school with a large kitchen island. An adult chef in cream apron demonstrates chopping colorful vegetables while two adult students watch attentively and practice at their cutting boards. Simmering copper pot, fresh herbs, ripe tomatoes and a bowl of dough create an abundant delicious foreground; blue swirled glass marble prominent on a dry corner of the counter safely away from flame. Sunlit market windows and shelves of produce, indigo and ochre clothing. Tangible hands-on lesson and good food, not restaurant dining. Thick visible painterly oil brushwork.",
+    "path": "/paintings/actions/thumbs/market_cook.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 102674,
+    "alt": "A blue glass marble beside cheeses and small samples offered at a sunlit market tasting stall",
+    "source": "exec-90870e1d-ac6d-42ec-a355-47562d4e7d9c.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Explore the tasting stalls': intimate neighborhood open-air farmers market tasting counter. An adult vendor offers a tiny tasting plate toward an adult visitor while a foreground wooden display holds bite-size artisan cheeses, olives, crusty bread and little jam tasting spoons. Blue swirled glass marble prominent at the near corner of the counter. Warm striped ochre-and-cream canvas awning, baskets of seasonal fruit, leafy street and neighboring stalls softly painted behind. Sense of trying unfamiliar delicious flavors; close three-quarter view emphasizing small sample portions, no cash register or cooking lesson.",
+    "path": "/paintings/actions/market_taste.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15364,
+    "alt": "A blue glass marble beside cheeses and small samples offered at a sunlit market tasting stall",
+    "source": "exec-90870e1d-ac6d-42ec-a355-47562d4e7d9c.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber sunlight, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, readable book writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Explore the tasting stalls': intimate neighborhood open-air farmers market tasting counter. An adult vendor offers a tiny tasting plate toward an adult visitor while a foreground wooden display holds bite-size artisan cheeses, olives, crusty bread and little jam tasting spoons. Blue swirled glass marble prominent at the near corner of the counter. Warm striped ochre-and-cream canvas awning, baskets of seasonal fruit, leafy street and neighboring stalls softly painted behind. Sense of trying unfamiliar delicious flavors; close three-quarter view emphasizing small sample portions, no cash register or cooking lesson.",
+    "path": "/paintings/actions/thumbs/market_taste.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 117100,
+    "alt": "A blue glass marble among vintage goods as a stallholder helps a customer at a secondhand pop-up",
+    "source": "exec-fddbf429-7113-4254-bea5-a5d837b964e4.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Run a secondhand pop-up': a thoughtfully arranged neighborhood flea-market stall under a cream awning. A friendly adult stallholder in ochre apron offers a vintage ceramic jug to an adult customer. Foreground wooden table displays secondhand enamel kettle, folded knitted sweaters, old camera, stacked plain books, little framed flower painting and reused teacups. A rack of indigo and moss-green coats stands behind. Blue swirled glass marble prominent at front of table beside small paper wrapping roll. Golden afternoon on red-brick square, leafy plants and other market stalls softly behind. Clear sense of running your own used-goods pop-up rather than food tasting; no price tags or signage.",
+    "path": "/paintings/actions/market_resell.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14450,
+    "alt": "A blue glass marble among vintage goods as a stallholder helps a customer at a secondhand pop-up",
+    "source": "exec-fddbf429-7113-4254-bea5-a5d837b964e4.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Run a secondhand pop-up': a thoughtfully arranged neighborhood flea-market stall under a cream awning. A friendly adult stallholder in ochre apron offers a vintage ceramic jug to an adult customer. Foreground wooden table displays secondhand enamel kettle, folded knitted sweaters, old camera, stacked plain books, little framed flower painting and reused teacups. A rack of indigo and moss-green coats stands behind. Blue swirled glass marble prominent at front of table beside small paper wrapping roll. Golden afternoon on red-brick square, leafy plants and other market stalls softly behind. Clear sense of running your own used-goods pop-up rather than food tasting; no price tags or signage.",
+    "path": "/paintings/actions/thumbs/market_resell.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 106158,
+    "alt": "A blue glass marble on an exercise mat while two friends train together with dumbbells",
+    "source": "exec-b32af1c4-a349-4133-9580-369ba82ef101.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Train with a friend': cozy neighborhood fitness studio with sunlit red-brick walls, arched windows and many plants. Two adult friends in practical olive and indigo athletic clothes train together; one performs a controlled standing dumbbell curl while the other smiles and encourages, holding their own dumbbell at their side. Both anatomically natural, weights clear and modest. Blue swirled glass marble prominent on a green exercise mat in the foreground beside a towel, water bottle and spare small dumbbells. Wooden floor glows amber, warm encouraging feeling of friendship and exercise. No stretching class, spa, sauna or text.",
+    "path": "/paintings/actions/gym_train.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14476,
+    "alt": "A blue glass marble on an exercise mat while two friends train together with dumbbells",
+    "source": "exec-b32af1c4-a349-4133-9580-369ba82ef101.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Train with a friend': cozy neighborhood fitness studio with sunlit red-brick walls, arched windows and many plants. Two adult friends in practical olive and indigo athletic clothes train together; one performs a controlled standing dumbbell curl while the other smiles and encourages, holding their own dumbbell at their side. Both anatomically natural, weights clear and modest. Blue swirled glass marble prominent on a green exercise mat in the foreground beside a towel, water bottle and spare small dumbbells. Wooden floor glows amber, warm encouraging feeling of friendship and exercise. No stretching class, spa, sauna or text.",
+    "path": "/paintings/actions/thumbs/gym_train.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 82554,
+    "alt": "A blue glass marble on a folded towel in a warm cedar sauna with gentle rising steam",
+    "source": "exec-f48a7806-06c6-4822-b085-bca84da22635.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Take a recovery session': tranquil empty cedarwood sauna and recovery nook, a close low view toward tiered warm wooden benches. Blue swirled glass marble rests prominently on a thick folded cream towel on the nearest bench, beside a wooden water bucket and ladle. Sauna heater with dark rounded stones glows softly at far side, delicate steam rises, a rolled moss-green towel and carafe of water nearby. A small high window admits amber late-day light, gentle greenery visible outside. Deep physical restoration and silence after a tiring week. No humans needed, no exercise equipment, no flames, no lettering. Beautiful expressive oil paint showing wood grain, towel fibers and reflected light in glass.",
+    "path": "/paintings/actions/gym_sauna.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 11612,
+    "alt": "A blue glass marble on a folded towel in a warm cedar sauna with gentle rising steam",
+    "source": "exec-f48a7806-06c6-4822-b085-bca84da22635.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Take a recovery session': tranquil empty cedarwood sauna and recovery nook, a close low view toward tiered warm wooden benches. Blue swirled glass marble rests prominently on a thick folded cream towel on the nearest bench, beside a wooden water bucket and ladle. Sauna heater with dark rounded stones glows softly at far side, delicate steam rises, a rolled moss-green towel and carafe of water nearby. A small high window admits amber late-day light, gentle greenery visible outside. Deep physical restoration and silence after a tiring week. No humans needed, no exercise equipment, no flames, no lettering. Beautiful expressive oil paint showing wood grain, towel fibers and reflected light in glass.",
+    "path": "/paintings/actions/thumbs/gym_sauna.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 94816,
+    "alt": "A blue glass marble beside a bell and blank ledger as a gym receptionist welcomes a member",
+    "source": "exec-939e1c5d-1cb1-4d3c-88c2-c8f7dfc3c8c9.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Cover the front desk': view across the warmly welcoming reception desk of a small neighborhood gym. Blue swirled glass marble prominently sits on the smooth wooden counter beside a bell, neatly folded cream hand towels, blank appointment ledger, pen and small bowl of locker keys. An adult casual staff member wearing an indigo polo greets an arriving adult gym member carrying a rolled olive exercise mat and a duffel bag. Background shows a leafy red-brick studio doorway and a few weights, sunlit arched windows. Clear front-desk work setting, emphasis on welcoming customers and managing reception, not exercising; screen turned away or blank, no text on ledger.",
+    "path": "/paintings/actions/gym_desk.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 12674,
+    "alt": "A blue glass marble beside a bell and blank ledger as a gym receptionist welcomes a member",
+    "source": "exec-939e1c5d-1cb1-4d3c-88c2-c8f7dfc3c8c9.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Cover the front desk': view across the warmly welcoming reception desk of a small neighborhood gym. Blue swirled glass marble prominently sits on the smooth wooden counter beside a bell, neatly folded cream hand towels, blank appointment ledger, pen and small bowl of locker keys. An adult casual staff member wearing an indigo polo greets an arriving adult gym member carrying a rolled olive exercise mat and a duffel bag. Background shows a leafy red-brick studio doorway and a few weights, sunlit arched windows. Clear front-desk work setting, emphasis on welcoming customers and managing reception, not exercising; screen turned away or blank, no text on ledger.",
+    "path": "/paintings/actions/thumbs/gym_desk.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 95332,
+    "alt": "A blue glass marble beside Jo as she polishes a custom wooden box with a copper sun inlay",
+    "source": "exec-26ffbb75-5e2a-4385-a480-e1c05718b81c.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Finish a custom commission': skilled finishing work in a sunlit neighborhood makerspace. An older East Asian woman named Jo with a silver bob, round amber spectacles, indigo work jacket and ochre apron carefully polishes the final edge of a beautiful custom carved wooden keepsake box with a delicate copper sun inlay. The completed high-quality box is the central focus on the workbench; nearby folded cream wrapping cloth and a plain cord signal it is ready for its customer, precise small carving tools, fine wood shavings and copper offcuts attest skill. Blue swirled glass marble prominently rests on the workbench beside the box. Shelves of tools and plants softly behind. Intimate close work view, proud thoughtful expression, no other people, no book or money.",
+    "path": "/paintings/actions/maker_commission.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13936,
+    "alt": "A blue glass marble beside Jo as she polishes a custom wooden box with a copper sun inlay",
+    "source": "exec-26ffbb75-5e2a-4385-a480-e1c05718b81c.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Finish a custom commission': skilled finishing work in a sunlit neighborhood makerspace. An older East Asian woman named Jo with a silver bob, round amber spectacles, indigo work jacket and ochre apron carefully polishes the final edge of a beautiful custom carved wooden keepsake box with a delicate copper sun inlay. The completed high-quality box is the central focus on the workbench; nearby folded cream wrapping cloth and a plain cord signal it is ready for its customer, precise small carving tools, fine wood shavings and copper offcuts attest skill. Blue swirled glass marble prominently rests on the workbench beside the box. Shelves of tools and plants softly behind. Intimate close work view, proud thoughtful expression, no other people, no book or money.",
+    "path": "/paintings/actions/thumbs/maker_commission.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 92948,
+    "alt": "A blue glass marble beside handmade clay ornaments as an adult paints a small ceramic bird",
+    "source": "exec-dbb1a8b5-54fe-42f3-90ef-8f2c96954d44.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Make something just for fun': playful relaxed creative table in a neighborhood makerspace. Close view of an adult hobbyist's paint-speckled hands decorating a small whimsical clay bird with a brush; little imperfect hand-shaped clay mushrooms and a tiny flower bowl sit beside it, cheerful pottery paints and brushes in jars around a simple work mat. Blue swirled glass marble prominently sits on the table beside the little bird. Only cropped adult torso and hands visible, indigo shirt, no Jo character needed. Warm window light, leafy plant and charming clutter, joy of an easy personal craft with no deadline. Loose expressive oil brushwork, tactile handmade imperfections, no woodworking, no commissioned box, no text.",
+    "path": "/paintings/actions/maker_hobby.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14864,
+    "alt": "A blue glass marble beside handmade clay ornaments as an adult paints a small ceramic bird",
+    "source": "exec-dbb1a8b5-54fe-42f3-90ef-8f2c96954d44.png",
+    "prompt": "Use case: illustration-story. Create one single landscape 3:2 traditional oil painting for a cozy neighborhood life game. Cohesive rich thick expressive brushed traditional oil paint on canvas, warm golden amber light, moss greens, ochres, warm cream, indigo accents, charming lived-in neighborhood, gorgeous material texture. Protagonist is a blue glass marble with flowing white ribbon swirls, a glass sphere with NO face and NO limbs, never humanoid. Strong clear activity objects and shapes legible as small card art. No text, lettering, numbers, writing, signs, logos, UI, borders, watermark, split panels or montage. Action 'Make something just for fun': playful relaxed creative table in a neighborhood makerspace. Close view of an adult hobbyist's paint-speckled hands decorating a small whimsical clay bird with a brush; little imperfect hand-shaped clay mushrooms and a tiny flower bowl sit beside it, cheerful pottery paints and brushes in jars around a simple work mat. Blue swirled glass marble prominently sits on the table beside the little bird. Only cropped adult torso and hands visible, indigo shirt, no Jo character needed. Warm window light, leafy plant and charming clutter, joy of an easy personal craft with no deadline. Loose expressive oil brushwork, tactile handmade imperfections, no woodworking, no commissioned box, no text.",
+    "path": "/paintings/actions/thumbs/maker_hobby.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 90634,
+    "alt": "Neighbors mend a brass lamp at the repair caf\u00e9 beside the blue swirled marble.",
+    "source": "exec-636380c7-5c7c-4a3f-9686-97989e2e0e0a.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting, a polished activity-card image for the cozy neighborhood game Crosswalk. Action: Help at the repair caf\u00e9. Scene: close welcoming communal repair workbench in a lived-in neighborhood makerspace, an older adult woman carefully repairing a brass desk lamp and a middle-aged adult man helping tighten its base, open small toolbox, screwdrivers, mended toaster, cups of tea. The protagonist is a small beautiful cobalt-blue glass marble with broad flowing white ribbon swirls, visibly resting at the front of the wooden workbench next to tools. It is entirely a glass sphere, no face, eyes, arms or legs. Warm golden amber window light, moss-green walls, ochre and cream palette, lush tangible oil brushwork and impasto rather than digital rendering, charming handcrafted detail. Compose around the lamp repair activity, strong readable silhouettes, adults only, comfortably cropped landscape. No words, text, lettering, logos, UI, captions or numerical effects.",
+    "path": "/paintings/actions/maker_repair.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13526,
+    "alt": "Neighbors mend a brass lamp at the repair caf\u00e9 beside the blue swirled marble.",
+    "source": "exec-636380c7-5c7c-4a3f-9686-97989e2e0e0a.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting, a polished activity-card image for the cozy neighborhood game Crosswalk. Action: Help at the repair caf\u00e9. Scene: close welcoming communal repair workbench in a lived-in neighborhood makerspace, an older adult woman carefully repairing a brass desk lamp and a middle-aged adult man helping tighten its base, open small toolbox, screwdrivers, mended toaster, cups of tea. The protagonist is a small beautiful cobalt-blue glass marble with broad flowing white ribbon swirls, visibly resting at the front of the wooden workbench next to tools. It is entirely a glass sphere, no face, eyes, arms or legs. Warm golden amber window light, moss-green walls, ochre and cream palette, lush tangible oil brushwork and impasto rather than digital rendering, charming handcrafted detail. Compose around the lamp repair activity, strong readable silhouettes, adults only, comfortably cropped landscape. No words, text, lettering, logos, UI, captions or numerical effects.",
+    "path": "/paintings/actions/thumbs/maker_repair.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 63278,
+    "alt": "An usher welcomes cinema guests with a flashlight and tickets beside the blue marble.",
+    "source": "exec-059976fb-b636-4d86-8c11-11382078864d.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Work an usher shift at a neighborhood cinema. View from the warm cinema lobby toward dark red-curtained auditorium doorway; an adult female usher wearing a plain burgundy waistcoat holds a small flashlight and checks blank ticket stubs for arriving adult patrons. Brass rope stanchion and a small wooden ticket stand. The blue marble protagonist sits on the near edge of the ticket stand beside a flashlight and neat pile of plain tickets. Clearly a work shift, welcoming guests. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/cinema_usher.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 9856,
+    "alt": "An usher welcomes cinema guests with a flashlight and tickets beside the blue marble.",
+    "source": "exec-059976fb-b636-4d86-8c11-11382078864d.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Work an usher shift at a neighborhood cinema. View from the warm cinema lobby toward dark red-curtained auditorium doorway; an adult female usher wearing a plain burgundy waistcoat holds a small flashlight and checks blank ticket stubs for arriving adult patrons. Brass rope stanchion and a small wooden ticket stand. The blue marble protagonist sits on the near edge of the ticket stand beside a flashlight and neat pile of plain tickets. Clearly a work shift, welcoming guests. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/cinema_usher.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 68940,
+    "alt": "Friends share popcorn in a red-seated cinema beside the blue swirled marble.",
+    "source": "exec-1c8017d5-ca25-46ef-b00c-b608f265bbf5.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Make it a movie night with friends. Intimate low viewpoint across a row of plush ruby-red cinema seats with three cheerful adult friends leaning toward each other sharing a striped tub of popcorn before the film begins, soft out-of-focus blank cream movie screen and golden projector glow behind. The blue marble protagonist sits upright in its own red seat beside the friends, popcorn tub and plain drink in foreground. Emphasize friendship and shared movie treats. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/cinema_friends.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 9518,
+    "alt": "Friends share popcorn in a red-seated cinema beside the blue swirled marble.",
+    "source": "exec-1c8017d5-ca25-46ef-b00c-b608f265bbf5.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Make it a movie night with friends. Intimate low viewpoint across a row of plush ruby-red cinema seats with three cheerful adult friends leaning toward each other sharing a striped tub of popcorn before the film begins, soft out-of-focus blank cream movie screen and golden projector glow behind. The blue marble protagonist sits upright in its own red seat beside the friends, popcorn tub and plain drink in foreground. Emphasize friendship and shared movie treats. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/cinema_friends.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 86924,
+    "alt": "Film lovers gather for a thoughtful discussion around the blue swirled marble.",
+    "source": "exec-93fa3123-374b-4777-8915-8db5b30c85ef.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Stay for the film discussion. An intimate circle of five diverse adult film lovers in a vintage neighborhood cinema lounge after a screening, leaning forward listening to one woman gesturing thoughtfully, plain teacups and a vintage film reel on a low table. Red velvet seats and closed curtains visible in background, cozy amber lamps. The blue marble protagonist rests in clear view on the round discussion table among cups. Emphasize warm engaged conversation after a film. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/cinema_club.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 11448,
+    "alt": "Film lovers gather for a thoughtful discussion around the blue swirled marble.",
+    "source": "exec-93fa3123-374b-4777-8915-8db5b30c85ef.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Stay for the film discussion. An intimate circle of five diverse adult film lovers in a vintage neighborhood cinema lounge after a screening, leaning forward listening to one woman gesturing thoughtfully, plain teacups and a vintage film reel on a low table. Red velvet seats and closed curtains visible in background, cozy amber lamps. The blue marble protagonist rests in clear view on the round discussion table among cups. Emphasize warm engaged conversation after a film. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/cinema_club.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 125000,
+    "alt": "A parcel-laden delivery bicycle carries the blue marble through the warm neighborhood.",
+    "source": "exec-d8051c17-0c54-430f-bd10-c39fdf8ce269.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Take a bicycle courier route. Low dynamic three-quarter view of a sturdy moss-green delivery bicycle beside a cobbled neighborhood lane at sunset, stacked unmarked kraft-paper parcels firmly strapped to the rear carrier, adult courier wearing an ochre cycling jacket and helmet about to push off. The marble protagonist rests securely in the bicycle front wicker basket and is clearly visible. A cream-and-green tram glows in the background, leafy buildings, purposeful delivery journey. Focus on parcels and bicycle courier rather than general transit. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/transit_courier.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15846,
+    "alt": "A parcel-laden delivery bicycle carries the blue marble through the warm neighborhood.",
+    "source": "exec-d8051c17-0c54-430f-bd10-c39fdf8ce269.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Take a bicycle courier route. Low dynamic three-quarter view of a sturdy moss-green delivery bicycle beside a cobbled neighborhood lane at sunset, stacked unmarked kraft-paper parcels firmly strapped to the rear carrier, adult courier wearing an ochre cycling jacket and helmet about to push off. The marble protagonist rests securely in the bicycle front wicker basket and is clearly visible. A cream-and-green tram glows in the background, leafy buildings, purposeful delivery journey. Focus on parcels and bicycle courier rather than general transit. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/transit_courier.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 111756,
+    "alt": "A mechanic repairs a bicycle wheel at the transit hub beside the blue marble.",
+    "source": "exec-ebc78116-0dd8-4d11-b9ee-1b158537d573.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Repair bikes at the hub. A bicycle elevated on a repair stand at a neighborhood transit workshop, adult mechanic in a rolled-sleeve cream shirt carefully adjusting the wheel spokes with a spoke wrench, spare tires and neatly arranged hand tools. Foreground wooden workbench holds the blue marble protagonist next to a pump and spanners. Open arched workshop looks toward a blurred green tram, evening amber lamps. Frame bicycle mechanical work clearly and fully enough to read the activity. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/transit_repair.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15548,
+    "alt": "A mechanic repairs a bicycle wheel at the transit hub beside the blue marble.",
+    "source": "exec-ebc78116-0dd8-4d11-b9ee-1b158537d573.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Repair bikes at the hub. A bicycle elevated on a repair stand at a neighborhood transit workshop, adult mechanic in a rolled-sleeve cream shirt carefully adjusting the wheel spokes with a spoke wrench, spare tires and neatly arranged hand tools. Foreground wooden workbench holds the blue marble protagonist next to a pump and spanners. Open arched workshop looks toward a blurred green tram, evening amber lamps. Frame bicycle mechanical work clearly and fully enough to read the activity. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/transit_repair.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 135580,
+    "alt": "Neighbors sweep and plant a car-free street around the blue swirled marble.",
+    "source": "exec-653e1eff-53c3-4b5c-9b1c-fa9eacb92abb.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Join the car-free street crew. Sunny leafy pedestrian neighborhood street with no cars, four adult neighbors actively sweeping cobblestones, collecting litter with a grabber and rolling a large flower planter into place. Orange safety cones have no markings. Foreground blue marble protagonist sits on a newly swept cobblestone beside a broom and a potted sunflower. Bicycles parked along the brick storefronts, plain fabric bunting. The clear story is community street cleanup and making room for walking. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/transit_cleanup.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 17666,
+    "alt": "Neighbors sweep and plant a car-free street around the blue swirled marble.",
+    "source": "exec-653e1eff-53c3-4b5c-9b1c-fa9eacb92abb.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Join the car-free street crew. Sunny leafy pedestrian neighborhood street with no cars, four adult neighbors actively sweeping cobblestones, collecting litter with a grabber and rolling a large flower planter into place. Orange safety cones have no markings. Foreground blue marble protagonist sits on a newly swept cobblestone beside a broom and a potted sunflower. Bicycles parked along the brick storefronts, plain fabric bunting. The clear story is community street cleanup and making room for walking. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/transit_cleanup.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 128348,
+    "alt": "Eli gathers fresh tomatoes and vegetables beside the blue marble in the greenhouse.",
+    "source": "exec-1de4bf31-2b51-4000-bda2-684aee5b1190.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Help with the harvest. Intimate productive urban community greenhouse scene with baskets overflowing with ripe tomatoes, carrots and leafy greens. Eli, a middle-aged Black man with a warm salt-and-pepper beard, moss-green overshirt and terracotta apron, carefully lifts a full wooden harvest crate while another adult clips ripe tomatoes from a vine. Blue marble protagonist is prominently visible on the foreground potting table beside a wicker harvest basket. Sun streams through greenhouse panes; emphasize abundant freshly harvested vegetables and satisfying seasonal work. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/garden_harvest.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 16648,
+    "alt": "Eli gathers fresh tomatoes and vegetables beside the blue marble in the greenhouse.",
+    "source": "exec-1de4bf31-2b51-4000-bda2-684aee5b1190.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Help with the harvest. Intimate productive urban community greenhouse scene with baskets overflowing with ripe tomatoes, carrots and leafy greens. Eli, a middle-aged Black man with a warm salt-and-pepper beard, moss-green overshirt and terracotta apron, carefully lifts a full wooden harvest crate while another adult clips ripe tomatoes from a vine. Blue marble protagonist is prominently visible on the foreground potting table beside a wicker harvest basket. Sun streams through greenhouse panes; emphasize abundant freshly harvested vegetables and satisfying seasonal work. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/garden_harvest.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 134718,
+    "alt": "The blue marble rests on a garden bench beside tea and a book in dappled afternoon light.",
+    "source": "exec-347281eb-5628-4885-8de1-4295e3e0efb8.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Spend a slow afternoon here. Serene quiet garden corner outside a beautiful old glass greenhouse, a weathered wooden bench with soft cream cushion and folded moss-green blanket. The blue marble protagonist rests peacefully on the bench in the foreground beside a closed plain book and a steaming ceramic tea mug. Dappled late-afternoon sunlight through fig leaves, flowering herbs and terracotta pots, one relaxed adult far in the background reading. Compose around the restful empty bench and marble, deep calm and unhurried atmosphere, no work or busy gathering. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/garden_rest.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 15966,
+    "alt": "The blue marble rests on a garden bench beside tea and a book in dappled afternoon light.",
+    "source": "exec-347281eb-5628-4885-8de1-4295e3e0efb8.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Spend a slow afternoon here. Serene quiet garden corner outside a beautiful old glass greenhouse, a weathered wooden bench with soft cream cushion and folded moss-green blanket. The blue marble protagonist rests peacefully on the bench in the foreground beside a closed plain book and a steaming ceramic tea mug. Dappled late-afternoon sunlight through fig leaves, flowering herbs and terracotta pots, one relaxed adult far in the background reading. Compose around the restful empty bench and marble, deep calm and unhurried atmosphere, no work or busy gathering. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/garden_rest.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 101908,
+    "alt": "Eli teaches adults to transplant seedlings beside the blue marble at a garden workshop.",
+    "source": "exec-ff698f2a-3ca2-49fa-8bb6-ea7a005988c5.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Learn urban growing. Hands-on greenhouse workshop with Eli, a middle-aged Black man with a salt-and-pepper beard, moss-green overshirt and terracotta apron, demonstrating how to transplant a tiny seedling from a terracotta pot into a tray of soil while two attentive adult learners watch closely. Close slightly overhead composition foreground potting table, seedlings, wooden dibber, small watering can, soil on hands. Blue marble protagonist sits beside the seedling tray like a quiet learner. Warm patient teaching scene, distinct from harvesting mature crops. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/garden_workshop.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14158,
+    "alt": "Eli teaches adults to transplant seedlings beside the blue marble at a garden workshop.",
+    "source": "exec-ff698f2a-3ca2-49fa-8bb6-ea7a005988c5.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Learn urban growing. Hands-on greenhouse workshop with Eli, a middle-aged Black man with a salt-and-pepper beard, moss-green overshirt and terracotta apron, demonstrating how to transplant a tiny seedling from a terracotta pot into a tray of soil while two attentive adult learners watch closely. Close slightly overhead composition foreground potting table, seedlings, wooden dibber, small watering can, soil on hands. Blue marble protagonist sits beside the seedling tray like a quiet learner. Warm patient teaching scene, distinct from harvesting mature crops. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/garden_workshop.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 87486,
+    "alt": "The blue marble enjoys a glowing pinball game in the cozy neighborhood arcade.",
+    "source": "exec-2a89959e-bfed-47b6-9bd6-a2abdf0b6495.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Play a few favorites. Intimate close view of a vintage pinball machine glowing with amber bulbs and playful geometric shapes, one adult smiling while operating the side flipper buttons. The blue marble protagonist sits beside the pinball machine at the edge of its wooden side shelf, outside the game mechanism. Background cozy moss-green neighborhood arcade with plants, warmly lit retro game cabinets showing only abstract colorful shapes. Strong pinball play focus, joyful pocket of recreation, no text or scores anywhere. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/arcade_play.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14160,
+    "alt": "The blue marble enjoys a glowing pinball game in the cozy neighborhood arcade.",
+    "source": "exec-2a89959e-bfed-47b6-9bd6-a2abdf0b6495.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Play a few favorites. Intimate close view of a vintage pinball machine glowing with amber bulbs and playful geometric shapes, one adult smiling while operating the side flipper buttons. The blue marble protagonist sits beside the pinball machine at the edge of its wooden side shelf, outside the game mechanism. Background cozy moss-green neighborhood arcade with plants, warmly lit retro game cabinets showing only abstract colorful shapes. Strong pinball play focus, joyful pocket of recreation, no text or scores anywhere. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/arcade_play.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 87690,
+    "alt": "An evening arcade attendant serves tokens beside the blue marble at the front desk.",
+    "source": "exec-0b43d64c-e790-468e-ad67-91c847c87078.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Cover the evening desk. Warm vintage arcade reception counter with an adult attendant in a moss-green cardigan handing a small cup of brass tokens to an arriving adult regular. Behind the counter hang cabinet keys, spare joystick parts, a modest desk lamp and an unmarked token machine, glowing pinball and arcade cabinets in background. The blue marble protagonist sits prominently on the counter beside neatly organized token cups and the key ring. Emphasize working the arcade front desk, not playing a game. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/arcade_shift.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 12678,
+    "alt": "An evening arcade attendant serves tokens beside the blue marble at the front desk.",
+    "source": "exec-0b43d64c-e790-468e-ad67-91c847c87078.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Cover the evening desk. Warm vintage arcade reception counter with an adult attendant in a moss-green cardigan handing a small cup of brass tokens to an arriving adult regular. Behind the counter hang cabinet keys, spare joystick parts, a modest desk lamp and an unmarked token machine, glowing pinball and arcade cabinets in background. The blue marble protagonist sits prominently on the counter beside neatly organized token cups and the key ring. Emphasize working the arcade front desk, not playing a game. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/arcade_shift.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 102826,
+    "alt": "Adults gather around a board game and snacks beside the blue marble at an arcade meetup.",
+    "source": "exec-6a0fbf3c-7f2f-412a-8836-121f8fdbce70.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Host a game meetup. Welcoming lively board-game evening at a large wooden table in a cozy neighborhood arcade; four diverse adults sitting around a colorful geometric board with wooden pawns and tiles, another adult host pulling out a spare chair and setting a bowl of snacks. The blue marble protagonist sits at the near corner of the table next to the game pieces. A row of retro arcade cabinets with purely abstract graphics glows softly behind, moss-green pendant lamps, warm convivial amber light. Clear hosting and group-game gathering, not solo gaming. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/arcade_host.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14202,
+    "alt": "Adults gather around a board game and snacks beside the blue marble at an arcade meetup.",
+    "source": "exec-6a0fbf3c-7f2f-412a-8836-121f8fdbce70.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Host a game meetup. Welcoming lively board-game evening at a large wooden table in a cozy neighborhood arcade; four diverse adults sitting around a colorful geometric board with wooden pawns and tiles, another adult host pulling out a spare chair and setting a bowl of snacks. The blue marble protagonist sits at the near corner of the table next to the game pieces. A row of retro arcade cabinets with purely abstract graphics glows softly behind, moss-green pendant lamps, warm convivial amber light. Clear hosting and group-game gathering, not solo gaming. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/arcade_host.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 94706,
+    "alt": "An artist practices shaping a clay bowl beside the blue marble in the makerspace.",
+    "source": "exec-830846e7-4e6b-4236-ae0f-7a224bf96ae9.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Practice your craft. Close thoughtful view of a ceramic artist's worktable in a neighborhood makerspace, adult craftsperson's hands shaping a small clay bowl on a pottery wheel, several uneven practice bowls and delicate carving tools nearby. The blue marble protagonist sits at front of the table beside a sponge and neatly coiled clay, clearly separate from the pottery. Apron on the adult, shelves of cream and moss-green handmade ceramics, sunlight through tall dusty windows. Intimate patient repetition and skill-building, warm brushed oil painting, tactile clay textures. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/creative_practice.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 13712,
+    "alt": "An artist practices shaping a clay bowl beside the blue marble in the makerspace.",
+    "source": "exec-830846e7-4e6b-4236-ae0f-7a224bf96ae9.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Practice your craft. Close thoughtful view of a ceramic artist's worktable in a neighborhood makerspace, adult craftsperson's hands shaping a small clay bowl on a pottery wheel, several uneven practice bowls and delicate carving tools nearby. The blue marble protagonist sits at front of the table beside a sponge and neatly coiled clay, clearly separate from the pottery. Apron on the adult, shelves of cream and moss-green handmade ceramics, sunlight through tall dusty windows. Intimate patient repetition and skill-building, warm brushed oil painting, tactile clay textures. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/creative_practice.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 118536,
+    "alt": "Neighbors coordinate tables and supplies for a community day around the blue marble.",
+    "source": "exec-24fb965b-44cc-4977-a577-fe6d736fd680.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Coordinate a paid community day. A capable adult organizer wearing a plain ochre apron coordinates a sunny neighborhood courtyard event, directing two adult helpers carrying a folding table while other adults set up baskets of food and potted plants beneath plain colored bunting. Foreground planning table has a simple folded map with abstract color blocks and NO letters, tied bundles of supplies, a blank clipboard and the blue marble protagonist. Clear organized setup and coordination rather than a party underway, warm inviting community hall doorway in background. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/community_organize.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14934,
+    "alt": "Neighbors coordinate tables and supplies for a community day around the blue marble.",
+    "source": "exec-24fb965b-44cc-4977-a577-fe6d736fd680.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Coordinate a paid community day. A capable adult organizer wearing a plain ochre apron coordinates a sunny neighborhood courtyard event, directing two adult helpers carrying a folding table while other adults set up baskets of food and potted plants beneath plain colored bunting. Foreground planning table has a simple folded map with abstract color blocks and NO letters, tied bundles of supplies, a blank clipboard and the blue marble protagonist. Clear organized setup and coordination rather than a party underway, warm inviting community hall doorway in background. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/community_organize.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 768,
+    "height": 512,
+    "bytes": 99022,
+    "alt": "A finished handmade vase is presented to a customer beside the blue marble.",
+    "source": "exec-587888f7-c828-4c05-a4be-f6b3938bea41.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Deliver a creative commission. A proud adult craftsperson presents a finished handmade ceramic vase with elegant green leaf decoration to a delighted adult customer across a makerspace counter; an open kraft-paper gift box with cream tissue and tied twine sits in foreground, the blue marble protagonist beside the finished work. Display several glazed ceramic pieces on wooden shelves behind. Emphasize completed commissioned work carefully packaged for delivery, warm human exchange and accomplished craft, distinct from pottery practice. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/creative_commission.webp",
+    "generation": "OpenAI imagegen"
+  },
+  {
+    "width": 240,
+    "height": 160,
+    "bytes": 14024,
+    "alt": "A finished handmade vase is presented to a customer beside the blue marble.",
+    "source": "exec-587888f7-c828-4c05-a4be-f6b3938bea41.png",
+    "prompt": "Use case: illustration-story. Create one full-bleed landscape 3:2 traditional oil painting for a cozy neighborhood game activity card. Action: Deliver a creative commission. A proud adult craftsperson presents a finished handmade ceramic vase with elegant green leaf decoration to a delighted adult customer across a makerspace counter; an open kraft-paper gift box with cream tissue and tied twine sits in foreground, the blue marble protagonist beside the finished work. Display several glazed ceramic pieces on wooden shelves behind. Emphasize completed commissioned work carefully packaged for delivery, warm human exchange and accomplished craft, distinct from pottery practice. The protagonist is a small beautiful cobalt-blue glass marble with broad white ribbon swirls, an entirely glass sphere with NO face, eyes, arms or legs, prominently visible in foreground. All humans are adults. Cohesive warm golden amber light, moss greens, warm ochres and cream, richly brushed traditional oil paint and tactile impasto, charming lived-in neighborhood, readable activity objects and beautifully hand-painted forms; avoid photorealism and smooth 3D rendering. Strong clear composition that reads at small size, safe central framing. NO text, words, lettering, numerals, brand marks, UI, captions or watermarks.",
+    "path": "/paintings/actions/thumbs/creative_commission.webp",
+    "generation": "OpenAI imagegen"
   }
 ]

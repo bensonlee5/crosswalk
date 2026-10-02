@@ -91,3 +91,9 @@ The neighborhood now has 45 oil-painted illustrations, a custom enamel-and-paper
 The live 3D town changes foliage, lighting, roof snow and ground details. Rain and snow particles respect reduced motion and battery-saver mode. [Verification notes](docs/PAINTED-SEASONS-VERIFICATION.md) distinguish automated checks from device testing.
 
 Additional checks: `node tests/weather.test.mjs`, `node tests/artwork.test.mjs`, `node tests/town-renderer.test.mjs`, and `node tests/balance-check.mjs --seasonal`.
+
+### Illustrated activity choices
+
+All 74 gameplay actions now have an explicitly mapped oil-painted scene and optimized selectable thumbnail, including all neighbor chapters, the shared garden and weekly opportunity variants. The update adds 57 individually generated paintings and 84 small thumbnails. Costs, outcomes and lock reasons remain accessible live text. The public art catalogue contains 102 full paintings plus the thumbnails, loaded on demand.
+
+Run `node tests/action-artwork.test.mjs` for complete action-to-asset coverage, seasonal and pre-weather opportunity subjects, distinct scene bytes and thumbnail budgets. See [action-art verification](docs/ACTION-ART-VERIFICATION.md).
