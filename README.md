@@ -4,6 +4,19 @@ A 3D small-town life-simulation board game for **1–4 players**. Spend eight we
 
 **[Play Crosswalk](https://crosswalk-life-game.bensonlee5.chatgpt.site)**
 
+## Screenshots
+
+Actual gameplay from the current live build. Open any image for a full-size view.
+
+[![Crosswalk's 3D Main Street in spring, with the player's resources, neighborhood board and destination controls](docs/screenshots/town-overview.jpg)](docs/screenshots/town-overview.jpg)
+
+*Explore the 3D town, choose a destination and plan the week around your time, cash, energy and happiness.*
+
+| Illustrated activity choices | Around the neighborhood |
+| --- | --- |
+| [![Corner Cup activity menu showing oil-painted choices and the selected activity's costs and outcomes](docs/screenshots/illustrated-activities.jpg)](docs/screenshots/illustrated-activities.jpg) | [![Neighborhood board showing the rainy-day indoor market opportunity and shared garden progress](docs/screenshots/neighborhood-board.jpg)](docs/screenshots/neighborhood-board.jpg) |
+| Choose an illustrated café activity and preview its effects before committing. | Claim the week's shared opportunity or contribute to the neighborhood garden. |
+
 ## Features
 
 - 15 modeled destinations and 74 activities, including neighbor chapters and shared projects
