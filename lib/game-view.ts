@@ -1,5 +1,5 @@
-import type {Player,Game} from './game';
-import {actions,jobs,effects,pathPoints,projectProgress,projectGoal} from './game';
+import type {Player,Game} from './game.ts';
+import {actions,jobs,effects,pathPoints,projectProgress,projectGoal} from './game.ts';
 export function snapshotIsCurrent(current:{code:string;version:number}|null,next:{code:string;version:number}){return !current||current.code!==next.code||next.version>=current.version;}
 /** Includes the shared weather breakdown and heat-aware requiredEnergy from effects. */
 export function actionPreview(p:Player,id:string,g?:Game){const a=actions.find(x=>x.id===id)!;const e=effects(p,a,g);const completesProject=a.special==='project'&&g&&!g.project?.completed&&projectProgress(g)+1>=projectGoal(g);if(completesProject)e.cash+=180;const legacy=p.rulesVersion===2?Math.min(10-(p.legacy||0),completesProject?4:a.story&&a.stage===3?2:0):0;const headline=a.promote?(p.job<3?`Become ${jobs[p.job+1].name}`:'You’ve reached the top role'):a.workHours?`Earn $${e.cash}`:a.title;return{...e,legacy,hours:-a.time,headline,afterCash:p.cash+e.cash,afterHours:p.hours-a.time};}

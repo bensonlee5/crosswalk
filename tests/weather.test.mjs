@@ -3,7 +3,7 @@ import {readFileSync} from 'node:fs';
 import ts from 'typescript';
 import {actions,player,move,reason,effects,opportunity,neighbors,projectProgress,createEnvironment} from '../lib/game.ts';
 import {weatherSchedule,getWeather,nextWeather,campaignWeather,weatherEffect,weatherTags,currentWeatherUsage,seasonalStoryText} from '../lib/weather.ts';
-const viewSource=readFileSync(new URL('../lib/game-view.ts',import.meta.url),'utf8').replaceAll("'./game'",JSON.stringify(new URL('../lib/game.ts',import.meta.url).href));
+const viewSource=readFileSync(new URL('../lib/game-view.ts',import.meta.url),'utf8').replaceAll("'./game.ts'",JSON.stringify(new URL('../lib/game.ts',import.meta.url).href));
 const viewCode=ts.transpileModule(viewSource,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText;
 const {actionPreview}=await import('data:text/javascript;base64,'+Buffer.from(viewCode).toString('base64'));
 const game=(n=2,round=1)=>({code:'WEATHR',rulesVersion:2,...createEnvironment(),mode:'hotseat',players:Array.from({length:n},(_,i)=>player('Seat '+i)),turn:0,turnsTaken:0,round,maxRounds:8,status:'playing',log:[],seen:[],event:0,members:{},host:'test'});

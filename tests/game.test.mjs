@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import ts from 'typescript';
 import {player as modernPlayer,actions as allActions,move,reason,score} from '../lib/game.ts';
-const source=readFileSync(new URL('../lib/game-view.ts',import.meta.url),'utf8').replaceAll("'./game'",JSON.stringify(new URL('../lib/game.ts',import.meta.url).href));
+const source=readFileSync(new URL('../lib/game-view.ts',import.meta.url),'utf8').replaceAll("'./game.ts'",JSON.stringify(new URL('../lib/game.ts',import.meta.url).href));
 const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText;
 const {actionPreview,weekPreview,snapshotIsCurrent}=await import('data:text/javascript;base64,'+Buffer.from(code).toString('base64'));
 const actions=allActions.filter(a=>!a.modernOnly);

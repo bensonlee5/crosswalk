@@ -44,3 +44,85 @@
 @media(max-width:380px){.game-activity-grid{grid-template-columns:1fr}.game-activity-grid button{display:grid;grid-template-columns:100px minmax(0,1fr);gap:10px}.game-activity-grid .activity-thumbnail{height:100%;min-height:94px;aspect-ratio:auto}.game-activity-grid .activity-copy{padding:3px 0}.game-location-dialog .game-scene-banner{height:175px}}
 .ledger-action-painting{width:100%;height:125px;object-fit:cover;object-position:center 60%;border:1px solid #b8a474;margin:0 0 12px}
 @media(max-height:650px){.ledger-action-painting{height:85px}}
+/* A pocket field guide, set into the same paper and brass as the game. */
+.game-tutorial{position:absolute;z-index:12;right:88px;bottom:114px;width:min(390px,calc(100% - 32px));max-height:calc(100dvh - 250px);overflow:auto;background:var(--cw-grain),#f3e7c9;color:#2b4331;border:2px solid #8c7446;border-radius:2px;box-shadow:0 0 0 3px #304c35,0 10px 35px #0f241970;padding:15px 17px;scrollbar-gutter:stable}.tutorial-eyebrow{display:flex;align-items:center;gap:7px;font:700 11px/1.4 Arial,sans-serif;letter-spacing:.08em;color:#55623d;padding-right:33px;min-height:27px}.tutorial-dismiss{position:absolute;right:4px;top:4px;width:44px;height:44px;display:grid;place-items:center;color:#405337;background:transparent;border:0}.game-tutorial h2{font:700 23px/1.15 Georgia,serif;margin:5px 0 8px;letter-spacing:-.025em;outline:none}.game-tutorial p{font:16px/1.42 Georgia,serif;margin:0 0 11px;color:#3b5138}.tutorial-actions{display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap}.tutorial-actions button{min-height:44px;font:700 14px/1.25 Arial,sans-serif;padding:9px 12px;border-radius:1px}.tutorial-primary,.tutorial-rules-replay{border:1px solid #ad9257;background:#355439;color:#fff0cd}.tutorial-secondary{color:#425736;background:transparent;border:0;text-decoration:underline;text-underline-offset:3px}.tutorial-actions button:disabled{opacity:.5;cursor:not-allowed}.game-tutorial .tutorial-pause{font:14px/1.4 Arial,sans-serif;color:#6c5133;border-left:2px solid #b19757;padding-left:9px}.tutorial-inline{position:relative;inset:auto;width:100%;max-height:none;margin:14px 0 18px;padding:13px 16px;box-shadow:2px 3px 0 #bcad83;border:1px solid #a48c54;flex-shrink:0}.tutorial-inline h2{font-size:22px}.tutorial-inline .tutorial-eyebrow{font-size:11px}.tutorial-rules-replay{min-height:44px;padding:10px 15px;margin-bottom:15px;font-size:16px}.tutorial-start-note{color:#5e6e4d!important;font:14px/1.4 Arial,sans-serif!important;margin:8px 0 14px!important}.game-tutorial button:focus-visible,.tutorial-rules-replay:focus-visible{outline:3px solid #8c4826;outline-offset:3px}.game-tutorial h2:focus-visible{outline:2px solid #8c7446;outline-offset:4px}.game-screen[data-tutorial=resources] .game-resource-row,.game-screen[data-tutorial=travel] .game-tools-button,.game-screen[data-tutorial=paths] .game-player-badge,.game-screen[data-tutorial=neighbors] .game-board-button,.game-screen[data-tutorial=weather] .game-news-button,.game-screen[data-tutorial=week] .game-end-button{outline:3px solid #fbe5a4;outline-offset:5px}.game-place-list [data-place=WORK]{scroll-margin-top:20px}
+@media(max-width:760px){.game-tutorial{right:12px;left:12px;bottom:108px;width:auto;max-height:calc(100dvh - 300px);padding:12px 14px}.game-tutorial h2{font-size:21px}.game-tutorial p{font-size:16px;line-height:1.35}.tutorial-inline{left:auto;right:auto;bottom:auto;width:100%;max-height:none;margin-top:12px}.tutorial-actions{gap:2px 8px}.tutorial-actions button{padding:9px 10px}.tutorial-eyebrow{font-size:10px}.game-screen:has(>.game-tutorial) .game-status{display:none}}
+@media(max-height:620px) and (min-width:761px){.game-tutorial{max-height:calc(100dvh - 200px);bottom:103px;width:360px}}
+@media(prefers-reduced-motion:reduce){.game-tutorial *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:760px) and (max-height:500px){.game-tutorial:not(.tutorial-inline){left:auto;right:12px;bottom:96px;width:min(350px,calc(100% - 24px));max-height:calc(100dvh - 112px)}.tutorial-inline{max-height:none}}
+/* Invitations belong to the town: chalk, cloth, tickets and notes, not a new quest layer. */
+[data-material]{--place-accent:#7b8051;--place-paper:#eee3c7}
+[data-material=chalk]{--place-accent:#355e4c;--place-paper:#e0e4ce}
+[data-material=blueprint]{--place-accent:#4f6c78;--place-paper:#dce5df}
+[data-material=book]{--place-accent:#936b49;--place-paper:#eee0c3}
+[data-material=notebook]{--place-accent:#79628b;--place-paper:#e9dfdd}
+[data-material=ticket]{--place-accent:#9b594a;--place-paper:#efdbcb}
+[data-material=leaf]{--place-accent:#6b8050;--place-paper:#e1e4c9}
+[data-material=gingham]{--place-accent:#a36845;--place-paper:#eee0c4}
+[data-material=route]{--place-accent:#527d83;--place-paper:#dce5df}
+[data-material=ledger]{--place-accent:#576e85;--place-paper:#e2e5da}
+[data-material=linen]{--place-accent:#998053;--place-paper:#f0e6cb}
+[data-material=pinboard]{--place-accent:#967641;--place-paper:#eee1c3}
+.game-location-dialog[data-material]{border-color:var(--place-accent)!important}
+.game-location-dialog[data-material] .game-scene-banner{border-bottom-color:var(--place-accent)}
+.game-location-dialog[data-material] .interaction-heading{color:var(--place-accent)}
+.place-welcome{padding:13px 0 0;position:relative}
+.place-welcome>p{font:17px/1.4 Georgia,serif;color:#46533b;margin:0;max-width:760px}
+.place-neighbor{display:flex;align-items:center;gap:11px;margin-top:13px;padding:10px 12px;border-left:3px solid var(--place-accent);background:var(--cw-grain),var(--place-paper)}
+.place-neighbor>img{width:43px;height:51px;object-fit:cover;border:1px solid #a18b61}
+.place-neighbor>span{flex:1;min-width:0}
+.place-neighbor strong{display:block;font:700 13px/1.35 Arial,sans-serif;color:#3d513d}
+.place-neighbor small{display:block;font:14px/1.4 Georgia,serif;margin-top:3px;color:#4c583f}
+.place-neighbor button,.place-next-step button{min-height:44px;display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 10px;color:#344c39;border:1px solid #a89465;background:#f2e8ce;font:700 12px Arial,sans-serif;flex-shrink:0}
+.game-activity-grid .activity-benefit{font:12px/1.4 Arial,sans-serif;display:block;margin:5px 0;color:#566744}
+.game-action-preview .choice-benefit{display:block;font:700 19px/1.3 Georgia,serif;color:#405b3d;margin:0 0 9px}
+.game-action-preview>.choice-terms{display:flex;flex-direction:column;gap:5px;margin:13px 0;padding:11px 12px;border-left:3px solid var(--place-accent);background:var(--place-paper)}
+.game-action-preview>.choice-terms>span{background:none;border:0;padding:0;font:14px/1.45 Arial,sans-serif;display:block;color:#3e4c37}
+.choice-terms>strong{font:700 14px/1.5 Arial,sans-serif;color:#7d432c;margin-top:4px}
+.place-next-step{background:#e1e4c8;border:1px solid #a7af7e;padding:12px 13px;margin:13px 0}
+.place-next-step>strong{font:700 17px/1.3 Georgia,serif;color:#344e36}
+.place-next-step p{font:14px/1.4 Georgia,serif;color:#4c5e40;margin:5px 0 8px}
+.place-invitations{margin:15px 0 20px;color:#344b36}
+.invitation-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.invitation-heading>span{font:700 15px Georgia,serif}
+.invitation-heading>small{font:11px Arial,sans-serif;color:#647253}
+.invitation-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.invitation-list button{display:flex;flex-direction:column;align-items:flex-start;min-width:0;text-align:left;padding:12px 13px;background:var(--cw-grain),var(--place-paper);border:1px solid #aa9467;border-top:3px solid var(--place-accent);box-shadow:2px 3px 0 #344b3529;color:#304a37;min-height:44px}
+.invitation-list button:hover{filter:brightness(1.035)}
+.invitation-list button:focus-visible,.place-neighbor button:focus-visible,.place-next-step button:focus-visible{outline:3px solid #8c4826;outline-offset:3px}
+.invitation-list button:disabled{opacity:.6;cursor:not-allowed}
+.invitation-list small{font:10px/1.25 Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#5c6848;margin-bottom:5px}
+.invitation-list strong{font:700 17px/1.15 Georgia,serif}
+.invitation-list span{font:12px/1.35 Arial,sans-serif;color:#59684c;margin-top:6px}
+.invitation-list em{display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;font:11px/1.3 Arial,sans-serif;color:#455b3b;margin-top:auto;padding-top:8px}
+.map-invitations{position:absolute;z-index:5;left:50%;transform:translateX(-50%);bottom:153px;width:min(720px,calc(100% - 190px));margin:0}
+.map-invitations .invitation-heading{padding:4px 10px;background:#213e31e8;border:1px solid #ad9560;margin:0 0 5px;color:#f3e6bb}
+.map-invitations .invitation-heading>span{font-size:12px}
+.map-invitations .invitation-heading>small{color:#d0d6b9;font-size:10px}
+.map-invitations .invitation-list button{padding:9px 11px;box-shadow:1px 2px 0 #28433266}
+.map-invitations .invitation-list strong{font-size:16px}
+.map-invitations .invitation-list span{font-size:11px;line-height:1.3}
+.game-place-list button[data-material]{border-left:3px solid var(--place-accent);padding-left:10px}
+.game-place-list small{line-height:1.4}
+@media(max-width:760px){
+ .map-invitations{left:12px;right:12px;bottom:135px;transform:none;width:auto}
+ .map-invitations .invitation-list{display:flex;overflow-x:auto;gap:8px;padding:2px 2px 5px;scroll-snap-type:x proximity;scrollbar-width:thin}
+ .map-invitations .invitation-list button{flex:0 0 min(225px,68vw);scroll-snap-align:start}
+ .map-invitations .invitation-list span{display:none}
+ .map-invitations .invitation-list strong{font-size:15px}
+ .place-invitations:not(.map-invitations) .invitation-list{grid-template-columns:1fr}
+ .place-invitations:not(.map-invitations) .invitation-list button{padding:11px 13px}
+ .place-welcome>p{font-size:16px}
+ .place-neighbor{flex-wrap:wrap;padding:9px}
+ .place-neighbor>span{min-width:140px}
+ .place-neighbor button{margin-left:54px}
+ .game-action-preview>.choice-terms{margin:11px 0}
+ .game-action-detail{scroll-margin-top:16px}
+}
+@media(max-height:630px){.map-invitations{display:none}}
+.game-interaction-columns{grid-template-areas:'choices detail'}
+.game-activity-grid{grid-area:choices}
+.game-action-detail{grid-area:detail}
+@media(max-width:760px) and (max-height:720px){.map-invitations{right:72px}}
+/* Let the full benefit and price wrap instead of shrinking the card inside its scroll area. */
+.game-activity-grid button{flex-shrink:0}

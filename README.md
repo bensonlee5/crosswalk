@@ -110,3 +110,23 @@ Additional checks: `node tests/weather.test.mjs`, `node tests/artwork.test.mjs`,
 All 74 gameplay actions now have an explicitly mapped oil-painted scene and optimized selectable thumbnail, including all neighbor chapters, the shared garden and weekly opportunity variants. The update adds 57 individually generated paintings and 84 small thumbnails. Costs, outcomes and lock reasons remain accessible live text. The public art catalogue contains 102 full paintings plus the thumbnails, loaded on demand.
 
 Run `node tests/action-artwork.test.mjs` for complete action-to-asset coverage, seasonal and pre-weather opportunity subjects, distinct scene bytes and thumbnail budgets. See [action-art verification](docs/ACTION-ART-VERIFICATION.md).
+
+### Learn-as-you-play tutorial
+
+New players are offered a short, optional field guide after the first Chronicle. It teaches resources, free travel, previewing and trying an activity, life paths, neighbors, seasonal news and the end-week bill review. The suggested first stop is The Shift; players may choose any legal activity or continue without acting.
+
+- Skip at any point and replay from the game menu or How to play. Replaying never resets or recreates a game, buys anything or pays bills.
+- Tutorial progress is versioned, device-local and separate from saved rooms. Interrupted guidance resumes after reload; existing saves do not receive a new automatic invitation.
+- Instructions live inside the active Places/activity menu rather than covering its controls. News, handoff and bill dialogs temporarily hide the guide. Keyboard controls, visible focus, reduced motion and small-screen scrolling are supported.
+- Classic and pre-weather saves receive rules-appropriate copy. The tutorial changes no game rules, balance, assets or server data.
+- `node tests/tutorial.test.mjs` checks progression, event guards, skip/replay, interruption handling, save isolation and the suggested first activity. `node tests/tutorial-ui.test.mjs` checks rendered lessons and hook persistence, replay, repeated clicks and blocked browser storage.
+
+### Places as invitations
+
+Each of the 15 destinations now has its own promise, short arrival scene and material accent. Arriving selects a legal, relevant activity without reordering or hiding the full catalogue. A newcomer starts at home with a free reset, and at The Workshop with craft practice; explicit activity links still allow inspection of locked choices.
+
+- Up to three optional invitations use current eligibility, resources, weather allowances, skill/craft unlocks and neighbor chapters. They take the player to a preview, never spend resources automatically, and yield to the tutorial.
+- Choice previews lead with the benefit, then show time, upfront cost, gross income and net gain where relevant, energy/skill/social requirements, and remaining cash. A studio move explicitly shows its $705 ongoing weekly bills.
+- Neighbor presence and small post-action links suggest a next chapter or newly unlocked role. They never promise a ninth week or fabricate opening hours, scarcity or weather closures.
+- Existing rules, saves, all 74 actions, artwork, turn order and tutorial behavior are unchanged. The selected action appears first on small screens while the full activity list keeps its stable order.
+- `node tests/place-invitations.test.mjs` checks 1,000 classic/weather/resource states and all action previews. `node tests/place-invitations-ui.test.mjs` checks rendered copy, guards, preview ordering and non-mutating rendering.
