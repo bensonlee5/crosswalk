@@ -23,6 +23,6 @@ for(const round of [7,8]){
  const before=player('Neighbor'),p={...before,stories:{mina:1},storyWeeks:{mina:round}};
  const g={code:'QA0001',round,maxRounds:8,players:[p],turn:0,status:'playing'};
  if(round===8){assert.doesNotMatch(neighborAtPlace(p,'CORNER CAFÉ',g).text,/next week/);assert.equal(afterChoiceInvitation(before,p,g),null);}
- else{assert.match(neighborAtPlace(p,'CORNER CAFÉ',g).text,/next week/);assert.match(afterChoiceInvitation(before,p,g).reason,/next week/);}
+ else{assert.match(neighborAtPlace(p,'CORNER CAFÉ',g).text,/other plans just now/);assert.match(afterChoiceInvitation(before,p,g).reason,/shared a good moment/);}
 }
 console.log(`PASS: ${cases} classic/modern activity previews: nonnegative remaining time, exact missing-block copy, unchanged cost and game state; final-week invitations stay honest.`);

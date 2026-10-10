@@ -1,4 +1,5 @@
 'use client';
+import {qualitativeText} from '@/lib/point-presentation';
 import type {Game,Player} from '@/lib/game';
 import {economyMonthLabel} from '@/lib/economy';
 import {getStoryView} from '@/lib/story-arcs';
@@ -12,7 +13,7 @@ export function StoryTimeline({g,p,actorId}:{g:Game;p:Player;actorId?:string}){
  const view=getStoryView(g,p);if(!view.enabled)return null;
  const receipts=view.recap.filter(r=>!actorId||r.characterIds.some(id=>id===actorId));
  if(!receipts.length)return null;
- return <details className="story-timeline"><summary>The story so far <span>{receipts.length} remembered choice{receipts.length===1?'':'s'}</span></summary><ol>{[...receipts].sort((a,b)=>b.week-a.week).map(r=><li key={r.id}><small>{economyMonthLabel(g,r.week).toUpperCase()}</small><strong>{r.title}</strong><p>{r.outcome||r.body}</p>{r.body&&r.outcome&&r.body!==r.outcome&&<p className="encounter-callback">{r.body}</p>}</li>)}</ol></details>;
+ return <details className="story-timeline"><summary>The story so far <span>{receipts.length} remembered choice{receipts.length===1?'':'s'}</span></summary><ol>{[...receipts].sort((a,b)=>b.week-a.week).map(r=><li key={r.id}><small>{economyMonthLabel(g,r.week).toUpperCase()}</small><strong>{r.title}</strong><p>{qualitativeText(r.outcome||r.body)}</p>{r.body&&r.outcome&&r.body!==r.outcome&&<p className="encounter-callback">{qualitativeText(r.body)}</p>}</li>)}</ol></details>;
 }
 
 /** One next chapter on the game surface, never an unrelated global action catalog. */

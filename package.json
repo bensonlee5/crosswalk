@@ -15,7 +15,9 @@
     "test:backend": "node --experimental-strip-types --test tests/supabase-backend.test.mjs",
     "typecheck:backend": "tsc --noEmit -p tsconfig.backend.json",
     "check:edge": "deno check --node-modules-dir=manual --cached-only --config supabase/functions/crosswalk-game/deno.json supabase/functions/crosswalk-game/index.ts",
-    "check:engine": "node scripts/verify-engine-copy.mjs"
+    "check:engine": "node scripts/verify-engine-copy.mjs",
+    "guide:build": "node scripts/build-guide.mjs",
+    "guide:check": "node scripts/build-guide.mjs --check"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

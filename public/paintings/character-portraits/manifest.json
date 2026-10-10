@@ -1,0 +1,682 @@
+[
+  {
+    "id": "akira_mori",
+    "name": "Akira Mori",
+    "src": "/paintings/character-portraits/akira_mori.webp",
+    "alt": "Akira Mori, swept-back gray hair, speaking with an open hand in a brown coat and red scarf.",
+    "bytes": 127906,
+    "width": 640,
+    "height": 640,
+    "sha256": "3d3c129fe643690de6da493067a787522393c549ce2a2433a57470447a6a7757"
+  },
+  {
+    "id": "alder_rowan",
+    "name": "Rowan",
+    "src": "/paintings/character-portraits/alder_rowan.webp",
+    "alt": "Painted portrait of Rowan, age 39, librarian & volunteer gardener.",
+    "bytes": 90214,
+    "width": 640,
+    "height": 640,
+    "sha256": "07ff8965633561045d1fb0353d470f3c900927e7e72ae0d63d56edbc2de734a4"
+  },
+  {
+    "id": "alder_tess",
+    "name": "Tess",
+    "src": "/paintings/character-portraits/alder_tess.webp",
+    "alt": "Portrait of Tess: dotted hairband, checks, charcoal apron.",
+    "bytes": 115628,
+    "width": 640,
+    "height": 640,
+    "sha256": "e363fe0492440df24b4c4cef1a74bdd91dfdadc944d23066734aac1808fe2cf7"
+  },
+  {
+    "id": "amir_odhiambo",
+    "name": "Amir Odhiambo",
+    "src": "/paintings/character-portraits/amir_odhiambo.webp",
+    "alt": "Amir Odhiambo, short natural curls and headphones around his neck, looking aside in a gray jacket and purple shirt.",
+    "bytes": 117948,
+    "width": 640,
+    "height": 640,
+    "sha256": "2476fec3f375676e85479f9a9aae100132722d0f011da5a87b29df663aa983c5"
+  },
+  {
+    "id": "anil_arul",
+    "name": "Anil Arul",
+    "src": "/paintings/character-portraits/anil_arul.webp",
+    "alt": "Anil Arul, silver hair and a mustache, lifting his hands in a small dance gesture while wearing a pale blue short-sleeved shirt.",
+    "bytes": 146726,
+    "width": 640,
+    "height": 640,
+    "sha256": "5205cb0d9e8bfb6b119426a751598d4e49a1f5f28b1c47b0289231bdbd40c282"
+  },
+  {
+    "id": "asha",
+    "name": "Asha",
+    "src": "/paintings/character-portraits/asha.webp",
+    "alt": "Portrait of Asha: color-block hoodie, denim, leaf patch.",
+    "bytes": 121820,
+    "width": 640,
+    "height": 640,
+    "sha256": "cfaa24dc9a9c7f56c85c5980aa150eb7d1ea55bee0e823d64fe85574b8420951"
+  },
+  {
+    "id": "bea",
+    "name": "Bea",
+    "src": "/paintings/character-portraits/bea.webp",
+    "alt": "Painted portrait of Bea, age 2, toddler & curious cup-stacker.",
+    "bytes": 95218,
+    "width": 640,
+    "height": 640,
+    "sha256": "a2fd3fa59c44be633980ba8f7d31bee1089e673fe474d5871997dd5469f63773"
+  },
+  {
+    "id": "bram",
+    "name": "Bram",
+    "src": "/paintings/character-portraits/bram.webp",
+    "alt": "Portrait of Bram with a level closed mouth, a subtly querying brow and an assessing off-center gaze, wearing a blue scarf and dark work coat on a lamplit night street.",
+    "bytes": 77168,
+    "width": 640,
+    "height": 640,
+    "sha256": "d6e62cc3366e2b598decc178bfe5fa9d14b5bf728470fdc181306c487937f317"
+  },
+  {
+    "id": "celia_baptiste",
+    "name": "Celia Baptiste",
+    "src": "/paintings/character-portraits/celia_baptiste.webp",
+    "alt": "Celia Baptiste, silver curls and a plum coat, grinning sideways while holding a domino.",
+    "bytes": 119166,
+    "width": 640,
+    "height": 640,
+    "sha256": "d3da0d7a03b7d03bf57c87feeb857868a6ff37e9816cbdf05ee396ff2fcb404a"
+  },
+  {
+    "id": "dahlia_baptiste",
+    "name": "Dahlia Baptiste",
+    "src": "/paintings/character-portraits/dahlia_baptiste.webp",
+    "alt": "Portrait of Dahlia Baptiste with an upright head, attentive eyes and lips parted in a question, wearing a rust-red weather jacket beside the Alder waterfront.",
+    "bytes": 114554,
+    "width": 640,
+    "height": 640,
+    "sha256": "b43db24497c3282ee2fe347f5f1e03c58a45cb6b2cba4e37385fdf8ba44d8f1b"
+  },
+  {
+    "id": "dara_arul",
+    "name": "Dara Arul",
+    "src": "/paintings/character-portraits/dara_arul.webp",
+    "alt": "Portrait of Dara Arul with a restrained wry smile and a level attentive gaze, wearing an olive rain jacket over a plum hoodie and holding her backpack strap.",
+    "bytes": 103794,
+    "width": 640,
+    "height": 640,
+    "sha256": "6bdf5f9e40274fbf6011f0347c56f088084d0b9a543c7b4184a4af0f5fe97ce5"
+  },
+  {
+    "id": "eli",
+    "name": "Eli",
+    "src": "/paintings/character-portraits/eli.webp",
+    "alt": "Portrait of Eli: bucket hat, quilted vest, striped henley.",
+    "bytes": 119204,
+    "width": 640,
+    "height": 640,
+    "sha256": "69079c02d36e25fa84dcbd919a888b230859253b689a373e92d206eb89aec3db"
+  },
+  {
+    "id": "esperanza_vega",
+    "name": "Esperanza Vega",
+    "src": "/paintings/character-portraits/esperanza_vega.webp",
+    "alt": "Esperanza Vega in a straw hat, mustard overshirt and hoop earrings, leaning on an arm with a sideways smile.",
+    "bytes": 129028,
+    "width": 640,
+    "height": 640,
+    "sha256": "400327d9d4be014756c9cd6bbf78eb890c302ec036ee35e3bbe428ef8f2a6f4e"
+  },
+  {
+    "id": "eun_park",
+    "name": "Eun Park",
+    "src": "/paintings/character-portraits/eun_park.webp",
+    "alt": "Eun Park, dark shoulder-length hair streaked with gray, looking upward in a navy coat and green scarf.",
+    "bytes": 132194,
+    "width": 640,
+    "height": 640,
+    "sha256": "cedf9602d470f98c8dc371cdce58d3d19552fd2b85c050a54bf2e7f55212bbbc"
+  },
+  {
+    "id": "farah_hussain",
+    "name": "Farah Hussain",
+    "src": "/paintings/character-portraits/farah_hussain.webp",
+    "alt": "Farah Hussain, short gray-streaked curls, glancing sideways in a rust blouse and pale blue scarf.",
+    "bytes": 129144,
+    "width": 640,
+    "height": 640,
+    "sha256": "8a55001e3c2bd0247bda2da7d77609c95e8e7bddd87b07feffa850ab1f8caae8"
+  },
+  {
+    "id": "glass_pavel",
+    "name": "Pavel",
+    "src": "/paintings/character-portraits/glass_pavel.webp",
+    "alt": "Painted portrait of Pavel, age 70, reading-garden caretaker.",
+    "bytes": 112552,
+    "width": 640,
+    "height": 640,
+    "sha256": "21de95c071116860ce1efd080760b274235bc58816eae2f862e1c2cb399af7ed"
+  },
+  {
+    "id": "glass_ren",
+    "name": "Ren",
+    "src": "/paintings/character-portraits/glass_ren.webp",
+    "alt": "Painted portrait of Ren, age 26, rail conductor.",
+    "bytes": 112792,
+    "width": 640,
+    "height": 640,
+    "sha256": "2010bf86880ebb1ae996c109f3157517d34ad802bd4dfe4ccec1fe5d34500d22"
+  },
+  {
+    "id": "glass_sora",
+    "name": "Sora",
+    "src": "/paintings/character-portraits/glass_sora.webp",
+    "alt": "Painted portrait of Sora, age 30, copper repairer.",
+    "bytes": 86152,
+    "width": 640,
+    "height": 640,
+    "sha256": "d20702c1fdccdaf2056514d64756d598e2d07a9fa6f488fadf015701ba497574"
+  },
+  {
+    "id": "hana_mori",
+    "name": "Hana Mori",
+    "src": "/paintings/character-portraits/hana_mori.webp",
+    "alt": "Portrait of Hana Mori: knit cap, fleece and weather shell.",
+    "bytes": 116942,
+    "width": 640,
+    "height": 640,
+    "sha256": "68206a1426b084cfa190f446a10f3b4c5a078085465397c2cc7d78c9e1c5d774"
+  },
+  {
+    "id": "hugo",
+    "name": "Hugo",
+    "src": "/paintings/character-portraits/hugo.webp",
+    "alt": "Painted portrait of Hugo, age 36, early-shift baker.",
+    "bytes": 116312,
+    "width": 640,
+    "height": 640,
+    "sha256": "7d6a479577b44ce6d39a9fb6693c47ab00c976e4b17aa477e5b32fd75575b7fe"
+  },
+  {
+    "id": "imani_baptiste",
+    "name": "Imani Baptiste",
+    "src": "/paintings/character-portraits/imani_baptiste.webp",
+    "alt": "Imani Baptiste, short natural curls and a sideways glance, holding a printing frame in a dark overshirt and coral top.",
+    "bytes": 126944,
+    "width": 640,
+    "height": 640,
+    "sha256": "6e1fb7971d6c535cba125e4510025e63ae53be5847a2ca5ea733c3cba9067bfe"
+  },
+  {
+    "id": "ines_valdes",
+    "name": "Inés Valdés",
+    "src": "/paintings/character-portraits/ines_valdes.webp",
+    "alt": "Inés Valdés, gray-streaked curls and pearl earrings, tilting her head in a plum blouse and light patterned shawl.",
+    "bytes": 133148,
+    "width": 640,
+    "height": 640,
+    "sha256": "3b6783d8383ee5312f0240547c160da663973adc485cbb78135aa7bc3bc90e3c"
+  },
+  {
+    "id": "jian_wu",
+    "name": "Jian Wu",
+    "src": "/paintings/character-portraits/jian_wu.webp",
+    "alt": "Portrait of seventeen-year-old Jian Wu with an attentive sideways gaze and lips parted in a lively discussion, wearing a green jacket and backpack beside his zine pages and bicycle.",
+    "bytes": 91734,
+    "width": 640,
+    "height": 640,
+    "sha256": "6bb5e8c2655c6d345a72e6d43f1751e7eb710d042a87abce5bdc424ee9f8d776"
+  },
+  {
+    "id": "jiwoo_park",
+    "name": "Jiwoo Park",
+    "src": "/paintings/character-portraits/jiwoo_park.webp",
+    "alt": "Jiwoo Park, a dark bob and an animated open-mouth smile, gesturing with both hands in a blue jacket and red scarf.",
+    "bytes": 130234,
+    "width": 640,
+    "height": 640,
+    "sha256": "5fe6ad03bcae6f1ebb45d1c32ed71484fd0ef1b866f3a67bde051c2d4176323a"
+  },
+  {
+    "id": "jo",
+    "name": "Jo",
+    "src": "/paintings/character-portraits/jo.webp",
+    "alt": "Painted portrait of Jo, age 54, repairer & maker.",
+    "bytes": 128110,
+    "width": 640,
+    "height": 640,
+    "sha256": "8933e8fab5487b695a73f8a557a779d5fec559d86f118ce9d8a95f8ab0727bc8"
+  },
+  {
+    "id": "jonah_bell",
+    "name": "Jonah Bell",
+    "src": "/paintings/character-portraits/jonah_bell.webp",
+    "alt": "Jonah Bell, short twists and a trimmed beard, gesturing with one hand in a dark jacket and yellow shirt.",
+    "bytes": 97706,
+    "width": 640,
+    "height": 640,
+    "sha256": "e7a284c5ecf04a474da9a0f19045a6ac72fea17800828e97cd446f994d40f7c5"
+  },
+  {
+    "id": "kamala_arul",
+    "name": "Kamala Arul",
+    "src": "/paintings/character-portraits/kamala_arul.webp",
+    "alt": "Kamala Arul, silver hair pulled back, resting a hand on a curved walking stick in pale blue and cream layers.",
+    "bytes": 145566,
+    "width": 640,
+    "height": 640,
+    "sha256": "248de7d57e1c22f0264afada5d92390b2e63f63f77d945ee84350f5c34ca6341"
+  },
+  {
+    "id": "kit",
+    "name": "Kit",
+    "src": "/paintings/character-portraits/kit.webp",
+    "alt": "Painted portrait of Kit, age 28, diner dishwasher & comic artist.",
+    "bytes": 108340,
+    "width": 640,
+    "height": 640,
+    "sha256": "da716fbb5a8b442cc8ee1a65d0b779d61e26eeedf4757715d9b6a74df89086c4"
+  },
+  {
+    "id": "lata_rao",
+    "name": "Lata Rao",
+    "src": "/paintings/character-portraits/lata_rao.webp",
+    "alt": "Lata Rao, a long dark braid over one shoulder, holding a folded jacket while wearing a pale green shirt.",
+    "bytes": 116948,
+    "width": 640,
+    "height": 640,
+    "sha256": "cf574926ed126b5ac1254aae391401d312523f14527c949714a3738e3c0ef25b"
+  },
+  {
+    "id": "liang_chen",
+    "name": "Liang Chen",
+    "src": "/paintings/character-portraits/liang_chen.webp",
+    "alt": "Liang Chen, short gray hair and a broad lined face, looking aside in a dark coat and burgundy sweater.",
+    "bytes": 130656,
+    "width": 640,
+    "height": 640,
+    "sha256": "d23c500ab9074fa89d7a912b673e0180f3edc6d9049786103c0603f60c41b26e"
+  },
+  {
+    "id": "lin",
+    "name": "Lin",
+    "src": "/paintings/character-portraits/lin.webp",
+    "alt": "Portrait of seven-year-old Lin looking upward with curious bright eyes and an open mouth mid-explanation, wearing a yellow raincoat over a blue shirt.",
+    "bytes": 95880,
+    "width": 640,
+    "height": 640,
+    "sha256": "1b5e3b9bed4d1af580f87de1147c368fe88ab1cc5839420bdff0b933d0822872"
+  },
+  {
+    "id": "lucien_morel",
+    "name": "Lucien Morel",
+    "src": "/paintings/character-portraits/lucien_morel.webp",
+    "alt": "Lucien Morel, short gray hair and a mustache, looking sideways across a chess table in a dark coat.",
+    "bytes": 114884,
+    "width": 640,
+    "height": 640,
+    "sha256": "afd4ba5edd75c9030c4ebcaf4273106c77f3b3d9e847df7d72558e7f4958c39f"
+  },
+  {
+    "id": "luz_vega",
+    "name": "Luz Vega",
+    "src": "/paintings/character-portraits/luz_vega.webp",
+    "alt": "Luz Vega, shaggy dark hair and an upward curious look, holding a rolled star chart in a pale olive jacket.",
+    "bytes": 128382,
+    "width": 640,
+    "height": 640,
+    "sha256": "e8622140a5efc9461ca1999f6cfc1e8129b46761ec055f5a6333b46b56f019d8"
+  },
+  {
+    "id": "malik_reed",
+    "name": "Malik Reed",
+    "src": "/paintings/character-portraits/malik_reed.webp",
+    "alt": "Malik Reed, a shaved head and salt-and-pepper beard, looking sideways in a green work jacket and dark sweater.",
+    "bytes": 132218,
+    "width": 640,
+    "height": 640,
+    "sha256": "db676396d02c347872a56773b17aca96abf0dbaad06eab7d348c902f2d468aea"
+  },
+  {
+    "id": "mateo_moreno",
+    "name": "Mateo Moreno",
+    "src": "/paintings/character-portraits/mateo_moreno.webp",
+    "alt": "Mateo Moreno in a broad-brimmed sun hat and dusty blue shirt, looking upward with a fleece folded over one arm.",
+    "bytes": 118966,
+    "width": 640,
+    "height": 640,
+    "sha256": "6e38857e8de1fcb140bdaabdf328bccebbfd754a3d55d6848b5587ee236a5ea0"
+  },
+  {
+    "id": "mei_chen",
+    "name": "Mei Chen",
+    "src": "/paintings/character-portraits/mei_chen.webp",
+    "alt": "Portrait of Mei Chen: cobalt knit, silver brooch and studs.",
+    "bytes": 127030,
+    "width": 640,
+    "height": 640,
+    "sha256": "32e107b4075948887a649eefb66ca9dcbb72b041df2f7157cacb6af0524d2e02"
+  },
+  {
+    "id": "mesa_inez",
+    "name": "Inez",
+    "src": "/paintings/character-portraits/mesa_inez.webp",
+    "alt": "Portrait of Inez with a composed level mouth, one slightly raised eyebrow and a steady gaze, wearing glasses, a straw hat, cream scarf and green blouse in the lending library.",
+    "bytes": 114244,
+    "width": 640,
+    "height": 640,
+    "sha256": "1ab488c7705c6b76dc60ce4de3db629b7ff06f73eecacfcade4dc88186ce54de"
+  },
+  {
+    "id": "mesa_june",
+    "name": "June",
+    "src": "/paintings/character-portraits/mesa_june.webp",
+    "alt": "Painted portrait of June, age 60, diner cook, bicycle repairer & station announcer.",
+    "bytes": 127484,
+    "width": 640,
+    "height": 640,
+    "sha256": "31301f2cff97e963288277756c6a4f2e3ef227f8a6042cff1cfd28fc639167e7"
+  },
+  {
+    "id": "min_park",
+    "name": "Min Park",
+    "src": "/paintings/character-portraits/min_park.webp",
+    "alt": "Min Park, dark swept hair and a raised brow, leaning back slightly in a steel-blue work jacket and rust sweater.",
+    "bytes": 122760,
+    "width": 640,
+    "height": 640,
+    "sha256": "f6e7ca72f65abedcb15b2b56c53c537a257c7928fe5a7ab6c87ec60f37b0b0c8"
+  },
+  {
+    "id": "mina",
+    "name": "Mina",
+    "src": "/paintings/character-portraits/mina.webp",
+    "alt": "Portrait of Mina: satin blouse, charcoal knit, gold pendant.",
+    "bytes": 99862,
+    "width": 640,
+    "height": 640,
+    "sha256": "5fa8bc1ccbfc4726d15e7934d5b7f3ae1ab769a0f0bd15f4e89f41674e797b4a"
+  },
+  {
+    "id": "miro",
+    "name": "Miro",
+    "src": "/paintings/character-portraits/miro.webp",
+    "alt": "Painted portrait of Miro, age 62, retired signal painter & shadow-comedy maker.",
+    "bytes": 86208,
+    "width": 640,
+    "height": 640,
+    "sha256": "756fd13744839d5c31a630693ffc7379f35414a562a7cb88cc39e360fac76c2c"
+  },
+  {
+    "id": "natsumi_mori",
+    "name": "Natsumi Mori",
+    "src": "/paintings/character-portraits/natsumi_mori.webp",
+    "alt": "Natsumi Mori, dark hair in loose braids, holding a fox puppet close while wearing a lavender coat and striped sweater.",
+    "bytes": 140102,
+    "width": 640,
+    "height": 640,
+    "sha256": "6a3e12c4b9e9b9065086b7579dca80d69e865b2d7984bef8fe7ea5bd228df64c"
+  },
+  {
+    "id": "nell_harper",
+    "name": "Nell Harper",
+    "src": "/paintings/character-portraits/nell_harper.webp",
+    "alt": "Portrait of Nell Harper with bright attentive eyes and lips parted at the start of a question, wearing dark outdoor layers and a backpack strap in a railway town.",
+    "bytes": 108672,
+    "width": 640,
+    "height": 640,
+    "sha256": "8dd6eff4531b2c892c37916a522b3ec74af319e62ceaaae54ddfc1f34881bb4a"
+  },
+  {
+    "id": "neri",
+    "name": "Neri",
+    "src": "/paintings/character-portraits/neri.webp",
+    "alt": "Painted portrait of Neri, age 29, map restorer.",
+    "bytes": 79548,
+    "width": 640,
+    "height": 640,
+    "sha256": "e9cac67e62c3785a2fc7bfd750107e2ab1cbfb1d569e56ffbf1f2b79cdb8ac71"
+  },
+  {
+    "id": "nico",
+    "name": "Nico",
+    "src": "/paintings/character-portraits/nico.webp",
+    "alt": "Painted portrait of Nico, age 9, elementary-school child & leaf-shape collector.",
+    "bytes": 133900,
+    "width": 640,
+    "height": 640,
+    "sha256": "883aeb4427d593fece735c0d86b18f06f67872c324d18fad2b3b1c742c8f6723"
+  },
+  {
+    "id": "nila_desai",
+    "name": "Nila Desai",
+    "src": "/paintings/character-portraits/nila_desai.webp",
+    "alt": "Nila Desai, curly dark hair tied up, looking intently sideways in an ochre overshirt with a dark top and bag strap.",
+    "bytes": 129900,
+    "width": 640,
+    "height": 640,
+    "sha256": "8f553424053b9ddd786677a8526e90afee71c05012d02aed4ddd71060468206d"
+  },
+  {
+    "id": "noel_baptiste",
+    "name": "Noel Baptiste",
+    "src": "/paintings/character-portraits/noel_baptiste.webp",
+    "alt": "Noel Baptiste, short curls and a bright yellow raincoat, pointing at a paper boat held in the other hand.",
+    "bytes": 122414,
+    "width": 640,
+    "height": 640,
+    "sha256": "fd2f7d6ca1269b572aaeb1e10d7ce3ecc8e172c1f505399f6512ecfeaee97e5b"
+  },
+  {
+    "id": "oliver_harper",
+    "name": "Oliver Harper",
+    "src": "/paintings/character-portraits/oliver_harper.webp",
+    "alt": "Oliver Harper, tousled copper hair and light stubble, looking aside in a navy work jacket and gray sweater.",
+    "bytes": 123080,
+    "width": 640,
+    "height": 640,
+    "sha256": "25704485e652bfa0966130401d08eb493f5606a5cd4b5ad6089438ab08462cb4"
+  },
+  {
+    "id": "oren",
+    "name": "Oren",
+    "src": "/paintings/character-portraits/oren.webp",
+    "alt": "Oren seated in his miniature-theatre workshop, wearing glasses and a patterned cardigan, with sparse scalp hair and eyebrows and tired eyes.",
+    "bytes": 87426,
+    "width": 640,
+    "height": 640,
+    "sha256": "397ecc0aedc501aec9365dec9d0186af21ff736d73e2f02bedb910ba4ee496a4"
+  },
+  {
+    "id": "pelagia_esme",
+    "name": "Esme",
+    "src": "/paintings/character-portraits/pelagia_esme.webp",
+    "alt": "Painted portrait of Esme, age 72, neighborhood archivist.",
+    "bytes": 91898,
+    "width": 640,
+    "height": 640,
+    "sha256": "c552829f1fad1f0f1d0e718d57b90c23822c997fa2e232004884d15a6de7e439"
+  },
+  {
+    "id": "pelagia_lio",
+    "name": "Lio",
+    "src": "/paintings/character-portraits/pelagia_lio.webp",
+    "alt": "Portrait of Lio with a small closed-mouth smile and calm attentive eyes, wearing a cream shirt and red apron beside the harbor broth stall.",
+    "bytes": 95476,
+    "width": 640,
+    "height": 640,
+    "sha256": "8adfe9c92b8d3bd491bdff736153335339267ec487f725dc57c662e52706c991"
+  },
+  {
+    "id": "pelagia_mara",
+    "name": "Mara",
+    "src": "/paintings/character-portraits/pelagia_mara.webp",
+    "alt": "Painted portrait of Mara, age 45, flood-gate engineer.",
+    "bytes": 111778,
+    "width": 640,
+    "height": 640,
+    "sha256": "55438ba968d791c763d93011b06c99649f1b88db3b0837c14354fcac653e4af8"
+  },
+  {
+    "id": "pelagia_tavi",
+    "name": "Tavi",
+    "src": "/paintings/character-portraits/pelagia_tavi.webp",
+    "alt": "Painted portrait of Tavi, age 24, raised-garden grower.",
+    "bytes": 126886,
+    "width": 640,
+    "height": 640,
+    "sha256": "ccc4c113314dff2738387ff645dc34d5e37efeb67e92bb7cd3d30ca7eec0c2f8"
+  },
+  {
+    "id": "priya",
+    "name": "Priya",
+    "src": "/paintings/character-portraits/priya.webp",
+    "alt": "Painted portrait of Priya, age 68, retired weather observer.",
+    "bytes": 113190,
+    "width": 640,
+    "height": 640,
+    "sha256": "fd779fdfd23a1f798e893d42255fe8f78c01219c9b52754965934c694b2cfa8e"
+  },
+  {
+    "id": "qiao_chen",
+    "name": "Qiao Chen",
+    "src": "/paintings/character-portraits/qiao_chen.webp",
+    "alt": "Qiao Chen, a short dark haircut with gray strands, glancing aside in a burgundy padded vest and navy sweater.",
+    "bytes": 123730,
+    "width": 640,
+    "height": 640,
+    "sha256": "64a48f5206860b7cac0079e1ff83badb32b6476b134537c223302546c1985a5b"
+  },
+  {
+    "id": "rafael_valdes",
+    "name": "Rafael Valdés",
+    "src": "/paintings/character-portraits/rafael_valdes.webp",
+    "alt": "Portrait of Rafael Valdés with an attentive upward glance and a relaxed closed mouth, wearing a pale blue open-collar shirt and holding a straw hat under a canopy.",
+    "bytes": 121200,
+    "width": 640,
+    "height": 640,
+    "sha256": "c7053997a7023ce8602f35159e89c95015da381cba75c5edb2653b3c7f2b15bc"
+  },
+  {
+    "id": "ravi_desai",
+    "name": "Ravi Desai",
+    "src": "/paintings/character-portraits/ravi_desai.webp",
+    "alt": "Ravi Desai, salt-and-pepper hair and beard, gesturing mid-conversation in a beige jacket and teal shirt.",
+    "bytes": 117822,
+    "width": 640,
+    "height": 640,
+    "sha256": "fbad2d0ad3ef6b66fd06692de2b24ae4068c1eb043743024b61e657bce312ebb"
+  },
+  {
+    "id": "rosa_moreno",
+    "name": "Rosa Moreno",
+    "src": "/paintings/character-portraits/rosa_moreno.webp",
+    "alt": "Rosa Moreno, curly white hair and a broad laugh, resting her cheek on one hand beside a radio.",
+    "bytes": 113480,
+    "width": 640,
+    "height": 640,
+    "sha256": "782df06925af99232c8b64e2f6d6654dbbccb208bf8b52cd94cf2399c8fc385b"
+  },
+  {
+    "id": "ruth_harper",
+    "name": "Ruth Harper",
+    "src": "/paintings/character-portraits/ruth_harper.webp",
+    "alt": "Ruth Harper, softly waved gray hair and a blue cardigan, holding her glasses beside her cheek.",
+    "bytes": 137374,
+    "width": 640,
+    "height": 640,
+    "sha256": "e5b564a51c30aaa3d0336a66e351908833d279e26f956187dbb39d8322adf3ba"
+  },
+  {
+    "id": "saffron_ada",
+    "name": "Ada",
+    "src": "/paintings/character-portraits/saffron_ada.webp",
+    "alt": "Painted portrait of Ada, age 35, community cinema organizer.",
+    "bytes": 83072,
+    "width": 640,
+    "height": 640,
+    "sha256": "cdf5eac03ce75cbd32b170570e24b08449f84655fa174ff881f14c28646054b6"
+  },
+  {
+    "id": "saffron_leila",
+    "name": "Leila",
+    "src": "/paintings/character-portraits/saffron_leila.webp",
+    "alt": "Portrait of Leila: work hairband, stripes, indigo apron.",
+    "bytes": 108492,
+    "width": 640,
+    "height": 640,
+    "sha256": "5f18dd7f00b3e06345bc81f101dd1b7f11a40b31808c7652a8c1b7da1ded256a"
+  },
+  {
+    "id": "saffron_tomas",
+    "name": "Tomas",
+    "src": "/paintings/character-portraits/saffron_tomas.webp",
+    "alt": "Painted portrait of Tomas, age 39, canal mechanic.",
+    "bytes": 119682,
+    "width": 640,
+    "height": 640,
+    "sha256": "2c63a8199ac8c80b4acc19710149aec0b4a025e0f1d45f4ca732ce2c045098d7"
+  },
+  {
+    "id": "safia_odhiambo",
+    "name": "Safia Odhiambo",
+    "src": "/paintings/character-portraits/safia_odhiambo.webp",
+    "alt": "Safia Odhiambo, short silver curls and earrings, folding her hands beneath her chin in a turquoise blouse.",
+    "bytes": 128450,
+    "width": 640,
+    "height": 640,
+    "sha256": "2e991aa423f35f32e48b2928ba5450f97d95cc6680d24640ed79498de9a7ce66"
+  },
+  {
+    "id": "sami",
+    "name": "Sami",
+    "src": "/paintings/character-portraits/sami.webp",
+    "alt": "Portrait of Sami with a small crooked closed-mouth smile and a curious sideways gaze, in a green collarless shirt beside painted canal tiles.",
+    "bytes": 103962,
+    "width": 640,
+    "height": 640,
+    "sha256": "33ddb46d64c8f6d1e7c6d3e7d6367cc74b2f1b13c0c7ff01adc1882b1359abb1"
+  },
+  {
+    "id": "sefu",
+    "name": "Sefu",
+    "src": "/paintings/character-portraits/sefu.webp",
+    "alt": "Portrait of Sefu: light striped shirt, small hoop and cord.",
+    "bytes": 93550,
+    "width": 640,
+    "height": 640,
+    "sha256": "3cebc405ba88092a79e6d7a2474eb5d3bb15f9d0b3f21f340e679fb0290331c5"
+  },
+  {
+    "id": "solange_morel",
+    "name": "Solange Morel",
+    "src": "/paintings/character-portraits/solange_morel.webp",
+    "alt": "Solange Morel, gray-streaked dark curls and a guarded sideways look, wearing a teal coat over a blue-gray blouse.",
+    "bytes": 113224,
+    "width": 640,
+    "height": 640,
+    "sha256": "77a1c5b21c8cfd67579d512bea3ee46d24b91d9b28a3e6e8472f29f32848156d"
+  },
+  {
+    "id": "vera_valdes",
+    "name": "Vera Valdés",
+    "src": "/paintings/character-portraits/vera_valdes.webp",
+    "alt": "Portrait of fourteen-year-old Vera Valdés looking down with absorbed curiosity at the blue game box held against her pale green overshirt, with a backpack strap over one shoulder.",
+    "bytes": 123364,
+    "width": 640,
+    "height": 640,
+    "sha256": "dc8a8d315bb01eea54abfafd7645cf2d4fee3a64565278c72561968f67bafaa5"
+  },
+  {
+    "id": "yuna_park",
+    "name": "Yuna Park",
+    "src": "/paintings/character-portraits/yuna_park.webp",
+    "alt": "Painted portrait of Yuna Park, age 37, community radio host.",
+    "bytes": 110306,
+    "width": 640,
+    "height": 640,
+    "sha256": "4f09d00eed281867c2ea77dcdbfdd3f1612a6fefb9fa5da0b2dd227966920789"
+  }
+]

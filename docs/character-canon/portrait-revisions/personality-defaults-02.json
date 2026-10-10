@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "batch": "personality-defaults-02",
+  "canonicalBaseCommit": "73e1adeaec6c2691503c72d740b6931a2eb456e0",
+  "sourceGuideSha256": "cfd56da7ef6c445f87c0ffba681889523cc7b74b31c77c64c220b14350bbc3f2",
+  "personalityProfilesSha256": "8290a4ef23b218815fda48f550a95ae7303f7bf9b7d7d8ac61ca7b377587c5b1",
+  "familyGraphSha256": "b89127b4ac3f08f5bd39786d429031bb0ad3eb49e47bd7c1318b25b2ab0dddaf",
+  "preserveUnlistedAssets": true,
+  "portraits": [
+    {
+      "id": "dahlia_baptiste",
+      "name": "Dahlia",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "05732e9d505709a4ae44fbc8fb5383e5548b737a5886304ae5f970e374eb73b3",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "d40f60cd95cd6d9c4eb2895cd8988fafcca7d3c4254522ec9ccb3d7b35a0ab37",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2468532
+      },
+      "runtime": {
+        "sha256": "b43db24497c3282ee2fe347f5f1e03c58a45cb6b2cba4e37385fdf8ba44d8f1b",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 114554
+      },
+      "portraitAlt": "Portrait of Dahlia Baptiste with an upright head, attentive eyes and lips parted in a question, wearing a rust-red weather jacket beside the Alder waterfront.",
+      "defaultBrief": "Dahlia, 42, is a decisive parcel-depot supervisor and sociable track-club runner who leads with useful action and protects her own ambitions. Her current portrait catches a sharp interruption; change the default to composed readiness to hear a useful objection: upright poised head, direct attentive gaze, brows separated and only lightly lifted in a specific question, jaw relaxed, lips just parted as if asking 'What are we deciding today?' Keep purposeful energy and candid authority, with a hint of easy sociability in the eyes. No knitted angry brow, pained confusion, scowl, customer-service grin or submissive sweetness.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Dahlia, 42, is a decisive parcel-depot supervisor and sociable track-club runner who leads with useful action and protects her own ambitions. Her current portrait catches a sharp interruption; change the default to composed readiness to hear a useful objection: upright poised head, direct attentive gaze, brows separated and only lightly lifted in a specific question, jaw relaxed, lips just parted as if asking 'What are we deciding today?' Keep purposeful energy and candid authority, with a hint of easy sociability in the eyes. No knitted angry brow, pained confusion, scowl, customer-service grin or submissive sweetness. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories/props. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Face shape, skin, salt-flecked updo, age42, gold hoops and rust-red shell retained. Subtle opening of eyes and reduction of knitted tension shifts a sharp interruption toward composed questioning; retains authority.",
+      "review": "Root inspected labeled eight-person comparison and approved second-four integration. Dahlia/Rafael/Nell edits are intentionally subtle."
+    },
+    {
+      "id": "vera_valdes",
+      "name": "Vera",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "b68eb771b74019b3693bc01375736c4e9d491a899cd65cc260b924488e250d65",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "b08c3622b462da236b9ce33311986d04b5141841a695ded38f625f7c7c67e5ad",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2674871
+      },
+      "runtime": {
+        "sha256": "dc8a8d315bb01eea54abfafd7645cf2d4fee3a64565278c72561968f67bafaa5",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 123364
+      },
+      "portraitAlt": "Portrait of fourteen-year-old Vera Valdés looking down with absorbed curiosity at the blue game box held against her pale green overshirt, with a backpack strap over one shoulder.",
+      "defaultBrief": "Vera is fourteen, a school tabletop-game enthusiast who asks pointed questions about rules and wants a fair chance to win. Her current wary upward side-eye reads like her losing-a-game stress response. Change the default to a teen actively puzzling over an interesting move: gaze slightly downward toward the game box she already holds, gently intent eyes, lightly lifted inner brow, lips softly parted in the beginning of a concrete question with a tiny incipient pleased corner. Relax the disapproving squint. She is absorbed and opinionated, not a prodigy, sulking stereotype, seductively mature adult or little child. Keep her exact adolescent face, age, existing clothes, strap, hairclip and game box.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Vera is fourteen, a school tabletop-game enthusiast who asks pointed questions about rules and wants a fair chance to win. Her current wary upward side-eye reads like her losing-a-game stress response. Change the default to a teen actively puzzling over an interesting move: gaze slightly downward toward the game box she already holds, gently intent eyes, lightly lifted inner brow, lips softly parted in the beginning of a concrete question with a tiny incipient pleased corner. Relax the disapproving squint. She is absorbed and opinionated, not a prodigy, sulking stereotype, seductively mature adult or little child. Keep her exact adolescent face, age, existing clothes, strap, hairclip and game box. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories/props. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Adolescent facial proportions, curly hair and clip, skin, blue game box, pale-green overshirt and strap remain. Downward absorbed gaze, relaxed brow and beginning of speech are meaningfully distinct from wary side-eye. No adultization.",
+      "review": "Root inspected labeled eight-person comparison and approved second-four integration. Dahlia/Rafael/Nell edits are intentionally subtle."
+    },
+    {
+      "id": "rafael_valdes",
+      "name": "Rafael",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "f5d14217eb7a31e065690e127cf37b9f4454c75b72f8d5e70026e797dab53181",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "91ea6781e2b8fa831b55ae605d760994e57e7008a9f19b2f17bfbefdf83a016b",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2637390
+      },
+      "runtime": {
+        "sha256": "c7053997a7023ce8602f35159e89c95015da381cba75c5edb2653b3c7f2b15bc",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 121200
+      },
+      "portraitAlt": "Portrait of Rafael Valdés with an attentive upward glance and a relaxed closed mouth, wearing a pale blue open-collar shirt and holding a straw hat under a canopy.",
+      "defaultBrief": "Rafael is a 47-year-old shade-canopy installer, sociable at gatherings but happily absorbed in careful physical work and swimming. His current deeply furrowed skeptical side-eye overstates hostility. Change to unhurried practical attention: gaze follows an imagined fitting a little above and near the viewer without extreme side-eye, brow smooth except one small concentration crease, mouth relaxed almost level with quiet ease, head angle comfortable and assured. Let the warmth appear in relaxed eyes rather than a posed smile. He feels physically grounded, calmly checking a real thing, not grim, flirtatious, sleepy or vacant. Preserve existing shirt and hat at the bottom of the crop.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Rafael is a 47-year-old shade-canopy installer, sociable at gatherings but happily absorbed in careful physical work and swimming. His current deeply furrowed skeptical side-eye overstates hostility. Change to unhurried practical attention: gaze follows an imagined fitting a little above and near the viewer without extreme side-eye, brow smooth except one small concentration crease, mouth relaxed almost level with quiet ease, head angle comfortable and assured. Let the warmth appear in relaxed eyes rather than a posed smile. He feels physically grounded, calmly checking a real thing, not grim, flirtatious, sleepy or vacant. Preserve existing shirt and hat at the bottom of the crop. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories/props. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Rafael's facial proportions,47-year-old age cues, curls, stubble, shirt, hat, broad build and canopy retained. Subtle gaze and brow refinement reads more physically attentive, less suspicious; not a wholesale redesign.",
+      "review": "Root inspected labeled eight-person comparison and approved second-four integration. Dahlia/Rafael/Nell edits are intentionally subtle."
+    },
+    {
+      "id": "nell_harper",
+      "name": "Nell",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "9b4c4d74142914f6acb36bd4a2388532ee8bb4b14f68bd5f2bfb30509892167f",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "60a06bd70ce74797b3241d5c1f498d5642fed4def43b463d87c836b8b9acb4d5",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2477455
+      },
+      "runtime": {
+        "sha256": "8dd6eff4531b2c892c37916a522b3ec74af319e62ceaaae54ddfc1f34881bb4a",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 108672
+      },
+      "portraitAlt": "Portrait of Nell Harper with bright attentive eyes and lips parted at the start of a question, wearing dark outdoor layers and a backpack strap in a railway town.",
+      "defaultBrief": "Nell is a 25-year-old traveling acoustic survey technician and drummer, direct, spontaneous and eager to try a promising opening, with disciplined work and independent choices. The current skeptical furrow looks like a family disagreement. Change her default to alert exploratory momentum: eyes wider and bright with active interest looking a little past the viewer toward a newly heard sound, brows lightly raised without knitting, mouth slightly open at the start of a quick practical question, a small lively asymmetry rather than a grin, shoulders turned forward a little as if ready to move. Candid and self-possessed, not dreamy, fearful, disdainful or a generic bubbly hostess. Preserve exact freckles, red hair, face shape, outdoor layers and backpack strap.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Nell is a 25-year-old traveling acoustic survey technician and drummer, direct, spontaneous and eager to try a promising opening, with disciplined work and independent choices. The current skeptical furrow looks like a family disagreement. Change her default to alert exploratory momentum: eyes wider and bright with active interest looking a little past the viewer toward a newly heard sound, brows lightly raised without knitting, mouth slightly open at the start of a quick practical question, a small lively asymmetry rather than a grin, shoulders turned forward a little as if ready to move. Candid and self-possessed, not dreamy, fearful, disdainful or a generic bubbly hostess. Preserve exact freckles, red hair, face shape, outdoor layers and backpack strap. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories/props. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Freckles, red curls,25-year-old face, outdoor layers, strap and railway setting retained. Small gaze/head shift and more open eyes add exploratory alertness; overall identity and baseline remain stable.",
+      "review": "Root inspected labeled eight-person comparison and approved second-four integration. Dahlia/Rafael/Nell edits are intentionally subtle."
+    }
+  ]
+}

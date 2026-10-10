@@ -56,6 +56,10 @@ before(async () => {
     const index = tokens.indexOf(token);
     return index < 0 ? null : { id: users[index], role: 'authenticated', is_anonymous: true };
   } });
+  if (process.env.CROSSWALK_TEST_BUNDLE) {
+    const { bundledHandler } = await import('./support/bundled-handler.mjs');
+    handler = await bundledHandler(process.env.CROSSWALK_TEST_BUNDLE, { rpc, users, tokens, origin });
+  }
 });
 beforeEach(async () => {
   await asOwner('truncate crosswalk_private.rooms, crosswalk_private.room_members, crosswalk_private.request_receipts, crosswalk_private.participating_users; update auth.users set is_anonymous = true, email_confirmed_at = null;');
@@ -285,11 +289,95 @@ test('duplicate completing between receipt lookup and state read still replays s
   assert.equal(result.status, 200); assert.equal((await result.json()).version, 1);
 });
 
-test('engine bundle matches the verified v34 source snapshot', async () => {
+test('engine bundle matches the verified source snapshot', async () => {
   const base = new URL('../supabase/functions/_shared/engine/', import.meta.url);
   const manifest = JSON.parse(await readFile(new URL('../supabase/functions/_shared/engine-manifest.json', import.meta.url), 'utf8'));
   for (const file of await readdir(base)) {
     if (!file.endsWith('.ts')) continue;
     assert.equal(createHash('sha256').update(await readFile(new URL(file, base))).digest('hex'), manifest.sha256[file], file);
   }
+});
+
+test('new cast schedules are server-authored; saved retries do not reroll or spend twice', async () => {
+  const {castPeople} = await import('../supabase/functions/_shared/engine/character-cast.ts');
+  const first = await post(0, {op:'create',mode:'hotseat',names:['First'],castVersion:999,historyVersion:999,cast:{schedule:{}}});
+  assert.equal(first.status,200);
+  let room = first.body;
+  assert.equal(room.castVersion,1);
+  assert.equal(room.historyVersion,1);
+  assert.deepEqual(Object.keys(room.cast.schedule),[String(room.round)]);
+  const schedule=structuredClone(room.cast.schedule);
+  const person=castPeople(room,room.players[0])[0];
+  assert.ok(person);
+  const arrived=await move(0,room,'visit',crypto.randomUUID(),person.spot);
+  assert.equal(arrived.status,200);room=arrived.body;
+  const choice=castPeople(room,room.players[0]).find(c=>c.id===person.id).choices.find(c=>c.available);
+  assert.ok(choice);
+  const actionId=crypto.randomUUID(),before=room.players[0].hours;
+  const applied=await move(0,room,choice.id,actionId);
+  assert.equal(applied.status,200);
+  assert.equal(applied.body.players[0].hours,before-choice.cost.time);
+  assert.equal(applied.body.players[0].cast.receipts.length,1);
+  const replay=await move(0,room,choice.id,actionId);
+  assert.equal(replay.status,200);
+  assert.equal(replay.body.players[0].cast.receipts.length,1);
+  assert.equal(replay.body.players[0].hours,applied.body.players[0].hours);
+  assert.deepEqual(replay.body.cast.schedule,schedule);
+  const fresh=await call(0,null,`?code=${room.code}`);
+  assert.deepEqual(fresh.body.cast.schedule,schedule);
+  assert.equal(fresh.body.lifeSeed,undefined);
+});
+
+test('online cast views hide future appearances and another seat’s relationship memories', async () => {
+  const {castPeople}=await import('../supabase/functions/_shared/engine/character-cast.ts');
+  const created=await create(0,'online');
+  const joined=await join(1,created.body.code);
+  const started=await post(0,{op:'start',code:created.body.code,version:joined.body.version});
+  assert.equal(started.status,200);
+  let room=started.body;
+  assert.ok(room.players[0].cast);
+  assert.equal(room.players[1].cast,undefined);
+  const npc=castPeople(room,room.players[0])[0];
+  room=(await move(0,room,'visit',crypto.randomUUID(),npc.spot)).body;
+  const c=castPeople(room,room.players[0]).find(c=>c.id===npc.id).choices.find(c=>c.available);
+  room=(await move(0,room,c.id)).body;
+  assert.equal(room.players[0].cast.receipts.length,1);
+  const other=(await call(1,null,`?code=${room.code}`)).body;
+  assert.equal(other.players[0].cast,undefined);
+  assert.equal(other.players[0].castRedacted,true);
+  assert.notEqual(other.players[1].castRedacted,true);
+  const privateReceipt=room.players[0].cast.receipts[0];
+  assert.ok(!JSON.stringify(other).includes(privateReceipt.outcome),'private conversation outcome must not leak through the shared log');
+  assert.ok(other.players[1].cast);
+  assert.deepEqual(other.cast,room.cast);
+  const observed=castPeople(other,other.players[0]);
+  assert.ok(observed.every(c=>c.status==='Relationship private'&&c.choices.length===0&&c.memories.length===0));
+  assert.deepEqual(Object.keys(other.cast.schedule),['1']);
+  const authoritative=await store.read(users[0],room.code);
+  assert.equal(Object.keys(authoritative.state.cast.schedule).length,8);
+  assert.equal(authoritative.state.players[0].cast.receipts.length,1);
+  room=(await move(0,room,'end')).body;
+  room=(await move(1,room,'end')).body;
+  assert.equal(room.round,2);
+  assert.deepEqual(Object.keys(room.cast.schedule),['2']);
+  assert.deepEqual(room.cast.schedule[2],authoritative.state.cast.schedule[2]);
+});
+
+
+test('authoritative motive exchanges persist once, ignore forged flags and redact private state',async()=>{
+ const {castPeople}=await import('../supabase/functions/_shared/engine/character-cast.ts');
+ const {motiveScene}=await import('../supabase/functions/_shared/engine/character-motives.ts');
+ const created=await post(0,{op:'create',mode:'online',name:'Motive owner',motivesVersion:999});
+ assert.equal(created.body.motivesVersion,1);assert.deepEqual(created.body.players[0].motives.bonds,{});
+ const joined=await join(1,created.body.code);
+ let room=(await post(0,{op:'start',code:created.body.code,version:joined.body.version})).body;
+ const npc=castPeople(room,room.players[0])[0];room=(await move(0,room,'visit',crypto.randomUUID(),npc.spot)).body;
+ const intro=castPeople(room,room.players[0]).find(c=>c.id===npc.id).choices.find(c=>c.available);room=(await move(0,room,intro.id)).body;
+ const choice=motiveScene(room,room.players[0],npc.id).choices.find(c=>c.key==='press'),requestId=crypto.randomUUID();
+ const applied=await move(0,room,choice.id,requestId),replay=await move(0,room,choice.id,requestId);
+ assert.equal(applied.status,200);assert.deepEqual(replay.body,applied.body);assert.equal(applied.body.players[0].motives.receipts.length,1);
+ const other=(await call(1,null,`?code=${room.code}`)).body;
+ assert.equal(other.players[0].motives,undefined);assert.equal(other.players[0].castRedacted,true);assert.ok(other.players[1].motives);
+ assert.ok(!JSON.stringify(other).includes(applied.body.players[0].motives.receipts[0].outcome));
+ const reload=(await call(0,null,`?code=${room.code}`)).body;assert.deepEqual(reload.players[0].motives,applied.body.players[0].motives);
 });

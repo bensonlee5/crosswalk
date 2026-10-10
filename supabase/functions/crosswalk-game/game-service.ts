@@ -1,3 +1,5 @@
+import {initializeMotivesPlayer} from '../_shared/engine/character-motives.ts';
+import { initializeCast, initializeCastPlayer, castMemberFields } from '../_shared/engine/character-cast.ts';
 import { initializeEconomyPlayer } from '../_shared/engine/economy.ts';
 import { initializeStory, initializeStoryPlayer } from '../_shared/engine/story-arcs.ts';
 import { player, move, createEnvironment, currentBalanceVersion } from '../_shared/engine/game.ts';
@@ -82,7 +84,7 @@ export const fingerprint = (command: Mutation) => digest(JSON.stringify(command)
 export function memberView(room: RoomRow, actor: string) {
   const { members, host, seen, lifeSeed, lifeSchedule, creationRequestId, ...safe } = room.state;
   if (!members[actor]?.length) throw new GameError(403, 'This identity does not own a seat in this room');
-  return { ...safe, mine: members[actor], isHost: host === actor, version: room.version };
+  return { ...safe, ...castMemberFields(room.state,members[actor]), mine: members[actor], isHost: host === actor, version: room.version };
 }
 export function roomView(room: RoomRow, actor: string) {
   if (room.state.members[actor]?.length) return memberView(room, actor);
@@ -97,7 +99,7 @@ export function createGame(command: Mutation, code: string): SavedGame {
     members: { [actor]: players.map(p => p.id) }, players,
     status: command.mode === 'hotseat' ? 'playing' : 'lobby', round: 1, turn: 0,
     maxRounds: 8, log: ['Welcome to Crosswalk. Make room for a good life.'], seen: [], event: 0,
-    rulesVersion: 2, lifeVersion: 1, worldVersion: 1, storyVersion: 1, economyVersion: 1,
+    rulesVersion: 2, lifeVersion: 1, worldVersion: 1, storyVersion: 1, economyVersion: 1, castVersion: 1, historyVersion: 1, motivesVersion: 1, characterCanonVersion: 1, climateVersion: 1, regionalLifeVersion: 1,
     balanceVersion: currentBalanceVersion, turnsTaken: 0, ...createEnvironment(),
   };
   for (const p of g.players) initializeEconomyPlayer(p, { ...g, status: 'lobby' });
@@ -105,6 +107,7 @@ export function createGame(command: Mutation, code: string): SavedGame {
   for (const p of g.players) initializeWorldPlayer(p);
   initializeSharedWorld(g);
   initializeStory(g);
+  initializeCast(g);for(const p of g.players)initializeMotivesPlayer(g,p);
   return g;
 }
 function applyCommand(room: RoomRow, command: Mutation): SavedGame {
@@ -116,6 +119,7 @@ function applyCommand(room: RoomRow, command: Mutation): SavedGame {
     if (g.rulesVersion !== 2) { delete p.rulesVersion; delete p.craft; delete p.legacy; delete p.stories; delete p.storyWeeks; }
     if (g.lifeVersion === 1) { initializeLifePlayer(p); if (g.worldVersion === 1) initializeWorldPlayer(p); }
     if (g.storyVersion === 1) { initializeEconomyPlayer(p, g); initializeStoryPlayer(p); }
+    initializeCastPlayer(g,p);initializeMotivesPlayer(g,p);
     g.players.push(p);
     if (g.storyVersion === 1) initializeStoryWorldPlayer(g, p);
     g.members[actor] = [p.id];

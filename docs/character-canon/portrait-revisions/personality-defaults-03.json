@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "batch": "personality-defaults-03",
+  "canonicalBaseCommit": "73e1adeaec6c2691503c72d740b6931a2eb456e0",
+  "sourceGuideSha256": "cfd56da7ef6c445f87c0ffba681889523cc7b74b31c77c64c220b14350bbc3f2",
+  "personalityProfilesSha256": "8290a4ef23b218815fda48f550a95ae7303f7bf9b7d7d8ac61ca7b377587c5b1",
+  "familyGraphSha256": "b89127b4ac3f08f5bd39786d429031bb0ad3eb49e47bd7c1318b25b2ab0dddaf",
+  "preserveUnlistedAssets": true,
+  "portraits": [
+    {
+      "id": "dara_arul",
+      "name": "Dara",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "fe19784abb4a820f4dc2129280f90720733b1f2fd4c26413ecb2289e087e96c9",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "6cac2e02f99dc7eeabc572a8f429727b1341394c893e550322bab0a2d22e26f7",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2519979
+      },
+      "runtime": {
+        "sha256": "6bdf5f9e40274fbf6011f0347c56f088084d0b9a543c7b4184a4af0f5fe97ce5",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 103794
+      },
+      "portraitAlt": "Portrait of Dara Arul with a restrained wry smile and a level attentive gaze, wearing an olive rain jacket over a plum hoodie and holding her backpack strap.",
+      "defaultBrief": "Dara is 39, an exact and understated payroll clerk who wants her effort and ambition recognized; trusted football teammates hear a quicker mischievous voice. The current high-chin sideways look makes a stress-state grievance the default. Change to quietly self-possessed, wry engagement: chin level, gaze nearer the viewer, brow relaxed, one small amused corner at the closed lips as if offering a dry remark to a familiar teammate. The smile is restrained and knowing rather than camera-ready; shoulders less braced while her existing hand remains on her strap. Her reserve and competence remain, alongside visible personal humor. Not submissive, angry, glamorous or suddenly effusive.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Dara is 39, an exact and understated payroll clerk who wants her effort and ambition recognized; trusted football teammates hear a quicker mischievous voice. The current high-chin sideways look makes a stress-state grievance the default. Change to quietly self-possessed, wry engagement: chin level, gaze nearer the viewer, brow relaxed, one small amused corner at the closed lips as if offering a dry remark to a familiar teammate. The smile is restrained and knowing rather than camera-ready; shoulders less braced while her existing hand remains on her strap. Her reserve and competence remain, alongside visible personal humor. Not submissive, angry, glamorous or suddenly effusive. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories/props. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Same39-year-old face, skin, dark tied-back hair, rain shell, plum hoodie, hand and strap retained. Slight leveling of chin and small amused mouth corner brings out private humor without erasing reserve.",
+      "review": "Root inspected final-three comparison and approved all three for integration, explicitly confirming Lin age/identity."
+    },
+    {
+      "id": "jian_wu",
+      "name": "Jian Wu",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "e756055c75eb59d827ded3f4a19ccad05e12955d9620e754f43b313abbf76f92",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "c18a122c8283cfa247abb7dbbe18f9da942c24e2716e27bd23baa43a4b442dd8",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2306214
+      },
+      "runtime": {
+        "sha256": "6bb5e8c2655c6d345a72e6d43f1751e7eb710d042a87abce5bdc424ee9f8d776",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 91734
+      },
+      "portraitAlt": "Portrait of seventeen-year-old Jian Wu with an attentive sideways gaze and lips parted in a lively discussion, wearing a green jacket and backpack beside his zine pages and bicycle.",
+      "defaultBrief": "Jian Wu is seventeen, a student who draws zines and enjoys playful arguments over cover choices with friends while preserving his own opinion. Replace the current knitted-brow sidelong withdrawal with a lively but contained moment of explaining his preferred cover: look just beside the viewer toward a peer, eyes focused and curious, brows unknitted with one slightly lifted, lips gently parted and one barely amused corner, head slightly raised from the pages. He is interested and quietly opinionated, still a believable teen, not a permanently sulking stereotype or an adult professional. Retain exact seventeen-year-old facial proportions, hair, skin, clothing, backpack strap, existing pages at the bottom and bicycle backdrop. Do not add mature facial hair or makeup.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Jian Wu is seventeen, a student who draws zines and enjoys playful arguments over cover choices with friends while preserving his own opinion. Replace the current knitted-brow sidelong withdrawal with a lively but contained moment of explaining his preferred cover: look just beside the viewer toward a peer, eyes focused and curious, brows unknitted with one slightly lifted, lips gently parted and one barely amused corner, head slightly raised from the pages. He is interested and quietly opinionated, still a believable teen, not a permanently sulking stereotype or an adult professional. Retain exact seventeen-year-old facial proportions, hair, skin, clothing, backpack strap, existing pages at the bottom and bicycle backdrop. Do not add mature facial hair or makeup. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories/props. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Teenage age and face, hair, green jacket, mustard shirt, strap, pages and bicycle remain. Relaxed brow and beginning of a playful question replace the fixed guarded mouth; retains creative opinion and vulnerability.",
+      "review": "Root inspected final-three comparison and approved all three for integration, explicitly confirming Lin age/identity."
+    },
+    {
+      "id": "lin",
+      "name": "Lin",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "b0594ac5b6a59a89e50ebcc6b3b135804f6b5fe6e133bd2fa7922903b59470ff",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "01d5efd761495a86b24e380b07a863a683e9ec3f5ed2d4c45acc8c719239ca0a",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2365537
+      },
+      "runtime": {
+        "sha256": "1b5e3b9bed4d1af580f87de1147c368fe88ab1cc5839420bdff0b933d0822872",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 95880
+      },
+      "portraitAlt": "Portrait of seven-year-old Lin looking upward with curious bright eyes and an open mouth mid-explanation, wearing a yellow raincoat over a blue shirt.",
+      "defaultBrief": "Lin is seven, an imaginative child who rearranges paper houses and eagerly announces a newly invented street name to their familiar parent. Replace the frustrated skeptical sideways expression with an earnest playful explanation: eyes attentive and a little widened with interest, gaze toward a nearby familiar adult just above the viewer, eyebrows relaxed and gently lifted, mouth slightly open mid-small announcement, a hint of delight without a forced toothy grin. Head engaged rather than withdrawn, shoulders loose. Keep child-sized spontaneity and agency. Preserve their EXACT seven-year-old facial proportions, dark tightly curled hair, skin and freckles, yellow raincoat and blue shirt, same safe portrait composition and background. Do not make them a toddler, doll, adult or miniature engineer; no new people, tools or props.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Lin is seven, an imaginative child who rearranges paper houses and eagerly announces a newly invented street name to their familiar parent. Replace the frustrated skeptical sideways expression with an earnest playful explanation: eyes attentive and a little widened with interest, gaze toward a nearby familiar adult just above the viewer, eyebrows relaxed and gently lifted, mouth slightly open mid-small announcement, a hint of delight without a forced toothy grin. Head engaged rather than withdrawn, shoulders loose. Keep child-sized spontaneity and agency. Preserve their EXACT seven-year-old facial proportions, dark tightly curled hair, skin and freckles, yellow raincoat and blue shirt, same safe portrait composition and background. Do not make them a toddler, doll, adult or miniature engineer; no new people, tools or props. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories/props. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Seven-year-old age and recognizable face, tightly curled hair, skin, freckles, yellow raincoat and blue shirt preserved. Eyes open naturally toward a caregiver and mouth beginning an imaginative explanation; childlike agency without compulsory toothy grin. Root specifically confirmed age/identity consistency.",
+      "review": "Root inspected final-three comparison and approved all three for integration, explicitly confirming Lin age/identity."
+    }
+  ]
+}

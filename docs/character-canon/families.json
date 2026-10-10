@@ -1,0 +1,1565 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "7dda8173ef65ff5b9d0b016ca586cc972c27385fd104cc2f9ac51d97f020ca19",
+  "people": [
+    {
+      "id": "mina",
+      "name": "Mina",
+      "age": 27,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "eli",
+      "name": "Eli",
+      "age": 46,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "jo",
+      "name": "Jo",
+      "age": 54,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "alder_tess",
+      "name": "Tess",
+      "age": 52,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "alder_rowan",
+      "name": "Rowan",
+      "age": 39,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "bram",
+      "name": "Bram",
+      "age": 43,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "oren",
+      "name": "Oren",
+      "age": 57,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "hugo",
+      "name": "Hugo",
+      "age": 36,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "priya",
+      "name": "Priya",
+      "age": 68,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "asha",
+      "name": "Asha",
+      "age": 15,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "nico",
+      "name": "Nico",
+      "age": 9,
+      "region": "alder",
+      "newCharacter": false
+    },
+    {
+      "id": "saffron_leila",
+      "name": "Leila",
+      "age": 44,
+      "region": "saffron",
+      "newCharacter": false
+    },
+    {
+      "id": "saffron_tomas",
+      "name": "Tomas",
+      "age": 39,
+      "region": "saffron",
+      "newCharacter": false
+    },
+    {
+      "id": "saffron_ada",
+      "name": "Ada",
+      "age": 35,
+      "region": "saffron",
+      "newCharacter": false
+    },
+    {
+      "id": "sami",
+      "name": "Sami",
+      "age": 31,
+      "region": "saffron",
+      "newCharacter": false
+    },
+    {
+      "id": "glass_ren",
+      "name": "Ren",
+      "age": 26,
+      "region": "glasssteppe",
+      "newCharacter": false
+    },
+    {
+      "id": "glass_sora",
+      "name": "Sora",
+      "age": 30,
+      "region": "glasssteppe",
+      "newCharacter": false
+    },
+    {
+      "id": "glass_pavel",
+      "name": "Pavel",
+      "age": 70,
+      "region": "glasssteppe",
+      "newCharacter": false
+    },
+    {
+      "id": "miro",
+      "name": "Miro",
+      "age": 62,
+      "region": "glasssteppe",
+      "newCharacter": false
+    },
+    {
+      "id": "mei_chen",
+      "name": "Mei Chen",
+      "age": 54,
+      "region": "glasssteppe",
+      "newCharacter": false
+    },
+    {
+      "id": "jian_wu",
+      "name": "Jian Wu",
+      "age": 17,
+      "region": "glasssteppe",
+      "newCharacter": false
+    },
+    {
+      "id": "hana_mori",
+      "name": "Hana Mori",
+      "age": 68,
+      "region": "glasssteppe",
+      "newCharacter": false
+    },
+    {
+      "id": "pelagia_mara",
+      "name": "Mara",
+      "age": 45,
+      "region": "pelagia",
+      "newCharacter": false
+    },
+    {
+      "id": "pelagia_lio",
+      "name": "Lio",
+      "age": 41,
+      "region": "pelagia",
+      "newCharacter": false
+    },
+    {
+      "id": "pelagia_esme",
+      "name": "Esme",
+      "age": 72,
+      "region": "pelagia",
+      "newCharacter": false
+    },
+    {
+      "id": "pelagia_tavi",
+      "name": "Tavi",
+      "age": 24,
+      "region": "pelagia",
+      "newCharacter": false
+    },
+    {
+      "id": "sefu",
+      "name": "Sefu",
+      "age": 49,
+      "region": "pelagia",
+      "newCharacter": false
+    },
+    {
+      "id": "lin",
+      "name": "Lin",
+      "age": 7,
+      "region": "pelagia",
+      "newCharacter": false
+    },
+    {
+      "id": "yuna_park",
+      "name": "Yuna Park",
+      "age": 37,
+      "region": "pelagia",
+      "newCharacter": false
+    },
+    {
+      "id": "mesa_june",
+      "name": "June",
+      "age": 60,
+      "region": "embermesa",
+      "newCharacter": false
+    },
+    {
+      "id": "mesa_inez",
+      "name": "Inez",
+      "age": 65,
+      "region": "embermesa",
+      "newCharacter": false
+    },
+    {
+      "id": "kit",
+      "name": "Kit",
+      "age": 28,
+      "region": "embermesa",
+      "newCharacter": false
+    },
+    {
+      "id": "bea",
+      "name": "Bea",
+      "age": 2,
+      "region": "embermesa",
+      "newCharacter": false
+    },
+    {
+      "id": "neri",
+      "name": "Neri",
+      "age": 29,
+      "region": "traveler",
+      "newCharacter": false
+    },
+    {
+      "id": "celia_baptiste",
+      "name": "Celia Baptiste",
+      "age": 74,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "dahlia_baptiste",
+      "name": "Dahlia Baptiste",
+      "age": 42,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "imani_baptiste",
+      "name": "Imani Baptiste",
+      "age": 20,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "noel_baptiste",
+      "name": "Noel Baptiste",
+      "age": 11,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "malik_reed",
+      "name": "Malik Reed",
+      "age": 44,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "ruth_harper",
+      "name": "Ruth Harper",
+      "age": 76,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "oliver_harper",
+      "name": "Oliver Harper",
+      "age": 48,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "solange_morel",
+      "name": "Solange Morel",
+      "age": 55,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "lucien_morel",
+      "name": "Lucien Morel",
+      "age": 80,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "dara_arul",
+      "name": "Dara Arul",
+      "age": 39,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "jonah_bell",
+      "name": "Jonah Bell",
+      "age": 32,
+      "region": "alder",
+      "newCharacter": true
+    },
+    {
+      "id": "ines_valdes",
+      "name": "Inés Valdés",
+      "age": 69,
+      "region": "saffron",
+      "newCharacter": true
+    },
+    {
+      "id": "rafael_valdes",
+      "name": "Rafael Valdés",
+      "age": 47,
+      "region": "saffron",
+      "newCharacter": true
+    },
+    {
+      "id": "vera_valdes",
+      "name": "Vera Valdés",
+      "age": 14,
+      "region": "saffron",
+      "newCharacter": true
+    },
+    {
+      "id": "farah_hussain",
+      "name": "Farah Hussain",
+      "age": 58,
+      "region": "saffron",
+      "newCharacter": true
+    },
+    {
+      "id": "liang_chen",
+      "name": "Liang Chen",
+      "age": 79,
+      "region": "glasssteppe",
+      "newCharacter": true
+    },
+    {
+      "id": "qiao_chen",
+      "name": "Qiao Chen",
+      "age": 50,
+      "region": "glasssteppe",
+      "newCharacter": true
+    },
+    {
+      "id": "akira_mori",
+      "name": "Akira Mori",
+      "age": 64,
+      "region": "glasssteppe",
+      "newCharacter": true
+    },
+    {
+      "id": "eun_park",
+      "name": "Eun Park",
+      "age": 66,
+      "region": "glasssteppe",
+      "newCharacter": true
+    },
+    {
+      "id": "min_park",
+      "name": "Min Park",
+      "age": 34,
+      "region": "glasssteppe",
+      "newCharacter": true
+    },
+    {
+      "id": "jiwoo_park",
+      "name": "Jiwoo Park",
+      "age": 10,
+      "region": "glasssteppe",
+      "newCharacter": true
+    },
+    {
+      "id": "natsumi_mori",
+      "name": "Natsumi Mori",
+      "age": 8,
+      "region": "glasssteppe",
+      "newCharacter": true
+    },
+    {
+      "id": "kamala_arul",
+      "name": "Kamala Arul",
+      "age": 91,
+      "region": "pelagia",
+      "newCharacter": true
+    },
+    {
+      "id": "anil_arul",
+      "name": "Anil Arul",
+      "age": 64,
+      "region": "pelagia",
+      "newCharacter": true
+    },
+    {
+      "id": "ravi_desai",
+      "name": "Ravi Desai",
+      "age": 47,
+      "region": "pelagia",
+      "newCharacter": true
+    },
+    {
+      "id": "nila_desai",
+      "name": "Nila Desai",
+      "age": 19,
+      "region": "pelagia",
+      "newCharacter": true
+    },
+    {
+      "id": "safia_odhiambo",
+      "name": "Safia Odhiambo",
+      "age": 73,
+      "region": "pelagia",
+      "newCharacter": true
+    },
+    {
+      "id": "amir_odhiambo",
+      "name": "Amir Odhiambo",
+      "age": 16,
+      "region": "pelagia",
+      "newCharacter": true
+    },
+    {
+      "id": "lata_rao",
+      "name": "Lata Rao",
+      "age": 42,
+      "region": "pelagia",
+      "newCharacter": true
+    },
+    {
+      "id": "rosa_moreno",
+      "name": "Rosa Moreno",
+      "age": 86,
+      "region": "embermesa",
+      "newCharacter": true
+    },
+    {
+      "id": "mateo_moreno",
+      "name": "Mateo Moreno",
+      "age": 35,
+      "region": "embermesa",
+      "newCharacter": true
+    },
+    {
+      "id": "esperanza_vega",
+      "name": "Esperanza Vega",
+      "age": 41,
+      "region": "embermesa",
+      "newCharacter": true
+    },
+    {
+      "id": "luz_vega",
+      "name": "Luz Vega",
+      "age": 13,
+      "region": "embermesa",
+      "newCharacter": true
+    },
+    {
+      "id": "nell_harper",
+      "name": "Nell Harper",
+      "age": 25,
+      "region": "traveler",
+      "newCharacter": true
+    }
+  ],
+  "edges": [
+    {
+      "id": "celia_baptiste__biological_parent__eli",
+      "fromId": "celia_baptiste",
+      "toId": "eli",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "celia_baptiste__biological_parent__dahlia_baptiste",
+      "fromId": "celia_baptiste",
+      "toId": "dahlia_baptiste",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "dahlia_baptiste__biological_parent__imani_baptiste",
+      "fromId": "dahlia_baptiste",
+      "toId": "imani_baptiste",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "dahlia_baptiste__biological_parent__noel_baptiste",
+      "fromId": "dahlia_baptiste",
+      "toId": "noel_baptiste",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "eli__biological_parent__asha",
+      "fromId": "eli",
+      "toId": "asha",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "ruth_harper__biological_parent__alder_tess",
+      "fromId": "ruth_harper",
+      "toId": "alder_tess",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "ruth_harper__biological_parent__oliver_harper",
+      "fromId": "ruth_harper",
+      "toId": "oliver_harper",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "alder_tess__biological_parent__nico",
+      "fromId": "alder_tess",
+      "toId": "nico",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "oliver_harper__biological_parent__nell_harper",
+      "fromId": "oliver_harper",
+      "toId": "nell_harper",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "lucien_morel__biological_parent__solange_morel",
+      "fromId": "lucien_morel",
+      "toId": "solange_morel",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "solange_morel__biological_parent__mina",
+      "fromId": "solange_morel",
+      "toId": "mina",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "kamala_arul__biological_parent__priya",
+      "fromId": "kamala_arul",
+      "toId": "priya",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "kamala_arul__biological_parent__anil_arul",
+      "fromId": "kamala_arul",
+      "toId": "anil_arul",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "priya__biological_parent__dara_arul",
+      "fromId": "priya",
+      "toId": "dara_arul",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "ines_valdes__biological_parent__rafael_valdes",
+      "fromId": "ines_valdes",
+      "toId": "rafael_valdes",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "ines_valdes__biological_parent__saffron_leila",
+      "fromId": "ines_valdes",
+      "toId": "saffron_leila",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "ines_valdes__biological_parent__saffron_tomas",
+      "fromId": "ines_valdes",
+      "toId": "saffron_tomas",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "rafael_valdes__biological_parent__vera_valdes",
+      "fromId": "rafael_valdes",
+      "toId": "vera_valdes",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "farah_hussain__biological_parent__sami",
+      "fromId": "farah_hussain",
+      "toId": "sami",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "liang_chen__biological_parent__mei_chen",
+      "fromId": "liang_chen",
+      "toId": "mei_chen",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "liang_chen__biological_parent__qiao_chen",
+      "fromId": "liang_chen",
+      "toId": "qiao_chen",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "mei_chen__biological_parent__glass_ren",
+      "fromId": "mei_chen",
+      "toId": "glass_ren",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "qiao_chen__biological_parent__jian_wu",
+      "fromId": "qiao_chen",
+      "toId": "jian_wu",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "akira_mori__biological_parent__glass_sora",
+      "fromId": "akira_mori",
+      "toId": "glass_sora",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "eun_park__biological_parent__yuna_park",
+      "fromId": "eun_park",
+      "toId": "yuna_park",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "eun_park__biological_parent__min_park",
+      "fromId": "eun_park",
+      "toId": "min_park",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "min_park__biological_parent__jiwoo_park",
+      "fromId": "min_park",
+      "toId": "jiwoo_park",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "ravi_desai__biological_parent__nila_desai",
+      "fromId": "ravi_desai",
+      "toId": "nila_desai",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "pelagia_mara__biological_parent__lin",
+      "fromId": "pelagia_mara",
+      "toId": "lin",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "safia_odhiambo__biological_parent__sefu",
+      "fromId": "safia_odhiambo",
+      "toId": "sefu",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "sefu__biological_parent__amir_odhiambo",
+      "fromId": "sefu",
+      "toId": "amir_odhiambo",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "pelagia_esme__biological_parent__lata_rao",
+      "fromId": "pelagia_esme",
+      "toId": "lata_rao",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "rosa_moreno__biological_parent__mesa_june",
+      "fromId": "rosa_moreno",
+      "toId": "mesa_june",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "mesa_june__biological_parent__mateo_moreno",
+      "fromId": "mesa_june",
+      "toId": "mateo_moreno",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "mesa_inez__biological_parent__esperanza_vega",
+      "fromId": "mesa_inez",
+      "toId": "esperanza_vega",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "esperanza_vega__biological_parent__luz_vega",
+      "fromId": "esperanza_vega",
+      "toId": "luz_vega",
+      "type": "biological_parent",
+      "fromLabel": "Biological parent of",
+      "toLabel": "Biological child of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "dahlia_baptiste__marital_partner__malik_reed",
+      "fromId": "dahlia_baptiste",
+      "toId": "malik_reed",
+      "type": "marital_partner",
+      "fromLabel": "Spouse of",
+      "toLabel": "Spouse of",
+      "canonStatus": "authored-extension",
+      "sinceYearsAgo": 4
+    },
+    {
+      "id": "malik_reed__step_parent__imani_baptiste",
+      "fromId": "malik_reed",
+      "toId": "imani_baptiste",
+      "type": "step_parent",
+      "fromLabel": "Stepparent of",
+      "toLabel": "Stepchild of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "malik_reed__step_parent__noel_baptiste",
+      "fromId": "malik_reed",
+      "toId": "noel_baptiste",
+      "type": "step_parent",
+      "fromLabel": "Stepparent of",
+      "toLabel": "Stepchild of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "jonah_bell__chosen_sibling__hugo",
+      "fromId": "jonah_bell",
+      "toId": "hugo",
+      "type": "chosen_sibling",
+      "fromLabel": "Chosen brother of",
+      "toLabel": "Chosen brother of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "hana_mori__biological_sibling__akira_mori",
+      "fromId": "hana_mori",
+      "toId": "akira_mori",
+      "type": "biological_sibling",
+      "fromLabel": "Older biological sister of",
+      "toLabel": "Younger biological brother of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "glass_sora__adoptive_parent__natsumi_mori",
+      "fromId": "glass_sora",
+      "toId": "natsumi_mori",
+      "type": "adoptive_parent",
+      "fromLabel": "Adoptive parent of",
+      "toLabel": "Adopted child of",
+      "canonStatus": "authored-extension",
+      "adoptionChildAge": 4
+    },
+    {
+      "id": "ravi_desai__marital_partner__pelagia_mara",
+      "fromId": "ravi_desai",
+      "toId": "pelagia_mara",
+      "type": "marital_partner",
+      "fromLabel": "Spouse of",
+      "toLabel": "Spouse of",
+      "canonStatus": "authored-extension",
+      "sinceYearsAgo": 3
+    },
+    {
+      "id": "ravi_desai__step_parent__lin",
+      "fromId": "ravi_desai",
+      "toId": "lin",
+      "type": "step_parent",
+      "fromLabel": "Stepparent of",
+      "toLabel": "Stepchild of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "pelagia_mara__step_parent__nila_desai",
+      "fromId": "pelagia_mara",
+      "toId": "nila_desai",
+      "type": "step_parent",
+      "fromLabel": "Stepparent of",
+      "toLabel": "Stepchild of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "nila_desai__step_sibling__lin",
+      "fromId": "nila_desai",
+      "toId": "lin",
+      "type": "step_sibling",
+      "fromLabel": "Stepsibling of",
+      "toLabel": "Stepsibling of",
+      "canonStatus": "authored-extension"
+    },
+    {
+      "id": "jo__parent_unspecified__kit",
+      "fromId": "jo",
+      "toId": "kit",
+      "type": "parent_unspecified",
+      "fromLabel": "Parent of",
+      "toLabel": "Adult child of",
+      "canonStatus": "preserved-original"
+    },
+    {
+      "id": "kit__parent_unspecified__bea",
+      "fromId": "kit",
+      "toId": "bea",
+      "type": "parent_unspecified",
+      "fromLabel": "Parent of",
+      "toLabel": "Child of",
+      "canonStatus": "preserved-original"
+    },
+    {
+      "id": "jo__grandparent_unspecified__bea",
+      "fromId": "jo",
+      "toId": "bea",
+      "type": "grandparent_unspecified",
+      "fromLabel": "Grandparent of",
+      "toLabel": "Grandchild of",
+      "canonStatus": "preserved-original"
+    },
+    {
+      "id": "miro__sibling_unspecified__oren",
+      "fromId": "miro",
+      "toId": "oren",
+      "type": "sibling_unspecified",
+      "fromLabel": "Older brother of",
+      "toLabel": "Younger brother of",
+      "canonStatus": "preserved-original"
+    },
+    {
+      "id": "eli__biological_sibling__dahlia_baptiste",
+      "fromId": "eli",
+      "toId": "dahlia_baptiste",
+      "type": "biological_sibling",
+      "fromLabel": "Biological sibling of",
+      "toLabel": "Biological sibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "eli",
+        "celia_baptiste",
+        "dahlia_baptiste"
+      ]
+    },
+    {
+      "id": "celia_baptiste__biological_grandparent__asha",
+      "fromId": "celia_baptiste",
+      "toId": "asha",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "celia_baptiste",
+        "eli",
+        "asha"
+      ]
+    },
+    {
+      "id": "celia_baptiste__biological_grandparent__imani_baptiste",
+      "fromId": "celia_baptiste",
+      "toId": "imani_baptiste",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "celia_baptiste",
+        "dahlia_baptiste",
+        "imani_baptiste"
+      ]
+    },
+    {
+      "id": "celia_baptiste__biological_grandparent__noel_baptiste",
+      "fromId": "celia_baptiste",
+      "toId": "noel_baptiste",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "celia_baptiste",
+        "dahlia_baptiste",
+        "noel_baptiste"
+      ]
+    },
+    {
+      "id": "imani_baptiste__biological_sibling__noel_baptiste",
+      "fromId": "imani_baptiste",
+      "toId": "noel_baptiste",
+      "type": "biological_sibling",
+      "fromLabel": "Biological sibling of",
+      "toLabel": "Biological sibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "imani_baptiste",
+        "dahlia_baptiste",
+        "noel_baptiste"
+      ]
+    },
+    {
+      "id": "alder_tess__biological_sibling__oliver_harper",
+      "fromId": "alder_tess",
+      "toId": "oliver_harper",
+      "type": "biological_sibling",
+      "fromLabel": "Biological sibling of",
+      "toLabel": "Biological sibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "alder_tess",
+        "ruth_harper",
+        "oliver_harper"
+      ]
+    },
+    {
+      "id": "ruth_harper__biological_grandparent__nico",
+      "fromId": "ruth_harper",
+      "toId": "nico",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "ruth_harper",
+        "alder_tess",
+        "nico"
+      ]
+    },
+    {
+      "id": "ruth_harper__biological_grandparent__nell_harper",
+      "fromId": "ruth_harper",
+      "toId": "nell_harper",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "ruth_harper",
+        "oliver_harper",
+        "nell_harper"
+      ]
+    },
+    {
+      "id": "lucien_morel__biological_grandparent__mina",
+      "fromId": "lucien_morel",
+      "toId": "mina",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "lucien_morel",
+        "solange_morel",
+        "mina"
+      ]
+    },
+    {
+      "id": "priya__biological_sibling__anil_arul",
+      "fromId": "priya",
+      "toId": "anil_arul",
+      "type": "biological_sibling",
+      "fromLabel": "Biological sibling of",
+      "toLabel": "Biological sibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "priya",
+        "kamala_arul",
+        "anil_arul"
+      ]
+    },
+    {
+      "id": "kamala_arul__biological_grandparent__dara_arul",
+      "fromId": "kamala_arul",
+      "toId": "dara_arul",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "kamala_arul",
+        "priya",
+        "dara_arul"
+      ]
+    },
+    {
+      "id": "rafael_valdes__biological_sibling__saffron_leila",
+      "fromId": "rafael_valdes",
+      "toId": "saffron_leila",
+      "type": "biological_sibling",
+      "fromLabel": "Biological sibling of",
+      "toLabel": "Biological sibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "rafael_valdes",
+        "ines_valdes",
+        "saffron_leila"
+      ]
+    },
+    {
+      "id": "rafael_valdes__biological_sibling__saffron_tomas",
+      "fromId": "rafael_valdes",
+      "toId": "saffron_tomas",
+      "type": "biological_sibling",
+      "fromLabel": "Biological sibling of",
+      "toLabel": "Biological sibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "rafael_valdes",
+        "ines_valdes",
+        "saffron_tomas"
+      ]
+    },
+    {
+      "id": "saffron_leila__biological_sibling__saffron_tomas",
+      "fromId": "saffron_leila",
+      "toId": "saffron_tomas",
+      "type": "biological_sibling",
+      "fromLabel": "Biological sibling of",
+      "toLabel": "Biological sibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "saffron_leila",
+        "ines_valdes",
+        "saffron_tomas"
+      ]
+    },
+    {
+      "id": "ines_valdes__biological_grandparent__vera_valdes",
+      "fromId": "ines_valdes",
+      "toId": "vera_valdes",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "ines_valdes",
+        "rafael_valdes",
+        "vera_valdes"
+      ]
+    },
+    {
+      "id": "mei_chen__biological_sibling__qiao_chen",
+      "fromId": "mei_chen",
+      "toId": "qiao_chen",
+      "type": "biological_sibling",
+      "fromLabel": "Biological sibling of",
+      "toLabel": "Biological sibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "mei_chen",
+        "liang_chen",
+        "qiao_chen"
+      ]
+    },
+    {
+      "id": "liang_chen__biological_grandparent__glass_ren",
+      "fromId": "liang_chen",
+      "toId": "glass_ren",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "liang_chen",
+        "mei_chen",
+        "glass_ren"
+      ]
+    },
+    {
+      "id": "liang_chen__biological_grandparent__jian_wu",
+      "fromId": "liang_chen",
+      "toId": "jian_wu",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "liang_chen",
+        "qiao_chen",
+        "jian_wu"
+      ]
+    },
+    {
+      "id": "yuna_park__biological_sibling__min_park",
+      "fromId": "yuna_park",
+      "toId": "min_park",
+      "type": "biological_sibling",
+      "fromLabel": "Biological sibling of",
+      "toLabel": "Biological sibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "yuna_park",
+        "eun_park",
+        "min_park"
+      ]
+    },
+    {
+      "id": "eun_park__biological_grandparent__jiwoo_park",
+      "fromId": "eun_park",
+      "toId": "jiwoo_park",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "eun_park",
+        "min_park",
+        "jiwoo_park"
+      ]
+    },
+    {
+      "id": "safia_odhiambo__biological_grandparent__amir_odhiambo",
+      "fromId": "safia_odhiambo",
+      "toId": "amir_odhiambo",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "safia_odhiambo",
+        "sefu",
+        "amir_odhiambo"
+      ]
+    },
+    {
+      "id": "rosa_moreno__biological_grandparent__mateo_moreno",
+      "fromId": "rosa_moreno",
+      "toId": "mateo_moreno",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "rosa_moreno",
+        "mesa_june",
+        "mateo_moreno"
+      ]
+    },
+    {
+      "id": "mesa_inez__biological_grandparent__luz_vega",
+      "fromId": "mesa_inez",
+      "toId": "luz_vega",
+      "type": "biological_grandparent",
+      "fromLabel": "Biological grandparent of",
+      "toLabel": "Biological grandchild of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "mesa_inez",
+        "esperanza_vega",
+        "luz_vega"
+      ]
+    },
+    {
+      "id": "hana_mori__biological_avuncular__glass_sora",
+      "fromId": "hana_mori",
+      "toId": "glass_sora",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "hana_mori",
+        "akira_mori",
+        "glass_sora"
+      ]
+    },
+    {
+      "id": "eli__biological_avuncular__imani_baptiste",
+      "fromId": "eli",
+      "toId": "imani_baptiste",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "eli",
+        "dahlia_baptiste",
+        "imani_baptiste"
+      ]
+    },
+    {
+      "id": "eli__biological_avuncular__noel_baptiste",
+      "fromId": "eli",
+      "toId": "noel_baptiste",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "eli",
+        "dahlia_baptiste",
+        "noel_baptiste"
+      ]
+    },
+    {
+      "id": "dahlia_baptiste__biological_avuncular__asha",
+      "fromId": "dahlia_baptiste",
+      "toId": "asha",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "dahlia_baptiste",
+        "eli",
+        "asha"
+      ]
+    },
+    {
+      "id": "asha__biological_cousin__imani_baptiste",
+      "fromId": "asha",
+      "toId": "imani_baptiste",
+      "type": "biological_cousin",
+      "fromLabel": "Biological cousin of",
+      "toLabel": "Biological cousin of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "asha",
+        "eli",
+        "dahlia_baptiste",
+        "imani_baptiste"
+      ]
+    },
+    {
+      "id": "asha__biological_cousin__noel_baptiste",
+      "fromId": "asha",
+      "toId": "noel_baptiste",
+      "type": "biological_cousin",
+      "fromLabel": "Biological cousin of",
+      "toLabel": "Biological cousin of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "asha",
+        "eli",
+        "dahlia_baptiste",
+        "noel_baptiste"
+      ]
+    },
+    {
+      "id": "alder_tess__biological_avuncular__nell_harper",
+      "fromId": "alder_tess",
+      "toId": "nell_harper",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "alder_tess",
+        "oliver_harper",
+        "nell_harper"
+      ]
+    },
+    {
+      "id": "oliver_harper__biological_avuncular__nico",
+      "fromId": "oliver_harper",
+      "toId": "nico",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "oliver_harper",
+        "alder_tess",
+        "nico"
+      ]
+    },
+    {
+      "id": "nico__biological_cousin__nell_harper",
+      "fromId": "nico",
+      "toId": "nell_harper",
+      "type": "biological_cousin",
+      "fromLabel": "Biological cousin of",
+      "toLabel": "Biological cousin of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "nico",
+        "alder_tess",
+        "oliver_harper",
+        "nell_harper"
+      ]
+    },
+    {
+      "id": "anil_arul__biological_avuncular__dara_arul",
+      "fromId": "anil_arul",
+      "toId": "dara_arul",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "anil_arul",
+        "priya",
+        "dara_arul"
+      ]
+    },
+    {
+      "id": "saffron_leila__biological_avuncular__vera_valdes",
+      "fromId": "saffron_leila",
+      "toId": "vera_valdes",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "saffron_leila",
+        "rafael_valdes",
+        "vera_valdes"
+      ]
+    },
+    {
+      "id": "saffron_tomas__biological_avuncular__vera_valdes",
+      "fromId": "saffron_tomas",
+      "toId": "vera_valdes",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "saffron_tomas",
+        "rafael_valdes",
+        "vera_valdes"
+      ]
+    },
+    {
+      "id": "mei_chen__biological_avuncular__jian_wu",
+      "fromId": "mei_chen",
+      "toId": "jian_wu",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "mei_chen",
+        "qiao_chen",
+        "jian_wu"
+      ]
+    },
+    {
+      "id": "qiao_chen__biological_avuncular__glass_ren",
+      "fromId": "qiao_chen",
+      "toId": "glass_ren",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "qiao_chen",
+        "mei_chen",
+        "glass_ren"
+      ]
+    },
+    {
+      "id": "glass_ren__biological_cousin__jian_wu",
+      "fromId": "glass_ren",
+      "toId": "jian_wu",
+      "type": "biological_cousin",
+      "fromLabel": "Biological cousin of",
+      "toLabel": "Biological cousin of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "glass_ren",
+        "mei_chen",
+        "qiao_chen",
+        "jian_wu"
+      ]
+    },
+    {
+      "id": "yuna_park__biological_avuncular__jiwoo_park",
+      "fromId": "yuna_park",
+      "toId": "jiwoo_park",
+      "type": "biological_avuncular",
+      "fromLabel": "Biological aunt/uncle of",
+      "toLabel": "Biological nibling of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "yuna_park",
+        "min_park",
+        "jiwoo_park"
+      ]
+    },
+    {
+      "id": "akira_mori__adoptive_grandparent__natsumi_mori",
+      "fromId": "akira_mori",
+      "toId": "natsumi_mori",
+      "type": "adoptive_grandparent",
+      "fromLabel": "Grandparent through adoption of",
+      "toLabel": "Grandchild through adoption of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "akira_mori",
+        "glass_sora",
+        "natsumi_mori"
+      ]
+    },
+    {
+      "id": "hana_mori__adoptive_great_avuncular__natsumi_mori",
+      "fromId": "hana_mori",
+      "toId": "natsumi_mori",
+      "type": "adoptive_great_avuncular",
+      "fromLabel": "Great-aunt through adoption of",
+      "toLabel": "Great-niece through adoption of",
+      "canonStatus": "authored-extension",
+      "derived": true,
+      "lineagePath": [
+        "hana_mori",
+        "akira_mori",
+        "glass_sora",
+        "natsumi_mori"
+      ]
+    }
+  ],
+  "notes": [
+    "Biological links explicitly authored here are additions to canon, not deductions from surnames, portraits or earlier generic parent labels.",
+    "Only shared branches are asserted when another biological parent is outside the roster. Ethnicity is cultural/ancestral description, not a determinant of personality.",
+    "Adoptive, step, marital and chosen ties are genuine family relationships without required inherited resemblance.",
+    "Sora adopted Natsumi at 26, when she was four. Bea remains the only toddler.",
+    "Family portraits use 2–3 visible shared structural traits and individual variation, never an ancestry-wide template.",
+    "No new character is automatically imported into the game. All 34 additions are manual-background by default."
+  ]
+}

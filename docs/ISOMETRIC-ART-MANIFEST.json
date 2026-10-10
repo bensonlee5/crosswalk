@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "logicalScene": [
+    1800,
+    1200
+  ],
+  "assets": [
+    {
+      "region": "alder",
+      "src": "/paintings/isometric/alder.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 815614,
+      "sha256": "4010daf37af4aa301781880580ef2ad2a0dbb70a12b94392866a3674f7cbbb81",
+      "manualReference": "/paintings/world/alder.webp",
+      "promptSummary": "Cool, wet brick urban quay in impressionist oil; layered brushwork, slate roofs and working waterfront.",
+      "masterPngSha256": "4d5b0db842c2bb18d3b2f1777e53eef264dd4d5e9f351cceb277aef85eeb789a"
+    },
+    {
+      "region": "embermesa",
+      "src": "/paintings/isometric/embermesa.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 757282,
+      "sha256": "ae25115a6f9698141100832b9632567e89c78e041adc13315c26e29920948cf9",
+      "manualReference": "/paintings/world/embermesa.webp",
+      "promptSummary": "Arid rural mesa settlement in dark twilight impasto: low buildings, warm lit paths, violet desert dusk and tactile thick paint.",
+      "masterPngSha256": "e6ce3abd14aed8cb289ffcc8b0da80b681854ed17fabd13e9781cd01c7c0b41d"
+    },
+    {
+      "region": "glasssteppe",
+      "src": "/paintings/isometric/glasssteppe.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 749284,
+      "sha256": "7375dd527b374272a617cde595e2fba1af365d06cdf3cda913790a12ec7f4b01",
+      "manualReference": "/paintings/world/glasssteppe.webp",
+      "promptSummary": "Cold highland rail-and-academia settlement in geometric modernist oil: angular civic architecture, cool color planes, snowy mountains and fir/spruce rather than Mediterranean cypress.",
+      "masterPngSha256": "b9e86e448343584ae113a0f47acfd896d183912455963f84af499cfd44732ff4"
+    },
+    {
+      "region": "pelagia",
+      "src": "/paintings/isometric/pelagia.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 866492,
+      "sha256": "092720bc57196e1821e0a00655fb18e24806218ee057e11852fb97f952549eb0",
+      "manualReference": "/paintings/world/pelagia.webp",
+      "promptSummary": "Warm monsoon harbor with rural hinterland in ink and watercolor: timber/stilt buildings, tropical plants, engineered spillways and public walks.",
+      "masterPngSha256": "9c673bfa31e28116a293b0ea0aff2dac70bc41755e7c3bfe2b0d7db7cafa8bb4"
+    },
+    {
+      "region": "saffron",
+      "src": "/paintings/isometric/saffron.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 344712,
+      "sha256": "448ce455670d71d2e3a228c952e84ff5c005273973017c89338b64221d28d139",
+      "manualReference": "/paintings/world/saffron.webp",
+      "promptSummary": "Mediterranean low-rise suburb in deliberately simplified matte gouache: limited palette, clean flat architectural planes, calm negative space and minimal decorative detail.",
+      "masterPngSha256": "e7a4dde322775ea507bd8ae47eaec44fa2376d971ccc7f4f23c593a0583f89a3"
+    }
+  ],
+  "provenance": {
+    "generator": "OpenAI image generation",
+    "method": "Reference-guided generation from an authored isometric topology guide and the approved manual landscape; targeted art revisions followed by manual path calibration.",
+    "promptNote": "The following are design-brief summaries, not verbatim generation prompts.",
+    "sharedBrief": "A prominent hand-painted isometric town illustration with readable public paths and bridges, distinct buildings for fifteen interactive venues, open doorway approaches, no UI text or embedded gameplay figures. Preserve regional climate, architecture, medium and authored layout.",
+    "runtimeConversion": "1536 \u00d7 1024 WebP, derived from retained full-resolution PNG masters.",
+    "masters": "Original generated PNGs and intermediate guides/review composites are retained separately, outside the runtime-source commit."
+  }
+}

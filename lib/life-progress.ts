@@ -1,3 +1,4 @@
+import {castCharacters} from './cast-characters.ts';
 import type {Game, Player} from './game.ts';
 import {monthlyBills,hasModernEconomy,economyLifeCash} from './economy.ts';
 
@@ -67,8 +68,9 @@ const close = (p: ProgressPlayer) => namedNeighbors.filter(n => {
 const localFriendCount = (p: ProgressPlayer) => p.world?.version === 1
  ? Object.values(p.world.localBonds ?? {}).filter(value => finite(value) >= 2).length : 0;
 const hasPartner = (p: ProgressPlayer) => p.world?.version === 1 && p.world.companionStatus === 'partner';
-const closeBondCount = (p: ProgressPlayer) => close(p).length + localFriendCount(p) + (hasPartner(p) ? 1 : 0);
-const hasBelongingBond = (p: ProgressPlayer) => trusted(p).length > 0 || localFriendCount(p) > 0 || hasPartner(p);
+const castFriends = (p: ProgressPlayer) => p.cast?.version===1 ? castCharacters.filter(c=>p.cast?.bonds[c.id]?.phase==='close'&&!p.cast.bonds[c.id].conflict) : [];
+const closeBondCount = (p: ProgressPlayer) => close(p).length + localFriendCount(p) + castFriends(p).length + (hasPartner(p) ? 1 : 0);
+const hasBelongingBond = (p: ProgressPlayer) => trusted(p).length > 0 || localFriendCount(p) > 0 || castFriends(p).length > 0 || hasPartner(p);
 const contributed = (p: Player, g: Game) => finite(g.project?.contributions[p.id]) > 0;
 const gardenBuilt = (p: Player, g: Game) => !!g.project?.completed && contributed(p, g);
 const communityHelp = (p: ProgressPlayer, g: Game) => contributed(p, g) || count(p, 'volunteer', 'community_setup', 'garden_tend', 'transit_cleanup', 'maker_repair') > 0;
@@ -78,7 +80,7 @@ const commissions = (p: ProgressPlayer) => count(p, 'creative_commission', 'make
 const madeHomeByMoving = (p: ProgressPlayer) => p.story?.version===1&&p.world?.story?.version===1&&Number.isFinite(p.world.story.relocatedWeek)&&Number(p.world.story.relocatedWeek)>0;
 const tendingHome = (p: ProgressPlayer) => p.housing > 0 || count(p, 'home_reset', 'home_meal') >= 2 || madeHomeByMoving(p);
 const rooted = (p: ProgressPlayer, g: Game) => g.round >= 3 && tendingHome(p) && count(p, 'home_host') >= 1 && p.cash >= bills(p) * 2 && p.energy >= 30 && p.joy >= 40 && closeBondCount(p) > 0 && !flag(p, 'repairs_unfinished');
-const towardBond = (p: ProgressPlayer) => p.world?.version === 1 ? 'Spend time with a local resident in different weeks to build a friendship, or keep showing up for a neighbor’s story.' : 'Meet Mina at the café, Eli at the garden or Jo at the makerspace, then keep showing up for their story.';
+const towardBond = (p: ProgressPlayer) => p.cast?.version===1 ? 'Follow a friendship over several months, keep or honestly renegotiate your promises, and make room for each other’s lives.' : p.world?.version === 1 ? 'Spend time with a local resident in different weeks to build a friendship, or keep showing up for a neighbor’s story.' : 'Meet Mina at the café, Eli at the garden or Jo at the makerspace, then keep showing up for their story.';
 
 const tiers: Record<AspirationId, Tier[]> = {
  career: [
@@ -112,7 +114,7 @@ const extraMilestones: Tier[] = [
  {id:'reciprocal_next_chapter',title:'The favor came back around',description:'Returned a neighbor’s favor while beginning a different next chapter.',met:p=>flag(p,'reciprocal_next_chapter'),next:()=>''},
  {id:'different_beginning',title:'A different beginning',description:'Made a concrete next step after the residency went to someone else.',met:p=>flag(p,'independent_next_chapter')||flag(p,'supported_next_chapter')||flag(p,'reciprocal_next_chapter'),next:()=>''}
 ];
-const communityContinuation:Tier={id:'community_common_ground',title:'Common Ground',description:'Turned Steward into shared responsibility: took the coordinator role and handed a usable rota and key to the next person.',met:p=>p.story?.version===1&&!!p.story.flags.includes('steward_payoff'),next:(p,g)=>p.story?.flags.includes('steward_responsibility')?'Return to the replacement venue in month 7 and share the keys you earned.':g.round<5?'Your Steward chapter opens a funded coordinator role in month 5. The later payoff is sharing its keys and responsibility.':g.round===5?'Take the Steward coordinator shift at the marked story venue. It funds a usable rota, not an endless unpaid obligation.':'The coordinator opening has passed. The later pantry shift or an honest handover can still make a meaningful smaller ending.'};
+const communityContinuation:Tier={id:'community_common_ground',title:'Common Ground',description:'Turned Steward into shared responsibility: took the coordinator role and handed a usable rota and key to the next person.',met:p=>p.story?.version===1&&!!p.story.flags.includes('steward_payoff'),next:(p,g)=>p.story?.flags.includes('steward_responsibility')?'Keep the rota manageable, with room for other people to share the work.':g.round<5?'Keep listening to what the neighborhood needs, and leave room for others to help.':g.round===5?'Take the Steward coordinator shift at the marked story venue. It funds a usable rota, not an endless unpaid obligation.':'The coordinator opening has passed. You can still care for the neighborhood in your own way.'};
 const sharedEvening:Tier={id:'a_smaller_first_set',title:'A song with a room',description:'Helped make the replacement beginning and stayed to hear Mina’s first set or recording.',met:p=>!!p.story?.flags.includes('witnessed_payoff')&&['shared_credit','pump_help','setup_done','shared_stage'].some(f=>p.story?.flags.includes(f)),next:()=>''};
 const storyMode=(g:Game)=>(g as Game&{storyVersion?:number}).storyVersion===1;
 const definitionsFor=(id:AspirationId,g:Game)=>id==='community'&&storyMode(g)?[...tiers[id],communityContinuation]:tiers[id];
@@ -170,6 +172,7 @@ function foundations(p: ProgressPlayer): LifeFoundation[] {
  const bonds: string[] = [];
  if (people.length) bonds.push(`${people.map(n=>n.name).join(' and ')} ${people.length===1?'is a close connection':'are close connections'}.`);
  if (hasPartner(p)) bonds.push('Neri is your partner.');
+ if (castFriends(p).length) bonds.push(`${castFriends(p).map(c=>c.name).join(' and ')} ${castFriends(p).length===1?'is':'are'} part of your life through shared time, honesty and reciprocal care.`);
  if (localFriends) bonds.push(`You have formed ${localFriends} close local friendship${localFriends===1?'':'s'}.`);
  let peopleDetail = bonds.length ? bonds.join(' ') : 'A lasting bond is still growing. A wider circle alone does not establish one.';
  if (strain.length) peopleDetail += ` ${strain.map(n=>n.name).join(' and ')} ${strain.length===1?'has':'have'} a strained bond with you.`;

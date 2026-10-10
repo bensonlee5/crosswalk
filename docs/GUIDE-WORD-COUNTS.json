@@ -1,0 +1,163 @@
+{
+  "method": "Whitespace-delimited words in full backstory paragraphs only; excludes name, role, summary, hometown, and disclosure label. Hyphenated words count as one.",
+  "characters": [
+    {
+      "id": "mina",
+      "name": "Mina",
+      "words": 293
+    },
+    {
+      "id": "eli",
+      "name": "Eli",
+      "words": 297
+    },
+    {
+      "id": "jo",
+      "name": "Jo",
+      "words": 318
+    },
+    {
+      "id": "alder_tess",
+      "name": "Tess",
+      "words": 302
+    },
+    {
+      "id": "alder_rowan",
+      "name": "Rowan",
+      "words": 308
+    },
+    {
+      "id": "bram",
+      "name": "Bram",
+      "words": 315
+    },
+    {
+      "id": "oren",
+      "name": "Oren",
+      "words": 323
+    },
+    {
+      "id": "hugo",
+      "name": "Hugo",
+      "words": 299
+    },
+    {
+      "id": "priya",
+      "name": "Priya",
+      "words": 326
+    },
+    {
+      "id": "saffron_leila",
+      "name": "Leila",
+      "words": 323
+    },
+    {
+      "id": "saffron_tomas",
+      "name": "Tomas",
+      "words": 310
+    },
+    {
+      "id": "saffron_ada",
+      "name": "Ada",
+      "words": 311
+    },
+    {
+      "id": "sami",
+      "name": "Sami",
+      "words": 308
+    },
+    {
+      "id": "glass_ren",
+      "name": "Ren",
+      "words": 304
+    },
+    {
+      "id": "glass_sora",
+      "name": "Sora",
+      "words": 302
+    },
+    {
+      "id": "glass_pavel",
+      "name": "Pavel",
+      "words": 295
+    },
+    {
+      "id": "miro",
+      "name": "Miro",
+      "words": 316
+    },
+    {
+      "id": "pelagia_mara",
+      "name": "Mara",
+      "words": 302
+    },
+    {
+      "id": "pelagia_lio",
+      "name": "Lio",
+      "words": 295
+    },
+    {
+      "id": "pelagia_esme",
+      "name": "Esme",
+      "words": 297
+    },
+    {
+      "id": "pelagia_tavi",
+      "name": "Tavi",
+      "words": 325
+    },
+    {
+      "id": "sefu",
+      "name": "Sefu",
+      "words": 285
+    },
+    {
+      "id": "mesa_june",
+      "name": "June",
+      "words": 293
+    },
+    {
+      "id": "mesa_inez",
+      "name": "Inez",
+      "words": 295
+    },
+    {
+      "id": "kit",
+      "name": "Kit",
+      "words": 325
+    },
+    {
+      "id": "neri",
+      "name": "Neri",
+      "words": 299
+    }
+  ],
+  "locations": [
+    {
+      "id": "alder",
+      "name": "Alder Quay",
+      "words": 124
+    },
+    {
+      "id": "saffron",
+      "name": "Saffron Reach",
+      "words": 127
+    },
+    {
+      "id": "glasssteppe",
+      "name": "Glasssteppe",
+      "words": 128
+    },
+    {
+      "id": "pelagia",
+      "name": "Pelagia",
+      "words": 130
+    },
+    {
+      "id": "embermesa",
+      "name": "Ember Mesa",
+      "words": 140
+    }
+  ],
+  "totalCharacterWords": 7966
+}

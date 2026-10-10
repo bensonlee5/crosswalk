@@ -15,10 +15,10 @@ const apiJs=ts.transpileModule(apiSource,{compilerOptions:{module:ts.ModuleKind.
 const api=await import('data:text/javascript;base64,'+Buffer.from(apiJs).toString('base64'));
 const pageJs=ts.transpileModule(fs.readFileSync(root+'/app/page.tsx','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
 function storage(start={}){const m=new Map(Object.entries(start));return{get length(){return m.size;},key:i=>[...m.keys()][i]??null,getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};}
-function harness({cookie='',saved='',query='',local=null,storageBlocked=false}={}){
+function harness({cookie='',saved='',query='',local=null,storageBlocked=false,initialGame=null,initialRules=false,initialReview=false}={}){
  const slots=[],deps=[],cleanups=[];let cursor=0,effects=[],tree,dirty=false,now=1000,id=0;const timeouts=new Map(),intervals=new Map();
  const calls=[],sounds=[];const record={cookie,holdPost:null,holdGet:null,held:null,pending:new Set(),failPost:null,failGet:false,unauthorized:false,identityListener:null};
- const react={useState(initial){const i=cursor++;if(!(i in slots))slots[i]=typeof initial==='function'?initial():initial;return[slots[i],v=>{const n=typeof v==='function'?v(slots[i]):v;if(n!==slots[i]){slots[i]=n;dirty=true;}}];},useRef(initial){const i=cursor++;return slots[i]??(slots[i]={current:initial});},useEffect(fn,next){const i=cursor++;if(!deps[i]||next.some((v,j)=>!Object.is(v,deps[i][j]))){deps[i]=next;effects.push(()=>{cleanups[i]?.();cleanups[i]=fn();});}}};
+ const react={useState(initial){const i=cursor++;if(!(i in slots))slots[i]=initialGame&&i===0?initialGame:initialGame&&i===1?'game':i===10&&initialRules?true:i===15&&initialReview?true:typeof initial==='function'?initial():initial;return[slots[i],v=>{const n=typeof v==='function'?v(slots[i]):v;if(n!==slots[i]){slots[i]=n;dirty=true;}}];},useRef(initial){const i=cursor++;return slots[i]??(slots[i]={current:initial});},useEffect(fn,next){const i=cursor++;if(!deps[i]||next.some((v,j)=>!Object.is(v,deps[i][j]))){deps[i]=next;effects.push(()=>{cleanups[i]?.();cleanups[i]=fn();});}}};
  const locals=storageBlocked?new Proxy({},{get(){throw Error('Storage blocked')}}):local||storage(saved?{cw_room:saved}:{}),sessions=storage();
  const window={scrollTo(){},addEventListener(){},removeEventListener(){}};
  const document={visibilityState:'visible',addEventListener(){},removeEventListener(){}};
@@ -37,6 +37,8 @@ function harness({cookie='',saved='',query='',local=null,storageBlocked=false}={
   else{const req=new Request('https://test.invalid'+url,{...opts,headers:{...opts.headers,Origin:'https://test.invalid',...(record.cookie?{Cookie:record.cookie}:{})}});response=await api[opts.method==='POST'?'POST':'GET'](req);}
   const c=response.headers.get('set-cookie');if(c)record.cookie=c.split(';')[0];
   if(opts.method==='POST'&&record.failPost==='after')throw new TypeError('Saved response was lost');
+  if(opts.method!=='POST'&&record.malformedGet&&!url.includes('history=1'))response=Response.json({});
+  if(opts.method==='POST'&&record.malformedPost){const snapshot=await response.json();delete snapshot.players;response=Response.json(snapshot);}
   if(held){record.held={response};await held;}return response;
  })();if(!held){record.pending.add(task);task.then(()=>record.pending.delete(task),()=>record.pending.delete(task));}return task;}
 
@@ -215,6 +217,46 @@ for(const finished of [false,true]){
  h.record.cookie='cw_guest='+'d'.repeat(64);h.record.identityListener('guest-'+h.record.cookie.slice(-16));h.render();await h.settle();release();await moving;await h.settle();h.tick();
  assert.equal(h.component('GameScreen'),undefined,'late previous-owner response cannot reopen game');assert.equal(h.find(n=>n.props?.className==='saved-room').length,0,'late previous-owner response cannot repopulate history');
  results.push({case:'identity transition invalidates in-flight previous-owner save response',passed:true});h.dispose();
+}
+{
+ const h=harness();await h.click('Start our game');const release=h.hold();const moving=h.component('GameScreen').props.onAction('home_reset');await waitUntilHeld(h);
+ h.record.cookie='';h.record.identityListener(null);h.render();await h.settle();release();await moving;await h.settle();h.tick();
+ assert.equal(h.component('GameScreen'),undefined,'late signed-out response cannot reopen game');assert.equal(h.find(n=>n.props?.className==='saved-room').length,0,'late signed-out response cannot reveal previous history');
+ results.push({case:'signout invalidates in-flight previous-owner save response',passed:true});h.dispose();
+}
+{
+ const h=harness();await h.click('Start our game');const old=h.component('GameScreen');old.props.onHome();h.render();await h.settle();h.tick();await h.click('Start our game');const next=h.component('GameScreen').props.g;
+ assert.notEqual(next.code,old.props.g.code);const calls=h.calls.length;await old.props.onAction('home_reset');await h.settle();h.tick();
+ assert.equal(h.calls.length,calls,'an old room handler cannot submit an action in the new room');assert.equal(h.component('GameScreen').props.g.players[0].hours,6);
+ results.push({case:'stale room callback cannot spend the new room’s time',passed:true});h.dispose();
+}
+{
+ const h=harness();await h.click('Start our game');const old=h.component('GameScreen');await old.props.onAction('home_reset');await h.settle();h.tick();const calls=h.calls.length;
+ await old.props.onAction('home_reset');await h.settle();h.tick();assert.equal(h.calls.length,calls,'a repeated old callback cannot spend another block');assert.equal(h.component('GameScreen').props.g.players[0].hours,5);
+ await h.component('GameScreen').props.onAction('home_reset');await h.settle();h.tick();assert.equal(h.component('GameScreen').props.g.players[0].hours,4,'a newly rendered valid action remains usable');
+ results.push({case:'repeated stale save is ignored while a new deliberate action works',passed:true});h.dispose();
+}
+{
+ const h=harness();await h.click('Start our game');const before=h.component('GameScreen').props.g;h.record.malformedPost=true;await h.component('GameScreen').props.onAction('home_reset');await h.settle();h.tick();
+ assert.equal(h.find(n=>n.props?.className==='reconnect-banner').length,1,'malformed success keeps original save intent pending');assert.equal(h.component('GameScreen').props.g.players[0].hours,before.players[0].hours,'malformed snapshot must not replace confirmed game');
+ const original=JSON.parse(h.calls.filter(c=>c.opts.method==='POST').at(-1).opts.body);h.record.malformedPost=false;await h.click('Check saved action');const retried=JSON.parse(h.calls.filter(c=>c.opts.method==='POST').at(-1).opts.body);
+ assert.equal(retried.requestId,original.requestId);assert.equal(h.component('GameScreen').props.g.players[0].hours,5,'retry recovers one committed action without double-spending');results.push({case:'malformed success retains confirmed snapshot and exact recoverable save',passed:true});h.dispose();
+}
+{
+ const h=harness();await h.click('Start our game');const before=h.component('GameScreen').props.g;h.record.malformedGet=true;h.poll();await h.settle();
+ assert.equal(h.component('GameScreen').props.g.code,before.code,'malformed lookup cannot dismiss the owned game');assert.equal(h.component('GameScreen').props.g.players[0].hours,before.players[0].hours);assert.equal(h.find(n=>n.props?.className==='reconnect-banner').length,1);
+ h.record.malformedGet=false;await h.click('Reconnect');assert.equal(h.component('GameScreen').props.offline,false);results.push({case:'malformed room lookup preserves confirmed state until valid reconnection',passed:true});h.dispose();
+}
+
+{
+ const G=require(root+'/lib/game.ts');
+ for(const edition of ['classic','legacy','modern']){
+  const p=G.player('Alex'),g={code:'QASTATE',mode:'hotseat',host:'owner',members:{owner:[p.id]},mine:[p.id],players:[p],status:'playing',round:2,turn:0,maxRounds:8,log:[],seen:[],event:0,version:1,...(edition==='classic'?{}:{rulesVersion:2}),...(edition==='modern'?{economyVersion:1,storyVersion:1,lifeVersion:1}:{})};
+  if(edition==='classic')delete p.rulesVersion;if(edition==='modern')require(root+'/lib/economy.ts').initializeEconomyPlayer(p,g);p.cash=-100;p.energy=29.75;p.joy=39.75;
+  const check=({status='playing',rules=false,review=false}={})=>{const state=structuredClone(g);state.status=status;const h=harness({initialGame:state,initialRules:rules,initialReview:review});const nodes=h.find(n=>n.type==='section'||n.type==='DialogContent'||n.type==='AlertDialogContent');const text=nodes.map(h.text).join(' ');assert.doesNotMatch(text,/(?:(?<![$\d.,])\b\d+(?:\.\d+)?\s*(?:energy|happiness|skills?|craft|connections?|legacy|points)\b|\d+\/100|\d+\/6|Solo target|most life points)/i);h.dispose();return text;};
+  assert.match(check({rules:true}),/Rest|rest|Weather/);const bills=check({review:true});assert.match(bills,/\$/);assert.match(bills,/weigh on your spirits/);if(edition!=='modern'){const ending=check({status:'finished'});assert.match(ending,/lives we made/);assert.match(ending,/Savings/);}
+ }
+ results.push({case:'actual Home rules, bill-review, overdraft and legacy endings keep qualitative stats with exact money',editions:3,passed:true});
 }
 console.log(JSON.stringify(results.map(r=>Object.fromEntries(Object.entries(r).filter(([key])=>key!=='order'))),null,2));
 console.log('PASS: actual Home handlers, real API and memory D1; full 1–4-player campaigns, saved-game reload, free travel, clock cues, create/join/restore exclusion and interrupted transition recovery. Auth/history transport is a contract stub; mutations use the real API/SQLite double. No browser or production state.');

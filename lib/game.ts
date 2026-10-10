@@ -1,3 +1,6 @@
+import {recordMotiveEvidence,resolveMotiveChoice,type MotivePlayerState} from './character-motives.ts';
+import {resolveCastChoice,endCastMonth} from './character-cast.ts';
+import type {CastState,CastPlayerState} from './character-cast.ts';
 import {storyActionReason,storyAfterAction,resolveStoryChoice,arriveStoryWeek} from './story-arcs.ts';
 import type {StoryState,StoryPlayerState} from './story-arcs.ts';
 import {economyActivity,economyQuote,economyDisabled,recordEconomyWork,recordEconomyHabit,monthlyBills,economyGardenReward,economyHourlyRate,hasModernEconomy} from './economy.ts';
@@ -7,11 +10,13 @@ import type {WorldState,SharedWorldState} from './world-life.ts';
 import {beginLifeWeek,deferLifeChoice,resolveLifeChoice,repairRelationship,repairHome,recordLifeStory} from './life-events.ts';
 import type {LifePlayerState,LifeScheduleEntry,LifeNpc} from './life-events.ts';
 import {selectAspiration,recordLifeProgress} from './life-progress.ts';
-import {weatherEffect,consumeWeather,getWeather,seasonalOpportunity} from './weather.ts';
+import {regionalParticipation,consumeRegionalParticipation} from './regional-life.ts';
+import type {RegionalLifeUsage} from './regional-life.ts';
+import {weatherEffect,consumeWeather,consumeClimateEffect,getWeather,seasonalOpportunity} from './weather.ts';
 import type {WeatherId,WeatherUsage} from './weather.ts';
 export {createEnvironment} from './weather.ts';
-export type Player={storyVersion?:number;economyVersion?:number;economyInitialized?:boolean;economyWork?:EconomyWorkState;economyHabits?:EconomyHabitState;story?:StoryPlayerState;id:string;name:string;cash:number;skill:number;job:number;joy:number;energy:number;hours:number;social:number;housing:number;place:string;rulesVersion?:number;life?:LifePlayerState;world?:WorldState;aspiration?:string;aspirationWeek?:number;milestones?:string[];balanceVersion?:number;communityWork?:{round:number;count:number};craft?:number;legacy?:number;stories?:Record<string,number>;storyWeeks?:Record<string,number>;weatherUsage?:WeatherUsage};
-export type Game={storyVersion?:number;economyVersion?:number;story?:StoryState;sharedWorld?:SharedWorldState;code:string;mode:'hotseat'|'online';host:string;members:Record<string,string[]>;players:Player[];status:'lobby'|'playing'|'finished';round:number;turn:number;maxRounds:number;log:string[];seen:string[];event:number;rulesVersion?:number;lifeVersion?:number;worldVersion?:number;lifeSeed?:number;lifeSchedule?:LifeScheduleEntry[];balanceVersion?:number;environmentVersion?:number;weatherSchedule?:WeatherId[];turnsTaken?:number;opportunityClaim?:{round:number;playerId:string;name:string};project?:{contributions:Record<string,number>;lastWeek:Record<string,number>;completed:boolean}};
+export type Player={regionalLifeUsage?:RegionalLifeUsage;motives?:MotivePlayerState;castRedacted?:boolean;cast?:CastPlayerState;storyVersion?:number;economyVersion?:number;economyInitialized?:boolean;economyWork?:EconomyWorkState;economyHabits?:EconomyHabitState;story?:StoryPlayerState;id:string;name:string;cash:number;skill:number;job:number;joy:number;energy:number;hours:number;social:number;housing:number;place:string;rulesVersion?:number;life?:LifePlayerState;world?:WorldState;aspiration?:string;aspirationWeek?:number;milestones?:string[];balanceVersion?:number;communityWork?:{round:number;count:number};craft?:number;legacy?:number;stories?:Record<string,number>;storyWeeks?:Record<string,number>;weatherUsage?:WeatherUsage};
+export type Game={characterCanonVersion?:number;regionalLifeVersion?:number;climateVersion?:number;motivesVersion?:number;historyVersion?:number;castVersion?:number;cast?:CastState;storyVersion?:number;economyVersion?:number;story?:StoryState;sharedWorld?:SharedWorldState;code:string;mode:'hotseat'|'online';host:string;members:Record<string,string[]>;players:Player[];status:'lobby'|'playing'|'finished';round:number;turn:number;maxRounds:number;log:string[];seen:string[];event:number;rulesVersion?:number;lifeVersion?:number;worldVersion?:number;lifeSeed?:number;lifeSchedule?:LifeScheduleEntry[];balanceVersion?:number;environmentVersion?:number;weatherSchedule?:WeatherId[];turnsTaken?:number;opportunityClaim?:{round:number;playerId:string;name:string};project?:{contributions:Record<string,number>;lastWeek:Record<string,number>;completed:boolean}};
 export const jobs=[{name:'Café crew',rate:20,need:0},{name:'IT support',rate:29,need:2},{name:'UX specialist',rate:43,need:4},{name:'Project lead',rate:58,need:6}];
 export const events=[{title:'The little wins',text:'Someone remembered your coffee order. Everyone gets +4 happiness.',cash:0,joy:4},{title:'Transit fare week',text:'A city pass costs everyone $30 this week.',cash:-30,joy:0},{title:'Neighborhood night',text:'The block throws a free movie night. Everyone gets +6 happiness.',cash:0,joy:6},{title:'Energy bill bump',text:'Heating, cooling, and an extra $45 for everyone.',cash:-45,joy:0},{title:'Found money',text:'An old deposit is returned. Everyone gets $90.',cash:90,joy:0},{title:'Group chat gold',text:'The memes are exceptionally good. Everyone gets +3 happiness.',cash:0,joy:3},{title:'Groceries on sale',text:'Seasonal produce saves everyone $35.',cash:35,joy:0},{title:'A sunny finish',text:'A beautiful final week. Everyone gets +5 happiness.',cash:0,joy:5}];
 export type Activity={id:string;title:string;place:string;icon:string;time:number;cost:number;desc:string;color:string;energy?:number;joy?:number;skill?:number;social?:number;earn?:number;workHours?:number;needSkill?:number;needSocial?:number;housing?:number;promote?:boolean;craft?:number;needCraft?:number;modernOnly?:boolean;story?:string;stage?:number;special?:'opportunity'|'project'};
@@ -161,7 +166,8 @@ export function effects(p:Player,a:Activity,g?:Game){
   if(a.special==='opportunity'&&g){const o=opportunity(g);earn=o.earn;craft=o.craft;social=o.social;joy=o.joy;}
  }
  const weather=weatherEffect(p,a,g,{joy,energy:a.energy||0});
- return{cash:economyQuote(p,a,g,earn).cash,energy:Math.max(-p.energy,Math.min(a.energy||0,100-p.energy))+weather.energy,joy:Math.max(-p.joy,Math.min(joy,100-p.joy))+weather.joy,skill:Math.min(a.skill||0,6-p.skill),social,craft:Math.min(craft,8-(p.craft||0)),weather,requiredEnergy:weather.requiredEnergy};
+ const participation=regionalParticipation(p,a.id,g,joy+weather.joy,visiblePlaces(p,g).includes(a.place));
+ return{cash:economyQuote(p,a,g,earn).cash,energy:Math.max(-p.energy,Math.min(a.energy||0,100-p.energy))+weather.energy,joy:Math.max(-p.joy,Math.min(joy,100-p.joy))+weather.joy+participation.joy,...(g?.regionalLifeVersion===1?{participation}:{}),skill:Math.min(a.skill||0,6-p.skill),social,craft:Math.min(craft,8-(p.craft||0)),weather,requiredEnergy:weather.requiredEnergy};
 }
 export function player(name:string,balanceVersion?:number):Player{return{id:crypto.randomUUID(),name,cash:1100,skill:0,job:0,joy:40,energy:70,hours:6,social:0,housing:0,place:'APARTMENTS',rulesVersion:2,...(balanceVersion===currentBalanceVersion?{balanceVersion}:{}),craft:0,legacy:0,stories:{},storyWeeks:{}};}
 export function score(p:Player){if(p.rulesVersion!==2)return Math.round(Math.min(30,Math.max(0,p.cash)/200)+p.job/3*20+Math.min(6,p.skill)/6*20+p.joy/100*30);return Math.round(Math.min(25,Math.max(0,p.cash)/200)+Math.max(...pathPoints(p).map(v=>v.points))+p.joy/100*25+Math.min(10,p.legacy||0));}
@@ -171,17 +177,22 @@ export function reason(p:Player,id:string,g?:Game){
  if(p.world&&!visiblePlaces(p,g).includes(a.place))return'This place is not on your current map';
  if(p.world&&p.world.region!=='alder'&&a.story)return'This friend is back in Alder Quay. Return there for this chapter.';
  if(a.modernOnly&&p.rulesVersion!==2)return'Available in new neighborhood games';
- if(a.story){const stage=p.stories?.[a.story]||0;if(stage>=(a.stage||0))return'Chapter complete';if(stage!==(a.stage||1)-1)return'Meet this neighbor’s earlier chapter first';if(g&&p.storyWeeks?.[a.story]===g.round)return g.round<g.maxRounds?`Come back next ${hasModernEconomy(p)?'month':'week'} for the next chapter`:'This story cannot advance again before the game ends';}
+ if(a.story){const stage=p.stories?.[a.story]||0;if(stage>=(a.stage||0))return'Chapter complete';if(stage!==(a.stage||1)-1)return'You are still getting to know this neighbor';if(g&&p.storyWeeks?.[a.story]===g.round)return 'This neighbor has other plans just now';}
  if(a.special&& !g)return'Open the neighborhood board';
  if(a.special==='opportunity'&&g&&g.opportunityClaim&&g.opportunityClaim.round===g.round)return`Claimed by ${g.opportunityClaim.name}`;
  if(a.special==='project'&&g){if(g.project?.completed)return'The garden is complete';if(g.project?.lastWeek[p.id]===g.round)return hasModernEconomy(p)?'You already helped this month':'You already helped this week';}
- if(p.hours<a.time)return hasModernEconomy(p)?'Not enough priority blocks this month':'Not enough time this week';if(a.cost>0&&p.cash<a.cost)return'Not enough cash for the upfront cost';if(a.housing===p.housing)return'You already have a studio';if(p.energy<effects(p,a,g).requiredEnergy)return getWeather(g,p)?.type==='heat'&&weatherEffect(p,a,g).applies?`Needs ${effects(p,a,g).requiredEnergy} energy including the heat adjustment; rest first`:'Rest before this activity';if(a.skill&&p.skill>=6)return'All six skills earned';if(a.craft&&(p.craft||0)>=8)return'All eight craft levels earned';
+ if(p.hours<a.time)return hasModernEconomy(p)?'Not enough priority blocks this month':'Not enough time this week';if(a.cost>0&&p.cash<a.cost)return'Not enough cash for the upfront cost';if(a.housing===p.housing)return'You already have a studio';if(p.energy<effects(p,a,g).requiredEnergy){const e=effects(p,a,g);if('exposureUsed' in e.weather)return e.weather.exposureUsed>0?`Needs ${e.requiredEnergy} energy including weather; rest at home first`:'Rest before this activity';return getWeather(g,p)?.type==='heat'&&e.weather.applies?`Needs ${e.requiredEnergy} energy including the heat adjustment; rest first`:'Rest before this activity';}if(a.skill&&p.skill>=6)return'All six skills earned';if(a.craft&&(p.craft||0)>=8)return'All eight craft levels earned';
  if(a.needSkill&&p.skill<a.needSkill&&!(p.rulesVersion===2&&a.id==='career_contract'))return`Needs ${a.needSkill} skills (you have ${p.skill})`;if(a.needSocial&&p.social<a.needSocial)return`Needs ${a.needSocial} connections (you have ${p.social})`;if(a.needCraft&&(p.craft||0)<a.needCraft)return`Needs ${a.needCraft} craft levels`;
  if(a.promote&&(p.job===3||p.skill<jobs[p.job+1].need))return p.job===3?'You already have the top role':`Needs ${jobs[p.job+1].need} skills`;return'';
 }
 export function availableActions(p:Player,place:string,g?:Game){return actions.map(a=>activityForPlayer(p,a,g)).filter(a=>a.place===place&&visiblePlaces(p,g).includes(place)&&(!p.world||p.world.region==='alder'||!a.story)&&(!a.modernOnly||p.rulesVersion===2)&&(!a.story||(p.stories?.[a.story]||0)===(a.stage||1)-1));}
 export function move(g:Game,id:string,destination?:string){
+ const p=g.players[g.turn];moveCore(g,id,destination);if(p)recordMotiveEvidence(g,p,id);
+}
+function moveCore(g:Game,id:string,destination?:string){
  if(g.status!=='playing')throw Error('The game is not running');const p=g.players[g.turn];if(p.place==='HOME')p.place='APARTMENTS';
+ if(g.motivesVersion===1&&id.startsWith('motive:')){resolveMotiveChoice(g,p,id);recordLifeProgress(g,p);return;}
+ if(g.castVersion===1&&id.startsWith('cast:')){resolveCastChoice(g,p,id);recordLifeProgress(g,p);return;}
  if(id==='visit'){if(!visiblePlaces(p,g).includes(destination||''))throw Error('That place is undiscovered or closed here');if(!actions.some(a=>a.place===destination))throw Error('Choose a place on the map');p.place=destination!;g.log.unshift(`${p.name} arrived at ${destination}`);g.log=g.log.slice(0,32);return;}
  if(g.storyVersion===1&&id.startsWith('story:')){const parts=id.split(':');if(parts.length!==3)throw Error('Unknown story response');if(p.story?.receipts.some(r=>r.sceneId===parts[1]&&r.choiceId===parts[2]))return;resolveStoryChoice(g,p,parts[1],parts[2]);afterWorldAction(g,p,id);recordLifeProgress(g,p);return;}
  if(g.lifeVersion===1&&id.startsWith('world:')){if(p.world?.acceptedChoices.includes(id.slice(6)))return;resolveWorldChoice(g,p,id.slice(6));recordLifeProgress(g,p);return;}
@@ -190,6 +201,7 @@ export function move(g:Game,id:string,destination?:string){
  if(g.lifeVersion===1&&id.startsWith('home_repair:')){const method=id.slice(12);if(method!=='paid'&&method!=='diy')throw Error('Unknown repair method');repairHome(g,p,method);recordLifeProgress(g,p);return;}
  if(g.lifeVersion===1&&id.startsWith('aspire:')){selectAspiration(g,p,id.slice(7));return;}
  if(id==='end'){
+  endCastMonth(g,p);
   if(g.lifeVersion===1){deferLifeChoice(g,p);recordLifeProgress(g,p);}
   const bill=monthlyBills(p);p.cash-=bill.total;p.joy=Math.min(100,p.joy+(p.housing?6:0));p.energy=Math.min(100,p.energy+16);p.joy=Math.max(0,p.joy-4);if(p.cash<0)p.joy=Math.max(0,p.joy-8);
   g.log.unshift(`${p.name} paid $${bill.rent} rent + $${bill.food} food${bill.essentials?` + $${bill.essentials} essentials`:""}${hasModernEconomy(p)?" for the month":""}. ${p.cash<0?'Overdraft: −8 happiness.':''}`);
@@ -202,7 +214,7 @@ export function move(g:Game,id:string,destination?:string){
   }
   g.players[g.turn].hours=6;g.log=g.log.slice(0,32);return;
  }
- const error=reason(p,id,g);if(error)throw Error(error);const a=activityForPlayer(p,actions.find(x=>x.id===id)!,g);if(p.place!==a.place)throw Error('Visit this place on the map first');const e=effects(p,a,g);recordEconomyWork(p,a,g);recordEconomyHabit(p,a,g);consumeWeather(p,a,g);p.hours-=a.time;p.cash+=e.cash;p.energy+=e.energy;p.joy+=e.joy;p.skill+=e.skill;p.social+=e.social;if(p.rulesVersion===2)p.craft=(p.craft||0)+e.craft;if(a.housing!==undefined)p.housing=a.housing;if(a.promote)p.job++;
+ const error=reason(p,id,g);if(error)throw Error(error);const a=activityForPlayer(p,actions.find(x=>x.id===id)!,g);if(p.place!==a.place)throw Error('Visit this place on the map first');const e=effects(p,a,g);recordEconomyWork(p,a,g);recordEconomyHabit(p,a,g);if('exposureUsed' in e.weather)consumeClimateEffect(p,g,e.weather);else consumeWeather(p,a,g);consumeRegionalParticipation(p,g,e.participation?.joy||0);p.hours-=a.time;p.cash+=e.cash;p.energy+=e.energy;p.joy+=e.joy;p.skill+=e.skill;p.social+=e.social;if(p.rulesVersion===2)p.craft=(p.craft||0)+e.craft;if(a.housing!==undefined)p.housing=a.housing;if(a.promote)p.job++;
  if(hasCurrentBalance(p)&&a.id==='community_organize')p.communityWork={round:g.round,count:communityDaysThisWeek(p,g)+1};
  if(g.lifeVersion===1&&p.life){p.life.activityCounts??={};p.life.activityCounts[a.id]=(p.life.activityCounts[a.id]||0)+1;}
  if(a.story){if(g.lifeVersion===1)recordLifeStory(g,p,a.story as LifeNpc,a.stage!);p.stories={...p.stories,[a.story]:a.stage!};p.storyWeeks={...p.storyWeeks,[a.story]:g.round};if(a.stage===3){p.legacy=Math.min(10,(p.legacy||0)+2);g.log.unshift(`${p.name} completed ${neighbors.find(n=>n.id===a.story)!.name}’s story: +2 legacy and a keepsake.`);}}

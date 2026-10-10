@@ -19,7 +19,7 @@ assert.equal(calls,0,'rendering or restoring a lesson never invokes a gameplay a
 const html=(step,extra={})=>renderToStaticMarkup(React.createElement(Component,{...props,...extra,state:{...startTutorial('DEMO'),step}}));
 assert.match(html('week'),/\$505/);assert.match(html('week',{p:{...p,housing:1}}),/\$705/);
 assert.match(html('activity',{active:false}),/disabled=""/);assert.match(html('activity',{active:false,g:{...game,mode:'online'}}),/Actions are available on your turn/);
-assert.match(html('paths'),/strongest path/);assert.match(html('paths',{p:{...p,rulesVersion:undefined}}),/classic save/);
+assert.match(html('paths'),/ending remembers your choices/);assert.match(html('paths',{p:{...p,rulesVersion:undefined}}),/broad sense/);
 assert.match(html('weather'),/Two weeks each/);assert.match(html('weather',{g:{...game,environmentVersion:undefined}}),/no seasonal weather/);
 assert.match(html('travel',{menu:'places'}),/Visit The Shift/);
 // Modern tutorial uses the same lease/bill scale as the active economy.

@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "batch": "personality-defaults-01",
+  "canonicalBaseCommit": "73e1adeaec6c2691503c72d740b6931a2eb456e0",
+  "sourceGuideSha256": "cfd56da7ef6c445f87c0ffba681889523cc7b74b31c77c64c220b14350bbc3f2",
+  "personalityProfilesSha256": "8290a4ef23b218815fda48f550a95ae7303f7bf9b7d7d8ac61ca7b377587c5b1",
+  "familyGraphSha256": "b89127b4ac3f08f5bd39786d429031bb0ad3eb49e47bd7c1318b25b2ab0dddaf",
+  "preserveUnlistedAssets": true,
+  "portraits": [
+    {
+      "id": "bram",
+      "name": "Bram",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "5a4ebe1f3c7f889af482bebfca871fd483ff221a3431182a35033031d45fe11c",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "a994e55e89a6d9701df65ab64e83e517bb2be943a2d6ca3a4134cfc1f3b23f5f",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2157948
+      },
+      "runtime": {
+        "sha256": "d6e62cc3366e2b598decc178bfe5fa9d14b5bf728470fdc181306c487937f317",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 77168
+      },
+      "portraitAlt": "Portrait of Bram with a level closed mouth, a subtly querying brow and an assessing off-center gaze, wearing a blue scarf and dark work coat on a lamplit night street.",
+      "defaultBrief": "Bram is a 43-year-old patient night-route verifier, dryly precise and skeptical of easy claims, with practical concern for tired travelers. Replace the camera-ready smile with a quietly assessing expression: relaxed closed mouth nearly level, faint thoughtful compression at one corner rather than a frown; one brow just slightly querying, gaze directed a little past the viewer as if checking the time qualification of a route. Straighten the amiable head tilt slightly. Alert, unhurried, humane; not hostile, sleepy or frightened.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Bram is a 43-year-old patient night-route verifier, dryly precise and skeptical of easy claims, with practical concern for tired travelers. Replace the camera-ready smile with a quietly assessing expression: relaxed closed mouth nearly level, faint thoughtful compression at one corner rather than a frown; one brow just slightly querying, gaze directed a little past the viewer as if checking the time qualification of a route. Straighten the amiable head tilt slightly. Alert, unhurried, humane; not hostile, sleepy or frightened. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Identity, bald head, beard, broad facial proportions, age lines, blue scarf, dark coat and night-bus background remain recognizable. New level mouth, near-upright head and checking gaze make the default less generically genial; not hostile.",
+      "review": "First comparison reviewed by root; direction approved and identities recognizable. Image geometry changes limited to expression and slight head/shoulder attitude."
+    },
+    {
+      "id": "sami",
+      "name": "Sami",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "088695943770374ab5c7ffc61fed7d0619858227f4e633fabb810d727f742562",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "520b5f9d1072ca9ebd463fa0c2b05dfc4fe8779e164f5ad09001a9e33bc62ab4",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2519866
+      },
+      "runtime": {
+        "sha256": "33ddb46d64c8f6d1e7c6d3e7d6367cc74b2f1b13c0c7ff01adc1882b1359abb1",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 103962
+      },
+      "portraitAlt": "Portrait of Sami with a small crooked closed-mouth smile and a curious sideways gaze, in a green collarless shirt beside painted canal tiles.",
+      "defaultBrief": "Sami is a 31-year-old tactile pattern thinker and game designer who watches a player's unexpected move, then becomes mischievously curious. Replace the posed toothy smile with the moment a surprising pattern clicks: lips together with one tiny crooked amused corner, eyebrows unequally lifted in genuine curiosity, eyes keenly following something just below and to one side of the viewer; head tips forward a very little. This is playful analytical absorption, not anxiety, smugness, blankness or scowling.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Sami is a 31-year-old tactile pattern thinker and game designer who watches a player's unexpected move, then becomes mischievously curious. Replace the posed toothy smile with the moment a surprising pattern clicks: lips together with one tiny crooked amused corner, eyebrows unequally lifted in genuine curiosity, eyes keenly following something just below and to one side of the viewer; head tips forward a very little. This is playful analytical absorption, not anxiety, smugness, blankness or scowling. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Curl pattern, long face and nose, age, skin, green shirt and blue tiled canal backdrop maintained. Asymmetric brows and the amused glance convey model-testing curiosity without a lecture or broad posed grin.",
+      "review": "First comparison reviewed by root; direction approved and identities recognizable. Image geometry changes limited to expression and slight head/shoulder attitude."
+    },
+    {
+      "id": "pelagia_lio",
+      "name": "Lio",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "353d0c75e6985fce573d77ae6d5ea3d9337953e4f1d5c9f02bf340d38a6f4f46",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "b00560020d8d545e0607ad7a79545e183aeb00ad66c1e8de138fbbcb309a086a",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2561603
+      },
+      "runtime": {
+        "sha256": "8adfe9c92b8d3bd491bdff736153335339267ec487f725dc57c662e52706c991",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 95476
+      },
+      "portraitAlt": "Portrait of Lio with a small closed-mouth smile and calm attentive eyes, wearing a cream shirt and red apron beside the harbor broth stall.",
+      "defaultBrief": "Lio is a 41-year-old dependable harbor cook: quietly warm, concrete and sparing, content to let a customer simply have breakfast in silence. Replace the broad toothy camera grin with a small closed-mouth smile that has settled naturally after an understated joke. Soften the cheeks from full grin, open the eyes a little into calm attentive contact just beside the viewer, let his shoulders feel comfortably grounded. The expression should read companionable steadiness and unforced patience; not sad, stern, blank or permanently performing hospitality.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Lio is a 41-year-old dependable harbor cook: quietly warm, concrete and sparing, content to let a customer simply have breakfast in silence. Replace the broad toothy camera grin with a small closed-mouth smile that has settled naturally after an understated joke. Soften the cheeks from full grin, open the eyes a little into calm attentive contact just beside the viewer, let his shoulders feel comfortably grounded. The expression should read companionable steadiness and unforced patience; not sad, stern, blank or permanently performing hospitality. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Face breadth, cheek volume, swept black hair, age, cream shirt, red apron and harbor stall maintained. Settled small smile keeps genuine warmth while removing the same broad camera grin.",
+      "review": "First comparison reviewed by root; direction approved and identities recognizable. Image geometry changes limited to expression and slight head/shoulder attitude."
+    },
+    {
+      "id": "mesa_inez",
+      "name": "Inez",
+      "status": "approved_visual_QA",
+      "input": {
+        "sha256": "23aa1c8eb173ace99d2bca90d739936a620d33ae7c34e4f696d467826f92715d",
+        "dimensions": [
+          640,
+          640
+        ]
+      },
+      "full": {
+        "sha256": "c5a3737bdde890f307418bac7ee1a57f57cd4ae77413522e70d7545b95d63f1f",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "bytes": 2617736
+      },
+      "runtime": {
+        "sha256": "1ab488c7705c6b76dc60ce4de3db629b7ff06f73eecacfcade4dc88186ce54de",
+        "dimensions": [
+          640,
+          640
+        ],
+        "bytes": 114244
+      },
+      "portraitAlt": "Portrait of Inez with a composed level mouth, one slightly raised eyebrow and a steady gaze, wearing glasses, a straw hat, cream scarf and green blouse in the lending library.",
+      "defaultBrief": "Inez is a 65-year-old practical librarian, unhurried and dryly economical, forgiving about failed harvests but unsentimental about inflated proposals. Replace the warmly posed smile with a very composed listening face: level relaxed lips with a faint dry asymmetry, one eyebrow lifted in a restrained practical question, steady direct gaze, head more upright with chin comfortably level. Her attention feels secure and quietly exact, as if asking who will maintain a proposed project. Not angry, contemptuous, sad or militarily rigid.",
+      "prompt": "Use case: identity-preserve. Asset type: canonical default character portrait for the fictional Crosswalk game and illustrated cast manual. Input image 1 is the exact canonical edit target. Edit this same portrait, changing only facial expression, gaze and a very small head/shoulder attitude as described. Inez is a 65-year-old practical librarian, unhurried and dryly economical, forgiving about failed harvests but unsentimental about inflated proposals. Replace the warmly posed smile with a very composed listening face: level relaxed lips with a faint dry asymmetry, one eyebrow lifted in a restrained practical question, steady direct gaze, head more upright with chin comfortably level. Her attention feels secure and quietly exact, as if asking who will maintain a proposed project. Not angry, contemptuous, sad or militarily rigid. Keep this exact recognizable person's facial anatomy, age, ethnicity/skin tone, face proportions, nose, jaw, eyes, eyebrows, hairline/hair, existing facial hair, visible wrinkles, body size and all canonical clothing/accessories. Preserve the same painterly oil illustration, palette, lighting, richly painted background, square crop, camera distance and composition. Do not redesign or beautify the face; expression muscle movement is the only facial change. No new props, text, hands or people. Personality is individual authored behavior, not biological or ethnic. Produce one clean square portrait.",
+      "generationMode": "built-in imagegen identity-preserve edit",
+      "visualQA": "Age, face geometry, glasses, long gray braid, straw hat, earrings, necklace, scarf and olive blouse maintained. More level mouth and practical raised brow read dry composure without anger.",
+      "review": "First comparison reviewed by root; direction approved and identities recognizable. Image geometry changes limited to expression and slight head/shoulder attitude."
+    }
+  ]
+}

@@ -62,7 +62,7 @@ for(let round=1;round<=8;round++)for(const a of actions)for(const energy of [0,3
 // Final-week story gates never promise a ninth week, including original v2 saves.
 for(const balanceVersion of [undefined,1])for(const round of [7,8]){
  const g=game(1,balanceVersion);if(balanceVersion===undefined)delete g.players[0].balanceVersion;g.round=round;
- act(g,'story_eli_1');assert.equal(reason(g.players[0],'story_eli_2',g),round<g.maxRounds?'Come back next week for the next chapter':'This story cannot advance again before the game ends');
+ act(g,'story_eli_1');assert.equal(reason(g.players[0],'story_eli_2',g),'This neighbor has other plans just now');
 }
 // First funded day and later lighter setup work remain transparent before acting.
 {

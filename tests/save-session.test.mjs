@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {rememberPending,forgetPending,pendingSaves,mergeSavedRoom,postSavedRequest} from '../lib/save-session.ts';
+import {isRoomLookupSnapshot,isOwnedGameSnapshot,rememberPending,forgetPending,pendingSaves,mergeSavedRoom,postSavedRequest} from '../lib/save-session.ts';
 function storage(){const rows=new Map();return{get length(){return rows.size},key:i=>[...rows.keys()][i]??null,getItem:k=>rows.get(k)??null,setItem:(k,v)=>rows.set(k,v),removeItem:k=>rows.delete(k)};}
 const intent=(id='request-1')=>({createdAt:123,request:{op:'move',code:'ABC234',version:7,requestId:id,action:'work_short'}});
 test('an interrupted turn survives reload as the exact request, not a client game snapshot',()=>{const local=storage(),pending=intent();assert.equal(rememberPending(local,pending),true);assert.deepEqual(JSON.parse(JSON.stringify(pendingSaves(local)[0])),pending);assert.equal(pendingSaves(local)[0].request.requestId,'request-1');assert.equal(pendingSaves(local)[0].request.version,7);forgetPending(local,'request-1');assert.deepEqual(pendingSaves(local),[]);});
@@ -14,3 +14,19 @@ test('blocked cookies stop after one handshake retry without an infinite request
 test('interrupted POST and unreadable success remain uncertain, never become new requests',async()=>{for(const fetcher of [async()=>{throw new TypeError('offline')},async()=>new Response('gateway interrupted',{status:200})]){const local=storage(),pending=intent();rememberPending(local,pending);await assert.rejects(()=>postSavedRequest(pending.request,fetcher));assert.equal(pendingSaves(local)[0].request.requestId,pending.request.requestId);assert.equal(pendingSaves(local)[0].request.version,7);}});
 
 test('check-later preserves the request while marking it for explicit recovery',()=>{const local=storage();rememberPending(local,{...intent(),deferred:true});const saved=pendingSaves(local)[0];assert.equal(saved.deferred,true);assert.equal(saved.request.requestId,'request-1');assert.equal(saved.request.version,7);});
+
+test('save acknowledgement requires a complete usable owned-room envelope',()=>{
+ const room={code:'ABC234',version:1,mode:'hotseat',status:'playing',turn:0,round:1,maxRounds:8,mine:['seat'],log:[],players:[{id:'seat',name:'A',place:'APARTMENTS',cash:6000,hours:6,energy:80,joy:45,job:0,skill:0,social:0}]};
+ assert.equal(isOwnedGameSnapshot(room),true);
+ for(const key of ['players','mine','log','turn','round','maxRounds','code','version','mode','status']){const broken=structuredClone(room);delete broken[key];assert.equal(isOwnedGameSnapshot(broken),false,key);}
+ for(const patch of [{players:[]},{turn:1},{version:-1},{mine:['another-seat']},{players:[room.players[0],room.players[0]]},{players:[{...room.players[0],hours:NaN}]}])assert.equal(isOwnedGameSnapshot({...room,...patch}),false);
+ assert.equal(isOwnedGameSnapshot(null),false);
+});
+
+test('public nonmember lookups stay valid while malformed or mismatched GETs are rejected',()=>{
+ const publicRoom={code:'ABC234',status:'lobby',players:[{name:'A'}],joinable:true};
+ assert.equal(isRoomLookupSnapshot(publicRoom,'ABC234'),true);
+ assert.equal(isRoomLookupSnapshot({...publicRoom,status:'playing',joinable:false},'ABC234'),true);
+ for(const bad of [{},{code:'ABC234',version:1},{...publicRoom,mine:null},{...publicRoom,players:[]},{...publicRoom,players:[{}]},{...publicRoom,joinable:undefined},{...publicRoom,status:'playing'}])assert.equal(isRoomLookupSnapshot(bad,'ABC234'),false);
+ assert.equal(isRoomLookupSnapshot(publicRoom,'DIFF34'),false);
+});

@@ -1,4 +1,5 @@
 'use client';
+import {qualitativeText} from '@/lib/point-presentation';
 import {useEffect, useRef, useState} from 'react';
 import {BookOpen, X} from 'lucide-react';
 import {advanceTutorial, restoreTutorial, TUTORIAL_STORAGE_KEY, type TutorialEvent, type TutorialState} from '@/lib/tutorial';
@@ -79,12 +80,12 @@ export default function GameTutorial({state, g, p, active, busy, inline, place, 
       break;
     case 'paths':
       title = 'Give your weeks a direction';
-      text = g.lifeVersion===1 ? 'Open Your little life to choose an aspiration, see named achievements and build a foundation. Plans may change. What you earn and whom you stand beside become your legacy; there is no points winner.' : modern ? 'Aim for 70 points solo, or the most points with friends after week 8. Your strongest path earns up to 40: career (jobs + skills), community (connections), or creative (craft). Savings add up to 25, happiness 25 and legacy 10.' : 'This classic save scores savings (30), career (20), learning (20) and happiness (30). Aim for 70 solo, or the most points with friends after week 8. Learning skills unlocks better jobs at Next Step.';
+      text = g.lifeVersion===1 ? 'Open Your little life to choose an aspiration, see named achievements and build a foundation. Plans may change. What you earn and whom you stand beside become your legacy; there is no points winner.' : 'Make room for work, community, creativity or home. Your journal gives a broad sense of how life is taking shape, and the ending remembers your choices. Learning and experience open new work at Next Step.';
       secondary = menu !== 'life' ? {label: 'See my progress', action: onLife} : null;
       break;
     case 'neighbors':
       title = modern ? 'Leave a little good behind' : 'Find your next step';
-      text = g.lifeVersion===1 ? 'People remember your choices. Mina, Eli and Jo live in Alder Quay; other regions have their own residents, conversations and relationships. Trusted friends and shared work can become lasting chapters of your life.' : modern ? 'Skills 2, 4 and 6 unlock better jobs at Next Step. Mina, Eli and Jo have stories across three weeks, worth 2 legacy each. The shared garden gives contributors 4 legacy when finished. The board also has one first-come opportunity each week.' : 'Take courses or learn at the library, then apply at Next Step at 2, 4 and 6 skills. Better jobs pay more. Rest and friendships protect your happiness. This classic save keeps its original rules.';
+      text = g.lifeVersion===1 ? 'People remember your choices. Mina, Eli and Jo live in Alder Quay; other regions have their own residents, conversations and relationships. Trusted friends and shared work can become lasting chapters of your life.' : modern ? 'Learning and experience open better jobs at Next Step. Make time to get to know Mina, Eli and Jo, or help with the shared garden. The board also has one first-come opportunity each week.' : 'Take courses or learn at the library, then check Next Step and apply when you are ready. Better jobs pay more. Rest and friendships protect your happiness. This classic save keeps its original rules.';
       secondary = modern && menu !== 'board' ? {label: 'Open neighborhood board', action: onBoard} : null;
       break;
     case 'weather':
@@ -95,7 +96,7 @@ export default function GameTutorial({state, g, p, active, busy, inline, place, 
       break;
     case 'week':
       title = 'Look at the bills before you finish';
-      text = `End week opens a review first. Your rent and groceries are ${money(p.housing ? 705 : 505)}. Unused time expires; rest restores up to 16 energy. A studio adds up to 6 happiness before the usual 4-point drop. Below $0 costs 8 extra happiness, but nobody is eliminated. ${g.players.length > 1 ? 'The next player takes a turn; a new week starts after everyone finishes.' : 'After paying, your next week begins with six fresh blocks.'}`;
+      text = `End week opens a review first. Your rent and groceries are ${money(p.housing ? 705 : 505)}. Unused time expires; rest helps you recover. A studio can help you feel settled. Below $0 can weigh on your spirits, but nobody is eliminated. ${g.players.length > 1 ? 'The next player takes a turn; a new week starts after everyone finishes.' : 'After paying, your next week begins with six fresh blocks.'}`;
       label = 'Review my bills'; action = onBills;
       secondary = {label: 'Continue without ending week', action: () => send('next')};
       break;
@@ -111,13 +112,13 @@ export default function GameTutorial({state, g, p, active, busy, inline, place, 
     if(state.step==='resources')text=`You have ${p.hours} of 6 priority blocks left this month. They represent where you put your attention, not literal hours. A regular work month uses 2 blocks and 160 paid hours. Cash pays for choices and monthly bills. Visiting known local buildings is free; regional journeys show their fare and blocks.`;
     if(state.step==='neighbors'){text='Visit a marked conversation to meet people. Choose a response, then confirm it once. Promises, shared decisions and missed moments return in later chapters. People also have plans of their own. You can decline honestly and keep a future open.';secondary=menu!=='places'?{label:'Find a conversation',action:onPlaces}:null;}
     if(state.step==='weather'){title='Eight months through the seasons';text='Two representative months in each season. The Chronicle follows your current region, with its own weather and public news. Quiet months need no manufactured event. Weather effects are included in activity previews; each played month settles one set of bills.';}
-    if(state.step==='week')text=`End month opens a review first. Your current monthly rent, food and essentials total ${money(monthlyBills(p).total)}. Unused priority blocks expire. Rest restores up to 16 energy, and housing affects happiness. Below $0 costs 8 extra happiness, but nobody is eliminated. ${g.players.length>1?'The next player takes a turn; the new month begins after everyone finishes.':'The next month starts with six fresh priority blocks.'}`;
+    if(state.step==='week')text=`End month opens a review first. Your current monthly rent, food and essentials total ${money(monthlyBills(p).total)}. Unused priority blocks expire. Rest helps you recover, and housing affects how settled you feel. Below $0 can weigh on your spirits, but nobody is eliminated. ${g.players.length>1?'The next player takes a turn; the new month begins after everyone finishes.':'The next month starts with six fresh priority blocks.'}`;
   }
   const needsTurn = ['travel', 'activity', 'week'].includes(state.step);
   return <aside className={'game-tutorial' + (inline ? ' tutorial-inline' : '')} aria-label="Guided tutorial" data-step={state.step}>
     <div className="tutorial-eyebrow"><BookOpen size={15} aria-hidden="true"/><span>{index < 0 ? hasModernEconomy(g)?'YOUR FIRST MONTH':'YOUR FIRST LITTLE WEEK' : `LEARN AS YOU PLAY · ${index + 1} / 7`}</span><button className="tutorial-dismiss" aria-label="Skip tutorial" onClick={() => send('skip')}><X size={18}/></button></div>
     <h2 ref={heading} tabIndex={-1}>{title}</h2>
-    <p>{text}</p>
+    <p>{qualitativeText(text)}</p>
     {needsTurn && !active && <p className="tutorial-pause">{g.mode === 'online' ? 'Follow along for now. Actions are available on your turn.' : 'Finish the open prompt or reconnect to take an action.'}</p>}
     <div className="tutorial-actions"><button className="tutorial-primary" disabled={needsTurn && (!active || busy)} onClick={action}>{label}</button>{secondary && <button className="tutorial-secondary" onClick={secondary.action}>{secondary.label}</button>}{state.step === 'welcome' && <button className="tutorial-secondary" onClick={() => send('skip')}>Skip tutorial</button>}</div>
   </aside>;

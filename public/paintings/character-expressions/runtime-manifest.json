@@ -1,0 +1,50 @@
+[
+  {
+    "id": "eli",
+    "src": "/paintings/character-expressions/eli.webp",
+    "sha256": "3f481b92d39addcba3be3ea8ef0c48e199f317bec5a121bc09f1272aae18218a",
+    "bytes": 517408,
+    "width": 1254,
+    "height": 1254,
+    "layout": [
+      "warm",
+      "concerned",
+      "hurt",
+      "relieved"
+    ],
+    "canonicalPortraitSha256": "69079c02d36e25fa84dcbd919a888b230859253b689a373e92d206eb89aec3db",
+    "review": "Visually reviewed face, wardrobe, age cues, distinct expressions and 2x2 boundaries against the current canonical portrait."
+  },
+  {
+    "id": "jo",
+    "src": "/paintings/character-expressions/jo.webp",
+    "sha256": "e48df46526efb5a39cd14c4e2c4aa72445185af6b5061a967621a5d7cdda7a8a",
+    "bytes": 503420,
+    "width": 1254,
+    "height": 1254,
+    "layout": [
+      "warm",
+      "concerned",
+      "hurt",
+      "relieved"
+    ],
+    "canonicalPortraitSha256": "8933e8fab5487b695a73f8a557a779d5fec559d86f118ce9d8a95f8ab0727bc8",
+    "review": "Visually reviewed face, wardrobe, age cues, distinct expressions and 2x2 boundaries against the current canonical portrait."
+  },
+  {
+    "id": "mina",
+    "src": "/paintings/character-expressions/mina.webp",
+    "sha256": "f594eff6e0020a42d1e6cb424a53969459ec8b2c583fe0b0488bdc04216465b5",
+    "bytes": 439016,
+    "width": 1254,
+    "height": 1254,
+    "layout": [
+      "warm",
+      "concerned",
+      "hurt",
+      "relieved"
+    ],
+    "canonicalPortraitSha256": "5fa8bc1ccbfc4726d15e7934d5b7f3ae1ab769a0f0bd15f4e89f41674e797b4a",
+    "review": "Visually reviewed face, wardrobe, age cues, distinct expressions and 2x2 boundaries against the current canonical portrait."
+  }
+]

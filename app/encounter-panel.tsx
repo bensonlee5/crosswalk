@@ -1,20 +1,29 @@
 'use client';
+import {qualitativeText} from '@/lib/point-presentation';
+import {CharacterMotives} from './character-motives';
+import CharacterPortrait from './character-portrait';
+import {scenePortraitExpression} from '@/lib/portrait-expression';
+import {CharacterHistory} from './character-history';
 import type {Game,Player} from '@/lib/game';
 import {economyMonthLabel} from '@/lib/economy';
 import {getStoryView} from '@/lib/story-arcs';
 import {relationshipViews} from '@/lib/life-events';
 import {worldView,worldPlaceName,type WorldChoiceView} from '@/lib/world-life';
-import GamePainting from './game-painting';
-import {portraitPainting} from './game-art';
 import {ArcBeatStrip,StoryTimeline} from './story-timeline';
 import {StoryChoiceDeck,EncounterOutcome,useEncounterCommit,type EncounterChoice,type EncounterReceipt} from './story-choices';
+import {castPeople} from '@/lib/character-cast';
+import {CastEncounterPanel} from './cast-story';
 
 type Props={g:Game;p:Player;actorId:string;spot?:string;disabled:boolean;onAction:(id:string)=>Promise<unknown>;onClose:()=>void};
-const storyPeople=['mina','eli','jo'];
 export function worldEncounterChoice(c:WorldChoiceView):EncounterChoice{return{id:c.id,actionId:'world:'+c.id,title:c.title,body:c.body,available:c.available,reason:c.reason,previewText:c.previewText,cost:{time:c.time,cash:c.cost,energy:Math.max(0,-c.preview.energy)}}}
 
 /** Focused content for a parent-owned dialog. Closing restores the original venue. */
-export default function EncounterPanel({g,p,actorId,spot=p.place,disabled,onAction,onClose}:Props){
+export default function EncounterPanel(props:Props){
+ const person=castPeople(props.g,props.p).find(person=>person.id===props.actorId);
+ return person?<CastEncounterPanel {...props} person={person} spot={props.spot??props.p.place}/>:<OriginalEncounterPanel {...props}/>;
+}
+
+function OriginalEncounterPanel({g,p,actorId,spot=p.place,disabled,onAction,onClose}:Props){
  const story=getStoryView(g,p),world=worldView(p,g),resident=world?.residents.find(r=>r.id===actorId),relationship=relationshipViews(p).find(r=>r.id===actorId);
  const scenes=story.scenes.filter(s=>(p.world?.region||'alder')==='alder'&&s.spot===spot&&s.characters.some(id=>id===actorId));
  const scene=scenes.find(s=>s.status==='available')??scenes.find(s=>s.week===g.round)??scenes.at(-1);
@@ -39,14 +48,16 @@ export default function EncounterPanel({g,p,actorId,spot=p.place,disabled,onActi
  const tieNames=tie?.id.split('-').map(id=>scene?.people.find(person=>person.id===id)?.name||id).join(' & ');
  const hasLiveScene=scene?.status==='available';
  return <div className="encounter-panel" data-actor={actorId}>
-  <header className="encounter-heading">{storyPeople.includes(actorId)?<GamePainting className="encounter-portrait" src={portraitPainting(actorId)} alt={'Portrait of '+name}/>:<span className="encounter-token" aria-hidden="true">{isNeri?'✧':name.slice(0,1)}</span>}<div><small className="encounter-eyebrow">{worldPlaceName(p,spot,g)} · {economyMonthLabel(g,g.round).toUpperCase()}</small><h2 id="encounter-title">{name}</h2><p>{role}</p>{(resident?.status||relationship?.status||isNeri)&&<span className="encounter-relationship">{resident?.status||relationship?.status||(isNeri?neri?.status:'')}</span>}</div></header>
-  {hasLiveScene&&scene?<section className="encounter-scene"><ArcBeatStrip beat={scene.beat}/><small className="encounter-eyebrow">{scene.people.map(r=>r.name).join(' · ')}</small><h3>{scene.title}</h3>{scene.body.map((text,i)=><p key={i}>{text}</p>)}</section>:<section className="encounter-scene"><h3>{isNeri?neri?.dedicatedScene?.title||'A little room for each other':resident?.talkedThisWeek?'A familiar face':'Pull up a chair'}</h3>{currentBio&&<p>{currentBio}</p>}{resident?.welcome&&<p className="encounter-callback">{resident.welcome}</p>}{!resident&&!isNeri&&!lastReceipt&&<p>{story.nextBeat||'There is no new conversation here just now. You can return to the venue whenever you like.'}</p>}</section>}
+  <header className="encounter-heading"><CharacterPortrait id={actorId} name={name} expression={scenePortraitExpression(actorId,scene,story.recap.find(r=>r.sceneId===scene?.id&&!r.automatic))}/><div><small className="encounter-eyebrow">{worldPlaceName(p,spot,g)} · {economyMonthLabel(g,g.round).toUpperCase()}</small><h2 id="encounter-title">{name}</h2><p>{role}</p>{(resident?.status||relationship?.status||isNeri)&&<span className="encounter-relationship">{resident?.status||relationship?.status||(isNeri?neri?.status:'')}</span>}</div></header>
+  {hasLiveScene&&scene?<section className="encounter-scene"><ArcBeatStrip beat={scene.beat}/><small className="encounter-eyebrow">{scene.people.map(r=>r.name).join(' · ')}</small><h3>{scene.title}</h3>{scene.body.map((text,i)=><p key={i}>{qualitativeText(text)}</p>)}</section>:<section className="encounter-scene"><h3>{isNeri?neri?.dedicatedScene?.title||'A little room for each other':resident?.talkedThisWeek?'A familiar face':'Pull up a chair'}</h3>{currentBio&&<p>{qualitativeText(currentBio)}</p>}{resident?.welcome&&<p className="encounter-callback">{qualitativeText(resident.welcome)}</p>}{!resident&&!isNeri&&!lastReceipt&&<p>{story.nextBeat||'There is no new conversation here just now. You can return to the venue whenever you like.'}</p>}</section>}
+  <CharacterHistory g={g} p={p} actorId={actorId}/>
   {tie&&<p className="encounter-tie"><strong>{tieNames}</strong>{tie.status}</p>}
   {promise&&<p className="encounter-promise"><strong>What you promised</strong>{promise}</p>}
   <EncounterOutcome g={g} receipt={commit.receipt||(!hasLiveScene&&!choices.some(c=>c.available)?lastReceipt||worldReceipt:null)} error={commit.error}/>
-  {!commit.receipt&&<StoryChoiceDeck g={g} choices={choices} disabled={disabled} busy={commit.busy} onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText={story.nextBeat||'You have shared this chapter. Your history stays with you.'}/>}
-  {history&&<details className="encounter-memory"><summary>What {name} remembers</summary><p>{history}</p>{resident?.independentPlan&&<p>{resident.independentPlan}</p>}</details>}
+  {!commit.receipt&&<StoryChoiceDeck g={g} place={spot} choices={choices} disabled={disabled} busy={commit.busy} onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText={story.nextBeat||'You have shared this chapter. Your history stays with you.'}/>}
+  {history&&<details className="encounter-memory"><summary>What {name} remembers</summary><p>{qualitativeText(history)}</p>{resident?.independentPlan&&<p>{resident.independentPlan}</p>}</details>}
   <StoryTimeline g={g} p={p} actorId={actorId}/>
+  <CharacterMotives g={g} p={p} actorId={actorId} spot={spot} disabled={disabled||commit.busy} onAction={onAction}/>
   <button type="button" className="encounter-return" onClick={onClose}><span aria-hidden="true">←</span> Back to {worldPlaceName(p,spot,g)}</button>
  </div>;
 }

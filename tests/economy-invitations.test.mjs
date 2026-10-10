@@ -57,3 +57,17 @@ test('habit description states quantity, normal unit price and the exact prepaid
  const{p,g}=setup();const a=activityForPlayer(p,byId('market_taste'),g),terms=choiceTerms(p,a,g);
  assert.match(a.title,/market lunches/);assert.match(a.desc,/20 weekday lunches × \$18 = \$360/);assert.match(a.desc,/less \$100/);assert.match(a.desc,/\$260 extra/);assert.equal(terms.cash,'$260 upfront');assert.equal(terms.afterCash,'$5,740 left after');
 });
+
+test('monthly prices render alongside the exact total in choice terms and invitations',()=>{
+ const{p,g}=setup();
+ for(const [id,unit,total] of [['cafe_break','20 weekday coffees this month · $7 per coffee','$140'],['friends','8 café meetups this month · $18 per meetup','$144'],['home_meal','20 dinners this month · $5 extra per dinner','$100'],['market_taste','20 weekday lunches this month · $18 per lunch · $13 extra per lunch after grocery credit','$260'],['work_mentor','4 guided sessions this month · $45 per session','$180']]){
+  const a=byId(id),terms=render(ChoiceTerms,{p,a,g});
+  assert.ok(terms.includes(unit));assert.ok(terms.includes(total+' upfront'));
+  const invitation=render(Invitations,{invitations:[{id,place:a.place,action:id,title:a.title,reason:'A monthly routine'}],p,g,disabled:true,onVisit:()=>{throw Error('render must not act');}});
+  assert.ok(invitation.includes(unit));assert.ok(invitation.includes(total+' upfront'));assert.ok(invitation.includes('disabled=""'));
+ }
+ const legacy=setup(false);assert.doesNotMatch(render(ChoiceTerms,{...legacy,a:byId('cafe_break')}),/per coffee|weekday coffees/);
+ const screen=readFileSync(new URL('../app/game-screen.tsx',import.meta.url),'utf8');
+ assert.match(screen,/unitPrice=monthlyPriceBreakdown\(p,option,g\)/);
+ assert.match(screen,/unitPrice&&<small>\{unitPrice\}<\/small>/);
+});

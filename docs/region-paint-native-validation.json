@@ -1,0 +1,38 @@
+{
+  "quality": "full",
+  "renderer": "llvmpipe (LLVM 19.1.7, 256 bits)",
+  "version": "OpenGL ES 3.2 Mesa 25.0.7-2+deb13u1",
+  "programs": 22,
+  "compiled_and_linked": [
+    "0-color-shadow-fog",
+    "0-color-unshadowed",
+    "plain-plain-shadow-fog",
+    "plain-plain-unshadowed",
+    "0-plain-shadow-fog",
+    "0-plain-unshadowed",
+    "1-color-shadow-fog",
+    "1-color-unshadowed",
+    "1-plain-shadow-fog",
+    "1-plain-unshadowed",
+    "2-color-shadow-fog",
+    "2-color-unshadowed",
+    "2-plain-shadow-fog",
+    "2-plain-unshadowed",
+    "3-plain-shadow-fog",
+    "3-plain-unshadowed",
+    "3-color-shadow-fog",
+    "3-color-unshadowed",
+    "4-color-shadow-fog",
+    "4-color-unshadowed",
+    "4-plain-shadow-fog",
+    "4-plain-unshadowed"
+  ],
+  "rendered_regions": [
+    "alder",
+    "saffron",
+    "glasssteppe",
+    "pelagia",
+    "embermesa"
+  ],
+  "scope": "Independent native EGL rendering of real scene meshes and exact Three standard shader hooks; no browser, UI, shadow maps or hardware-mobile performance claim."
+}

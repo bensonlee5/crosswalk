@@ -1,0 +1,73 @@
+/* Image-led choices: pictures invite; paper below them keeps the terms legible. */
+.game-interaction-columns{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.game-activity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-height:620px;align-content:start}
+.game-activity-grid button,.game-activity-grid button[aria-pressed=true]{display:flex;flex-direction:column;gap:0;padding:0;min-width:0;border:2px solid #b8a474}
+.game-activity-grid .activity-thumbnail{display:block;width:100%;height:auto;min-height:0;max-height:none;aspect-ratio:3/2;border:0;object-fit:cover}
+.game-activity-grid .activity-copy{padding:11px!important;justify-content:flex-start;width:100%}
+.game-activity-grid button[aria-pressed=true]{border-color:#3d6045;box-shadow:0 0 0 1px #3d6045}
+.game-activity-grid .activity-benefit{font-size:12px;line-height:1.4;margin:5px 0}
+.choice-effect-details{margin:13px 0;color:#536149;font:13px/1.5 Arial,sans-serif;border-top:1px solid #c9bea5}
+.choice-effect-details summary{cursor:pointer;min-height:44px;display:list-item;padding:12px 0;font-weight:600;list-style-position:inside}
+.choice-effect-details summary:focus-visible{outline:3px solid #8c4826;outline-offset:3px}
+.choice-effect-details ul{margin:0 0 12px;padding-left:22px}
+.choice-effect-values{display:flex;flex-wrap:wrap;gap:8px 14px;padding-bottom:12px}
+.choice-effect-values>span{display:inline-flex;align-items:center;gap:4px}
+.invitation-list button{overflow:hidden}
+.invitation-list .invitation-painting{width:calc(100% + 26px);max-width:none;aspect-ratio:2/1;object-fit:cover;margin:-12px -13px 11px;flex-shrink:0}
+.map-invitations .invitation-painting{width:calc(100% + 22px);margin:-9px -11px 8px;height:84px;aspect-ratio:auto}
+.image-choice-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.image-choice-options .encounter-option{display:flex;flex-direction:column;gap:0;padding:0;overflow:hidden;min-width:0;border:2px solid #d6cbb3;border-radius:4px}
+.image-choice-options .encounter-option>img{width:100%;height:auto;aspect-ratio:2/1;object-fit:cover;flex-shrink:0}
+.image-choice-options .encounter-option-copy{margin:0!important;padding:11px;width:100%;color:#344439}
+.image-choice-options .encounter-option strong{font:700 17px/1.3 Georgia,serif}
+.image-choice-options .choice-selection{font:10px/1.3 Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px}
+.image-choice-options .encounter-option[aria-pressed=true]{border-color:#476d50;box-shadow:0 0 0 1px #476d50}
+.image-choice-options .encounter-option:focus-visible{outline:3px solid #8c4826;outline-offset:3px}
+.encounter-choice-preview{scroll-margin:15px}
+@media(max-width:760px){
+ .game-interaction-columns{display:flex;flex-direction:column}
+ .game-activity-grid{max-height:none;overflow:visible;width:100%;gap:10px;padding:2px}
+ .game-activity-grid .activity-copy{padding:9px!important}
+ .game-activity-grid strong{font-size:16px}
+ .game-activity-grid .activity-benefit{display:none}
+ .game-activity-grid .activity-thumbnail{aspect-ratio:2/1}
+ .game-action-detail{width:100%}
+ .image-choice-options{gap:9px}
+ .image-choice-options .encounter-option strong{font-size:15px}
+ .image-choice-options .encounter-option-copy{padding:9px}
+ .image-choice-options .encounter-option small{font-size:11px}
+ .place-invitations:not(.map-invitations) .invitation-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .map-invitations .invitation-painting{height:65px}
+}
+@media(max-width:380px){
+ .game-activity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .game-activity-grid .activity-benefit{display:none}
+ .game-activity-grid .activity-copy{padding:8px!important}
+ .game-activity-grid strong{font-size:14px}
+ .game-activity-grid small,.game-activity-grid em{font-size:11px}
+ .image-choice-options .encounter-option strong{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){.image-choice-options *{scroll-behavior:auto;transition:none}}
+
+/* A venue is one scene: a familiar face and an everyday activity share the same shelf. */
+.game-activity-grid .venue-person-choice{background:#edf0df;border-color:#adb69b;color:#344439;overflow:hidden}
+.game-activity-grid .venue-person-portrait{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:center 30%;background:#dce4d2}
+.game-activity-grid .venue-person-portrait.character-portrait-fallback{display:grid;place-items:center;font:48px Georgia,serif}
+.game-activity-grid .venue-person-choice .activity-selection{color:#41614a}
+.game-activity-grid button:focus-visible{outline:3px solid #8c4826;outline-offset:3px}
+.game-activity-grid .venue-person-choice:disabled{opacity:.6;cursor:not-allowed}
+.venue-coffee-invitation{display:flex;gap:12px;margin:16px 0;padding:14px;background:#e7ecda;border:1px solid #b5bea0;border-radius:8px;color:#344439}
+.venue-invitation-portrait{width:62px;height:72px;object-fit:cover;flex-shrink:0;border-radius:8px;object-position:center 28%}
+.venue-invitation-portrait.character-portrait-fallback{display:grid;place-items:center;background:#cbd6bd;font:30px Georgia,serif}
+.venue-coffee-invitation strong{font:20px Georgia,serif}
+.venue-coffee-invitation p{font:13px/1.5 Arial,sans-serif;margin:6px 0}
+.venue-coffee-invitation small{display:block;font:11px/1.5 Arial,sans-serif}
+.venue-invitation-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.venue-invitation-actions button{display:flex;align-items:center;gap:6px;min-height:44px;padding:9px 11px;border:1px solid #74876a;border-radius:6px;background:#fffdf2;color:#344439;font:600 12px/1.4 Arial,sans-serif;text-align:left}
+.venue-invitation-actions button:last-child{background:transparent;border-color:transparent;text-decoration:underline;text-underline-offset:3px}
+.venue-invitation-actions button:focus-visible{outline:3px solid #8c4826;outline-offset:3px}
+.venue-invitation-actions button:disabled{opacity:.6;cursor:not-allowed}
+.game-location-body>.cast-contact-routes{margin:20px 0 0}
+@media(max-width:760px){.game-activity-grid .venue-person-portrait{aspect-ratio:2/1}.venue-coffee-invitation{padding:11px;gap:9px}}
+@media(max-width:380px){.venue-coffee-invitation{flex-direction:column}.venue-invitation-portrait{width:56px;height:56px}.interaction-heading{flex-wrap:wrap;gap:5px}}
+@media(prefers-reduced-motion:reduce){.venue-coffee-invitation *{scroll-behavior:auto;transition:none}}

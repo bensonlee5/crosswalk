@@ -131,3 +131,7 @@
 @media(max-width:760px){.game-clock-hud{--turn-clock-size:64px;margin-left:auto;margin-right:8px}.game-top-hud{gap:5px}.game-district-tabs{top:165px}.game-news-button{top:165px}.game-board-button{top:219px}.game-weather-plaque{top:289px}.game-resource-row{padding:7px 2px}.action-clock-preview .cw-turn-clock{--turn-clock-size:80px}.action-clock-preview>span{font-size:13px}}
 @media(max-width:760px){.game-top-hud .game-player-badge{min-width:0;flex:1 1 0;max-width:none}.game-player-badge>span{min-width:0}.game-player-badge strong{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.game-top-hud .game-resource-row{flex-basis:100%}.game-district-tabs,.game-news-button{top:calc(153px + max(12px,env(safe-area-inset-top)))}.game-board-button{top:calc(207px + max(12px,env(safe-area-inset-top)))}.game-weather-plaque{top:calc(277px + max(12px,env(safe-area-inset-top)))}}
 .game-camera-controls{top:214px}@media(max-width:760px){.game-camera-controls{top:calc(207px + max(12px,env(safe-area-inset-top)))}}
+
+/* Personal state labels stay readable without reintroducing numeric meters. */
+.game-resource-row b{font-size:15px;line-height:1.2;white-space:normal}.game-resource-row>span{min-width:0}.game-resource-row>span:not(:first-child){max-width:160px}.game-resource-row small{color:#f2e7cd}.garden-status{font-weight:700;color:#25493f}
+@media(max-width:760px){.game-resource-row>span{flex:1;padding:0 8px}.game-resource-row b{font-size:13px}.game-resource-row>span:not(:first-child){max-width:none}}

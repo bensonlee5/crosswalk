@@ -1,0 +1,216 @@
+{
+  "source": "Crosswalk cast and history edition",
+  "scope": "26 characters; 8 new arcs; 26 layered biographies; 28 selective reciprocal histories; 4 optional later friendship scenes",
+  "files": [
+    {
+      "path": "app/api/game/route.ts",
+      "sha256": "a6cf4440de47d923ab55ec3255b616945473a5a48f6e3102841d1bfcd5e3f91d",
+      "new": false
+    },
+    {
+      "path": "app/cast-story.tsx",
+      "sha256": "15017fb651bf0780884443ad4320e9cc2d626b9034853ef0c646bef2111179bc",
+      "new": true
+    },
+    {
+      "path": "app/character-history.tsx",
+      "sha256": "c5a5c7dc881ef0219826dfd76fd679d3b90662aba26e8cb4cfebfefcb8cbc9f0",
+      "new": true
+    },
+    {
+      "path": "app/encounter-panel.tsx",
+      "sha256": "31296b54109ca448ba0de06de1d85a958a0fc89623d044a28d27586afd203b1e",
+      "new": false
+    },
+    {
+      "path": "app/encounter-story.css",
+      "sha256": "e86ad204ae0d57303f74c0805a767bac61d6466642ddd933203742ea1fa28491",
+      "new": false
+    },
+    {
+      "path": "app/game-engine.ts",
+      "sha256": "e948c5a955f29010ef11459e0199b4d3dd16f5ea5b146c77ceb16e8bffa95e2b",
+      "new": false
+    },
+    {
+      "path": "app/game-screen.tsx",
+      "sha256": "39a9e805797530412290c8c311969e7eaa823a785c83e69fef21ddc57a19b99b",
+      "new": false
+    },
+    {
+      "path": "app/life-story.tsx",
+      "sha256": "ef0d3cb6a910e703d904e414af404ae3506b9a84ed30f72297d3734bcd86206f",
+      "new": false
+    },
+    {
+      "path": "app/page.tsx",
+      "sha256": "43af0977dd30be157b7a248446a6ac0d0f3f4bcf4e6f3bf18d2276492e9e7655",
+      "new": false
+    },
+    {
+      "path": "app/region-models.ts",
+      "sha256": "ad2079613895033efd167c78099c6bb9f5d4fef2710225fd722716b48d49909e",
+      "new": false
+    },
+    {
+      "path": "docs/CAST-INTEGRATION.md",
+      "sha256": "bb6308ef292b663ec4b0015a088aa5c7e2e0f018b773934ad908f141b6a6a12a",
+      "new": true
+    },
+    {
+      "path": "docs/CAST-RELATIONSHIPS.md",
+      "sha256": "52c6a76a1af30e016ea55e7fe5e3fd8ae2c899b93b96dc1a9b3e6e1b4a23b42b",
+      "new": true
+    },
+    {
+      "path": "docs/CAST-SIMULATION.md",
+      "sha256": "a23e9a2918d472b0ee11986e8cb34271bf7b4ef6bdd8fed49a8f5516743c7bed",
+      "new": true
+    },
+    {
+      "path": "docs/CHARACTER-HISTORIES.md",
+      "sha256": "0590145cbcb9566b738f1bfe68612c252015cae899f81d1212d484c8f371088b",
+      "new": true
+    },
+    {
+      "path": "lib/cast-characters.ts",
+      "sha256": "e77a88707940643f77f0302472d22091b7d5548910791edc42b6b37866009fef",
+      "new": true
+    },
+    {
+      "path": "lib/character-cast.ts",
+      "sha256": "ebbea478783034c59889f3f0941fb86d68388dac1fdc6df40b69babb4417bd3a",
+      "new": true
+    },
+    {
+      "path": "lib/character-histories.ts",
+      "sha256": "320cc8999cb203ddf970c9818ce5b9b848ba88db96b4aab08b4ba39bab82d333",
+      "new": true
+    },
+    {
+      "path": "lib/character-history-scenes.ts",
+      "sha256": "62257319a904544bd1dfcd62e925ef9fdd2d58f0ee31ff537b0650af1a7b39d9",
+      "new": true
+    },
+    {
+      "path": "lib/game.ts",
+      "sha256": "211e70b5aa2587af35b25e8500a41d9a28833da532b46961e69fcec7d0595556",
+      "new": false
+    },
+    {
+      "path": "lib/life-progress.ts",
+      "sha256": "fcfe79fe12cb290f8a879153fc9451ed949e6a5b17bc71c946a4f6204868e015",
+      "new": false
+    },
+    {
+      "path": "scripts/sync-engine-copy.mjs",
+      "sha256": "a0cfd97f7f8439a7a8050fd2c182548efcad96442772c1b5d9f2e3952e9fc755",
+      "new": true
+    },
+    {
+      "path": "supabase/functions/_shared/engine/cast-characters.ts",
+      "sha256": "e77a88707940643f77f0302472d22091b7d5548910791edc42b6b37866009fef",
+      "new": true
+    },
+    {
+      "path": "supabase/functions/_shared/engine/character-cast.ts",
+      "sha256": "ebbea478783034c59889f3f0941fb86d68388dac1fdc6df40b69babb4417bd3a",
+      "new": true
+    },
+    {
+      "path": "supabase/functions/_shared/engine/character-histories.ts",
+      "sha256": "320cc8999cb203ddf970c9818ce5b9b848ba88db96b4aab08b4ba39bab82d333",
+      "new": true
+    },
+    {
+      "path": "supabase/functions/_shared/engine/character-history-scenes.ts",
+      "sha256": "62257319a904544bd1dfcd62e925ef9fdd2d58f0ee31ff537b0650af1a7b39d9",
+      "new": true
+    },
+    {
+      "path": "supabase/functions/_shared/engine/game.ts",
+      "sha256": "211e70b5aa2587af35b25e8500a41d9a28833da532b46961e69fcec7d0595556",
+      "new": false
+    },
+    {
+      "path": "supabase/functions/_shared/engine/life-progress.ts",
+      "sha256": "fcfe79fe12cb290f8a879153fc9451ed949e6a5b17bc71c946a4f6204868e015",
+      "new": false
+    },
+    {
+      "path": "supabase/functions/_shared/engine-manifest.json",
+      "sha256": "3cfc992819fc00ab833348d4d17f4ffc22a115bc4bdfceb8d43d4438f5278076",
+      "new": false
+    },
+    {
+      "path": "supabase/functions/crosswalk-game/game-service.ts",
+      "sha256": "7452c754097fd322752f468e6888cd2f2f15faf41b825f076e7e1b1a8e12a101",
+      "new": false
+    },
+    {
+      "path": "tests/cast-actors.test.mjs",
+      "sha256": "3e065aa157b49a54469194e88309e952c615c59afdfcd905cf4ec8e570ae4f7a",
+      "new": true
+    },
+    {
+      "path": "tests/cast-api.test.mjs",
+      "sha256": "27d9c94f7cf687d77d32ae8b09666896d4bd3e647c1ef9791ad274c4fa8b4c0f",
+      "new": true
+    },
+    {
+      "path": "tests/cast-progress.test.mjs",
+      "sha256": "6698f8dd2b0da8b00de7cd10605bf955f45d4220342f779ec2336972dd56e083",
+      "new": true
+    },
+    {
+      "path": "tests/cast-relationships.test.mjs",
+      "sha256": "e7fbc0990431acf685956c4b931f1ee95cb6e3e50e9a9aef3e3a99e2927de130",
+      "new": true
+    },
+    {
+      "path": "tests/cast-simulation.mjs",
+      "sha256": "95579d48f44003ab18ac4cd0674fd37e81154b21d5f0b9b872a1cf22474e2700",
+      "new": true
+    },
+    {
+      "path": "tests/cast-ui.test.mjs",
+      "sha256": "5d5cfdc64a72bedd70290762aa042f24b2cbcd1e46f3e081df401ae74415fa2a",
+      "new": true
+    },
+    {
+      "path": "tests/character-histories.test.mjs",
+      "sha256": "ba54cc3be2a54b9658316d39a1d2defde145e12c489fe1e562fda837223082c5",
+      "new": true
+    },
+    {
+      "path": "tests/reliability-screen.test.mjs",
+      "sha256": "9e195d0fa97b0d7c7a6b75022e10467a93fd228ce0d45d6661d12a984da580bb",
+      "new": false
+    },
+    {
+      "path": "tests/supabase-backend.test.mjs",
+      "sha256": "b7e40022dfaf5ee3bf062bee88447aa662884e59c2b97aa83f7538138def4808",
+      "new": false
+    }
+  ],
+  "verification": {
+    "tests": 243,
+    "passed": [
+      "frontend types",
+      "backend types",
+      "Deno edge check",
+      "engine SHA-256 parity",
+      "production build",
+      "focused cast/history lint",
+      "QA harness build"
+    ],
+    "whole_repository_lint": {
+      "errors": 136,
+      "warnings": 12,
+      "introduced_per_file_rule": 0
+    },
+    "browser": "Blocked: executor/browser loopback split; no actual browser gameplay verified"
+  },
+  "compatibility": "New rooms only: castVersion:1 and historyVersion:1. Existing unmarked and pre-history cast saves remain unchanged. No SQL migration.",
+  "baseline_archive_sha256": "eb72d4f7d4ba58d46170aeb76c507020c62aaf4279e6a7784921f85e50d825aa"
+}

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "source": "Crosswalk approved manual authoring snapshot, 2026-10-10",
+  "sha256": {
+    "guide.json": "e68aada19e55d588401c2ce90305e604e5736820166e1e962a98f522b8a91444",
+    "personalities.json": "8290a4ef23b218815fda48f550a95ae7303f7bf9b7d7d8ac61ca7b377587c5b1",
+    "families.json": "b89127b4ac3f08f5bd39786d429031bb0ad3eb49e47bd7c1318b25b2ab0dddaf"
+  },
+  "characters": 68,
+  "onstageOriginalIds": 26,
+  "adultCameos": [
+    "mei_chen",
+    "hana_mori",
+    "yuna_park",
+    "celia_baptiste",
+    "farah_hussain",
+    "liang_chen",
+    "ravi_desai",
+    "esperanza_vega"
+  ],
+  "youngerCameos": [
+    "asha",
+    "nico",
+    "jian_wu",
+    "lin",
+    "bea"
+  ],
+  "onstageCharacters": 39,
+  "backgroundCharacters": 29,
+  "ageDistribution": {
+    "adult": 57,
+    "adolescent": 5,
+    "child": 5,
+    "toddler": 1
+  },
+  "manualSourceCommit": "5e6ae521b6c4d3950ad3ded96f9963f3230fa77c"
+}

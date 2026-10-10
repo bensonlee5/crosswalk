@@ -37,3 +37,33 @@ export async function postSavedRequest(request:SaveRequest,fetcher:typeof fetch=
  }
  return{response:response!,data};
 }
+
+/** Check the usable envelope before acknowledging an uncertain save or replacing a
+ * confirmed room. Partial JSON can be valid JSON without being a game snapshot. */
+export function isOwnedGameSnapshot(value:unknown):boolean{
+ if(!value||typeof value!=='object')return false;
+ const g=value as Record<string,unknown>;
+ if(typeof g.code!=='string'||!/^[A-Z0-9]{6}$/.test(g.code)||!Number.isInteger(g.version)||Number(g.version)<0||!['hotseat','online'].includes(String(g.mode))||!['lobby','playing','finished'].includes(String(g.status)))return false;
+ if(!Array.isArray(g.players)||g.players.length<1||g.players.length>4||!Array.isArray(g.mine)||!g.mine.length||!Array.isArray(g.log)||!g.log.every(line=>typeof line==='string'))return false;
+ if(!Number.isInteger(g.turn)||Number(g.turn)<0||Number(g.turn)>=g.players.length||!Number.isInteger(g.round)||Number(g.round)<1||!Number.isInteger(g.maxRounds)||Number(g.maxRounds)<1)return false;
+ const ids=new Set<string>();
+ for(const value of g.players){
+  if(!value||typeof value!=='object')return false;
+  const p=value as Record<string,unknown>;
+  if(typeof p.id!=='string'||!p.id||ids.has(p.id)||typeof p.name!=='string'||typeof p.place!=='string'||!['cash','hours','energy','joy','job','skill','social'].every(key=>typeof p[key]==='number'&&Number.isFinite(p[key])))return false;
+  ids.add(p.id);
+ }
+ return g.mine.every(id=>typeof id==='string'&&ids.has(id));
+}
+
+/** Room lookup also legitimately returns a small public lobby envelope to a
+ * nonmember. Missing ownership fields alone are not proof that envelope is valid. */
+export function isRoomLookupSnapshot(value:unknown,expectedCode:string):boolean{
+ if(!value||typeof value!=='object')return false;
+ const g=value as Record<string,unknown>;
+ if(g.code!==expectedCode)return false;
+ if(Object.prototype.hasOwnProperty.call(g,'mine'))return isOwnedGameSnapshot(g);
+ if(!/^[A-Z0-9]{6}$/.test(expectedCode)||!['lobby','playing','finished'].includes(String(g.status))||typeof g.joinable!=='boolean'||!Array.isArray(g.players)||g.players.length<1||g.players.length>4)return false;
+ if(g.joinable&&(g.status!=='lobby'||g.players.length>=4))return false;
+ return g.players.every(p=>!!p&&typeof p==='object'&&typeof p.name==='string');
+}

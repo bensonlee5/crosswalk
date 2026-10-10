@@ -47,11 +47,11 @@ let full={...p,energy:100};assert.ok(!mapInvitations(full,game(full,{round:7})).
 let hot=game(p,{round:4});assert.match(choiceTerms(p,byId('transit_courier'),hot).requirements,/18 energy/);
 assert.equal(neighborAtPlace({...p,rulesVersion:undefined},'CORNER CAFÉ',g),null);
 assert.equal(neighborAtPlace(p,'CORNER CAFÉ',g).action,'story_mina_1');
-const progressed={...p,stories:{mina:1},storyWeeks:{mina:1}};assert.equal(neighborAtPlace(progressed,'CORNER CAFÉ',g).action,null);assert.match(neighborAtPlace(progressed,'CORNER CAFÉ',g).text,/next week/);assert.ok(!mapInvitations(progressed,g).some(i=>i.action==='story_mina_2'));
+const progressed={...p,stories:{mina:1},storyWeeks:{mina:1}};assert.equal(neighborAtPlace(progressed,'CORNER CAFÉ',g).action,null);assert.match(neighborAtPlace(progressed,'CORNER CAFÉ',g).text,/other plans just now/);assert.ok(!mapInvitations(progressed,g).some(i=>i.action==='story_mina_2'));
 assert.equal(neighborAtPlace({...p,stories:{mina:3}},'CORNER CAFÉ',g).action,null);
 assert.equal(afterChoiceInvitation({...p,skill:1},{...p,skill:2},g).action,'apply');
 assert.equal(afterChoiceInvitation({...p,craft:2},{...p,craft:3},g).action,'creative_commission');
-assert.match(afterChoiceInvitation(p,progressed,g).reason,/next week/);
+assert.match(afterChoiceInvitation(p,progressed,g).reason,/shared a good moment/);
 assert.equal(afterChoiceInvitation({...p,skill:1},{...p,skill:2,hours:0},g),null);
 assert.ok(!neighborAtPlace({...progressed,storyWeeks:{mina:8}},'CORNER CAFÉ',game(p,{round:8})).text.includes('next week'));
 assert.equal(afterChoiceInvitation(p,progressed,game(p,{round:8})),null);

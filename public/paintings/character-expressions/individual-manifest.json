@@ -1,0 +1,38 @@
+[
+  {
+    "characterId": "mina",
+    "expression": "anger",
+    "width": 640,
+    "height": 640,
+    "bytes": 102908,
+    "sha256": "fdc26411f01f65ba5119aa99acfaac6a6d26a418c705af309176b54f54f35c8c",
+    "src": "/paintings/character-expressions/mina-anger.webp"
+  },
+  {
+    "characterId": "mina",
+    "expression": "envy",
+    "width": 640,
+    "height": 640,
+    "bytes": 105252,
+    "sha256": "dcac9298f9d479e261994a1bf588a6eb13860a852cc889d41a08ae24e5dcc363",
+    "src": "/paintings/character-expressions/mina-envy.webp"
+  },
+  {
+    "characterId": "mina",
+    "expression": "love",
+    "width": 640,
+    "height": 640,
+    "bytes": 105276,
+    "sha256": "38639fc38d78f1381fd5241a7db6ad0b602331af9c7b436b7e43e0bc15535bfc",
+    "src": "/paintings/character-expressions/mina-love.webp"
+  },
+  {
+    "characterId": "mina",
+    "expression": "sadness",
+    "width": 640,
+    "height": 640,
+    "bytes": 104000,
+    "sha256": "10009aaab2721c43cb8134aa47b234c5bf3ed04af8e1f5076e2a0de7b5d75360",
+    "src": "/paintings/character-expressions/mina-sadness.webp"
+  }
+]

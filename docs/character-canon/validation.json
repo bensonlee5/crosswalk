@@ -1,0 +1,27 @@
+{
+  "validatedAt": "2026-10-10T20:54:00Z",
+  "baseCommit": "4be700a73cd18b0e9753c4549ba9d85e6c11096c",
+  "scope": "Manual character integration branch before renderer/guide merge and later personality-default portrait refinements",
+  "canonicalCharacters": 68,
+  "onstageCharacters": 39,
+  "backgroundCharacters": 29,
+  "checks": {
+    "fullSerialTestSuite": {"passed": 368, "failed": 0, "skipped": 0},
+    "finalProseRegression": "Passed character-canon and cast-relationships tests after final two wording-only Oren edits",
+    "legacySaveHashes": "81 frozen campaign states byte-identical",
+    "typecheck": "passed",
+    "backendTypecheck": "passed",
+    "engineParity": "passed",
+    "edgeTypecheck": "passed",
+    "productionBuild": "passed, existing large-chunk warning remains",
+    "targetedLint": "passed for new character modules and touched cameo/history UI",
+    "expressionAssets": "3 current-canon source PNG sheets,3 optimized WebP sheets and4 direct Mina emotion WebPs verified",
+    "portraits": "68 individually reviewed640px portraits, unique hashes, each under160KB"
+  },
+  "limitations": [
+    "UI checks on this branch are static-render and engine tests; integrated isometric browser QA belongs to the release owner.",
+    "The renderer and public guide are intentionally unchanged here and must be merged separately.",
+    "Later user-requested personality-default portrait refinements require approved replacements, updated manifests and another expression/default compatibility check before final release.",
+    "No deployment or publication performed."
+  ]
+}

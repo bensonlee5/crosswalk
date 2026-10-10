@@ -1,0 +1,9 @@
+/* Short arrivals keep the town visible between decisions. CSS transforms here
+   preserve the dialog's independent translate(-50%, -50%) positioning. */
+@keyframes venue-arrive { from { opacity:0; transform:translateY(12px) scale(.98) } to { opacity:1; transform:translateY(0) scale(1) } }
+@keyframes venue-depart { from { opacity:1; transform:translateY(0) scale(1) } to { opacity:0; transform:translateY(6px) scale(.99) } }
+.game-location-dialog[data-state=open],.game-encounter-dialog[data-state=open],.game-menu-dialog[data-state=open] { animation:venue-arrive 240ms cubic-bezier(.2,.7,.25,1) both }
+.game-location-dialog[data-state=closed],.game-encounter-dialog[data-state=closed],.game-menu-dialog[data-state=closed] { animation:venue-depart 140ms ease-in both }
+@media(prefers-reduced-motion:reduce) {
+ .game-location-dialog,.game-encounter-dialog,.game-menu-dialog,[data-slot=dialog-overlay] { animation:none!important;transition:none!important;scroll-behavior:auto!important }
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "key": "listen",
+    "publicPath": "/paintings/decisions/listen.webp",
+    "width": 768,
+    "height": 512,
+    "bytes": 70784,
+    "sourceSha256": "1f06d6ce84c5e0e67c556d7645d8f4b065d668dd3a26f675944ba38761228a1a",
+    "sha256": "8fab5670d4cbd742d5f65286436089681c0f11ad7456c2e38c94299050f58779",
+    "visualQA": "Passed individual source inspection: intent-readable, warm painterly, faces cropped, no legible text or magical props."
+  },
+  {
+    "key": "set_boundary",
+    "publicPath": "/paintings/decisions/set_boundary.webp",
+    "width": 768,
+    "height": 512,
+    "bytes": 66976,
+    "sourceSha256": "55b88a01e1102f515134950b76a5b2775da82f8abe1f9eab7656bfc23494fe17",
+    "sha256": "1f8a2735b320a8ceb6298c09ed6ea27fe8692ce5422ba43ce693f7cfa8efe7e3",
+    "visualQA": "Passed individual source inspection: intent-readable, warm painterly, faces cropped, no legible text or magical props."
+  },
+  {
+    "key": "make_promise",
+    "publicPath": "/paintings/decisions/make_promise.webp",
+    "width": 768,
+    "height": 512,
+    "bytes": 80178,
+    "sourceSha256": "0f4eabbf1f23c7ab79ed98849d313a5d60a76a3d5fd9ee6b21e679ec7984a12f",
+    "sha256": "70812f3a6fcc3b3adc101856ef968c3e5f211f0f70a8545b67118877652b6855",
+    "visualQA": "Passed individual source inspection: intent-readable, warm painterly, faces cropped, no legible text or magical props."
+  },
+  {
+    "key": "renegotiate",
+    "publicPath": "/paintings/decisions/renegotiate.webp",
+    "width": 768,
+    "height": 512,
+    "bytes": 81208,
+    "sourceSha256": "b57644086812b59000ee483cab58a10d52d3b076ab95bd2a1fffc7b9d4cfaaf5",
+    "sha256": "cf891aedf77f53b45e698236279080aa32496c81f64f107d057722c976de4e6f",
+    "visualQA": "Passed individual source inspection: intent-readable, warm painterly, faces cropped, no legible text or magical props."
+  },
+  {
+    "key": "disagree",
+    "publicPath": "/paintings/decisions/disagree.webp",
+    "width": 768,
+    "height": 512,
+    "bytes": 94428,
+    "sourceSha256": "4e2720a952f9a5fbcb0c7f056a8091f9f1bbef2f89ac80aeb0419553e9e0f6c0",
+    "sha256": "a2ce1239eea0540bf9daf0db5e2c4c3850af1c817265b8bc2c0df68ea814ada5",
+    "visualQA": "Passed individual source inspection: intent-readable, warm painterly, faces cropped, no legible text or magical props."
+  },
+  {
+    "key": "say_goodbye",
+    "publicPath": "/paintings/decisions/say_goodbye.webp",
+    "width": 768,
+    "height": 512,
+    "bytes": 81070,
+    "sourceSha256": "23a027899ce32c9f9e86cb86b8874614e8828d057060e9628a422c1e852ed771",
+    "sha256": "c0f386db0da861eff6dddabb7ee2a9d1b83f30a5272c4b822de09a8905540256",
+    "visualQA": "Passed individual source inspection: intent-readable, warm painterly, faces cropped, no legible text or magical props."
+  }
+]

@@ -2,6 +2,8 @@
 import {actions,availableActions,activityForPlayer,jobs,neighbors,reason,projectGoal,projectProgress} from './game.ts';
 import type {Activity,Game,Player} from './game.ts';
 import {actionPreview,weekPreview} from './game-view.ts';
+import {monthlyPriceBreakdown} from './monthly-prices.ts';
+import {regionalLifeProfile} from './regional-life.ts';
 import {getWeather} from './weather.ts';
 import {economyActivity,economyHourlyRate,economyQuote,economyTimeLabel,hasModernEconomy,monthlyBills} from './economy.ts';
 export const placeStories:Record<string,{promise:string;scene:string;motif:string;material:string;first:string[]}>= {
@@ -38,7 +40,7 @@ export function choiceBenefit(p:Player,a:Activity,g:Game){
  const v=actionPreview(p,a.id,g);
  if(a.promote)return p.job<3?`${jobs[p.job+1].name} · ${dollars(economyHourlyRate(p,p.job+1))}/hour`:'Your career has reached the top role';
  if(a.housing!==undefined)return `A studio of your own · +6 happiness each ${hasModernEconomy(p)?'month':'week'}`;
- if(a.story)return a.stage===3?'Finish a shared story and earn a keepsake':'Get to know '+neighbors.find(n=>n.id===a.story)!.name;
+ if(a.story)return 'Spend time with '+neighbors.find(n=>n.id===a.story)!.name;
  if(a.special==='project')return g.project?.completed?'The neighborhood garden is open':projectProgress(g)+1>=projectGoal(g)?'Your contribution can open the shared garden':'Help build a garden for the block';
  if(v.cash>0)return `${dollars(v.cash)} ${hasModernEconomy(p)&&economyQuote(p,a,g).paidHours?'take-home'+(a.cost?' after costs':''):a.cost?'net income':'income'}${a.workHours?' toward the life you want':''}`;
  if(v.craft>0)return `+${v.craft} craft · ${(p.craft||0)+v.craft<3?'build toward commissions':'grow your creative path'}`;
@@ -56,9 +58,15 @@ export function choiceTerms(p:Player,a:Activity,g:Game){
  const afterBills=a.housing!==undefined?weekPreview({...p,housing:a.housing}).bills:currentBills;
  const bill=monthlyBills(a.housing!==undefined?{...p,housing:a.housing}:p);
  const billText=modern?`${dollars(bill.total)} monthly bills (${dollars(bill.rent)} rent + ${dollars(bill.food)} food + ${dollars(bill.essentials)} essentials), ${dollars(bill.total-monthlyBills(p).total)} more each month`:`${dollars(afterBills)} weekly bills (${dollars(afterBills-85)} rent + $85 food), ${dollars(afterBills-currentBills)} more each week`;
- return {time:modern?`${economyTimeLabel(p,a.time)}${quote.paidHours?` · ${quote.paidHours} paid hours`:''} · ${v.missingHours?`Needs ${v.missingHours} more priority block${v.missingHours===1?'':'s'}`:`${v.afterHours} left after`}`:`${a.time} time · ${v.missingHours?`Needs ${v.missingHours} more time block${v.missingHours===1?'':'s'}`:`${v.afterHours} left after`}`,cash,requirements:[requirements.length?'Needs '+requirements.join(' · '):'',modern?quote.reason:''].filter(Boolean).join(' · '),bills:a.housing!==undefined?billText:'',afterCash:dollars(v.afterCash)+' left after'};
+ return {time:modern?`${economyTimeLabel(p,a.time)}${quote.paidHours?` · ${quote.paidHours} paid hours`:''} · ${v.missingHours?`Needs ${v.missingHours} more priority block${v.missingHours===1?'':'s'}`:`${v.afterHours} left after`}`:`${a.time} time · ${v.missingHours?`Needs ${v.missingHours} more time block${v.missingHours===1?'':'s'}`:`${v.afterHours} left after`}`,cash,unitPrice:monthlyPriceBreakdown(p,a,g),requirements:[requirements.length?'Needs '+requirements.join(' · '):'',modern?quote.reason:''].filter(Boolean).join(' · '),bills:a.housing!==undefined?billText:'',afterCash:dollars(v.afterCash)+' left after'};
 }
 export type PlaceInvitation={id:string;place:string;action:string;title:string;reason:string};
+/** One real local activity, independent of legacy invitation surfaces hidden in story rooms. */
+export function regionalInvitation(p:Player,g:Game):PlaceInvitation|null{
+ const profile=regionalLifeProfile(p,g);if(!profile)return null;
+ for(const id of profile.activities){const a=actions.find(a=>a.id===id);if(a&&!reason(p,id,g)&&availableActions(p,a.place,g).some(x=>x.id===id)&&actionPreview(p,id,g).participation?.joy)return{id,place:a.place,action:id,title:profile.invitation,reason:profile.context};}
+ return null;
+}
 export function mapInvitations(p:Player,g:Game):PlaceInvitation[]{
  const out:PlaceInvitation[]=[];
  const add=(id:string,title:string,why:string)=>{const a=actions.find(a=>a.id===id);if(a&&!reason(p,id,g)&&availableActions(p,a.place,g).some(x=>x.id===id)&&!out.some(i=>i.place===a.place))out.push({id,place:a.place,action:id,title,reason:why});};
@@ -67,6 +75,7 @@ export function mapInvitations(p:Player,g:Game):PlaceInvitation[]{
  if(p.cash<weekPreview(p).bills)add(p.hours>=2?'work':'work_short','A little room for the bills',`${dollars(weekPreview(p).bills)} due at the end of your ${hasModernEconomy(p)?'month':'week'}`);
  if(p.rulesVersion===2&&g.project&&!g.project.completed&&projectProgress(g)+1>=projectGoal(g))add('garden_project','One more pair of hands','Your contribution can open the garden');
  if(p.rulesVersion===2&&(p.craft||0)===2)add('creative_practice','One more practice','Craft 3 opens creative commissions');
+ const local=regionalInvitation(p,g);if(local)add(local.action,local.title,local.reason);
  const w=getWeather(g,p);
  const weatherId=w?.type==='sun'?'rest':w?.type==='rain'?'cafe_break':w?.type==='cold'||w?.type==='snow'?'library_read':null;
  if(weatherId){const v=actionPreview(p,weatherId,g);if(v.weather.joy>0||v.weather.energy>0)add(weatherId,w?.type==='sun'?'A good day for the slow route':w?.type==='rain'?'A good day for a window seat':'A book and a warm corner',v.weather.joy>0?`+${v.weather.joy} weather happiness included`:`+${v.weather.energy} winter recovery included`);}
@@ -80,11 +89,11 @@ export function neighborAtPlace(p:Player,place:string,g:Game){
  const stage=p.stories?.[n.id]||0;
  if(stage===3)return{neighbor:n,text:`${n.name} is a familiar face now. You share three chapters and a ${n.keepsake.toLowerCase()}.`,action:null};
  const id=`story_${n.id}_${stage+1}`,lock=reason(p,id,g);
- return{neighbor:n,text:p.storyWeeks?.[n.id]===g.round?g.round<g.maxRounds?`${n.name} will have another chapter for you next ${hasModernEconomy(p)?'month':'week'}.`:`A good moment with ${n.name}, in the final ${hasModernEconomy(p)?'month':'week'} of this story.`:n.chapters[stage].title,action:lock?null:id};
+ return{neighbor:n,text:p.storyWeeks?.[n.id]===g.round?`${n.name} has other plans just now.`:n.chapters[stage].title,action:lock?null:id};
 }
 export function afterChoiceInvitation(before:Player,p:Player,g:Game):PlaceInvitation|null{
  if(p.job<3&&before.skill<jobs[p.job+1].need&&p.skill>=jobs[p.job+1].need&&!reason(p,'apply',g))return{id:'apply',place:'CAREER HUB',action:'apply',title:'A new door at Next Step',reason:`You can now apply for ${jobs[p.job+1].name} at ${dollars(economyHourlyRate(p,p.job+1))}/hour`};
  if((before.craft||0)<3&&(p.craft||0)>=3&&!reason(p,'creative_commission',g))return{id:'creative_commission',place:'MAKERSPACE',action:'creative_commission',title:'Your first commission is within reach',reason:'Your craft is ready for paid creative work'};
- for(const n of neighbors)if(g.round<g.maxRounds&&(p.stories?.[n.id]||0)>(before.stories?.[n.id]||0)&&p.stories![n.id]<3)return{id:'story_'+n.id,place:n.place,action:'',title:`Another chapter with ${n.name}`,reason:`Come back next ${hasModernEconomy(p)?'month':'week'} when you feel like continuing the story`};
+ for(const n of neighbors)if(g.round<g.maxRounds&&(p.stories?.[n.id]||0)>(before.stories?.[n.id]||0)&&p.stories![n.id]<3)return{id:'story_'+n.id,place:n.place,action:'',title:`Time with ${n.name}`,reason:`You shared a good moment with ${n.name}.`};
  return null;
 }
