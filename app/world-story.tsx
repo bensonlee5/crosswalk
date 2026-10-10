@@ -9,11 +9,11 @@ import {StoryChoiceDeck,EncounterOutcome,useEncounterCommit} from './story-choic
 
 /** Put this below nearby places. People open their own encounter; travel stays optional. */
 export default function WorldStory({g,p,disabled,onAction,onEncounter}:{g:Game;p:Player;disabled:boolean;onAction:(id:string)=>Promise<unknown>;onEncounter?:(actorId:string,spot:string)=>void}){
- const view=worldView(p,g),all=(view?.choices||[]).map(worldEncounterChoice);
+ const view=worldView(p,g),all=(view?.choices||[]).map(c=>worldEncounterChoice(c,p,g));
  const context=[g.code,p.id,g.round,p.world?.region||''].join('|');
  const commit=useEncounterCommit({g,p,disabled,context,choices:all,onAction,findReceipt:(result,updated,c)=>{const r=updated.world?.journal.find(r=>r.choiceId===c.id);return r?{title:r.title,body:r.text,week:r.week}:null}});
  if(!view)return null;
- const choices=(kinds:string[])=>view.choices.filter(c=>kinds.includes(c.kind)).map(worldEncounterChoice);
+ const choices=(kinds:string[])=>view.choices.filter(c=>kinds.includes(c.kind)).map(c=>worldEncounterChoice(c,p,g));
  const practical=choices(['work','relocate']),exploration=choices(['explore','food','language']).filter(c=>!view.choices.find(v=>v.id===c.id)?.actorId),tradeoffs=choices(['tradeoff']);
  const destinations=choices(['travel']).filter(c=>view.choices.find(v=>v.id===c.id)?.preview.region&&view.discoveredRegions.includes(view.choices.find(v=>v.id===c.id)!.preview.region!));
  const deck=(list:ReturnType<typeof choices>)=><StoryChoiceDeck g={g} place={view.choices.find(c=>c.id===list[0]?.id)?.spot||p.place} choices={list} disabled={disabled} busy={commit.busy} onCommit={c=>void commit.commit(c)} isSubmitted={commit.isSubmitted}/>;

@@ -142,5 +142,25 @@ await check('Qualitative state HUD, details, disabled handlers, garden and legac
 await check('GameScreen gives the renderer original story people and every active guardian pair',async()=>{const g=modernRoom();g.castVersion=1;g.characterCanonVersion=1;require(root+'/lib/character-cast.ts').initializeCast(g);const h=harness({g});await h.settle();let paired=0,ashaPairs=0;for(let round=1;round<=8;round++){const next=structuredClone(g);next.round=round;next.players[0].world.discoveredPlacesByRegion.alder=[...W.worldPlaceIds];h.update({g:next});await h.settle();const actors=h.controls.filter(c=>c[0]==='sync').at(-1)[6];assert.equal(actors.length,new Set(actors.map(a=>a.id)).size);if(round===1)for(const id of ['mina','eli','jo'])assert.ok(actors.some(a=>a.id===id),id+' initial story figure');for(const a of actors)if(a.companionId){paired++;assert.ok(actors.some(q=>q.id===a.companionId&&q.spot===a.spot));if(a.id==='asha'){assert.equal(a.companionId,'eli');ashaPairs++;}}}assert.ok(paired>0);assert.ok(ashaPairs>0,'GameScreen sends a real Asha + Eli pair');h.unmount();return{storyActors:['mina','eli','jo'],verifiedPairs:paired,ashaEliPairs:ashaPairs};});
 await check('Mobile quiet weather is applied to the renderer before its first weather update',async()=>{for(const [width,quiet]of [[375,true],[1024,false]]){const h=harness({width});await h.settle();const quality=h.controls.findIndex(c=>c[0]==='quality'),weather=h.controls.findIndex(c=>c[0]==='weather');assert.ok(quality>=0&&quality<weather);assert.equal(h.controls[quality][1],quiet);await h.click(h.byLabel('Game menu')[0]);const toggle=traverse(h.tree,e=>e.type==='button'&&textContent(e).startsWith('Weather motion:'))[0];assert.equal(textContent(toggle),quiet?'Weather motion: quiet':'Weather motion: animated');h.unmount();}return{mobileAndDesktopAgree:true};});
 await check('A recovered cached map clears the previous art failure message',async()=>{const h=harness();await h.settle();h.callbacks.failure();h.render();assert.match(textContent(h.tree),/The illustrated map could not load/);h.callbacks.ready();h.render();assert.doesNotMatch(textContent(h.tree),/The illustrated map could not load/);h.unmount();return{recoveryClearsFailure:true};});
+await check('Course preview describes effort while the real button reports only actual blockers',async()=>{
+ const module={exports:{}},js=ts.transpileModule(fs.readFileSync(root+'/app/place-invitations.tsx','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
+ vm.runInNewContext(js,{module,exports:module.exports,require:id=>id==='./game-painting'?{default:fakeComponent('GamePainting'),__esModule:true}:id==='./game-art'?require(root+'/app/game-art.ts'):id.startsWith('@/')?require(root+'/'+id.slice(2)+'.ts'):require(id)});
+ const renderTerms=h=>require('react-dom/server').renderToStaticMarkup(React.createElement(module.exports.ChoiceTerms,component(h,'ChoiceTerms').props));
+ const g=modernRoom(),p=g.players[0];p.place='CAMPUS';p.cash=6000;p.energy=75;p.hours=3;p.world.discoveredPlacesByRegion.alder=[...W.worldPlaceIds];
+ const h=harness({g});await h.settle();await h.click(h.byClass('game-current-place')[0]);
+ await h.click(traverse(h.byClass('game-activity-grid')[0],e=>e.type==='button'&&e.key==='study')[0]);
+ const html=renderTerms(h);assert.match(html,/Some effort/);assert.match(html,/\$600 upfront/);assert.doesNotMatch(html,/Rest|rest|\d+(?:\.\d+)? energy/);
+ assert.equal(h.byClass('game-do-action')[0].props.disabled,false);assert.equal(h.byClass('game-action-lock').length,0);
+ await h.click(h.byClass('game-do-action')[0]);h.advance(650);
+ assert.equal(h.props.g.players[0].cash,5400);assert.equal(h.props.g.players[0].hours,1);
+ assert.equal(h.byClass('game-do-action')[0].props.disabled,true);assert.match(textContent(h.byClass('game-action-lock')[0]),/Not enough priority blocks/);assert.doesNotMatch(renderTerms(h),/Rest|rest/);
+ const tired=structuredClone(h.props.g);tired.players[0].hours=3;tired.players[0].energy=0;h.update({g:tired});
+ assert.equal(h.byClass('game-do-action')[0].props.disabled,true);assert.match(textContent(h.byClass('game-action-lock')[0]),/Rest|rest/);
+ assert.match(renderTerms(h),/Some effort/);assert.doesNotMatch(renderTerms(h),/\d+(?:\.\d+)? energy/);
+ const requests=h.apiCalls.length;await h.byClass('game-do-action')[0].props.onClick();assert.equal(h.apiCalls.length,requests);
+ const rested=structuredClone(tired);rested.players[0].energy=75;h.update({g:rested});
+ assert.equal(h.byClass('game-do-action')[0].props.disabled,false);assert.equal(h.byClass('game-action-lock').length,0);assert.doesNotMatch(renderTerms(h),/Rest|rest/);h.unmount();
+ return{actualChoiceTermsRendered:true,availableCoursePays600:true,timeAndEnergyLocksPreserved:true,noFalseRestWarning:true};
+});
 console.log(JSON.stringify(output,null,2));
 if(results.some(r=>!r.ok))process.exitCode=1;

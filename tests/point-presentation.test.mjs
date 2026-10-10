@@ -6,6 +6,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {qualitativeStat,qualitativeText,effortLabel,gardenStage,visibleGameSummary} from '../lib/point-presentation.ts';
 import {isQuietEffect} from '../lib/decision-presentation.ts';
+import {worldChoiceEffects} from '../lib/world-choice-presentation.ts';
 const root=fileURLToPath(new URL('../',import.meta.url)).replace(/\/$/,''),require=createRequire(root+'/package.json'),React=require('react'),ts=require('typescript'),{renderToStaticMarkup}=require('react-dom/server');
 const G=require(root+'/lib/game.ts'),W=require(root+'/lib/world-life.ts'),L=require(root+'/lib/life-events.ts'),E=require(root+'/lib/economy.ts'),S=require(root+'/lib/story-arcs.ts');
 const leak=/(?:[+−-]?\d+(?:\.\d+)?(?:\/\d+)?\s*(?:%\s*)?(?:(?:local participation|weather|career|extra)\s+)?(?:energy|happiness|joy|skills?|craft(?: levels?)?|connections?|legacy|life points?|bond|trust)\b|\b(?:energy|happiness|joy|skills?|craft|connections?|legacy|score|trust)\s*[:(+−-]?\s*\d+(?:\.\d+)?|\b(?:one|two|three|four|five|six|seven|eight)\s+(?:(?:practical|career|earned)\s+)*(?:skills?|craft levels?|connections?)\b)/i;
@@ -13,7 +14,7 @@ const plain=html=>html.replace(/<[^>]*>/g,' ').replace(/&(?:#x27|apos);/g,"'");
 function noPoints(html){assert.doesNotMatch(plain(html),leak);assert.doesNotMatch(html,/aria-value(?:now|max|min)=/);for(const [,value]of html.matchAll(/(?:aria-label|title)="([^"]*)"/g))assert.doesNotMatch(value,leak);}
 const loaded=new Map();
 function load(file){if(loaded.has(file))return loaded.get(file).exports;const module={exports:{}};loaded.set(file,module);const source=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;vm.runInNewContext(source,{exports:module.exports,module,require:id=>id.endsWith('.css')?{}:id==='./game-painting'?{__esModule:true,default:props=>React.createElement('img',{src:props.src,alt:props.alt})}:id==='./game-art'?require(root+'/app/game-art.ts'):id.startsWith('@/')?require(root+'/'+id.slice(2)+'.ts'):id.startsWith('./')?load(root+'/app/'+id.slice(2)+'.tsx'):require(id)});return module.exports;}
-const {StoryChoiceDeck,EncounterOutcome}=load(root+'/app/story-choices.tsx'),{ChoiceTerms}=load(root+'/app/place-invitations.tsx'),{LifeJournal,LifeEnding,PublicLifeSummary}=load(root+'/app/life-story.tsx'),WorldStory=load(root+'/app/world-story.tsx').default;
+const {StoryChoiceDeck,EncounterOutcome}=load(root+'/app/story-choices.tsx'),{ChoiceTerms}=load(root+'/app/place-invitations.tsx'),{LifeJournal,LifeEnding,PublicLifeSummary}=load(root+'/app/life-story.tsx'),WorldStory=load(root+'/app/world-story.tsx').default,{worldEncounterChoice}=load(root+'/app/encounter-panel.tsx');
 const render=(Component,props)=>renderToStaticMarkup(React.createElement(Component,props));
 function room(modern=false,region='alder'){const p=G.player('Alex'),g={code:'POINTS',mode:'hotseat',host:'owner',members:{owner:[p.id]},mine:[p.id],players:[p],status:'playing',round:2,turn:0,maxRounds:8,log:[],seen:[],event:0,rulesVersion:2,lifeVersion:1,worldVersion:1,...G.createEnvironment(),...(modern?{storyVersion:1,economyVersion:1,climateVersion:1,regionalLifeVersion:1}:{})};L.initializeLife(g,15);W.initializeWorldPlayer(p);if(modern){E.initializeEconomyPlayer(p,g);W.initializeSharedWorld(g);S.initializeStory(g);}p.world.region=region;p.world.discoveredRegions=Object.keys(W.regionDefinitions);p.world.discoveredPlacesByRegion[region]=[...W.worldPlaceIds];return{p,g};}
 
@@ -36,7 +37,7 @@ test('all ordinary action terms preserve price/gates but never present point req
 });
 test('all regional choice bodies, optional details and ARIA stay qualitative at resource floors and ceilings',()=>{
  let choices=0;
- for(const modern of [false,true])for(const region of Object.keys(W.regionDefinitions))for(const value of [0,.25,19.9,45,99.75,100]){const {p,g}=room(modern,region);p.energy=p.joy=value;p.cash=10000;const before=JSON.stringify(g);for(const c of W.worldChoices(p,g)){const choice={...c,actionId:'world:'+c.id,cost:{time:c.time,cash:c.cost,energy:Math.max(0,-c.preview.energy)}};const html=render(StoryChoiceDeck,{g,choices:[choice],disabled:false,busy:false,onCommit:()=>assert.fail('Render cannot commit')});noPoints(html);assert.match(html,/\$/);assert.equal(/class="encounter-commit" disabled/.test(html),!c.available);choices++;}noPoints(render(WorldStory,{g,p,disabled:false,onAction:()=>assert.fail()}));assert.equal(JSON.stringify(g),before);}
+ for(const modern of [false,true])for(const region of Object.keys(W.regionDefinitions))for(const value of [0,.25,19.9,45,99.75,100]){const {p,g}=room(modern,region);p.energy=p.joy=value;p.cash=10000;const before=JSON.stringify(g);for(const c of W.worldChoices(p,g)){const choice=worldEncounterChoice(c,p,g);const html=render(StoryChoiceDeck,{g,choices:[choice],disabled:false,busy:false,onCommit:()=>assert.fail('Render cannot commit')});noPoints(html);assert.match(html,/\$/);assert.equal(/class="encounter-commit" disabled/.test(html),!c.available);choices++;}noPoints(render(WorldStory,{g,p,disabled:false,onAction:()=>assert.fail()}));assert.equal(JSON.stringify(g),before);}
  assert.ok(choices>500);
 });
 test('life journal, epilogue, observer, receipts and visible-game reader cannot expose raw points',()=>{
@@ -46,4 +47,48 @@ test('life journal, epilogue, observer, receipts and visible-game reader cannot 
 test('public guide and component source have no scoring dashboard or hidden numeric accessibility meter',()=>{
  const guide=fs.readFileSync(root+'/public/guide/index.html','utf8');noPoints(guide);assert.match(guide,/\$3,072/);assert.match(guide,/160 paid|160-hour/);
  const screen=fs.readFileSync(root+'/app/game-screen.tsx','utf8'),page=fs.readFileSync(root+'/app/page.tsx','utf8');assert.doesNotMatch(screen+page,/<progress|score\(|scoreParts\(|pathPoints\(|className="big-score"|aria-valuenow/);assert.match(screen,/personalEffects\(preview\)/);assert.match(screen,/qualitativeStat\('energy',p.energy\)/);
+});
+
+const escapeHtml=text=>text.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;');
+function choiceHtml(c,p,g){return render(StoryChoiceDeck,{g,choices:[worldEncounterChoice(c,p,g)],disabled:false,busy:false,onCommit:()=>assert.fail('Render cannot commit')});}
+test('world discovery and closure consequences render regional names without changing engine choices',()=>{
+ for(const modern of [false,true])for(const region of Object.keys(W.regionDefinitions)){
+  const {p,g}=room(modern,region);p.cash=10000;p.world.discoveredPlacesByRegion[region]=['APARTMENTS','WORK','THE PARK','CORNER CAFÉ','COMMUNITY','CINEMA'];
+  const snapshot=JSON.stringify(g),choices=W.worldChoices(p,g),raw=JSON.stringify(choices);
+  for(const c of choices){
+   const html=choiceHtml(c,p,g),effects=worldChoiceEffects(c,p,g),target=c.preview.region?{...p,world:{...p.world,region:c.preview.region}}:p;
+   for(const [prefix,places,player]of [['Discover: ',c.preview.revealPlaces,target],['Permanently close here: ',c.preview.closePlaces,p]])if(places.length){
+    const expected=prefix+places.map(place=>prefix==='Discover: '&&c.preview.returnChange?.place===place?c.preview.returnChange.venueName:W.worldPlaceName(player,place,g)).join(', ');
+    assert.ok(effects.includes(expected),region+'/'+c.key+': '+expected);assert.ok(html.includes(escapeHtml(expected)));
+    for(const id of places)assert.ok(!effects.some(text=>text.startsWith(prefix)&&new RegExp('\\b'+id+'\\b').test(text)),id+' must not leak');
+   }
+   noPoints(html);
+  }
+  assert.equal(JSON.stringify(choices),raw);assert.equal(JSON.stringify(g),snapshot);
+ }
+ const {p,g}=room(true);p.world.discoveredPlacesByRegion.alder=['APARTMENTS','WORK','THE PARK','CORNER CAFÉ','COMMUNITY'];
+ const explore=W.worldChoices(p,g).find(c=>c.key==='explore');assert.equal(explore.title,'Follow the covered service lanes');
+ assert.ok(explore.previewText.includes('Discover: MARKET, TRANSIT'),'engine IDs are deliberately unchanged');
+ assert.ok(choiceHtml(explore,p,g).includes('Discover: Ferry Market, Alder Ferry &amp; Rail'));
+ assert.ok(render(WorldStory,{g,p,disabled:false,onAction:()=>assert.fail()}).includes('Discover: Ferry Market, Alder Ferry &amp; Rail'));
+});
+test('world discoveries use evolved shared venues and destination names before travel',()=>{
+ const {p,g}=room(true);p.world.discoveredPlacesByRegion.alder=['APARTMENTS','WORK','THE PARK','CORNER CAFÉ','COMMUNITY'];
+ W.applySharedVenueChange(g,{id:'renamed-market',region:'alder',place:'MARKET',status:'repurposed',name:'Ferry Day Food Hall',description:'A shared counter',reason:'A new chapter',source:'story'});
+ W.applySharedVenueChange(g,{id:'renamed-destination',region:'saffron',place:'CORNER CAFÉ',status:'repurposed',name:'Canal Neighbors Café',description:'A shared table',reason:'A new chapter',source:'story'});
+ const snapshot=JSON.stringify(g),explore=W.worldChoices(p,g).find(c=>c.key==='explore'),travel=W.worldChoices(p,g).find(c=>c.key==='travel:saffron');
+ assert.ok(choiceHtml(explore,p,g).includes('Discover: Ferry Day Food Hall, Alder Ferry &amp; Rail'));
+ assert.ok(choiceHtml(travel,p,g).includes('Canal Neighbors Café'));assert.doesNotMatch(choiceHtml(travel,p,g),/Discover: [^<]*Quay Corner Café/);
+ assert.equal(JSON.stringify(g),snapshot);noPoints(choiceHtml(explore,p,g));noPoints(choiceHtml(travel,p,g));
+});
+test('legacy return discoveries and permanent closures retain their evolved cinema name after reload',()=>{
+ const {p,g}=room();p.cash=10000;p.world.discoveredPlacesByRegion.alder=W.worldPlaceIds.filter(place=>place!=='CINEMA');
+ const take=id=>{p.hours=6;const c=W.worldChoices(p,g).find(c=>c.key==='travel:'+id);assert.ok(c.available,c.reason);W.resolveWorldChoice(g,p,c.id);};
+ take('saffron');const arrival=W.worldChoices(p,g).find(c=>c.key==='travel:alder');
+ assert.equal(arrival.preview.returnChange.place,'CINEMA');const name=arrival.preview.returnChange.venueName;
+ assert.ok(choiceHtml(arrival,p,g).includes('Discover: '+escapeHtml(name)));take('alder');
+ const saved=JSON.parse(JSON.stringify(g)),q=saved.players[0],close=W.worldChoices(q,saved).find(c=>c.key==='release_cinema'),before=JSON.stringify(saved);
+ assert.ok(close);assert.equal(W.worldPlaceName(q,'CINEMA',saved),name);
+ assert.ok(choiceHtml(close,q,saved).includes('Permanently close here: '+escapeHtml(name)));
+ assert.doesNotMatch(choiceHtml(close,q,saved),/Permanently close here: CINEMA/);assert.equal(JSON.stringify(saved),before);noPoints(choiceHtml(close,q,saved));
 });

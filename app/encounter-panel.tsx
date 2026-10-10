@@ -9,13 +9,14 @@ import {economyMonthLabel} from '@/lib/economy';
 import {getStoryView} from '@/lib/story-arcs';
 import {relationshipViews} from '@/lib/life-events';
 import {worldView,worldPlaceName,type WorldChoiceView} from '@/lib/world-life';
+import {worldChoiceEffects} from '@/lib/world-choice-presentation';
 import {ArcBeatStrip,StoryTimeline} from './story-timeline';
 import {StoryChoiceDeck,EncounterOutcome,useEncounterCommit,type EncounterChoice,type EncounterReceipt} from './story-choices';
 import {castPeople} from '@/lib/character-cast';
 import {CastEncounterPanel} from './cast-story';
 
 type Props={g:Game;p:Player;actorId:string;spot?:string;disabled:boolean;onAction:(id:string)=>Promise<unknown>;onClose:()=>void};
-export function worldEncounterChoice(c:WorldChoiceView):EncounterChoice{return{id:c.id,actionId:'world:'+c.id,title:c.title,body:c.body,available:c.available,reason:c.reason,previewText:c.previewText,cost:{time:c.time,cash:c.cost,energy:Math.max(0,-c.preview.energy)}}}
+export function worldEncounterChoice(c:WorldChoiceView,p:Player,g:Game):EncounterChoice{return{id:c.id,actionId:'world:'+c.id,title:c.title,body:c.body,available:c.available,reason:c.reason,previewText:worldChoiceEffects(c,p,g),cost:{time:c.time,cash:c.cost,energy:Math.max(0,-c.preview.energy)}}}
 
 /** Focused content for a parent-owned dialog. Closing restores the original venue. */
 export default function EncounterPanel(props:Props){
@@ -31,7 +32,7 @@ function OriginalEncounterPanel({g,p,actorId,spot=p.place,disabled,onAction,onCl
  const name=resident?.name||person?.name||relationship?.name||(isNeri?'Neri':'A neighbor');
  const role=resident?.roles.join(' · ')||person?.role||relationship?.role||(isNeri?'Map restorer':'');
  const worldChoices=(world?.choices||[]).filter(c=>(!c.spot||c.spot===spot)&&(c.actorId===actorId||(!c.actorId&&(c.key==='talk:'+actorId||(isNeri&&c.kind==='relationship')))));
- const choices:EncounterChoice[]=scene?.status==='available'?scene.choices.map(c=>({...c,actionId:`story:${scene.id}:${c.id}`})):worldChoices.map(worldEncounterChoice);
+ const choices:EncounterChoice[]=scene?.status==='available'?scene.choices.map(c=>({...c,actionId:`story:${scene.id}:${c.id}`})):worldChoices.map(c=>worldEncounterChoice(c,p,g));
  const context=[g.code,p.id,g.round,p.world?.region||'alder',actorId,spot].join('|');
  const commit=useEncounterCommit({g,p,disabled,context,choices,onAction,findReceipt:(result,updated,choice)=>{
   if(choice.actionId.startsWith('story:')){const r=getStoryView(result,updated).recap.find(r=>r.sceneId===scene?.id&&r.choiceId===choice.id);return r?{title:r.title,body:r.body,outcome:r.outcome,week:r.week}:null;}
