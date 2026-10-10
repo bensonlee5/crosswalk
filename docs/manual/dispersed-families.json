@@ -1,0 +1,60 @@
+[
+  {
+    "id": "jo-kit",
+    "anchor": "jo",
+    "title": "Coast and desert, three generations",
+    "people": [
+      "jo",
+      "kit",
+      "bea"
+    ],
+    "text": "Jo moved from the desert to Alder as a young adult. Kit grew up there and later chose Ember Mesa, where Bea now lives with them. Visits connect the generations without making either adult’s home a temporary arrangement."
+  },
+  {
+    "id": "oren-miro",
+    "anchor": "miro",
+    "title": "Brothers along the railway",
+    "people": [
+      "oren",
+      "miro"
+    ],
+    "text": "Miro stayed near Glasssteppe’s railway terraces; Oren made his adult home in Alder Quay. Letters, visits and familiar family objects connect the highlands and coast. During Oren’s chemotherapy, Miro asks what company or practical help is welcome instead of assuming a journey or a long call will fit."
+  },
+  {
+    "id": "arul",
+    "anchor": "kamala_arul",
+    "title": "Alder and Pelagia, on agreed terms",
+    "people": [
+      "kamala_arul",
+      "anil_arul",
+      "priya",
+      "dara_arul"
+    ],
+    "text": "Priya moved to Alder for weather-reporting work, with Dara then a child. Kamala and Anil remained in Pelagia. Dara stayed in Alder as an adult for her own work and friends; visits and family calls bring affection as well as disagreement about how much time anyone can promise."
+  },
+  {
+    "id": "park",
+    "anchor": "eun_park",
+    "title": "A highland family and a harbor home",
+    "people": [
+      "eun_park",
+      "min_park",
+      "jiwoo_park",
+      "yuna_park"
+    ],
+    "text": "Yuna chose a new home and neighborhood radio work in Pelagia. Eun, Min and Jiwoo remain in Glasssteppe. Recordings and calls keep them close, but an unanswered message is not a measure of love. Min’s decision to stay reflects work, friends and co-parenting, rather than a duty to be the sibling who stayed."
+  },
+  {
+    "id": "harper",
+    "anchor": "ruth_harper",
+    "title": "A family base and a changing route",
+    "people": [
+      "ruth_harper",
+      "oliver_harper",
+      "alder_tess",
+      "nico",
+      "nell_harper"
+    ],
+    "text": "Nell grew up in Alder and chose traveling acoustic-survey contracts. Ruth, Oliver, Tess and Nico remain rooted there. Nell agrees to arrival messages without sharing a live itinerary; returning for a visit does not promise a permanent move home."
+  }
+]

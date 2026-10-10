@@ -58,3 +58,7 @@ Official implementation references checked on 2026-10-10:
 - https://supabase.com/docs/guides/auth/auth-anonymous
 - https://supabase.com/docs/reference/javascript/auth-resetpasswordforemail
 - https://vite.dev/guide/static-deploy.html#github-pages
+
+## Full character and place manual
+
+The same artifact includes the complete static manual at [`/crosswalk/manual/`](https://bensonlee5.github.io/crosswalk/manual/), linked from the repository README. `npm run build` regenerates it from the approved game canon before Vite copies `public/` into `dist/`. Its 83 HTML files use relative navigation and share the game's 73 portrait/location assets. See [manual source and verification](manual/README.md) for rebuild commands and coverage. No change to the separate private manual Site or its access settings is needed.

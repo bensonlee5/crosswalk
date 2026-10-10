@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build",
+    "build": "node scripts/build-manual.mjs && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.mjs tests/*.test.ts",
@@ -17,7 +17,9 @@
     "check:edge": "deno check --node-modules-dir=manual --cached-only --config supabase/functions/crosswalk-game/deno.json supabase/functions/crosswalk-game/index.ts",
     "check:engine": "node scripts/verify-engine-copy.mjs",
     "guide:build": "node scripts/build-guide.mjs",
-    "guide:check": "node scripts/build-guide.mjs --check"
+    "guide:check": "node scripts/build-guide.mjs --check",
+    "manual:build": "node scripts/build-manual.mjs",
+    "manual:check": "node scripts/build-manual.mjs --check"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
