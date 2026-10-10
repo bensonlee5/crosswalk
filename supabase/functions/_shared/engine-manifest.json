@@ -1,0 +1,12 @@
+{
+  "source": "Crosswalk v34 game engine; copied unchanged 2026-10-10",
+  "sha256": {
+    "economy.ts": "13c93e3ce7ed5c5bc0228f647bbf32b3a94e51163c527e25860035db2cfacf92",
+    "game.ts": "fecfb5b1fdd3e4d497875c0d42f9bb9268f41bde35982185ee1293b286b772bb",
+    "life-events.ts": "39c6487e591b9c22533fc7006d04d131a8c50c5d1f0e8cbc58b462282ea024db",
+    "life-progress.ts": "dba35e7bc096f0590f89a18825cdd4603781e39ec5ef199981f66d0fc59be56b",
+    "story-arcs.ts": "16227430e55ab75891fbd355e3d744d043e3ae08a7b7ddd61b7da483982cfb6e",
+    "weather.ts": "1c1dcfcbb9adc231829400685130fb18b8b2f6819604e47c9858a11c0c596f5b",
+    "world-life.ts": "ebb320800abd178979474246364ed4d10c0f3af3b01b823dafa7e6dd9d3fe2b8"
+  }
+}

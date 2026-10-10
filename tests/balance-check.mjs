@@ -1,18 +1,19 @@
 #!/usr/bin/env node
 // Reproducible engine-only balance smoke checks. Not an optimizer or proof of optimal balance.
-// Usage: node balance-check.mjs /absolute/path/to/lib/game.ts [output.json]
+// Usage: node balance-check.mjs /absolute/path/to/lib/game.ts [output.json] [--seasonal] [--current-balance]
 import fs from 'node:fs';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
-const argumentsWithoutFlags=process.argv.slice(2).filter(arg=>arg!=='--seasonal');
+const argumentsWithoutFlags=process.argv.slice(2).filter(arg=>arg!=='--seasonal'&&arg!=='--current-balance');
 const source=path.resolve(argumentsWithoutFlags[0]||new URL('../lib/game.ts',import.meta.url).pathname);
 const {player,move,actions,score,reason,pathPoints,projectGoal,projectProgress,opportunity,createEnvironment}=await import(pathToFileURL(source));
 const seasonal=process.argv.includes('--seasonal');
+const balanceVersion=process.argv.includes('--current-balance')?1:undefined;
 const sourceHash=createHash('sha256').update(fs.readFileSync(source)).digest('hex');
 const action=id=>actions.find(a=>a.id===id);
-function game(n=2){const ps=Array.from({length:n},(_,i)=>player(`Seat ${i+1}`));return{code:'TEST01',mode:'hotseat',host:'test',members:{},players:ps,status:'playing',round:1,turn:0,maxRounds:8,log:[],seen:[],event:0,rulesVersion:2,turnsTaken:0,...(seasonal?createEnvironment():{})};}
+function game(n=2){const ps=Array.from({length:n},(_,i)=>player(`Seat ${i+1}`,balanceVersion));return{code:'TEST01',mode:'hotseat',host:'test',members:{},players:ps,status:'playing',round:1,turn:0,maxRounds:8,log:[],seen:[],event:0,rulesVersion:2,turnsTaken:0,...(seasonal?createEnvironment():{})};}
 function act(g,id){const p=g.players[g.turn];const why=reason(p,id,g);if(why)return why;move(g,'visit',action(id).place);move(g,id);return'';}
 function summary(p){return{score:score(p),cash:p.cash,joy:p.joy,energy:p.energy,skill:p.skill,job:p.job,social:p.social,craft:p.craft,legacy:p.legacy,paths:pathPoints(p)};}
 function simulate(name,weeks,{n=2,allowBlocked=false}={}){
@@ -67,7 +68,7 @@ for(let n=1;n<=4;n++){
  }
  assert.equal(doubleClaimChecks,8);assert.equal(claims.flatMap(q=>q.weeks).length,8);opportunityTests.push({players:n,claims,doubleClaimChecks});
 }
-const report={seasonal,engineSource:source,engineSHA256:sourceHash,generatedAt:new Date().toISOString(),practiceTime:action('creative_practice').time,method:'Hand-designed deterministic 8-week schedules, real engine reason + visit + move + end. Benchmark opponent passes, no opportunities. Not an optimizer or proof of optimal balance. Project/opportunity tests cover supported 1–4 players.',benchmarks,degenerateRepeats,projectTests,opportunityTests};
+const report={seasonal,balanceVersion,engineSource:source,engineSHA256:sourceHash,generatedAt:new Date().toISOString(),practiceTime:action('creative_practice').time,method:'Hand-designed deterministic 8-week schedules, real engine reason + visit + move + end. Benchmark opponent passes, no opportunities. Not an optimizer or proof of optimal balance. Project/opportunity tests cover supported 1–4 players.',benchmarks,degenerateRepeats,projectTests,opportunityTests};
 if(argumentsWithoutFlags[1])fs.writeFileSync(argumentsWithoutFlags[1],JSON.stringify(report,null,2)+'\n');
 console.log(`Engine ${sourceHash}, practice time ${report.practiceTime}`);
 for(const r of benchmarks)console.log(`${r.name}: ${r.score} points, $${r.cash}, joy ${r.joy}, legacy ${r.legacy}; min observed cash $${r.minimumCash}`);

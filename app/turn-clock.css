@@ -1,0 +1,110 @@
+/* Action-time clock. No animations run while game state is unchanged. */
+.cw-turn-clock {
+  --clock-accent: #547549;
+  --clock-hand: #36543b;
+  --clock-ink: #51442d;
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--turn-clock-size, 96px);
+  color: var(--clock-ink);
+  vertical-align: middle;
+  isolation: isolate;
+}
+.cw-turn-clock[data-phase="low"] { --clock-accent: #bc852f; --clock-hand: #8c571e; }
+.cw-turn-clock[data-phase="critical"],
+.cw-turn-clock[data-phase="empty"] { --clock-accent: #b75439; --clock-hand: #9e422e; }
+.cw-turn-clock .cw-turn-clock__meter { position: relative; width: 100%; }
+.cw-turn-clock .cw-turn-clock__dial {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  overflow: visible;
+  filter: drop-shadow(0 3px 3px #152c3033);
+}
+.cw-turn-clock__track { stroke: #b8aa86; opacity: .38; }
+.cw-turn-clock__remaining {
+  stroke: var(--clock-accent);
+  transition: stroke-dashoffset 700ms cubic-bezier(.2,.65,.25,1), stroke 350ms ease;
+}
+.cw-turn-clock__preview {
+  stroke: #813f2d;
+  stroke-dasharray: 2 1.4;
+  opacity: .6;
+}
+.cw-turn-clock__hand,
+.cw-turn-clock__ghost-hand {
+  transform-origin: 56px 60px;
+  transition: transform 700ms cubic-bezier(.2,.65,.25,1);
+}
+.cw-turn-clock__hand-body {
+  fill: var(--clock-hand);
+  stroke: #5a4428;
+  stroke-width: .7;
+  transition: fill 350ms ease;
+}
+.cw-turn-clock__hand-shadow { fill: #362e2860; transform: translate(1px, 1.5px); }
+.cw-turn-clock__ghost-hand { stroke: #8b482f; stroke-width: 1.3; stroke-dasharray: 2 2; opacity: .65; }
+.cw-turn-clock .cw-turn-clock__week {
+  fill: #81704e;
+  font: 5.5px Georgia, 'Times New Roman', serif;
+  letter-spacing: 1.3px;
+}
+.cw-turn-clock .cw-turn-clock__number {
+  fill: #51442d;
+  font: bold 14px Georgia, 'Times New Roman', serif;
+  font-variant-numeric: tabular-nums;
+}
+.cw-turn-clock .cw-turn-clock__caption {
+  fill: #6a5838;
+  font: 4.5px Arial, sans-serif;
+  letter-spacing: .7px;
+}
+.cw-turn-clock__shutter {
+  transition: transform 520ms cubic-bezier(.3,.1,.35,1), opacity 200ms ease;
+  opacity: 0;
+}
+.cw-turn-clock__shutter--left { transform: translateX(-29px); }
+.cw-turn-clock__shutter--right { transform: translateX(29px); }
+.cw-turn-clock__shutter-seam { opacity: 0; transition: opacity 400ms ease; }
+.cw-turn-clock[data-phase="empty"] .cw-turn-clock__shutter { transform: translateX(0); opacity: 1; }
+.cw-turn-clock[data-phase="empty"] .cw-turn-clock__shutter-seam { opacity: 1; }
+.cw-turn-clock[data-phase="empty"] .cw-turn-clock__number,
+.cw-turn-clock[data-phase="empty"] .cw-turn-clock__caption { fill: #fff1cf; }
+.cw-turn-clock[data-phase="empty"] .cw-turn-clock__week { fill: #ecd3aa; }
+.cw-turn-clock[data-phase="empty"] .cw-turn-clock__hand-body { fill: #edc780; }
+.cw-turn-clock__spend-pulse {
+  position: absolute;
+  inset: 12% 8% 8%;
+  pointer-events: none;
+  border: 2px solid var(--clock-accent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: cw-clock-spend 780ms ease-out 1;
+}
+.cw-turn-clock__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@keyframes cw-clock-spend {
+  0% { opacity: 0; transform: scale(.97); }
+  22% { opacity: .7; }
+  100% { opacity: 0; transform: scale(1.16); }
+}
+@media (max-width: 760px) {
+  .cw-turn-clock { width: var(--turn-clock-size, 74px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cw-turn-clock *, .cw-turn-clock *::before, .cw-turn-clock *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
