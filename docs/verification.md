@@ -1,3 +1,5 @@
+> Historical pre-migration notes. These describe the earlier managed-site/Cloudflare version. For current GitHub Pages and Supabase setup, verification, and remaining limits, see [GitHub Pages frontend](github-pages-frontend.md) and [Supabase backend](SUPABASE-BACKEND.md).
+
 # Verification
 
 ## Verified during the October 1, 2026 export

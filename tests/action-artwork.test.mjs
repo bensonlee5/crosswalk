@@ -48,7 +48,8 @@ for(const illustration of art.values()){
 }
 const screen=readFileSync(new URL('../app/game-screen.tsx',import.meta.url),'utf8');
 assert.match(screen,/src=\{art.thumb\} alt=""/,'Selectable cards use decorative optimized thumbnails');
-assert.match(screen,/src=\{selectedArt!.src\} alt=\{selectedArt!.alt\}/,'Selected scene is the specific action image');
-assert.match(screen,/aria-pressed=\{a.id===option.id\}/);assert.match(screen,/aria-describedby=\{lock\?/);assert.match(screen,/disabled=\{!active\|\|busy\|\|moving\|\|cooldown\|\|!!why\}/,'Execution stays disabled when ineligible');
+assert.match(screen,/src=\{selectedArt!.src\}/,'World and original scenes preserve the specific selected action painting');
+assert.match(screen,/alt=\{(?:world\?world.region.description:)?selectedArt!.alt\}/,'Selected scene retains meaningful alt text');
+assert.match(screen,/aria-pressed=\{a.id===option.id\}/);assert.match(screen,/aria-describedby=\{lock\?/);assert.match(screen,/disabled=\{!active\|\|busy\|\|moving\|\|offline\|\|cooldown\|\|!!why\}/,'Execution stays disabled when ineligible');
 const image=readFileSync(new URL('../app/game-painting.tsx',import.meta.url),'utf8');assert.match(image,/loading=\{priority\?'eager':'lazy'\}/);assert.match(image,/decoding="async"/);
 console.log(`PASS: 74/74 action IDs, ${art.size} exact scene variants, all 16 seasonal/legacy weekly opportunity mappings, ${menuChecks} classic/new/story-stage menu choices, thumbnails/scene budgets, distinct image bytes, manifests, disabled execution and accessibility hooks. ${(fullBytes/1048576).toFixed(2)} MiB full scenes, ${(thumbBytes/1048576).toFixed(2)} MiB thumbnails.`);

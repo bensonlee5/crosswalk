@@ -22,6 +22,14 @@ assert.match(html('activity',{active:false}),/disabled=""/);assert.match(html('a
 assert.match(html('paths'),/strongest path/);assert.match(html('paths',{p:{...p,rulesVersion:undefined}}),/classic save/);
 assert.match(html('weather'),/Two weeks each/);assert.match(html('weather',{g:{...game,environmentVersion:undefined}}),/no seasonal weather/);
 assert.match(html('travel',{menu:'places'}),/Visit The Shift/);
+// Modern tutorial uses the same lease/bill scale as the active economy.
+const modernPlayer={...p,storyVersion:1,economyVersion:1,world:{story:{homeRegion:'pelagia'}}};
+const modernGame={...game,storyVersion:1,economyVersion:1,lifeVersion:1,players:[modernPlayer]};
+assert.match(html('week',{p:modernPlayer,g:modernGame}),/\$2,250/);
+assert.match(html('week',{p:{...modernPlayer,housing:1},g:modernGame}),/\$3,550/);
+assert.match(html('resources',{p:modernPlayer,g:modernGame}),/priority blocks.*160 paid hours/s);
+assert.doesNotMatch(html('week',{p:modernPlayer,g:modernGame}),/\$505|end week|weekly/i);
+
 
 // A deterministic hook harness exercises real initialization/replay/storage effects, without a browser.
 const records=new Map();let now=1000;const clock={now:()=>now};
