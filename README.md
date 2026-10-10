@@ -1,5 +1,7 @@
 # Crosswalk
 
+**[Play Crosswalk](https://bensonlee5.github.io/crosswalk/)**
+
 A turn-based neighborhood life game for 1–4 players, solo, pass-and-play or online. New rooms span eight representative months, with six priority blocks each month. Existing saved rooms retain their original rules.
 
 This release adds server-backed saved-game history and optional email/password accounts to the new GitHub Pages/Supabase build. Guests can keep playing in the same browser; verifying an email and setting a password preserves that guest’s ownership for returning on other devices. Hosting and email-account setup remain pending until deployment and provider checks are verified.
