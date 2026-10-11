@@ -15,17 +15,20 @@ const apiJs=ts.transpileModule(apiSource,{compilerOptions:{module:ts.ModuleKind.
 const api=await import('data:text/javascript;base64,'+Buffer.from(apiJs).toString('base64'));
 const pageJs=ts.transpileModule(fs.readFileSync(root+'/app/page.tsx','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
 function storage(start={}){const m=new Map(Object.entries(start));return{get length(){return m.size;},key:i=>[...m.keys()][i]??null,getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};}
-function harness({cookie='',saved='',query='',local=null,storageBlocked=false,initialGame=null,initialRules=false,initialReview=false}={}){
+function harness({cookie='',saved='',query='',local=null,legacyRules=true,storageBlocked=false,initialGame=null,initialRules=false,initialReview=false}={}){
  const slots=[],deps=[],cleanups=[];let cursor=0,effects=[],tree,dirty=false,now=1000,id=0;const timeouts=new Map(),intervals=new Map();
  const calls=[],sounds=[];const record={cookie,holdPost:null,holdGet:null,held:null,pending:new Set(),failPost:null,failGet:false,unauthorized:false,identityListener:null};
  const react={useState(initial){const i=cursor++;if(!(i in slots))slots[i]=initialGame&&i===0?initialGame:initialGame&&i===1?'game':i===10&&initialRules?true:i===15&&initialReview?true:typeof initial==='function'?initial():initial;return[slots[i],v=>{const n=typeof v==='function'?v(slots[i]):v;if(n!==slots[i]){slots[i]=n;dirty=true;}}];},useRef(initial){const i=cursor++;return slots[i]??(slots[i]={current:initial});},useEffect(fn,next){const i=cursor++;if(!deps[i]||next.some((v,j)=>!Object.is(v,deps[i][j]))){deps[i]=next;effects.push(()=>{cleanups[i]?.();cleanups[i]=fn();});}}};
  const locals=storageBlocked?new Proxy({},{get(){throw Error('Storage blocked')}}):local||storage(saved?{cw_room:saved}:{}),sessions=storage();
  const window={scrollTo(){},addEventListener(){},removeEventListener(){}};
  const document={visibilityState:'visible',addEventListener(){},removeEventListener(){}};
- // The transport/auth seam simulates the new UID contract. Engine mutations still use the real legacy API.
+ // The transport/auth seam simulates the new UID contract. Existing campaign cases explicitly model older-rule rooms.
+ // Their create transport strips only new-room opt-ins; the original Home request remains recorded and persisted.
+ // The dedicated legacyRules:false case below exercises the actual current new-room request unchanged.
  const owner=()=>record.cookie?'guest-'+record.cookie.slice(-16):null;
  async function getOwnerSession(){if(!record.cookie)record.cookie='cw_guest='+Array.from(crypto.getRandomValues(new Uint8Array(32))).map(x=>x.toString(16).padStart(2,'0')).join('');return owner();}
  function fetcher(url,opts={}){const held=opts.method==='POST'?record.holdPost:record.holdGet;const task=(async()=>{calls.push({url,opts});
+  if(record.refreshRequired&&((opts.method==='POST')||!url.includes('history=1')))return Response.json({error:'Open the latest Crosswalk page. Your saved seat is unchanged.',refreshRequired:true},{status:409});
   if(opts.method==='POST'&&record.unauthorized)return Response.json({error:'Sign in again to recover this saved request.'},{status:401});
   if((opts.method==='POST'&&record.failPost==='before')||(opts.method!=='POST'&&record.failGet))throw new TypeError('Connection interrupted');
   let response;
@@ -34,7 +37,7 @@ function harness({cookie='',saved='',query='',local=null,storageBlocked=false,in
    const rooms=[...rows.values()].map(row=>({...JSON.parse(row.state),version:row.version})).filter(g=>g.members[key]).map(g=>({code:g.code,mode:g.mode,status:g.status,round:g.round,maxRounds:g.maxRounds,version:g.version,updatedAt:now,names:g.players.filter(p=>g.members[key].includes(p.id)).map(p=>p.name)})).reverse();
    const cursor=new URL(url,'https://test.invalid').searchParams.get('cursor');const offset=cursor?Number(cursor):0;const page=rooms.slice(offset,offset+20);response=Response.json({rooms:page,nextCursor:offset+20<rooms.length?String(offset+20):null});
   }else if(opts.method==='POST'&&JSON.parse(opts.body).ownerSession&&JSON.parse(opts.body).ownerSession!==owner())response=Response.json({error:'The saved seat belongs to a different session.',identityMismatch:true},{status:403});
-  else{const req=new Request('https://test.invalid'+url,{...opts,headers:{...opts.headers,Origin:'https://test.invalid',...(record.cookie?{Cookie:record.cookie}:{})}});response=await api[opts.method==='POST'?'POST':'GET'](req);}
+  else{let apiOpts=opts;if(legacyRules&&opts.method==='POST'){const body=JSON.parse(opts.body);if(body.op==='create'){delete body.careerMode;delete body.actionIncidents;apiOpts={...opts,body:JSON.stringify(body)};}}const req=new Request('https://test.invalid'+url,{...apiOpts,headers:{...opts.headers,Origin:'https://test.invalid',...(record.cookie?{Cookie:record.cookie}:{})}});response=await api[opts.method==='POST'?'POST':'GET'](req);}
   const c=response.headers.get('set-cookie');if(c)record.cookie=c.split(';')[0];
   if(opts.method==='POST'&&record.failPost==='after')throw new TypeError('Saved response was lost');
   if(opts.method!=='POST'&&record.malformedGet&&!url.includes('history=1'))response=Response.json({});
@@ -318,3 +321,42 @@ for(const failure of ['before','after']){
 }
 console.log(JSON.stringify(results.map(r=>Object.fromEntries(Object.entries(r).filter(([key])=>key!=='order'))),null,2));
 console.log('PASS: actual Home handlers, real API and memory D1; full 1–4-player campaigns, saved-game reload, free travel, clock cues, create/join/restore exclusion and interrupted transition recovery. Auth/history transport is a contract stub; mutations use the real API/SQLite double. No browser or production state.');
+
+// A compatibility refresh must retain both the last confirmed room and exact pending intent.
+{
+ const h=harness();await h.click('Start our game');h.component('WeeklyNews').props.onClose();h.render();
+ const before=structuredClone(h.component('GameScreen').props.g);h.record.refreshRequired=true;
+ await h.component('GameScreen').props.onAction('home_reset');await h.settle();h.tick();
+ assert.deepEqual(h.component('GameScreen').props.g,before);
+ const {pendingSaves}=require(root+'/lib/save-session.ts'),pending=pendingSaves(h.locals)[0];
+ assert.ok(pending);assert.equal(pending.request.action,'home_reset');assert.equal(pending.request.version,before.version);
+ assert.ok(h.button('Reload latest page'));assert.equal(h.component('GameScreen').props.active,false);
+ const cookie=h.record.cookie,local=h.locals;h.dispose();
+ const refreshed=harness({cookie,local,query:'?room='+before.code});await refreshed.settle();refreshed.tick();await refreshed.settle();
+ assert.equal(pendingSaves(local).length,0);assert.equal(refreshed.component('GameScreen').props.g.players[0].hours,before.players[0].hours-1);
+ const retry=JSON.parse(refreshed.calls.find(c=>c.opts.method==='POST').opts.body);assert.equal(retry.requestId,pending.request.requestId);assert.equal(retry.version,pending.request.version);assert.equal(retry.action,pending.request.action);assert.deepEqual(retry.supportedRules,['action-incidents-v1','venue-careers-v1']);
+ refreshed.dispose();
+}
+{
+ const h=harness();await h.click('Start our game');const before=structuredClone(h.component('GameScreen').props.g);
+ h.record.refreshRequired=true;h.poll();await h.settle();assert.deepEqual(h.component('GameScreen').props.g,before);assert.ok(h.button('Reload latest page'));assert.equal(h.component('GameScreen').props.active,false);
+ const roomGet=h.calls.find(c=>c.url.startsWith('/api/game?code='));assert.ok(new URL(roomGet.url,'https://test.invalid').searchParams.get('supportedRules').includes('venue-careers-v1'));h.record.refreshRequired=false;h.poll();await h.settle();assert.equal(h.component('GameScreen').props.active,false,'An older compatible-looking poll cannot clear the refresh lock');assert.ok(h.button('Reload latest page'));h.dispose();
+}
+
+for(const legacyIntent of [false,true]){
+ const h=harness();h.record.failPost='before';await h.click('Start our game');
+ const {pendingSaves,rememberPending}=require(root+'/lib/save-session.ts');const saved=pendingSaves(h.locals)[0];assert.ok(saved);
+ assert.equal(saved.request.careerMode,'venue');assert.equal(saved.request.actionIncidents,true);
+ if(legacyIntent){delete saved.request.careerMode;delete saved.request.actionIncidents;delete saved.request.supportedRules;rememberPending(h.locals,saved);}
+ const local=h.locals,cookie=h.record.cookie;h.dispose();const restored=harness({cookie,local});await restored.settle();restored.tick();await restored.settle();
+ const retried=JSON.parse(restored.calls.find(c=>c.opts.method==='POST').opts.body);assert.equal(retried.requestId,saved.request.requestId);
+ assert.equal(retried.careerMode,legacyIntent?undefined:'venue');assert.equal(retried.actionIncidents,legacyIntent?undefined:true);assert.deepEqual(retried.supportedRules,['action-incidents-v1','venue-careers-v1']);restored.dispose();
+}
+
+// Current new-game Home uses both explicit rule opt-ins through the actual route unchanged.
+{
+ const h=harness({legacyRules:false});await h.click('Start our game');const room=h.component('GameScreen').props.g;
+ assert.equal(room.careerVersion,1);assert.equal(room.financialRecoveryVersion,1);assert.equal(room.actionIncidentsVersion,1);
+ assert.deepEqual(room.requiredRules,['action-incidents-v1','venue-careers-v1']);assert.equal(room.players[0].career.contracts.length,0);assert.equal(room.actionIncidentRng,undefined);
+ const code=room.code,cookie=h.record.cookie;h.dispose();const restored=harness({legacyRules:false,cookie,saved:code,query:'?room='+code});await restored.settle();assert.equal(restored.component('GameScreen').props.g.careerVersion,1);restored.dispose();
+}

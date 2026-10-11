@@ -1,3 +1,6 @@
+import {actionIncidentContext,commitActionIncident,type ActionIncidentState,type IncidentRandomState} from './action-incidents.ts';
+import {resolveCareerChoice,careerActivityReason,recordCareerEvidence,careerScore,endCareerMonth,type CareerState} from './careers.ts';
+import {financialRecoveryEnabled,financialRestriction,settleFinancialMonth,reserveRecoveryAdministration,type FinanceState} from './financial-recovery.ts';
 import {actionFamiliarityContext,recordActionFamiliarity,type ActionFamiliarityState} from './action-familiarity.ts';
 import {resolveSharedChoice,beginSharedOpportunityRound,endSharedOpportunityTurn,type SharedPersonalState,type SharedOpportunitiesState} from './shared-opportunities.ts';
 import {recordMotiveEvidence,resolveMotiveChoice,type MotivePlayerState} from './character-motives.ts';
@@ -5,7 +8,7 @@ import {resolveCastChoice,endCastMonth} from './character-cast.ts';
 import type {CastState,CastPlayerState} from './character-cast.ts';
 import {storyActionReason,storyAfterAction,resolveStoryChoice,arriveStoryWeek} from './story-arcs.ts';
 import type {StoryState,StoryPlayerState} from './story-arcs.ts';
-import {economyActivity,economyQuote,economyDisabled,recordEconomyWork,recordEconomyHabit,monthlyBills,economyGardenReward,economyHourlyRate,hasModernEconomy} from './economy.ts';
+import {economyActivity,economyQuote,economyDisabled,recordEconomyWork,recordEconomyHabit,monthlyBills,economyGardenReward,economyHourlyRate,hasModernEconomy,economyPaidHours} from './economy.ts';
 import type {EconomyWorkState,EconomyHabitState} from './economy.ts';
 import {visiblePlaces,resolveWorldChoice,beginWorldWeek,afterWorldAction} from './world-life.ts';
 import type {WorldState,SharedWorldState} from './world-life.ts';
@@ -17,8 +20,8 @@ import type {RegionalLifeUsage} from './regional-life.ts';
 import {weatherEffect,consumeWeather,consumeClimateEffect,getWeather,seasonalOpportunity} from './weather.ts';
 import type {WeatherId,WeatherUsage} from './weather.ts';
 export {createEnvironment} from './weather.ts';
-export type Player={familiarity?:ActionFamiliarityState;sharedPersonal?:SharedPersonalState;regionalLifeUsage?:RegionalLifeUsage;motives?:MotivePlayerState;castRedacted?:boolean;cast?:CastPlayerState;storyVersion?:number;economyVersion?:number;economyInitialized?:boolean;economyWork?:EconomyWorkState;economyHabits?:EconomyHabitState;story?:StoryPlayerState;id:string;name:string;cash:number;skill:number;job:number;joy:number;energy:number;hours:number;social:number;housing:number;place:string;rulesVersion?:number;life?:LifePlayerState;world?:WorldState;aspiration?:string;aspirationWeek?:number;milestones?:string[];balanceVersion?:number;communityWork?:{round:number;count:number};craft?:number;legacy?:number;stories?:Record<string,number>;storyWeeks?:Record<string,number>;weatherUsage?:WeatherUsage};
-export type Game={sharedOpportunitiesVersion?:number;sharedOpportunities?:SharedOpportunitiesState;characterCanonVersion?:number;regionalLifeVersion?:number;climateVersion?:number;motivesVersion?:number;historyVersion?:number;castVersion?:number;cast?:CastState;storyVersion?:number;economyVersion?:number;story?:StoryState;sharedWorld?:SharedWorldState;code:string;mode:'hotseat'|'online';host:string;members:Record<string,string[]>;players:Player[];status:'lobby'|'playing'|'finished';round:number;turn:number;maxRounds:number;log:string[];seen:string[];event:number;rulesVersion?:number;lifeVersion?:number;worldVersion?:number;lifeSeed?:number;lifeSchedule?:LifeScheduleEntry[];balanceVersion?:number;environmentVersion?:number;weatherSchedule?:WeatherId[];turnsTaken?:number;opportunityClaim?:{round:number;playerId:string;name:string};project?:{contributions:Record<string,number>;lastWeek:Record<string,number>;completed:boolean}};
+export type Player={career?:CareerState;finance?:FinanceState;actionIncidents?:ActionIncidentState;familiarity?:ActionFamiliarityState;sharedPersonal?:SharedPersonalState;regionalLifeUsage?:RegionalLifeUsage;motives?:MotivePlayerState;castRedacted?:boolean;cast?:CastPlayerState;storyVersion?:number;economyVersion?:number;economyInitialized?:boolean;economyWork?:EconomyWorkState;economyHabits?:EconomyHabitState;story?:StoryPlayerState;id:string;name:string;cash:number;skill:number;job:number;joy:number;energy:number;hours:number;social:number;housing:number;place:string;rulesVersion?:number;life?:LifePlayerState;world?:WorldState;aspiration?:string;aspirationWeek?:number;milestones?:string[];balanceVersion?:number;communityWork?:{round:number;count:number};craft?:number;legacy?:number;stories?:Record<string,number>;storyWeeks?:Record<string,number>;weatherUsage?:WeatherUsage};
+export type Game={careerVersion?:number;financialRecoveryVersion?:number;actionIncidentsVersion?:number;actionIncidentRng?:Record<string,IncidentRandomState>;sharedOpportunitiesVersion?:number;sharedOpportunities?:SharedOpportunitiesState;characterCanonVersion?:number;regionalLifeVersion?:number;climateVersion?:number;motivesVersion?:number;historyVersion?:number;castVersion?:number;cast?:CastState;storyVersion?:number;economyVersion?:number;story?:StoryState;sharedWorld?:SharedWorldState;code:string;mode:'hotseat'|'online';host:string;members:Record<string,string[]>;players:Player[];status:'lobby'|'playing'|'finished';round:number;turn:number;maxRounds:number;log:string[];seen:string[];event:number;rulesVersion?:number;lifeVersion?:number;worldVersion?:number;lifeSeed?:number;lifeSchedule?:LifeScheduleEntry[];balanceVersion?:number;environmentVersion?:number;weatherSchedule?:WeatherId[];turnsTaken?:number;opportunityClaim?:{round:number;playerId:string;name:string};project?:{contributions:Record<string,number>;lastWeek:Record<string,number>;completed:boolean}};
 export const jobs=[{name:'Café crew',rate:20,need:0},{name:'IT support',rate:29,need:2},{name:'UX specialist',rate:43,need:4},{name:'Project lead',rate:58,need:6}];
 export const events=[{title:'The little wins',text:'Someone remembered your coffee order. Everyone gets +4 happiness.',cash:0,joy:4},{title:'Transit fare week',text:'A city pass costs everyone $30 this week.',cash:-30,joy:0},{title:'Neighborhood night',text:'The block throws a free movie night. Everyone gets +6 happiness.',cash:0,joy:6},{title:'Energy bill bump',text:'Heating, cooling, and an extra $45 for everyone.',cash:-45,joy:0},{title:'Found money',text:'An old deposit is returned. Everyone gets $90.',cash:90,joy:0},{title:'Group chat gold',text:'The memes are exceptionally good. Everyone gets +3 happiness.',cash:0,joy:3},{title:'Groceries on sale',text:'Seasonal produce saves everyone $35.',cash:35,joy:0},{title:'A sunny finish',text:'A beautiful final week. Everyone gets +5 happiness.',cash:0,joy:5}];
 export type Activity={id:string;title:string;place:string;icon:string;time:number;cost:number;desc:string;color:string;energy?:number;joy?:number;skill?:number;social?:number;earn?:number;workHours?:number;needSkill?:number;needSocial?:number;housing?:number;promote?:boolean;craft?:number;needCraft?:number;modernOnly?:boolean;story?:string;stage?:number;special?:'opportunity'|'project'};
@@ -156,7 +159,7 @@ export const opportunities=[
 export const opportunity=(g:Pick<Game,'round'|'rulesVersion'|'environmentVersion'|'weatherSchedule'>)=>seasonalOpportunity(g,opportunities[[1,0,3,2,4,5,6,7][(g.round-1)%opportunities.length]]);
 export const projectGoal=(g:Pick<Game,'players'>)=>g.players.length*2;
 export const projectProgress=(g:Pick<Game,'project'>)=>Object.values(g.project?.contributions||{}).reduce((a,b)=>a+b,0);
-export function pathPoints(p:Player){return[{name:'Career',points:p.job/3*20+Math.min(6,p.skill)/6*20},{name:'Community',points:Math.min(24,p.social)/24*40},{name:'Creative',points:Math.min(8,p.craft||0)/8*40}];}
+export function pathPoints(p:Player){return[{name:'Career',points:careerScore(p)??p.job/3*20+Math.min(6,p.skill)/6*20},{name:'Community',points:Math.min(24,p.social)/24*40},{name:'Creative',points:Math.min(8,p.craft||0)/8*40}];}
 export function effects(p:Player,a:Activity,g?:Game){
  a=activityForPlayer(p,a,g);
  let earn=a.workHours?jobs[p.job].rate*a.workHours:(a.earn||0),craft=a.craft||0,social=a.social||0,joy=a.joy||0;
@@ -175,7 +178,7 @@ export function player(name:string,balanceVersion?:number):Player{return{id:cryp
 export function score(p:Player){if(p.rulesVersion!==2)return Math.round(Math.min(30,Math.max(0,p.cash)/200)+p.job/3*20+Math.min(6,p.skill)/6*20+p.joy/100*30);return Math.round(Math.min(25,Math.max(0,p.cash)/200)+Math.max(...pathPoints(p).map(v=>v.points))+p.joy/100*25+Math.min(10,p.legacy||0));}
 export function reason(p:Player,id:string,g?:Game){
  const original=actions.find(x=>x.id===id);if(!original)return'Unknown action';const a=activityForPlayer(p,original,g);
- const narrativeBlock=storyActionReason(g,p,id)||economyDisabled(p,a,g);if(narrativeBlock)return narrativeBlock;
+ const narrativeBlock=(g?careerActivityReason(g,p,id):'')||(a.housing===1?financialRestriction(g,p,'studio',a.cost):'')||storyActionReason(g,p,id)||economyDisabled(p,a,g);if(narrativeBlock)return narrativeBlock;
  if(p.world&&!visiblePlaces(p,g).includes(a.place))return'This place is not on your current map';
  if(p.world&&p.world.region!=='alder'&&a.story)return'This friend is back in Alder Quay. Return there for this chapter.';
  if(a.modernOnly&&p.rulesVersion!==2)return'Available in new neighborhood games';
@@ -189,10 +192,16 @@ export function reason(p:Player,id:string,g?:Game){
 }
 export function availableActions(p:Player,place:string,g?:Game){return actions.map(a=>activityForPlayer(p,a,g)).filter(a=>a.place===place&&visiblePlaces(p,g).includes(place)&&(!p.world||p.world.region==='alder'||!a.story)&&(!a.modernOnly||p.rulesVersion===2)&&(!a.story||(p.stories?.[a.story]||0)===(a.stage||1)-1));}
 export function move(g:Game,id:string,destination?:string){
- const p=g.players[g.turn],before=JSON.stringify(g),context=p?actionFamiliarityContext(g,p,id,destination):undefined;moveCore(g,id,destination);const applied=JSON.stringify(g)!==before;if(p){const updated=g.players.find(q=>q.id===p.id)??p;recordMotiveEvidence(g,updated,id);if(applied&&context)recordActionFamiliarity(updated,context);}
+ const p=g.players[g.turn],paidBefore=p?economyPaidHours(p,g):0,before=JSON.stringify(g),context=p?actionFamiliarityContext(g,p,id,destination):undefined;
+ const original=actions.find(a=>a.id===id),incidentContext=p?actionIncidentContext(g,p,original?activityForPlayer(p,original,g):undefined):null;
+ moveCore(g,id,destination);const applied=JSON.stringify(g)!==before;
+ if(p){const updated=g.players.find(q=>q.id===p.id)??p;recordMotiveEvidence(g,updated,id);
+  if(applied&&context){recordCareerEvidence(g,updated,{...context,actionId:id},Math.max(0,economyPaidHours(updated,g)-paidBefore));if(g.careerVersion===1)recordLifeProgress(g,updated);const incident=commitActionIncident(g,updated,incidentContext);if(incident?.person)context.actorIds.push(incident.person.actorId);recordActionFamiliarity(updated,context);if(incident?.incidentId)recordLifeProgress(g,updated);}
+ }
 }
 function moveCore(g:Game,id:string,destination?:string){
  if(g.status!=='playing')throw Error('The game is not running');const p=g.players[g.turn];if(p.place==='HOME')p.place='APARTMENTS';
+ if(id.startsWith('career:')){resolveCareerChoice(g,p,id);recordLifeProgress(g,p);return;}
  if(id.startsWith('world:shared:')){resolveSharedChoice(g,p,id.slice(6));recordLifeProgress(g,g.players[g.turn]);return;}
  if(g.motivesVersion===1&&id.startsWith('motive:')){resolveMotiveChoice(g,p,id);recordLifeProgress(g,p);return;}
  if(g.castVersion===1&&id.startsWith('cast:')){resolveCastChoice(g,p,id);recordLifeProgress(g,p);return;}
@@ -204,11 +213,12 @@ function moveCore(g:Game,id:string,destination?:string){
  if(g.lifeVersion===1&&id.startsWith('home_repair:')){const method=id.slice(12);if(method!=='paid'&&method!=='diy')throw Error('Unknown repair method');repairHome(g,p,method);recordLifeProgress(g,p);return;}
  if(g.lifeVersion===1&&id.startsWith('aspire:')){selectAspiration(g,p,id.slice(7));return;}
  if(id==='end'){
+  endCareerMonth(g,p);
   endSharedOpportunityTurn(g,p);
   endCastMonth(g,p);
   if(g.lifeVersion===1){deferLifeChoice(g,p);recordLifeProgress(g,p);}
-  const bill=monthlyBills(p);p.cash-=bill.total;p.joy=Math.min(100,p.joy+(p.housing?6:0));p.energy=Math.min(100,p.energy+16);p.joy=Math.max(0,p.joy-4);if(p.cash<0)p.joy=Math.max(0,p.joy-8);
-  g.log.unshift(`${p.name} paid $${bill.rent} rent + $${bill.food} food${bill.essentials?` + $${bill.essentials} essentials`:""}${hasModernEconomy(p)?" for the month":""}. ${p.cash<0?'Overdraft: −8 happiness.':''}`);
+  const bill=monthlyBills(p),settlement=financialRecoveryEnabled(g,p)?settleFinancialMonth(g,p):null;if(!settlement)p.cash-=bill.total;p.joy=Math.min(100,p.joy+(p.housing?6:0));p.energy=Math.min(100,p.energy+16);p.joy=Math.max(0,p.joy-4);if(p.cash<0||settlement?.unpaid)p.joy=Math.max(0,p.joy-8);
+  if(settlement)g.log.unshift(`${p.name} settled this month’s household account.`);else g.log.unshift(`${p.name} paid $${bill.rent} rent + $${bill.food} food${bill.essentials?` + $${bill.essentials} essentials`:""}${hasModernEconomy(p)?" for the month":""}. ${p.cash<0?'Overdraft: −8 happiness.':''}`);
   let nextWeek=false;
   if(g.rulesVersion===2){g.turnsTaken=(g.turnsTaken||0)+1;nextWeek=g.turnsTaken>=g.players.length;g.turn=(g.turn+1)%g.players.length;}else{g.turn++;nextWeek=g.turn>=g.players.length;}
   if(nextWeek){g.turn=0;g.round++;if(g.round>g.maxRounds){g.status='finished';g.round=g.maxRounds;beginSharedOpportunityRound(g,true);for(const q of g.players)recordLifeProgress(g,q);g.log.unshift(g.lifeVersion===1?`Eight ${hasModernEconomy(g)?'months':'weeks'}, a thousand little choices. There is more life ahead.`:'Eight weeks, a thousand little choices. Time to compare lives!');return;}
@@ -217,7 +227,7 @@ function moveCore(g:Game,id:string,destination?:string){
    beginSharedOpportunityRound(g);
    if(g.lifeVersion===1){beginLifeWeek(g);beginWorldWeek(g);arriveStoryWeek(g);for(const q of g.players)recordLifeProgress(g,q);}else{g.event=(g.round-1)%events.length;const e=events[g.event];for(const q of g.players){q.cash+=e.cash;q.joy=Math.min(100,Math.max(0,q.joy+e.joy));}g.log.unshift(e.title+': '+e.text);}
   }
-  g.players[g.turn].hours=6;g.log=g.log.slice(0,32);return;
+  g.players[g.turn].hours=6;reserveRecoveryAdministration(g,g.players[g.turn]);g.log=g.log.slice(0,32);return;
  }
  const error=reason(p,id,g);if(error)throw Error(error);const a=activityForPlayer(p,actions.find(x=>x.id===id)!,g);if(p.place!==a.place)throw Error('Visit this place on the map first');const e=effects(p,a,g);recordEconomyWork(p,a,g);recordEconomyHabit(p,a,g);if('exposureUsed' in e.weather)consumeClimateEffect(p,g,e.weather);else consumeWeather(p,a,g);consumeRegionalParticipation(p,g,e.participation?.joy||0);p.hours-=a.time;p.cash+=e.cash;p.energy+=e.energy;p.joy+=e.joy;p.skill+=e.skill;p.social+=e.social;if(p.rulesVersion===2)p.craft=(p.craft||0)+e.craft;if(a.housing!==undefined)p.housing=a.housing;if(a.promote)p.job++;
  if(hasCurrentBalance(p)&&a.id==='community_organize')p.communityWork={round:g.round,count:communityDaysThisWeek(p,g)+1};

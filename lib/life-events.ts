@@ -1,7 +1,9 @@
+import {careerStoryGig} from './career-story-compat.ts';
+import {financialPayQuote,recordFinancialPay} from './financial-recovery.ts';
 import type {Game,Player} from './game.ts';
 import {economyLifeCash,economyCashText,economyThresholds,economyAutomaticLoss,hasModernEconomy,economyWorkReason,recordEconomyPaidHours} from './economy.ts';
 
-/** Opt-in, serializable life events. No runtime imports: game.ts may import this module.
+/** Opt-in, serializable life events. Game imports use only delayed domain helpers.
  * Only initializeLife uses randomness, with a server-supplied integer seed. Reads are pure.
  * The existing API remains responsible for authenticated turn ownership and atomic saves.
  */
@@ -20,7 +22,7 @@ export type LifeRelationshipView={id:LifeNpc;name:string;role:string;trust:numbe
 type LifeGame=Game & {lifeVersion?:number;lifeSeed?:number;lifeSchedule?:LifeScheduleEntry[];storyVersion?:number;economyVersion?:number};
 type LifePlayer=Player & {life?:LifePlayerState};
 type Proposal=Partial<LifeResources> & {trust?:Partial<Record<LifeNpc,number>>;relationshipChanges?:LifeRelationshipChange[];flagsAdded?:string[];flagsRemoved?:string[]};
-type Choice={paidHours?:number;id:string;title:string;body:string;outcome:string;change:Proposal;safe?:boolean;requirement?:string};
+type Choice={paidTakeHome?:number;paidHours?:number;id:string;title:string;body:string;outcome:string;change:Proposal;safe?:boolean;requirement?:string};
 type EventStart={title:string;body:string;impact:string;change:Proposal;context?:Record<string,number|string|boolean>};
 export const lifeEventIds:LifeEventId[]=['work_reset','venue_lost','garden_setback','repair_bill','festival_split','commission_dispute','crossroads','unexpected_patron','invitation','vacancy'];
 export const lifeOpportunityIds:LifeEventId[]=['unexpected_patron','invitation','vacancy'];
@@ -145,7 +147,7 @@ function rawStartEvent(p:Player,eventId:LifeEventId):EventStart{
  }
 }
 
-function startEvent(p:Player,eventId:LifeEventId,g:Game):EventStart{const e=rawStartEvent(p,eventId),old=e.change.cash??0,cash=economyLifeCash(p,eventId,old),shiftOnly=storyMode(g)&&eventId==='work_reset'&&Number(e.context?.jobBefore)===0;return{...e,body:economyCashText(p,e.body,old,cash),impact:economyCashText(p,e.impact,old,cash),change:{...e.change,cash,...(shiftOnly?{flagsAdded:['shift_lost']}: {})}};}
+function startEvent(p:Player,eventId:LifeEventId,g:Game):EventStart{const e=rawStartEvent(p,eventId);if(g.careerVersion===1&&eventId==='invitation'&&(p.craft??0)<3){e.impact=careerStoryGig(g,p,'first_workshop')?.available?'Your technical preparation and paid practice could become a useful beginner workshop. You can choose whether to teach.':p.social>=6?'Mina is interested in the people you have brought together. Paid technical teaching has its own preparation and experience requirements.':'Mina welcomes an unfinished idea. A paid technical workshop needs matching preparation and practice first; joining the evening is still possible.';}if(g.careerVersion===1&&eventId==='work_reset'){e.impact=p.career?.contracts.some(c=>c.active&&c.kind==='main')?'A cancelled outside booking reduces your buffer. Your agreed venue contract and experience remain in place.':'A cancelled casual opening reduces your buffer. Entry applications and learning remain open; no role has been taken away.';e.change.job=0;e.context={...e.context,jobBefore:0};}const old=e.change.cash??0,cash=economyLifeCash(p,eventId,old),shiftOnly=storyMode(g)&&eventId==='work_reset'&&Number(e.context?.jobBefore)===0;return{...e,body:economyCashText(p,e.body,old,cash),impact:economyCashText(p,e.impact,old,cash),change:{...e.change,cash,...(shiftOnly?{flagsAdded:['shift_lost']}: {})}};}
 
 const trustNeed=(p:Player,npc:LifeNpc)=>good(p,npc)?'':`Needs ${names[npc]}’s support or trust +1; an honest check-in can help`;
 const returnFavor=(npc:LifeNpc):LifeRelationshipChange=>({npc,reciprocity:false,support:true,rivalry:false});
@@ -218,7 +220,7 @@ function rawChoicesFor(p:Player,g:Game,r:LifeReceipt):Choice[]{
 }
 
 const paidLifeHours:Record<string,number>={first_workshop:40,independent_service:40,jo_referral:40,community_pivot:20,eli_coop:20,choose_eli:20,solo_sale:40,mina_benefit:20,accept_support:20};
-function choicesFor(p:Player,g:Game,r:LifeReceipt):Choice[]{return rawChoicesFor(p,g,r).map(c=>{const old=c.change.cash??0,cash=economyLifeCash(p,c.id,old),paidHours=hasModernEconomy(p)?paidLifeHours[c.id]??0:0;return{...c,paidHours,body:economyCashText(p,c.body,old,cash)+(paidHours?` Paid commitment: ${paidHours} hours this month; $${cash} take-home.`:''),outcome:economyCashText(p,c.outcome,old,cash),change:{...c.change,cash}};});}
+function choicesFor(p:Player,g:Game,r:LifeReceipt):Choice[]{return rawChoicesFor(p,g,r).map(raw=>{const matched=careerStoryGig(g,p,raw.id),original=matched?{...raw,body:matched.body,requirement:matched.reason}:raw;const c=g.careerVersion===1&&r.eventId==='work_reset'&&original.id==='recover_role'?{...original,title:'Make a new work plan',body:'1 priority block, $0. Review the named workplace paths and choose your own next step. Your existing contract and preparation remain yours; this conversation is not a qualification or job offer.',outcome:'You make room to review the workplace board. A course, application or shift is still a separate choice.',change:{hours:-1,cash:0,energy:-4,joy:5},requirement:''}:original;if(g.careerVersion===1&&r.eventId==='work_reset'){if(c.id==='jo_referral')c.outcome='Jo introduces you to a small client for this paid practical commitment. Your accepted venue contracts and field experience remain yours.';if(c.id==='take_stock')c.outcome='The cancelled outside booking reduced your buffer. Your agreed venue contracts and earned experience remain in place; your next application or shift remains your decision.';}const old=c.change.cash??0,cash=economyLifeCash(p,c.id,old),paidHours=hasModernEconomy(p)?paidLifeHours[c.id]??0:0,q=paidHours?financialPayQuote(g,p,cash):null;return{...c,paidHours,paidTakeHome:cash,body:economyCashText(p,c.body,old,cash)+(paidHours?` Paid commitment: ${paidHours} hours this month; $${cash} take-home.`:'')+(q?.repayment?` $${q.repayment} repays arrears; $${q.cash} reaches your cash balance.`:''),outcome:economyCashText(p,c.outcome,old,cash),change:{...c.change,cash:q?.cash??cash}};});}
 
 /** Safe for repeat lifecycle calls and JSON reloads: each player receives the shared event once. */
 export function beginLifeWeek(g:Game){
@@ -260,7 +262,7 @@ export function resolveLifeChoice(g:Game,p:Player,choiceId:string):LifeReceipt{
  const r=currentReceipt(p,g);if(!r)throw Error(lifePeriodText('There is no life event to resolve this week',g));
  const c=choicesFor(p,g,r).find(c=>choiceKey(r,c.id)===choiceId);if(!c)throw Error(lifePeriodText('That life choice is not available for this week',g));
  const reason=choiceReason(p,g,r,c);if(reason)throw Error(lifePeriodText(reason,g));
- const e=preview(p,c.change);recordEconomyPaidHours(p,g,c.paidHours??0);apply(p,e,lifePeriodText(`Week ${g.round}: ${c.title}`,g));
+ const e=preview(p,c.change);recordEconomyPaidHours(p,g,c.paidHours??0);if(c.paidHours)recordFinancialPay(g,p,`event:${choiceId}`,c.paidTakeHome??e.cash);apply(p,e,lifePeriodText(`Week ${g.round}: ${c.title}`,g));
  r.pending=false;r.resolved={choiceId,title:lifePeriodText(c.title,g),outcome:lifePeriodText(c.outcome,g),effects:e,deferred:false};r.journal.push(lifePeriodText(c.outcome,g));
  log(g,lifePeriodText(`${p.name}: ${c.title}. ${c.outcome}`,g));return r;
 }

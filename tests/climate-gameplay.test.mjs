@@ -11,7 +11,7 @@ import {worldChoices as serverWorldChoices,resolveWorldChoice as serverResolve} 
 const regions=['alder','saffron','glasssteppe','pelagia','embermesa'];
 const owner='00000000-0000-4000-8000-000000000001';
 function game(region='alder',round=1,code='CLIMAT'){
- const g=createGame({op:'create',mode:'hotseat',names:['One','Two'],ownerSession:owner,requestId:crypto.randomUUID()},code);g.round=round;
+ const g=createGame({op:'create',mode:'hotseat',actionIncidents:true,supportedRules:['action-incidents-v1','venue-careers-v1'],names:['One','Two'],ownerSession:owner,requestId:crypto.randomUUID()},code);g.round=round;
  for(const p of g.players){p.world.region=region;p.world.discoveredRegions=[...regions];p.cash=20000;p.energy=70;p.joy=40;p.hours=6;
  for(const r of regions)p.world.discoveredPlacesByRegion[r]=[...worldPlaceIds];}
  return g;
@@ -27,7 +27,7 @@ test('new rooms automatically use the climate version; unknown/missing versions 
 
 test('sanitized member snapshots and all multiplayer seats share the authoritative forecast',()=>{
  for(let count=1;count<=4;count++){
- const g=createGame({op:'create',mode:'hotseat',names:Array.from({length:count},(_,i)=>`Seat ${i}`),ownerSession:owner,requestId:crypto.randomUUID()},'SEAT42');
+ const g=createGame({op:'create',mode:'hotseat',actionIncidents:true,supportedRules:['action-incidents-v1','venue-careers-v1'],names:Array.from({length:count},(_,i)=>`Seat ${i}`),ownerSession:owner,requestId:crypto.randomUUID()},'SEAT42');
  g.players.forEach((p,i)=>{p.world.region=regions[i+1];});
  for(let turn=0;turn<count;turn++)for(let round=1;round<=8;round++){
  g.turn=turn;g.round=round;const client=memberView({state:g,code:g.code,version:1,updated_at:0},owner);
@@ -58,7 +58,7 @@ test('every activity preview equals authoritative outcome and client/server cost
  const server=structuredClone(g),client=rawView(g),preview=actionPreview(p,id,g);assert.deepEqual(preview,actionPreview(client.players[0],id,client));
  const a=activityForPlayer(p,actions.find(a=>a.id===id),g);assert.deepEqual(preview.weather,serverWeather.weatherEffect(server.players[0],a,server,{joy: id==='weekly_opportunity'?opportunity(g).joy:a.joy||0,energy:a.energy||0}));
  const before=structuredClone(p);move(g,id);serverMove(server,id);
- for(const key of ['cash','energy','joy','hours'])assert.equal(p[key]-before[key],preview[key],`${region}/${round}/${id}/${key}`);
+ for(const key of ['cash','energy','joy','hours'])assert.equal(p[key]-before[key],preview[key]+(p.actionIncidents?.receipts.at(-1)?.effects[key]??0),`${region}/${round}/${id}/${key}`);
  assert.deepEqual(p.weatherUsage,server.players[0].weatherUsage);assert.deepEqual(p,server.players[0]);checked++;
  }
  assert.ok(checked>250,`${checked} action outcomes`);

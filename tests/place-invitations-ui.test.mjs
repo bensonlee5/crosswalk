@@ -24,6 +24,6 @@ const invites=mapInvitations(p,g),html=render(Invitations,{invitations:invites,p
 assert.equal(count,0,'rendering never performs travel or an activity');
 const screen=readFileSync(new URL('../app/game-screen.tsx',import.meta.url),'utf8');
 assert.ok(screen.indexOf('className="game-activity-grid"')<screen.indexOf('className="game-action-detail"'),'image choices precede their confirmation in keyboard and mobile document flow');
-assert.match(screen,/firstPlaceAction\(latest.current/);assert.match(screen,/!tutorial.visible&&!tutorialBlocked/);assert.match(screen,/onClick=\{\(\)=>chooseAction\(option.id\)\}/);
+assert.match(screen,/const state=latest.current,player:Player=state.g.players\[state.g.turn\]/);assert.match(screen,/firstPlaceAction\(player,location,state.g,requested\)/);assert.match(screen,/!tutorial.visible&&!tutorialBlocked/);assert.match(screen,/onClick=\{\(\)=>chooseAction\(option.id\)\}/);
 assert.match(screen,/options.find\(a=>a.id===firstPlaceAction\(p,visiblePlace/,'after a completed story disappears, the welcome fallback remains legal');
 console.log('PASS: all place welcomes and 74 choice presentations render; classic/story guards, disabled invites, no render side effects, image-choice-first flow and tutorial coexistence');

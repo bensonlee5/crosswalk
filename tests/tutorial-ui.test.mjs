@@ -48,3 +48,11 @@ result.send('skip');result=h.render('FIRST',0,false);assert.equal(result.visible
 const broken={getItem(){throw Error('blocked storage')},setItem(){throw Error('quota exceeded')}};h=harness(broken);result=h.render('PRIVATE',0,true);result.send('skip');assert.equal(h.render('PRIVATE',0,true).visible,false);
 records.clear();h=harness();assert.equal(h.render('EXISTING',0,false).visible,false);assert.equal(records.size,0,'existing saves never write a synthetic skip preference');
 console.log('PASS: every tutorial panel server-renders, classic/weather/weekly-bill/online copy and disabled actions; real hook invitation-before-click reload, duplicate clicks, dialog recovery, skip/replay and blocked storage');
+
+const careerPlayer={...modernPlayer,career:{version:1}},careerGame={...modernGame,careerVersion:1,players:[careerPlayer]};
+const careerTutorial=(step,extra={})=>html(step,{p:careerPlayer,g:careerGame,...extra});
+assert.match(careerTutorial('travel',{menu:'places'}),/Open Work &amp; learning/);
+assert.match(careerTutorial('travel',{menu:'work'}),/start without a contract/);
+assert.match(careerTutorial('activity',{menu:'work'}),/Applying takes time; accepting an offer and working are separate decisions/);
+assert.match(careerTutorial('week'),/Unpaid bills become arrears/);
+assert.doesNotMatch(careerTutorial('week'),/nobody is eliminated|six fresh priority blocks/);

@@ -91,6 +91,18 @@ export function actionSound(op:string,action:string|undefined,before?:Player,aft
  if(action==='visit')return before.place!==after.place?'footsteps':null;
  // Physical actions must really have taken place, rather than replayed a choice.
  if(!action||after.hours>=before.hours)return null;
+ // Career cues require an exact new employer receipt. An application is paperwork;
+ // technical/civic shifts include a documented handover, and repair-maker work
+ // really is bench repair. Other roles remain quiet without a faithful recording.
+ if(action.startsWith('career:')){
+  const receipt=after.career?.receipts.find(r=>r.id===action);
+  if(!receipt||before.career?.receipts.some(r=>r.id===action))return null;
+  if(receipt.verb==='apply')return 'write';
+  if(receipt.verb==='train')return receipt.place==='LIBRARY'?'pageTurn':'write';
+  if(receipt.verb==='work'){const contract=after.career?.contracts.find(c=>receipt.target.startsWith(c.id+'.'));if(contract?.target==='t.practical.maker'||contract?.target==='p.bicycle-repair')return 'repair';if(contract?.field==='technical'||contract?.field==='civic')return 'write';}
+  if(receipt.verb==='commission'&&receipt.target==='p.custom-repair')return 'repair';
+  return null;
+ }
  if(Object.prototype.hasOwnProperty.call(activitySounds,action))return activitySounds[action];
  if(action==='home_repair:diy'||action==='home_repair:paid')return 'repair';
  // Exact resolved event IDs; a relationship repair is an entirely different action.

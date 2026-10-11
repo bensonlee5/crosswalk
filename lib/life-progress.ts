@@ -1,3 +1,4 @@
+import {careerTracks} from './career-content.ts';
 import {castCharacters} from './cast-characters.ts';
 import type {Game, Player} from './game.ts';
 import {monthlyBills,hasModernEconomy,economyLifeCash} from './economy.ts';
@@ -117,9 +118,16 @@ const extraMilestones: Tier[] = [
 const communityContinuation:Tier={id:'community_common_ground',title:'Common Ground',description:'Turned Steward into shared responsibility: took the coordinator role and handed a usable rota and key to the next person.',met:p=>p.story?.version===1&&!!p.story.flags.includes('steward_payoff'),next:(p,g)=>p.story?.flags.includes('steward_responsibility')?'Keep the rota manageable, with room for other people to share the work.':g.round<5?'Keep listening to what the neighborhood needs, and leave room for others to help.':g.round===5?'Take the Steward coordinator shift at the marked story venue. It funds a usable rota, not an endless unpaid obligation.':'The coordinator opening has passed. You can still care for the neighborhood in your own way.'};
 const sharedEvening:Tier={id:'a_smaller_first_set',title:'A song with a room',description:'Helped make the replacement beginning and stayed to hear Mina’s first set or recording.',met:p=>!!p.story?.flags.includes('witnessed_payoff')&&['shared_credit','pump_help','setup_done','shared_stage'].some(f=>p.story?.flags.includes(f)),next:()=>''};
 const storyMode=(g:Game)=>(g as Game&{storyVersion?:number}).storyVersion===1;
-const definitionsFor=(id:AspirationId,g:Game)=>id==='community'&&storyMode(g)?[...tiers[id],communityContinuation]:tiers[id];
+const venueRoleWorked=(p:ProgressPlayer,rank:number)=>!!p.career?.contracts.some(c=>careerTracks.find(t=>t.id===c.field)?.roles[rank]?.id===c.target.split('.')[2]&&p.career?.receipts.some(r=>r.verb==='work'&&r.target.startsWith(c.id+'.')));
+const venueCareerTiers:Tier[]=[
+ {id:'career_apprentice',title:'A first foothold',description:'Completed a paid commitment in a real field of work.',met:p=>Object.values(p.career?.experience??{}).some(e=>e&&e.paidHours>0&&e.commitments>0),next:()=> 'Apply for an entry role at a workplace, accept the offer, then complete your first paid commitment.'},
+ {id:'career_practitioner',title:'Practitioner',description:'Prepared for a skilled role and put it into practice.',met:p=>venueRoleWorked(p,1),next:()=> 'Complete relevant entry work and foundation preparation, apply for a skilled role, then work in it.'},
+ {id:'career_leader',title:'Responsible for the work',description:'Earned a lead role and completed its first handover.',met:p=>venueRoleWorked(p,2),next:()=> 'Build experience in a skilled role, complete advanced preparation or earn a professional reference, and apply for the field’s lead role.'},
+ {id:'career_mentor',title:'Experience passed on',description:'Worked as a field lead and tutored another learner.',met:p=>venueRoleWorked(p,2)&&count(p,'campus_tutor')>0,next:()=> 'Apply for the tutoring commitment at Campus and pass some of your experience to a learner.'}
+];
+const definitionsFor=(id:AspirationId,g:Game)=>id==='career'&&g.careerVersion===1?venueCareerTiers:id==='community'&&storyMode(g)?[...tiers[id],communityContinuation]:tiers[id];
 const allMilestones = [...Object.values(tiers).flat(), ...extraMilestones, communityContinuation, sharedEvening];
-function milestoneView(p:ProgressPlayer,g:Game,m:LifeMilestone):LifeMilestone{return{id:m.id,title:m.title,description:m.id==='shared_credit'&&storyMode(g)&&p.story?.flags.includes('shared_credit')?'Put Mina, Eli and Jo’s names on the shared poster and wrote a budget that makes everyone’s work visible.':m.id==='home_maker'&&storyMode(g)&&madeHomeByMoving(p)?'Made a home through an explicit relocation, carrying your everyday life into a new region.':m.description};}
+function milestoneView(p:ProgressPlayer,g:Game,m:LifeMilestone):LifeMilestone{if(g.careerVersion===1)m=venueCareerTiers.find(t=>t.id===m.id)??m;return{id:m.id,title:m.title,description:m.id==='shared_credit'&&storyMode(g)&&p.story?.flags.includes('shared_credit')?'Put Mina, Eli and Jo’s names on the shared poster and wrote a budget that makes everyone’s work visible.':m.id==='home_maker'&&storyMode(g)&&madeHomeByMoving(p)?'Made a home through an explicit relocation, carrying your everyday life into a new region.':m.description};}
 function selectionReason(g: Game, p: ProgressPlayer): string {
  if (!active(g,p)) return 'Aspirations are available in new life games.';
  if (g.status !== 'playing') return 'Choose a direction while the game is running.';
@@ -155,7 +163,8 @@ export function recordLifeProgress(g: Game, p: Player): LifeMilestone[] {
  if (!active(g,p) || g.status === 'lobby' || !g.players.includes(p)) return [];
  const q = p as ProgressPlayer;
  const earned = new Set(q.milestones ?? []);
- const newly = allMilestones.filter(m=>!earned.has(m.id)&&m.met(q,g));
+ const eligible=g.careerVersion===1?[...allMilestones.filter(m=>!tiers.career.some(t=>t.id===m.id)),...venueCareerTiers]:allMilestones;
+ const newly = eligible.filter(m=>!earned.has(m.id)&&m.met(q,g));
  if (!newly.length) return [];
  q.milestones = [...earned, ...newly.map(m=>m.id)];
  return newly.map(m=>milestoneView(q,g,m));
@@ -163,7 +172,7 @@ export function recordLifeProgress(g: Game, p: Player): LifeMilestone[] {
 function foundations(p: ProgressPlayer): LifeFoundation[] {
  const due = bills(p), people = close(p), strain = namedNeighbors.filter(n=>p.life?.relationships[n.id]?.rivalry);
  const owed = namedNeighbors.filter(n=>p.life?.relationships[n.id]?.reciprocity);
- const cashDetail = p.cash < 0
+ const cashDetail = p.finance?.arrears ? `$${amount(p.finance.arrears)} in household arrears remains.${p.finance.recovering?' Financial recovery reserves one priority block and routes part of pay toward it.':''}` : p.cash < 0
   ? `An overdraft of $${amount(p.cash)} remains. Your finances are not settled.`
   : p.cash >= due*2
    ? `$${amount(p.cash)} covers at least two representative weeks of rent and food at $${due} a week.`
@@ -178,7 +187,7 @@ function foundations(p: ProgressPlayer): LifeFoundation[] {
  if (strain.length) peopleDetail += ` ${strain.map(n=>n.name).join(' and ')} ${strain.length===1?'has':'have'} a strained bond with you.`;
  if (owed.length) peopleDetail += ` You still have a favor to return to ${owed.map(n=>n.name).join(' and ')}.`;
  return [
-  {title:'A financial buffer',detail:cashDetail,secure:p.cash>=due*2},
+  {title:'A financial buffer',detail:cashDetail,secure:p.cash>=due*2&&!p.finance?.arrears},
   {title:p.housing?'A place of your own':'A shared place to return to',detail:flag(p,'repairs_unfinished')?'Repairs are unfinished; the smaller setup is still temporary.':p.cash<due?'Your home matters, but the next rent-and-food payment is not yet covered.':`Your current ${p.housing?'studio':'shared home'} has at least the next rent-and-food payment covered.`,secure:p.cash>=due&&!flag(p,'repairs_unfinished')},
   {title:'People to come back to',detail:peopleDetail,secure:closeBondCount(p)>0},
   {title:'Room to recover',detail:p.energy<30?'Energy is running low. Rest needs a place in the next chapter.':p.joy<40?'There is energy to carry on, but happiness needs some care.':'You have energy in reserve and some happiness to build on.',secure:p.energy>=30&&p.joy>=40}
@@ -189,7 +198,7 @@ function epilogue(p: ProgressPlayer, g: Game, aspiration: Aspiration|null, ladde
  const highest = chosen?.tiers.filter(t=>t.earned).at(-1);
  const complete = !!chosen?.tiers.at(-1)?.earned;
  const currentTop = !!chosen?.tiers.at(-1)?.current;
- const title = p.cash<0 ? 'A life still being rebuilt' : complete&&currentTop ? 'A chapter you made real' : base.filter(f=>f.secure).length>=3 ? 'A quieter kind of arrival' : earned.length ? 'Something worth carrying forward' : 'A beginning still open';
+ const title = p.cash<0||p.finance?.arrears ? 'A life still being rebuilt' : complete&&currentTop ? 'A chapter you made real' : base.filter(f=>f.secure).length>=3 ? 'A quieter kind of arrival' : earned.length ? 'Something worth carrying forward' : 'A beginning still open';
  let ambition = aspiration
   ? complete
    ? `You earned the ${highest!.title} chapter of “${aspiration.title}.” ${currentTop?'The work, people and choices behind it are part of your story.':'Your present footing has changed, but that earned chapter remains part of your story.'}`
@@ -208,14 +217,14 @@ function epilogue(p: ProgressPlayer, g: Game, aspiration: Aspiration|null, ladde
   : setback&&flag(p,'career_interrupted')&&(!storyMode(g)||lostRole)
    ? 'The contract fell through, and your career route is still interrupted. Your earned skills remain usable.'
    : shiftOnly
-    ? 'A cancelled shift reduced your buffer, but your entry-level role was not lost. Keeping that work is a real form of stability; it does not require a promotion.'
+    ? g.careerVersion===1?'A cancelled outside booking reduced your buffer. Your accepted venue contracts and earned experience remain yours.':'A cancelled shift reduced your buffer, but your entry-level role was not lost. Keeping that work is a real form of stability; it does not require a promotion.'
    : flag(p,'commission_lost')
     ? 'The shared commission was lost. Making more work will not restore that particular promise, but your craft remains.'
     : !complete&&aspiration
      ? 'Some plans are still beyond reach. An unfinished ambition is real, even alongside the good things you built.'
      : 'This chapter does not settle the rest of your life. There are still choices, limits and unfinished conversations ahead.';
  const relations = base[2].detail;
- const home = p.cash<0
+ const home = p.finance?.arrears ? `You finish with $${amount(p.finance.arrears)} in household arrears. Shared housing, entry applications and free preparation stay available while you rebuild. The recovery arrangement and its costs remain visible in your work board.` : p.cash<0
   ? `You finish with a $${amount(p.cash)} overdraft. ${p.housing?'Having your own door':'Having a shared home'} does not make the money problem disappear; rebuilding a buffer comes first.`
   : base[0].secure&&base[1].secure
    ? `Your ${p.housing?'own place':'shared home'} and two-week rent-and-food buffer give you a steadier starting point. That is breathing room, not a guarantee against future setbacks.`
@@ -223,7 +232,8 @@ function epilogue(p: ProgressPlayer, g: Game, aspiration: Aspiration|null, ladde
     ? `Your two-week rent-and-food buffer is in place, while the original repairs remain unfinished. Your smaller setup is still temporary.`
     : `You have ${p.housing?'a place of your own':'a shared place to return to'}, but the full two-week buffer is not in place${flag(p,'repairs_unfinished')?' and repairs remain unfinished':''}. Stability is still something to work toward.`;
  let opening: string;
- if (p.cash<0) opening = 'One practical opening is a manageable paid shift, paired with enough rest to keep going. It can begin reducing the overdraft; it cannot promise the whole recovery.';
+ if(p.finance?.arrears) opening = 'A manageable paid commitment can cover the next household bill while repaying arrears. The work board shows the exact net pay and leaves room to rest.';
+ else if (p.cash<0) opening = 'One practical opening is a manageable paid shift, paired with enough rest to keep going. It can begin reducing the overdraft; it cannot promise the whole recovery.';
  else if (p.energy<30) opening = 'A first opening is to rest before taking on the next obligation. Then choose one small piece of the future you still want.';
  else if (!complete&&aspiration) opening = `A concrete next opening: ${next} It offers a direction, without promising the outcome.`;
  else {

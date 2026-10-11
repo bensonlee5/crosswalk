@@ -1,3 +1,4 @@
+import {careerChoices} from './careers.ts';
 import {lifeEventPersonActor} from './person-event-responses.ts';
 import type {Game,Player} from './game.ts';
 import {worldChoices} from './world-life.ts';
@@ -20,6 +21,7 @@ function worldKey(actionId:string){const parts=actionId.slice(6).split(':');whil
 /** One semantic-key implementation shared by engine and all presenters. Capture
  * it before mutation, because travel and a shared claim can change the context. */
 export function actionFamiliarityKey(actionId:string,p:FamiliarityPlayer,g:Game,destination?:string):string{
+ if(actionId.startsWith('career:')){const parts=actionId.split(':'),target=parts.slice(4).join(':');if(parts[3]==='work'){const [contractId,kind]=target.split('.'),c=p.career?.contracts.find(c=>c.id===contractId);if(c)return `career:work:${c.region}:${c.target}:${kind}`;}return `career:${parts[3]}:${target}`;}
  if(actionId==='visit')return `visit:${p.world?.region??'alder'}:${destination??p.place}`;
  if(actionId.startsWith('world:shared:')){const parts=actionId.split(':'),region=parts[4],kind=parts[5];let qualifier='';if(kind==='reserve')qualifier=':'+parts[6];if(kind==='use'){const id=parts.slice(6).join(':');qualifier=':'+((g as Game&{sharedOpportunities?:{bookings:{id:string;purpose:string}[]}}).sharedOpportunities?.bookings.find(b=>b.id===id)?.purpose??'room');}return `shared:${region}:${kind}${qualifier}`;}
  if(actionId.startsWith('world:')){const key=worldKey(actionId);return `world:${p.world?.region??'alder'}:${key.startsWith('local:')?'regional-opening':key}`;}
@@ -30,6 +32,7 @@ export function actionFamiliarityKey(actionId:string,p:FamiliarityPlayer,g:Game,
  return actionId;
 }
 function replayed(p:FamiliarityPlayer,id:string){
+ if(id.startsWith('career:'))return !!p.career?.receipts.some(r=>r.id===id);
  if(id.startsWith('world:shared:'))return !!p.sharedPersonal?.receipts.some(r=>r.actionId===id);
  if(id.startsWith('world:'))return !!p.world?.acceptedChoices.includes(id.slice(6));
  if(id.startsWith('cast:'))return !!p.cast?.receipts.some(r=>r.id===id);
@@ -41,7 +44,8 @@ function replayed(p:FamiliarityPlayer,id:string){
 export function actionFamiliarityContext(g:Game,p:FamiliarityPlayer,id:string,destination?:string):FamiliarityContext{
  const context:FamiliarityContext={actionKey:actionFamiliarityKey(id,p,g,destination),actorIds:[],round:g.round,replay:replayed(p,id)||(id==='visit'&&destination===(p.place==='HOME'?'APARTMENTS':p.place))};
  if(context.replay)return context;
- if(id.startsWith('world:')){const choice=worldChoices(p,g).find(c=>c.id===id.slice(6));if(choice?.actorId)context.actorIds=[choice.actorId];else if(choice?.key.startsWith('talk:'))context.actorIds=[choice.key.slice(5)];else if(choice?.kind==='relationship')context.actorIds=['neri'];}
+ if(id.startsWith('career:')){const choice=careerChoices(g,p).find(c=>c.id===id);if(choice?.actorId)context.actorIds=[choice.actorId];}
+ else if(id.startsWith('world:')){const choice=worldChoices(p,g).find(c=>c.id===id.slice(6));if(choice?.actorId)context.actorIds=[choice.actorId];else if(choice?.key.startsWith('talk:'))context.actorIds=[choice.key.slice(5)];else if(choice?.kind==='relationship')context.actorIds=['neri'];}
  else if(id.startsWith('cast:')||id.startsWith('motive:'))context.actorIds=[id.split(':')[2]];
  else if(id.startsWith('event:')){const actorId=lifeEventPersonActor(id,p);if(actorId)context.actorIds=[actorId];}
  else if(id.startsWith('repair:'))context.actorIds=[id.slice(7)];

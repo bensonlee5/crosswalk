@@ -13,7 +13,7 @@ import {move as serverMove} from '../supabase/functions/_shared/engine/game.ts';
 import {worldChoices as serverChoices,resolveWorldChoice as serverResolve} from '../supabase/functions/_shared/engine/world-life.ts';
 const regions=Object.keys(regionalLifeProfiles),owner='00000000-0000-4000-8000-000000000001';
 const essentials=['APARTMENTS','WORK','THE PARK','CORNER CAFÉ','COMMUNITY'];
-function game(region='alder',round=1){const g=createGame({op:'create',mode:'hotseat',names:['One','Two'],ownerSession:owner,requestId:crypto.randomUUID()},'REGION');g.round=round;for(const p of g.players){p.world.region=region;p.world.discoveredRegions=[...regions];p.world.discoveredPlacesByRegion[region]=[...essentials];p.cash=20000;p.energy=60;p.joy=30;}return g;}
+function game(region='alder',round=1){const g=createGame({op:'create',mode:'hotseat',actionIncidents:true,supportedRules:['action-incidents-v1','venue-careers-v1'],names:['One','Two'],ownerSession:owner,requestId:crypto.randomUUID()},'REGION');g.round=round;for(const p of g.players){p.world.region=region;p.world.discoveredRegions=[...regions];p.world.discoveredPlacesByRegion[region]=[...essentials];p.cash=20000;p.energy=60;p.joy=30;}return g;}
 const explore=(g)=>worldChoices(g.players[g.turn],g).find(c=>c.key==='explore');
 function reveal(g){for(const p of g.players)for(const r of regions)p.world.discoveredPlacesByRegion[r]=[...worldPlaceIds];}
 
@@ -59,7 +59,7 @@ test('five local activity groups have real preview/server outcomes without chang
  for(const region of regions)for(const id of regionalLifeProfiles[region].activities){
  const g=game(region,3);reveal(g);const p=g.players[0];p.place=actions.find(a=>a.id===id).place;if(reason(p,id,g))continue;
  const old=structuredClone(g);delete old.regionalLifeVersion;const v=actionPreview(p,id,g),legacy=actionPreview(old.players[0],id,old);assert.equal(v.participation.joy,2);assert.equal(v.joy-legacy.joy,2);assert.equal(v.cash,legacy.cash);assert.equal(v.energy,legacy.energy);assert.equal(v.skill,legacy.skill);assert.equal(v.social,legacy.social);
- const server=structuredClone(g),before=structuredClone(p);move(g,id);serverMove(server,id);assert.equal(p.joy-before.joy,v.joy);assert.deepEqual(p,server.players[0]);assert.deepEqual(p.regionalLifeUsage,{round:3,participated:true});
+ const server=structuredClone(g),before=structuredClone(p);move(g,id);serverMove(server,id);assert.equal(p.joy-before.joy,v.joy+(p.actionIncidents?.receipts.at(-1)?.effects.joy??0));assert.deepEqual(p,server.players[0]);assert.deepEqual(p.regionalLifeUsage,{round:3,participated:true});
  assert.equal(g.players[1].regionalLifeUsage,undefined);
  }
 });

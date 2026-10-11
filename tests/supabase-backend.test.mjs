@@ -36,7 +36,7 @@ async function call(actor, body, query = '', extras = {}) {
   const response = await handler(request(actor, body, query, extras));
   return { response, status: response.status, body: await response.json() };
 }
-const post = (actor, body) => call(actor, { requestId: crypto.randomUUID(), ownerSession: users[actor], ...body });
+const post = (actor, body) => call(actor, { supportedRules:['action-incidents-v1','venue-careers-v1'], requestId: crypto.randomUUID(), ownerSession: users[actor], ...body });
 const create = (actor = 0, mode = 'hotseat', id = crypto.randomUUID()) => post(actor, { op: 'create', mode, ...(mode === 'hotseat' ? { names: ['First'] } : { name: 'First' }), requestId: id });
 const join = (actor, code, id = crypto.randomUUID()) => post(actor, { op: 'join', code, name: `Player ${actor}`, requestId: id });
 const move = (actor, room, action, id = crypto.randomUUID(), destination) => post(actor, { op: 'move', code: room.code, version: room.version, action, requestId: id, ...(destination ? { destination } : {}) });
@@ -395,4 +395,62 @@ test('shared commitments use real PostgreSQL ownership, private responses and du
  const submitted=room,done=await move(1,room,prep.actionId,'shared-prepare');assert.equal(done.status,200);assert.equal(done.body.players[1].cash,before+154);assert.equal(done.body.sharedOpportunities.orders.find(o=>o.id===order.id).status,'ready');
  const retry=await move(1,submitted,prep.actionId,'shared-prepare');assert.equal(retry.status,200);assert.equal(retry.body.players[1].cash,before+154);assert.equal(retry.body.players[1].sharedPersonal.receipts.length,1);assert.equal(retry.body.players[1].familiarity.actions['shared:alder:prepare'].count,1);
  const cancelled=await move(1,done.body,`world:shared:${done.body.round}:${done.body.sharedOpportunities.revision}:alder:cancel:${order.id}`,'steal-cancel');assert.equal(cancelled.status,400);assert.equal((await store.read(users[1],room.code)).state.sharedOpportunities.orders.find(o=>o.id===order.id).status,'ready');
+});
+
+test('incidents keep RNG server-private and consume exactly one draw set for accepted requests only',async()=>{
+ let room=(await post(0,{op:'create',mode:'online',name:'First',actionIncidents:true})).body;room=(await join(1,room.code)).body;room=(await post(0,{op:'start',code:room.code,version:room.version})).body;
+ assert.equal(room.actionIncidentsVersion,1);assert.equal(room.actionIncidentRng,undefined);
+ const publicView=(await call(2,null,`?code=${room.code}&supportedRules=action-incidents-v1,venue-careers-v1`)).body;assert.equal(publicView.actionIncidentRng,undefined);assert.equal(publicView.players[0].actionIncidents,undefined);
+ room=(await move(0,room,'visit','incident-cafe','CORNER CAFÉ')).body;
+ let saved=await store.read(users[0],room.code),seat=saved.state.players[0].id;saved.state.actionIncidentRng[seat]={words:[1,1,1,1]};
+ await pg.query('update crosswalk_private.rooms set state=$1::jsonb where code=$2',[JSON.stringify(saved.state),room.code]);
+ const before=room,applied=await move(0,before,'cafe_break','incident-coffee');assert.equal(applied.status,200);room=applied.body;
+ const receipt=room.players[0].actionIncidents.receipts.at(-1);assert.equal(receipt.incidentId,'coffee_spill');assert.equal(room.players[0].actionIncidents.ordinal,1);assert.equal(room.players[0].familiarity.actions.cafe_break.count,1);assert.equal(room.actionIncidentRng,undefined);
+ const rngAfter=JSON.stringify((await store.read(users[0],room.code)).state.actionIncidentRng);
+ const replay=await move(0,before,'cafe_break','incident-coffee');assert.deepEqual(replay.body,applied.body);assert.equal(JSON.stringify((await store.read(users[0],room.code)).state.actionIncidentRng),rngAfter);
+ assert.equal((await move(0,before,'home_reset','incident-stale')).status,409);assert.equal((await move(0,room,'unknown','incident-failed')).status,400);assert.equal((await move(1,room,'home_reset','incident-wrong-seat')).status,403);assert.equal(JSON.stringify((await store.read(users[0],room.code)).state.actionIncidentRng),rngAfter);
+ const otherView=(await call(1,null,`?code=${room.code}&supportedRules=action-incidents-v1,venue-careers-v1`)).body;assert.equal(otherView.actionIncidentRng,undefined);assert.equal(otherView.players[0].actionIncidents,undefined);assert.equal(JSON.stringify(otherView).includes(receipt.body),false);assert.equal(JSON.stringify(otherView).includes('"words"'),false);
+ room=(await move(0,room,'visit','incident-home','APARTMENTS')).body;saved=await store.read(users[0],room.code);saved.state.actionIncidentRng[seat]={words:[0x80000000,0,0,0]};await pg.query('update crosswalk_private.rooms set state=$1::jsonb where code=$2',[JSON.stringify(saved.state),room.code]);
+ const common=room,raced=await Promise.all([move(0,common,'home_reset','incident-race-a'),move(0,common,'home_reset','incident-race-b')]);assert.deepEqual(raced.map(r=>r.status).sort(),[200,409]);const won=raced.find(r=>r.status===200).body;assert.equal(won.players[0].actionIncidents.ordinal,2);assert.equal(won.players[0].actionIncidents.receipts.at(-1).incidentId,null);const committed=await store.read(users[0],room.code),stateAfter=JSON.stringify(committed.state.actionIncidentRng);assert.equal(committed.state.players[0].actionIncidents.ordinal,2);
+ for(const requestId of ['incident-race-a','incident-race-b'])await move(0,common,'home_reset',requestId);assert.equal(JSON.stringify((await store.read(users[0],room.code)).state.actionIncidentRng),stateAfter);assert.equal((await store.read(users[0],room.code)).state.players[0].actionIncidents.ordinal,2);
+});
+
+test('old clients retain saved ownership but refresh before incompatible room reads, joins or writes',async()=>{
+ const oldPost=(actor,body)=>call(actor,{ownerSession:users[actor],requestId:crypto.randomUUID(),...body});
+ let legacy=(await oldPost(0,{op:'create',mode:'hotseat',names:['Old client']})).body;assert.equal(legacy.actionIncidentsVersion,undefined);assert.deepEqual(legacy.requiredRules,[]);
+ const legacyMove=await oldPost(0,{op:'move',code:legacy.code,version:legacy.version,action:'home_reset'});assert.equal(legacyMove.status,200);assert.equal(legacyMove.body.players[0].actionIncidents,undefined);
+ assert.equal((await oldPost(0,{op:'create',mode:'hotseat',names:['Unsupported'],actionIncidents:true})).body.refreshRequired,true);
+ let room=(await post(0,{op:'create',mode:'online',name:'New client',actionIncidents:true})).body;const code=room.code;
+ assert.deepEqual(room.requiredRules,['action-incidents-v1']);for(const actor of [0,1]){const response=await call(actor,null,`?code=${code}`);assert.equal(response.status,409);assert.equal(response.body.refreshRequired,true);assert.equal(response.body.players,undefined);assert.equal(response.body.joinable,undefined);}assert.equal((await call(0,null,'?history=1')).status,200);assert.equal((await call(0,null,`?code=${code}&supportedRules=all`)).status,400);assert.equal((await call(0,null,`?code=${code}&supportedRules=action-incidents-v1&supportedRules=venue-careers-v1`)).status,400);
+ const pendingJoin={op:'join',code,name:'Old guest',requestId:'pending-rules-join'},blocked=await oldPost(1,pendingJoin);assert.equal(blocked.status,409);assert.equal(blocked.body.refreshRequired,true);assert.match(blocked.body.error,/saved progress are safe/);assert.equal((await store.read(users[0],code)).state.players.length,1);
+ const joined=await post(1,pendingJoin);assert.equal(joined.status,200);assert.equal(joined.body.players.length,2);room=joined.body;
+ const pendingStart={op:'start',code,version:room.version,requestId:'pending-rules-start'};assert.equal((await oldPost(0,pendingStart)).status,409);room=(await post(0,pendingStart)).body;assert.equal(room.status,'playing');
+ const restored=(await call(0,null,`?code=${code}&supportedRules=action-incidents-v1,venue-careers-v1`)).body;assert.deepEqual(restored.mine,[room.players[0].id]);assert.deepEqual(restored.requiredRules,['action-incidents-v1']);
+ const pendingMove={op:'move',code,version:room.version,action:'home_reset',requestId:'pending-rules-move'},before=JSON.stringify((await store.read(users[0],code)).state);
+ assert.equal((await oldPost(0,pendingMove)).status,409);assert.equal((await post(0,{...pendingMove,supportedRules:['venue-careers-v1']})).status,409);assert.equal((await post(0,{...pendingMove,supportedRules:['all']})).status,400);assert.equal(JSON.stringify((await store.read(users[0],code)).state),before);
+ const accepted=await post(0,pendingMove);assert.equal(accepted.status,200);assert.equal(accepted.body.players[0].actionIncidents.ordinal,1);const oldReplay=await oldPost(0,pendingMove);assert.equal(oldReplay.status,409);assert.equal(oldReplay.body.refreshRequired,true);const replay=await post(0,pendingMove);assert.equal(replay.status,200);assert.deepEqual(replay.body,accepted.body);assert.equal((await store.read(users[0],code)).state.players[0].actionIncidents.ordinal,1);
+ const refreshedLegacy=await post(0,{op:'move',code:legacy.code,version:legacyMove.body.version,action:'home_reset'});assert.equal(refreshedLegacy.status,200);assert.equal(refreshedLegacy.body.actionIncidentsVersion,undefined);
+});
+
+test('venue careers are explicit, old clients stay compatible, invalid modes cannot create partial rooms', async()=>{
+ const original=await create(0);assert.equal(original.status,200);assert.equal(original.body.careerVersion,undefined);assert.equal(original.body.players[0].career,undefined);assert.equal(original.body.financialRecoveryVersion,undefined);
+ const invalid=await post(0,{op:'create',mode:'hotseat',names:['Bad mode'],careerMode:'surprise'});assert.equal(invalid.status,400);
+ const room=await post(0,{op:'create',mode:'online',name:'Host',careerMode:'venue'});assert.equal(room.status,200);assert.equal(room.body.careerVersion,1);assert.equal(room.body.financialRecoveryVersion,1);assert.equal(room.body.players[0].career.contracts.length,0);assert.equal(room.body.players[0].finance.arrears,0);
+ const joined=await join(1,room.body.code);assert.equal(joined.status,200);assert.equal(joined.body.players.find(p=>joined.body.mine.includes(p.id)).career.version,1);assert.equal(joined.body.players.find(p=>!joined.body.mine.includes(p.id)).career,undefined);assert.equal(joined.body.players.find(p=>!joined.body.mine.includes(p.id)).finance,undefined);
+ const resumed=await call(0,null,`?code=${original.body.code}`);assert.equal(resumed.body.players[0].career,undefined);assert.equal(resumed.body.players[0].finance,undefined);
+});
+test('venue application, acceptance and paycheck are authoritative across concurrent commands and retries', async()=>{
+ let room=(await post(0,{op:'create',mode:'hotseat',names:['Worker'],careerMode:'venue'})).body;
+ room=(await move(0,room,'visit',crypto.randomUUID(),'WORK')).body;
+ const {careerChoices}=await import('../lib/careers.ts');let choices=careerChoices(room,room.players[0]),application=choices.find(c=>c.target==='t.technical.assistant');assert.equal(application.available,true,application.reason);
+ const requests=await Promise.all([move(0,room,application.id,'career-apply-a'),move(0,room,application.id,'career-apply-b')]);assert.deepEqual(requests.map(r=>r.status).sort(),[200,409]);room=requests.find(r=>r.status===200).body;assert.equal(room.players[0].career.receipts.filter(r=>r.verb==='apply').length,1);
+ choices=careerChoices(room,room.players[0]);room=(await move(0,room,choices.find(c=>c.verb==='accept').id)).body;assert.equal(room.players[0].career.contracts.length,1);const choice=careerChoices(room,room.players[0]).find(c=>c.verb==='work'&&c.target.endsWith('.regular')),before=structuredClone(room);
+ const paid=await move(0,room,choice.id,'career-paid');assert.equal(paid.status,200);assert.equal(paid.body.players[0].cash-before.players[0].cash,choice.cash);assert.equal(paid.body.players[0].economyWork.paidHours,160);assert.equal(paid.body.players[0].career.experience.technical.paidHours,160);
+ const retry=await move(0,before,choice.id,'career-paid');assert.equal(retry.status,200);assert.equal(retry.body.players[0].cash,paid.body.players[0].cash);const stale=await move(0,before,choice.id,'career-stale');assert.equal(stale.status,409);
+});
+test('an authoritative refused career interaction cannot mint a reference or private notice',async()=>{
+ const{careerChoices}=await import('../lib/careers.ts'),{worldChoices}=await import('../lib/world-life.ts'),{motiveScene}=await import('../lib/character-motives.ts');let room=(await post(0,{op:'create',mode:'hotseat',names:['Applicant'],careerMode:'venue'})).body;
+ const apply=async action=>{const r=await move(0,room,action);assert.equal(r.status,200,r.body.error);room=r.body;};
+ room=(await move(0,room,'visit',crypto.randomUUID(),'CORNER CAFÉ')).body;await apply('world:'+worldChoices(room.players[0],room).find(c=>c.key==='talk:alder_tess').id);await apply(careerChoices(room,room.players[0]).find(c=>c.target==='t.service.crew').id);await apply(careerChoices(room,room.players[0]).find(c=>c.verb==='accept').id);await apply(careerChoices(room,room.players[0]).find(c=>c.verb==='work'&&c.target.endsWith('.regular')).id);
+ const press=motiveScene(room,room.players[0],'alder_tess').choices.find(c=>c.key==='press'),before=structuredClone(room),requestId=crypto.randomUUID(),result=await move(0,room,press.id,requestId);assert.equal(result.status,200);const p=result.body.players[0];assert.equal(p.motives.receipts.at(-1).response,'boundary');assert.equal(p.career.leads['tess-ferry'].referenceRound,undefined);assert.equal(p.career.notices.some(n=>n.actionId===press.id),false);assert.deepEqual((await move(0,before,press.id,requestId)).body,result.body);const reload=(await call(0,null,`?code=${room.code}&supportedRules=action-incidents-v1,venue-careers-v1`)).body;assert.deepEqual(reload.players[0].career.notices,p.career.notices);
 });

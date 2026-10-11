@@ -1,4 +1,6 @@
-/** Modern fictional-dollar economy, explicitly opt-in. No runtime imports.
+import {financialPayQuote,recordFinancialPay} from './financial-recovery.ts';
+import type {Game,Player} from './game.ts';
+/** Modern fictional-dollar economy, explicitly opt-in. Recovery quotes are shared with the versioned finance module.
  * A round is one month and its six blocks are competing priorities, not hours.
  * All quotes are pure. Only initializer and record* helpers mutate state.
  */
@@ -22,7 +24,7 @@ export type EconomyActivity = {id:string;cost:number;time:number;title?:string;d
 export type EconomyRegion = 'alder'|'saffron'|'glasssteppe'|'pelagia'|'embermesa';
 export type EconomyProfile = {region:EconomyRegion;rentShared:number;rentStudio:number;food:number;essentials:number;entryRate:number;travel:number};
 export type EconomyBill = {rent:number;food:number;essentials:number;total:number;period:'month'|'week';homeRegion:EconomyRegion};
-export type EconomyQuote = {gross:number;withholding:number;takeHome:number;cost:number;cash:number;paidHours:number;available:boolean;reason:string};
+export type EconomyQuote = {gross:number;withholding:number;takeHome:number;cost:number;cash:number;repayment?:number;paidHours:number;available:boolean;reason:string};
 const profiles:Record<EconomyRegion,EconomyProfile> = {
  alder:{region:'alder',rentShared:1250,rentStudio:2450,food:380,essentials:220,entryRate:24,travel:180},
  saffron:{region:'saffron',rentShared:1150,rentStudio:2200,food:360,essentials:190,entryRate:23,travel:320},
@@ -77,7 +79,8 @@ export function recordEconomyPaidHours(p:EconomyPlayer,g:Pick<EconomyGame,'round
 }
 function paidQuote(p:EconomyPlayer,g:Pick<EconomyGame,'round'>,gross:number,paidHours:number,cost=0):EconomyQuote {
  gross=money(gross);cost=money(cost);const takeHome=money(gross*economyTakeHomeRatio),reason=economyWorkReason(p,g,paidHours);
- return{gross,withholding:gross-takeHome,takeHome,cost,cash:takeHome-cost,paidHours,available:!reason,reason};
+ const pay=financialPayQuote(g as Game,p as Player,takeHome,cost);
+ return{gross,withholding:gross-takeHome,takeHome,cost,cash:pay.cash,...(pay.repayment?{repayment:pay.repayment}:{}),paidHours,available:!reason,reason};
 }
 export function economyRegionalWorkQuote(p:EconomyPlayer,g:Pick<EconomyGame,'round'>,options:{region:string;kind:'regular'|'short';residentBonus?:boolean}):EconomyQuote {
  const hours=options.kind==='regular'?160:40,profile=economyProfile(p,options.region);
@@ -172,7 +175,7 @@ export function economyQuote(p:EconomyPlayer,a:EconomyActivity,g?:Pick<EconomyGa
  const earn=adjusted.earn??0,reason=economyHabitReason(p,a,g);return{gross:earn,withholding:0,takeHome:earn,cost:adjusted.cost,cash:earn-adjusted.cost,paidHours:0,available:!reason,reason};
 }
 export const economyDisabled=(p:EconomyPlayer,a:EconomyActivity,g?:Pick<EconomyGame,'round'>)=>economyQuote(p,a,g).reason;
-export function recordEconomyWork(p:EconomyPlayer,a:EconomyActivity,g:Pick<EconomyGame,'round'>):void {recordEconomyPaidHours(p,g,economyQuote(p,a,g).paidHours);}
+export function recordEconomyWork(p:EconomyPlayer,a:EconomyActivity,g:Pick<EconomyGame,'round'>):void {const q=economyQuote(p,a,g),before=economyPaidHours(p,g);recordEconomyPaidHours(p,g,q.paidHours);if(q.paidHours)recordFinancialPay(g as Game,p as Player,`ordinary:${g.round}:${before}:${a.id}`,q.takeHome,q.cost);}
 export const economyGardenReward=(p:EconomyPlayer)=>economyAmount(p,180,600);
 // Aliases for existing UI/domain vocabulary.
 export const hourlyRate=economyHourlyRate;

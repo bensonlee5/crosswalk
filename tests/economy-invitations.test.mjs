@@ -42,7 +42,7 @@ test('old invitation outputs keep original amounts and weekly labels',()=>{
  const{p,g}=setup(false);assert.equal(p.cash,1100);assert.equal(choiceTerms(p,byId('study'),g).cash,'$180 upfront');assert.match(choiceTerms(p,byId('move'),g).bills,/\$705 weekly bills/);assert.match(choiceTerms(p,byId('work'),g).time,/2 time/);assert.match(choiceBenefit({...p,skill:2},byId('apply'),g),/\$29\/hour/);
 });
 test('startup defaults modern, while restored legacy room uses conditional original help',()=>{
- const page=readFileSync(new URL('../app/page.tsx',import.meta.url),'utf8');assert.match(page,/modernRules=!g\|\|modernEconomy/);assert.match(page,/8 months/);assert.match(page,/\$6,000 in savings/);assert.match(page,/modernRules\?<><p>/);assert.match(page,/Start with \$1,100 and a \$20\/hour/);assert.match(page,/weekPreview\(p,g\)/);assert.match(page,/Rent \+ groceries \+ essentials/);assert.match(page,/Pay bills &amp; end \{period\}/);
+ const page=readFileSync(new URL('../app/page.tsx',import.meta.url),'utf8');assert.match(page,/modernRules=!g\|\|modernEconomy/);assert.match(page,/8 months/);assert.match(page,/\$6,000 in savings/);assert.match(page,/modernRules\?<><p>/);assert.match(page,/Start with \$1,100 and a \$20\/hour/);assert.match(page,/weekPreview\(p,g\)/);assert.match(page,/Rent \+ groceries \+ essentials/);assert.match(page,/venueRules\?'Settle bills':'Pay bills'/);assert.match(page,/Bill settlement consequences/);assert.match(page,/billPreview.settlement.summary/);
 });
 
 test('the engine commits a monthly habit once, records it across reload and leaves next month optional',()=>{

@@ -2,7 +2,7 @@
 import {useEffect,useRef} from 'react';
 import type {Game,Player} from '@/lib/game';
 import {worldPlaceName,regionDefinitions} from '@/lib/world-life';
-import {personProfile,personReply,type PersonSceneInput,type PersonReply} from '@/lib/person-response';
+import {personProfile,personReply,personCareerNotices,type PersonSceneInput,type PersonReply} from '@/lib/person-response';
 import {motivePortrait} from '@/lib/motive-portraits';
 import type {MotiveReceipt} from '@/lib/character-motives';
 import CharacterPortrait from './character-portrait';
@@ -11,7 +11,7 @@ import GamePainting from './game-painting';
 /** The portrait is a portrait, not a claim that its painted background is the
  * present venue. The separate setting strip always follows the current room. */
 export function PersonResponseStage({name,spot,companionName,...input}:PersonSceneInput&{name:string;spot:string;companionName?:string}){
- const reply=personReply(input),profile=personProfile(input.actorId),region=regionDefinitions[input.p.world?.region||'alder'];
+ const notices=personCareerNotices(input),reply=personReply(input),profile=personProfile(input.actorId),region=regionDefinitions[input.p.world?.region||'alder'];
  const currentReceipt=!input.pending&&!input.error&&!input.p.castRedacted?input.receipt:null;
  const confirmedId=currentReceipt?[input.g.code,input.p.id,currentReceipt.id??currentReceipt.actionId??currentReceipt.title,currentReceipt.week??input.g.round,currentReceipt.familiarity?.count??''].join('|'):'',animated=useRef(new Set<string>()),stage=useRef<HTMLDivElement>(null);
  useEffect(()=>{
@@ -31,7 +31,7 @@ export function PersonResponseStage({name,spot,companionName,...input}:PersonSce
   <div className="person-setting"><GamePainting src={`/paintings/world/${region.id}.webp`} alt=""/><div><span>{input.remote?'YOUR END OF THE CONVERSATION':'HERE TOGETHER'}</span><strong>{worldPlaceName(input.p,spot,input.g)}</strong><small>{region.name}{input.remote?' · Correspondence; their location is not shown':''}</small></div></div>
   <div className="person-exchange">
    <div className="person-face">{moodImage?<GamePainting className="person-scene-portrait" src={moodImage.src} alt={moodImage.alt} fallback={`/paintings/character-portraits/${input.actorId}.webp`} priority/>:<CharacterPortrait id={input.actorId} name={name} className="person-scene-portrait" expression={reply.expression} priority/>}<span className="person-face-name">{name}</span></div>
-   <div className="person-response" role="status" aria-live="polite" aria-atomic="true"><small>{input.remote?`${name}’s message`:name}</small>{reply.speech?<p className="person-speech">“{reply.speech}”</p>:<p className="person-speech person-silent" aria-label={input.pending?'Awaiting confirmation':input.error?'Conversation paused':'Listening while you decide'}><span aria-hidden="true">···</span></p>}<p className="person-acting">{reply.activity}</p>{reply.continuation&&<p className="person-continuation">“{reply.continuation}”</p>}</div>
+   <div className="person-response" role="status" aria-live="polite" aria-atomic="true"><small>{input.remote?`${name}’s message`:name}</small>{reply.speech?<p className="person-speech">“{reply.speech}”</p>:<p className="person-speech person-silent" aria-label={input.pending?'Awaiting confirmation':input.error?'Conversation paused':'Listening while you decide'}><span aria-hidden="true">···</span></p>}<p className="person-acting">{reply.activity}</p>{reply.continuation&&<p className={'person-continuation'+(notices.length?' person-career-notice':'')} data-career-notice={notices.length?notices.map(n=>n.kind).join(' '):undefined}>{notices.length>0&&<small>{notices.some(n=>n.kind==='reference')?'Workplace reference':'Work lead'} · {[...new Set(notices.map(n=>n.employer+', '+n.regionName))].join(' · ')}</small>}“{reply.continuation}”</p>}</div>
   </div>
   <div className="person-scene-floor"><PersonAction reply={reply} remote={!!input.remote}/><p><span>{profile.appearance}</span>{companionName&&<span className="person-companion">With {companionName} nearby.</span>}<span className="person-emotion">{emotionDescription[reply.emotion]}</span></p></div>
  </section>;

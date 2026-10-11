@@ -1,4 +1,5 @@
 import type {Game,Player} from './game.ts';
+import type {CareerNotice} from './careers.ts';
 import type {PortraitExpression} from './portrait-expression.ts';
 import {scenePortraitExpression} from './portrait-expression.ts';
 import {characterVoices} from './character-voice.ts';
@@ -11,13 +12,25 @@ import {personFamiliarityLines,personSceneProfiles,type PersonSceneProfile} from
 export type PersonEmotion='attentive'|'warm'|'concerned'|'hurt'|'relieved'|'firm'|'sad'|'proud'|'tired'|'shy';
 export type PersonGesture='listen'|'offer'|'pause'|'point'|'withdraw'|'wave';
 export type PersonReply={speech:string;activity:string;emotion:PersonEmotion;gesture:PersonGesture;expression:PortraitExpression;continuation?:string;prop:PersonSceneProfile['prop']|'crate'|'poster'|'keys'|'motor'};
-export type ResponseReceipt={title:string;body:string;outcome?:string;actionId?:string;emotion?:string;familiarity?:FamiliarityView;response?:string|{speakerId:string;speech:string;activity:string;emotion:PersonEmotion;gesture:PersonGesture};id?:string;week?:number};
+export type CapturedCareerNotice=CareerNotice&{playerId:string};
+export type ResponseReceipt={careerNotices?:CapturedCareerNotice[];title:string;body:string;outcome?:string;actionId?:string;emotion?:string;familiarity?:FamiliarityView;response?:string|{speakerId:string;speech:string;activity:string;emotion:PersonEmotion;gesture:PersonGesture};id?:string;week?:number};
 export type ResponseChoice={id:string;actionId:string;title:string;available:boolean;reason:string};
 export type PersonSceneInput={g:Game;p:Player;actorId:string;remote?:boolean;sceneId?:string;known?:boolean;settled?:boolean;available?:boolean;preview?:ResponseChoice|null;pending?:boolean;error?:string;receipt?:ResponseReceipt|null};
 const fallback:PersonSceneProfile={appearance:'A familiar face in everyday clothes.',activity:'Pauses to hear you.',greeting:'Hello. What did you want to talk about?',familiar:'Good to see you again.',farewell:'Take care.',prop:'none'};
 export const personProfile=(id:string)=>personSceneProfiles[id]??fallback;
-/** Freeze the successful encounter count with its receipt, not with a later poll. */
-export function capturePersonReceipt<T extends ResponseReceipt>(receipt:T,p:Player,actorId:string):T&{familiarity:FamiliarityView}{return{...receipt,familiarity:familiarityView(p,{actorId})};}
+function receiptActionId(receipt:ResponseReceipt){const source=receipt as ResponseReceipt&{sceneId?:string;choiceId?:string};return source.actionId||(source.sceneId&&source.choiceId?`story:${source.sceneId}:${source.choiceId}`:source.choiceId?`world:${source.choiceId}`:source.id);}
+function careerNoticeAllowed(p:Player,actorId:string,receipt:ResponseReceipt){return !p.castRedacted&&p.career?.version===1&&!p.cast?.bonds[actorId]?.conflict&&!p.motives?.bonds[actorId]?.strained&&receipt.response!=='refusal'&&receipt.response!=='boundary'&&!(typeof receipt.response==='object'&&['firm','hurt'].includes(receipt.response.emotion));}
+/** Freeze the successful encounter count and exact work notices, not a later poll. */
+export function capturePersonReceipt<T extends ResponseReceipt>(receipt:T,p:Player,actorId:string):T&{familiarity:FamiliarityView;careerNotices?:CapturedCareerNotice[]}{
+ const actionId=receiptActionId(receipt),notices=careerNoticeAllowed(p,actorId,receipt)?p.career?.notices?.filter(n=>n.actionId===actionId&&n.actorId===actorId&&n.round===receipt.week)??[]:[];
+ return{...receipt,familiarity:familiarityView(p,{actorId}),careerNotices:notices.length?notices.map(notice=>({...notice,playerId:p.id})):undefined};
+}
+/** Only the notice frozen with this confirmed speaker/action may continue the reply. */
+export function personCareerNotices(input:PersonSceneInput){
+ const {g,p,actorId,receipt,pending,error}=input;
+ if(!receipt||g.careerVersion!==1||pending||error||!careerNoticeAllowed(p,actorId,receipt))return [];
+ return (receipt.careerNotices??[]).filter(notice=>notice.playerId===p.id&&notice.actorId===actorId&&notice.round===g.round&&notice.round===receipt.week&&notice.actionId===receiptActionId(receipt));
+}
 export function personFamiliarityLine(actorId:string,history:FamiliarityView){
  const profile=personProfile(actorId),lines=personFamiliarityLines[actorId];
  if(!history.tracked||history.count<2||!lines)return '';
@@ -125,6 +138,7 @@ export function personReply(input:PersonSceneInput):PersonReply{
  if(receipt&&!pending&&!error&&!p.castRedacted){const result=receiptReply(input,profile);let continuation=personFamiliarityLine(actorId,familiarity);
   if(continuation&&['firm','hurt'].includes(result.emotion)&&!child)continuation=['I am keeping that limit.','That answer has not changed.','Familiar does not mean available.','I can still say no.'][familiarity.lastVariant%4];
   if(continuation===result.speech)continuation=profile.greeting!==result.speech?profile.greeting:personFamiliarityLines[actorId]?.habit[0]??'';
+  const notices=personCareerNotices(input);if(notices.length)continuation=[...new Set(notices.map(notice=>notice.speech))].join(' ');
   if(continuation)result.continuation=continuation;
   return remote?{...result,activity:'A reply arrives through your existing correspondence.'}:result;
  }

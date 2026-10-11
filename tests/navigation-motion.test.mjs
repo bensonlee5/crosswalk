@@ -11,5 +11,5 @@ test('venue arrival motion is short, reduced-motion safe, and loaded after prese
 });
 test('neighborhood preview keeps payment and energy requirement clear without foregrounding gains',()=>{
  const source=readFileSync(new URL('../app/game-screen.tsx',import.meta.url),'utf8');
- assert.ok(source.includes('<p>{economyTimeLabel(g,2)} · +{money(opportunity(g).earn)} · Takes some effort</p>'));
+ assert.match(source,/economyTimeLabel\(g,-boardOpportunity.hours\)/);assert.match(source,/money\(boardOpportunity.cash\)/);assert.match(source,/Pay details are private/);assert.match(source,/Takes some effort/);
 });

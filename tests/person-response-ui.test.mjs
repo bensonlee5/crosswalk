@@ -10,6 +10,7 @@ import {getStoryView} from '../lib/story-arcs.ts';
 import {regionDefinitions,worldPlaceIds,worldView,worldPlaceName} from '../lib/world-life.ts';
 import {personSceneProfiles} from '../lib/person-scene-profiles.ts';
 import {canonicalCharacterById} from '../lib/character-canon.ts';
+import {capturePersonReceipt} from '../lib/person-response.ts';
 
 // Exercise the actual TSX modules with the same small SSR loader as cast-ui.
 // No browser, network, real animation clock, build or full-suite invocation.
@@ -365,5 +366,17 @@ test('shared host work remains visible beside resident conversations and confirm
  const order=deck.props.choices.find(c=>c.actionId.includes(':order'));assert.ok(order&&order.available);deck.props.onCommit(order);
  for(let i=0;i<8;i++){await Promise.resolve();h.render();}
  const stage=find(h.result,n=>n.props?.actorId==='alder_tess'&&n.props?.receipt)[0];assert.ok(stage);assert.equal(calls,1);assert.equal(stage.props.receipt.actionId,order.actionId);assert.equal(stage.props.receipt.response.speakerId,'alder_tess');assert.equal(stage.props.receipt.familiarity.count,1);assert.doesNotMatch(stage.props.receipt.response.speech,/undefined/);
+ h.unmount();
+});
+
+test('a captured work lead is an immediate private continuation and never adds another animation on polls',()=>{
+ const {g,p}=fixture();const actionId='cast:1:jo:help',speech='Ask about the supervised opening at Foundry. The application remains your choice.';
+ g.careerVersion=1;p.career={version:1,revision:0,experience:{},training:{},leads:{},offers:{},contracts:[],receipts:[],colleagues:{},milestones:[],notices:[{id:actionId+':lead',actionId,actorId:'jo',round:g.round,kind:'lead',leadId:'jo-practical',region:'alder',place:'MAKERSPACE',employer:'Foundry',regionName:'Alder Quay',speech}]};
+ const receipt=capturePersonReceipt({id:actionId,actionId,week:g.round,title:'One handover',body:'Confirmed.',response:{speakerId:'jo',speech:'One checked edge.',activity:'Puts down the ruler.',emotion:'warm',gesture:'offer'}},p,'jo');let animations=0;
+ const target={animate(){animations++;return{cancel(){}};}};const props={g,p,actorId:'jo',name:'Jo',spot:'COMMUNITY',receipt};
+ const h=harness(m=>m('person-response').PersonResponseStage,props,{window:{matchMedia:()=>({matches:false})},attach:tree=>{tree.props.ref.current={querySelector:()=>target};}});
+ let tree=h.render(),html=renderToStaticMarkup(tree);assert.match(html,/data-career-notice="lead"/);assert.ok(html.includes(speech));assert.match(html,/Work lead.*Foundry, Alder Quay/);assert.equal(animations,1);
+ h.render({receipt:structuredClone(receipt)});h.render({p:structuredClone(p)});assert.equal(animations,1);
+ for(const state of [{pending:true},{pending:false,error:'Not confirmed'},{error:undefined,p:{...p,castRedacted:true}},{p,g:{...g,round:g.round+1}},{g,p,receipt:{...receipt,response:'refusal'}}]){tree=h.render(state);html=renderToStaticMarkup(tree);assert.doesNotMatch(html,/person-career-notice|Ask about the supervised opening/);}
  h.unmount();
 });

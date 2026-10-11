@@ -1,5 +1,5 @@
 /** Local storage holds only retry intentions, never authoritative game snapshots or seat secrets. */
-export type SaveRequest={op:'create'|'join'|'start'|'move';requestId:string;ownerSession?:string;code?:string;version?:number;mode?:string;names?:string[];name?:string;action?:string;destination?:string};
+export type SaveRequest={op:'create'|'join'|'start'|'move';requestId:string;ownerSession?:string;code?:string;version?:number;mode?:string;names?:string[];name?:string;action?:string;destination?:string;careerMode?:'venue';actionIncidents?:boolean;supportedRules?:string[]};
 export type PendingSave={request:SaveRequest;createdAt:number;deferred?:boolean};
 export type SavedRoom={code:string;mode:string;status:string;round:number;maxRounds:number;version:number;updatedAt:number;names:string[]};
 type StorageLike=Pick<Storage,'getItem'|'setItem'|'removeItem'|'key'|'length'>;
@@ -17,7 +17,7 @@ export function pendingSaves(storage:StorageLike):PendingSave[]{
     if(!r||!['create','join','start','move'].includes(r.op)||typeof r.requestId!=='string'||!r.requestId.length||r.requestId.length>80||key!==prefix+r.requestId||!Number.isFinite(value.createdAt))continue;
     if(r.op!=='create'&&(typeof r.code!=='string'||!/^[A-Z0-9]{6}$/.test(r.code)))continue;
     // Only known request fields are used. The server still validates every field.
-    result.push({createdAt:value.createdAt,...(value.deferred===true?{deferred:true}:{}),request:{op:r.op,requestId:r.requestId,ownerSession:r.ownerSession,code:r.code,version:r.version,mode:r.mode,names:r.names,name:r.name,action:r.action,destination:r.destination}});
+    result.push({createdAt:value.createdAt,...(value.deferred===true?{deferred:true}:{}),request:{op:r.op,requestId:r.requestId,ownerSession:r.ownerSession,code:r.code,version:r.version,mode:r.mode,names:r.names,name:r.name,action:r.action,destination:r.destination,...(r.careerMode==='venue'?{careerMode:'venue' as const}:{}),...(r.actionIncidents!==undefined?{actionIncidents:r.actionIncidents}:{}),...(r.supportedRules!==undefined?{supportedRules:r.supportedRules}:{})}});
    }catch{}
   }
   return result.sort((a,b)=>b.createdAt-a.createdAt).slice(0,20);
