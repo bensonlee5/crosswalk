@@ -178,12 +178,12 @@ test('client/server and serialized new-save continuations remain deterministic, 
 });
 
 
-test('81 frozen-baseline states retain every byte apart from reviewed venue labels and descriptive prose',async()=>{
+test('81 frozen-baseline states retain mechanics and receipts apart from reviewed labels, prose and prospective familiarity',async()=>{
  const fixtures=JSON.parse(readFileSync(new URL('./support/motive-legacy-hashes.json',import.meta.url),'utf8'));
  assert.equal(fixtures.sourceCommit,'4216605a69c95ce18048e6fc1fc7d105fc174a60');
  for(const {seed,edition,sha256}of fixtures.campaigns){
   const states=await motiveLegacyCampaign(new URL('../lib/',import.meta.url),seed,edition);
-  assert.deepEqual(states.map(s=>createHash('sha256').update(historicalVenueLabels(historicalDescriptiveCopy(s))).digest('hex')),sha256,`${edition} seed ${seed}`);
+  assert.deepEqual(states.map(s=>{const state=JSON.parse(s);for(const p of state.players)delete p.familiarity;return createHash('sha256').update(historicalVenueLabels(historicalDescriptiveCopy(JSON.stringify(state)))).digest('hex');}),sha256,`${edition} seed ${seed}`);
  }
 });
 

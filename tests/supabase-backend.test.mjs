@@ -381,3 +381,18 @@ test('authoritative motive exchanges persist once, ignore forged flags and redac
  assert.ok(!JSON.stringify(other).includes(applied.body.players[0].motives.receipts[0].outcome));
  const reload=(await call(0,null,`?code=${room.code}`)).body;assert.deepEqual(reload.players[0].motives,applied.body.players[0].motives);
 });
+
+test('shared commitments use real PostgreSQL ownership, private responses and durable exactly-once receipts',async()=>{
+ const {sharedChoices}=await import('../supabase/functions/_shared/engine/shared-opportunities.ts');
+ let room=(await create(0,'online')).body;room=(await join(1,room.code)).body;room=(await post(0,{op:'start',code:room.code,version:room.version})).body;
+ room=(await move(0,room,'visit','shared-cafe','CORNER CAFÉ')).body;
+ const c=sharedChoices(room,room.players[0]).find(c=>c.key==='order');const ordered=await move(0,room,c.actionId,'shared-order');assert.equal(ordered.status,200);room=ordered.body;
+ const order=room.sharedOpportunities.orders.find(o=>o.owner.id===room.players[0].id);assert.ok(order);const speech=room.players[0].sharedPersonal.receipts.at(-1).response.speech;
+ const guest=(await call(1,null,`?code=${room.code}`)).body;assert.equal(guest.players[0].sharedPersonal,undefined);assert.equal(guest.players[0].familiarity,undefined);assert.ok(!JSON.stringify(guest).includes(speech));assert.ok(guest.sharedOpportunities.events.some(e=>e.actor.id===room.players[0].id));
+ room=(await move(0,room,'end','shared-host-end')).body;room=(await move(1,room,'visit','shared-guest-cafe','CORNER CAFÉ')).body;
+ const prep=sharedChoices(room,room.players[1]).find(c=>c.key==='prepare:'+order.id),before=room.players[1].cash;
+ assert.equal((await move(0,room,prep.actionId,'wrong-shared-seat')).status,403);
+ const submitted=room,done=await move(1,room,prep.actionId,'shared-prepare');assert.equal(done.status,200);assert.equal(done.body.players[1].cash,before+154);assert.equal(done.body.sharedOpportunities.orders.find(o=>o.id===order.id).status,'ready');
+ const retry=await move(1,submitted,prep.actionId,'shared-prepare');assert.equal(retry.status,200);assert.equal(retry.body.players[1].cash,before+154);assert.equal(retry.body.players[1].sharedPersonal.receipts.length,1);assert.equal(retry.body.players[1].familiarity.actions['shared:alder:prepare'].count,1);
+ const cancelled=await move(1,done.body,`world:shared:${done.body.round}:${done.body.sharedOpportunities.revision}:alder:cancel:${order.id}`,'steal-cancel');assert.equal(cancelled.status,400);assert.equal((await store.read(users[1],room.code)).state.sharedOpportunities.orders.find(o=>o.id===order.id).status,'ready');
+});

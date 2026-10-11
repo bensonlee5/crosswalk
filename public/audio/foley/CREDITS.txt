@@ -1,0 +1,42 @@
+CROSSWALK ACTION FOLEY — SOURCE CREDITS
+
+These eight recordings are published by their creators under CC0 1.0 Universal.
+https://creativecommons.org/publicdomain/zero/1.0/
+Attribution is not a condition of CC0; these credits are retained for provenance.
+The sources do not endorse Crosswalk.
+
+Edits: short excerpts where needed, mono downmix, 44.1 kHz PCM16 conversion, gentle 60 Hz high-pass, DC removal, short fades, and peak normalization to -12 dBFS.
+
+Important QA limitation: no audio listening occurred in the asset preparation environment. Numerical decoding, peak/clipping, waveform, source-description and license checks were completed.
+
+sip.wav
+Soda Can Sip by JumboSizedFish (https://freesound.org/people/JumboSizedFish/sounds/701531/) — CC0 1.0. Edited for Crosswalk.
+Source excerpt: 0.000–0.813 seconds. Output: 0.813 seconds.
+
+page-turn.wav
+Book Flip Sounds (BookFlip1.wav) by Voltiment555 (https://opengameart.org/content/book-flip-sounds) — CC0 1.0. Edited for Crosswalk.
+Source excerpt: 0.000–0.982 seconds. Output: 0.982 seconds.
+
+cook.wav
+Sausage in oily frying pan sizzling.wav by pooky1 (https://freesound.org/people/pooky1/sounds/432151/) — CC0 1.0. Edited for Crosswalk.
+Source excerpt: 3.150–4.550 seconds. Output: 1.400 seconds.
+
+repair.wav
+Tools Ratchet.wav by CapsLok (https://freesound.org/people/CapsLok/sounds/181634/) — CC0 1.0. Edited for Crosswalk.
+Source excerpt: 0.000–0.800 seconds. Output: 0.800 seconds.
+
+footsteps.wav
+Footsteps - quiet.wav by jodybruchon (https://freesound.org/people/jodybruchon/sounds/433884/) — CC0 1.0. Edited for Crosswalk.
+Source excerpt: 3.150–5.900 seconds. Output: 2.750 seconds.
+
+water.wav
+Watering Sound by Nokta (https://freesound.org/people/Nokta/sounds/625061/) — CC0 1.0. Edited for Crosswalk.
+Source excerpt: 2.200–3.700 seconds. Output: 1.500 seconds.
+
+write.wav
+Pencil writing.wav by bdunis4 (https://freesound.org/people/bdunis4/sounds/271469/) — CC0 1.0. Edited for Crosswalk.
+Source excerpt: 0.480–1.960 seconds. Output: 1.480 seconds.
+
+coin.wav
+Coin Clink Free by AardsReal (https://freesound.org/people/AardsReal/sounds/842172/) — CC0 1.0. Edited for Crosswalk.
+Source excerpt: 0.000–0.390 seconds. Output: 0.390 seconds.

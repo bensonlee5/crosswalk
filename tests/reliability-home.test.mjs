@@ -44,7 +44,7 @@ function harness({cookie='',saved='',query='',local=null,storageBlocked=false,in
 
 
  const exports={};const mod={exports};
- vm.runInNewContext(pageJs,{exports,module:mod,require:id=>id==='react'?react:id==='@/lib/game-api'?{gameFetch:fetcher,getOwnerSession,subscribeOwnerSession:listener=>{record.identityListener=listener;listener(owner());return()=>{record.identityListener=null;};}}:id==='@/lib/asset-url'?{assetUrl:path=>path}:id==='./life-story'?{LifeEnding:'LifeEnding'}:id==='./sound-controls'?{useGameSound:()=>({unlock:async()=>true,play:s=>sounds.push(s)}),SoundSettings:'SoundSettings'}:id.startsWith('@/lib/')?require(root+'/'+id.slice(2)+'.ts'):id==='react/jsx-runtime'?require(id):id.startsWith('./')?{default:id.slice(2).replace(/(^|-)(.)/g,(_,a,b)=>b.toUpperCase())}:new Proxy({},{get:(_,p)=>String(p)}),fetch:fetcher,localStorage:locals,sessionStorage:sessions,window,document,location:{search:query,pathname:'/',origin:'https://test.invalid'},history:{replaceState(){}},requestAnimationFrame:fn=>fn(),setTimeout:(fn,delay=0)=>{const key=++id;timeouts.set(key,{fn,at:now+delay});return key;},clearTimeout:key=>timeouts.delete(key),setInterval:fn=>{const key=++id;intervals.set(key,fn);return key;},clearInterval:key=>intervals.delete(key),Date:{now:()=>now},URLSearchParams,Intl,crypto,AbortController,TypeError,console});
+ vm.runInNewContext(pageJs,{exports,module:mod,require:id=>id==='react'?react:id==='@/lib/game-api'?{gameFetch:fetcher,getOwnerSession,subscribeOwnerSession:listener=>{record.identityListener=listener;listener(owner());return()=>{record.identityListener=null;};}}:id==='@/lib/asset-url'?{assetUrl:path=>path}:id==='./life-story'?{LifeEnding:'LifeEnding'}:id==='./sound-controls'?{useGameSound:()=>({unlock:async()=>true,play:s=>sounds.push(s),capture:()=>0,stopEffects:()=>{}}),SoundSettings:'SoundSettings'}:id.startsWith('@/lib/')?require(root+'/'+id.slice(2)+'.ts'):id==='react/jsx-runtime'?require(id):id.startsWith('./')?{default:id.slice(2).replace(/(^|-)(.)/g,(_,a,b)=>b.toUpperCase())}:new Proxy({},{get:(_,p)=>String(p)}),fetch:fetcher,localStorage:locals,sessionStorage:sessions,window,document,location:{search:query,pathname:'/',origin:'https://test.invalid'},history:{replaceState(){}},requestAnimationFrame:fn=>fn(),setTimeout:(fn,delay=0)=>{const key=++id;timeouts.set(key,{fn,at:now+delay});return key;},clearTimeout:key=>timeouts.delete(key),setInterval:fn=>{const key=++id;intervals.set(key,fn);return key;},clearInterval:key=>intervals.delete(key),Date:{now:()=>now},URLSearchParams,Intl,crypto,AbortController,TypeError,console});
  function render(){for(let n=0;n<15;n++){dirty=false;cursor=0;effects=[];tree=mod.exports.default();effects.splice(0).forEach(f=>f());if(!dirty)return tree;}throw Error('render loop');}
  async function settle(){await Promise.allSettled([...record.pending]);for(let n=0;n<10;n++){await new Promise(r=>setImmediate(r));if(dirty)render();}return tree;}
  function tick(ms=500){now+=ms;for(const [key,t]of timeouts)if(t.at<=now){timeouts.delete(key);t.fn();}if(dirty)render();}
@@ -85,7 +85,7 @@ for(const count of [1,2,3,4]){
  await h.component('GameScreen').props.onVisit('WORK');await h.settle();h.tick();const one=h.component('GameScreen').props.onAction('work_short');const rapid=h.component('GameScreen').props.onAction('work_short');await Promise.all([one,rapid]);await h.settle();h.tick();assert.equal(h.component('GameScreen').props.g.players[0].hours,5,'rapid duplicate prevented');
  for(let i=0;i<4;i++){await h.component('GameScreen').props.onAction('work_short');await h.settle();h.tick();}
  const capped=structuredClone(h.component('GameScreen').props.g);assert.equal(capped.players[0].hours,1);assert.equal(capped.players[0].economyWork.paidHours,200);await h.component('GameScreen').props.onAction('work_short');await h.settle();h.tick();assert.deepEqual(h.component('GameScreen').props.g,capped,'monthly paid-hour cap blocks sixth short shift without mutation');await h.component('GameScreen').props.onVisit('THE PARK');await h.settle();h.tick();await h.component('GameScreen').props.onAction('rest');await h.settle();h.tick();
- const before=structuredClone(h.component('GameScreen').props.g);assert.equal(before.players[0].hours,0);assert.ok(h.sounds.includes('tick'));assert.ok(h.sounds.includes('timeUp'));
+ const before=structuredClone(h.component('GameScreen').props.g);assert.equal(before.players[0].hours,0);assert.ok(h.sounds.includes('tick'));assert.equal(h.sounds.at(-1),'footsteps','clock does not cover the last-block walking recording');
  await h.component('GameScreen').props.onAction('rest');await h.settle();h.tick();assert.deepEqual(h.component('GameScreen').props.g,before);assert.ok(h.find(n=>n.props?.role==='alert').length);
  results.push({case:'all 15 destinations, free travel, repeat and zero time',passed:true});h.dispose();
 }
@@ -139,6 +139,7 @@ for(const interruption of ['before','after']){
  await h.component('GameScreen').props.onAction('home_reset');await h.settle();h.tick();h.render();
  assert.equal(h.component('GameScreen').props.g.players[0].hours,6,'an uncertain action is never optimistically committed');
  assert.equal(h.component('GameScreen').props.busy,true,'unconfirmed action pauses controls');
+ assert.deepEqual(h.sounds,['start'],'uncertain save does not emit action or error effects');
  const original=h.calls.filter(c=>c.opts.method==='POST').at(-1).opts.body;
  assert.equal(h.locals.length,2,'room pointer plus exact pending request are persisted');
  const callCount=h.calls.length;await h.component('GameScreen').props.onAction('home_reset');h.poll();await h.settle();assert.equal(h.calls.length,callCount,'new actions and polls do not overtake unresolved intent');
@@ -148,6 +149,7 @@ for(const interruption of ['before','after']){
  assert.equal(reload.component('GameScreen').props.g.version,1);
  assert.deepEqual(JSON.parse(reload.calls.find(c=>c.opts.method==='POST').opts.body),JSON.parse(original),'same owner, request ID and version survive reload');
  assert.equal(reload.locals.length,1,'only confirmed intent is removed');
+ assert.deepEqual(reload.sounds,[],'recovered actions never replay sound');
  assert.equal(reload.component('GameScreen').props.busy,false);
  results.push({case:'POST lost '+interruption+' commit resumes exact request after reload',passed:true});reload.dispose();
 }
@@ -216,12 +218,14 @@ for(const finished of [false,true]){
  const h=harness();await h.click('Start our game');const release=h.hold();const moving=h.component('GameScreen').props.onAction('home_reset');await waitUntilHeld(h);
  h.record.cookie='cw_guest='+'d'.repeat(64);h.record.identityListener('guest-'+h.record.cookie.slice(-16));h.render();await h.settle();release();await moving;await h.settle();h.tick();
  assert.equal(h.component('GameScreen'),undefined,'late previous-owner response cannot reopen game');assert.equal(h.find(n=>n.props?.className==='saved-room').length,0,'late previous-owner response cannot repopulate history');
+ assert.deepEqual(h.sounds,['start'],'late other-owner response is silent');
  results.push({case:'identity transition invalidates in-flight previous-owner save response',passed:true});h.dispose();
 }
 {
  const h=harness();await h.click('Start our game');const release=h.hold();const moving=h.component('GameScreen').props.onAction('home_reset');await waitUntilHeld(h);
  h.record.cookie='';h.record.identityListener(null);h.render();await h.settle();release();await moving;await h.settle();h.tick();
  assert.equal(h.component('GameScreen'),undefined,'late signed-out response cannot reopen game');assert.equal(h.find(n=>n.props?.className==='saved-room').length,0,'late signed-out response cannot reveal previous history');
+ assert.deepEqual(h.sounds,['start'],'late signed-out response is silent');
  results.push({case:'signout invalidates in-flight previous-owner save response',passed:true});h.dispose();
 }
 {
@@ -257,6 +261,60 @@ for(const finished of [false,true]){
   assert.match(check({rules:true}),/Rest|rest|Weather/);const bills=check({review:true});assert.match(bills,/\$/);assert.match(bills,/weigh on your spirits/);if(edition!=='modern'){const ending=check({status:'finished'});assert.match(ending,/lives we made/);assert.match(ending,/Savings/);}
  }
  results.push({case:'actual Home rules, bill-review, overdraft and legacy endings keep qualitative stats with exact money',editions:3,passed:true});
+}
+
+// Semantic audio exercises the actual Home send/receive path, not a preview helper.
+{
+ const h=harness();await h.click('Start our game');h.sounds.length=0;
+ const first=h.component('GameScreen'),release=h.hold();
+ const saving=first.props.onAction('home_meal');await waitUntilHeld(h);
+ assert.deepEqual(h.sounds,[],'no optimistic cue while save is pending');
+ await first.props.onAction('home_meal');assert.deepEqual(h.sounds,[],'duplicate pending click is silent');
+ release();await saving;await h.settle();h.tick();
+ assert.deepEqual(h.sounds,['cook'],'one accepted physical action, one recorded cue');
+ await first.props.onAction('home_meal');await h.settle();h.tick();
+ assert.deepEqual(h.sounds,['cook'],'retained old callback cannot replay a cue');
+ h.poll();await h.settle();assert.deepEqual(h.sounds,['cook'],'polls do not replay actions');
+ await h.component('GameScreen').props.onVisit('CORNER CAFÉ');await h.settle();h.tick();h.sounds.length=0;
+ await h.component('GameScreen').props.onAction('cafe_break');await h.settle();h.tick();
+ assert.deepEqual(h.sounds,['sip'],'twenty-coffee monthly habit gets a single real sip');
+ await h.component('GameScreen').props.onAction('cafe_break');await h.settle();h.tick();
+ assert.deepEqual(h.sounds,['sip'],'denied repeat habit does not sound');
+ h.component('GameScreen').props.onEnd();h.render();
+ assert.deepEqual(h.sounds,['sip'],'opening an end-month preview is silent');
+ const review=h.find(n=>n.type==='AlertDialog'&&n.props.open===true)[0];review.props.onOpenChange(false);h.render();
+ assert.deepEqual(h.sounds,['sip'],'cancelling a preview is silent');
+ results.push({case:'semantic coffee/cooking only after authoritative confirmation; repeat, polling, preview and cancel stay quiet',passed:true});h.dispose();
+}
+for(const failure of ['before','after']){
+ const h=harness();await h.click('Start our game');h.sounds.length=0;h.record.failPost=failure;
+ await h.component('GameScreen').props.onAction('home_meal');await h.settle();h.tick();
+ assert.deepEqual(h.sounds,[]);h.record.failPost=null;await h.click('Check saved action');
+ assert.deepEqual(h.sounds,[],'explicit retry does not replay a recovered meal');
+ results.push({case:'recorded sound remains quiet for a save interrupted '+failure+' commit and recovered',passed:true});h.dispose();
+}
+{
+ const h=harness();await h.click('Start our game');h.sounds.length=0;
+ const release=h.hold(),saving=h.component('GameScreen').props.onAction('home_meal');await waitUntilHeld(h);
+ h.component('GameScreen').props.onHome();h.render();release();await saving;await h.settle();h.tick();
+ assert.deepEqual(h.sounds,[],'leaving a room invalidates its in-flight sound');
+ results.push({case:'late accepted meal after leaving room is silent',passed:true});h.dispose();
+}
+// Different devices: only the sending device sounds, even after the other polls.
+{
+ const host=harness();host.find(n=>n.props?.['aria-label']==='Play mode')[0].props.onValueChange('online');host.render();
+ host.find(n=>n.type==='input'&&n.props.placeholder==='Your first name or nickname')[0].props.onChange({target:{value:'Host'}});host.render();
+ await host.click('Create a room');const room=host.find(n=>n.props?.className==='room-code')[0];const code=host.text(room).trim();
+ const guest=harness({query:'?room='+code});await guest.settle();
+ guest.find(n=>n.type==='input'&&n.props.maxLength===20)[0].props.onChange({target:{value:'Guest'}});guest.render();
+ await guest.click('Join the room');host.poll();await host.settle();
+ await host.click('Start with 2 players');await host.click('Start the game');guest.poll();await guest.settle();
+ host.sounds.length=0;guest.sounds.length=0;
+ await host.component('GameScreen').props.onAction('home_meal');await host.settle();host.tick();guest.poll();await guest.settle();
+ assert.deepEqual(host.sounds,['cook']);assert.deepEqual(guest.sounds,[],'other-player polling stays silent');
+ await guest.component('GameScreen').props.onAction('home_meal');await guest.settle();guest.tick();
+ assert.deepEqual(guest.sounds,[],'out-of-turn denied action remains silent');
+ results.push({case:'online sender-only semantic audio; remote polling and denied turn are silent',passed:true});host.dispose();guest.dispose();
 }
 console.log(JSON.stringify(results.map(r=>Object.fromEntries(Object.entries(r).filter(([key])=>key!=='order'))),null,2));
 console.log('PASS: actual Home handlers, real API and memory D1; full 1–4-player campaigns, saved-game reload, free travel, clock cues, create/join/restore exclusion and interrupted transition recovery. Auth/history transport is a contract stub; mutations use the real API/SQLite double. No browser or production state.');

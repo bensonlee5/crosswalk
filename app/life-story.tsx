@@ -12,6 +12,12 @@ import {storyEnding} from '@/lib/story-arcs';
 import {economyMonthLabel,hasModernEconomy} from '@/lib/economy';
 import {castEnding} from '@/lib/character-cast';
 import {CastJournal} from './cast-story';
+import {PersonResponseStage} from './person-response';
+import {capturePersonReceipt} from '@/lib/person-response';
+import {lifeEventPersonResponse} from '@/lib/person-event-responses';
+import {canonicalCharacterById} from '@/lib/character-canon';
+import {actionReaction} from '@/lib/action-reactions';
+import {actionFamiliarityKey,familiarityView} from '@/lib/action-familiarity';
 
 // Display-only labels for the already-public earned IDs. Never evaluate current
 // qualifications against an observer's deliberately incomplete player view.
@@ -34,11 +40,37 @@ export function LifeJournal(props:LifeJournalProps){
 function PersonalLifeJournal({g,p,disabled,onAction}:LifeJournalProps){
  const progress=getLifeProgress(p,g),event=getLifeEvent(p,g),choices=lifeChoices(p,g),period=hasModernEconomy(g)?'month':'week';
  const mounted=useRef(true);useEffect(()=>{mounted.current=true;return()=>{mounted.current=false}},[]);
+ const [personResponse,setPersonResponse]=useState<{g:Game;p:Player;actorId:string;name:string;remote:boolean;receipt:{actionId:string;title:string;body:string;outcome:string}}|null>(null);
+ const currentContext=[g.code,p.id,g.round,p.world?.region||'alder'].join('|'),latestContext=useRef(currentContext);latestContext.current=currentContext;
+ useEffect(()=>{setMessage('');setPersonResponse(null);},[currentContext]);
  const lock=useRef(false),[pending,setPending]=useState(false),[message,setMessage]=useState('');
- async function choose(id:string){if(disabled||lock.current)return;lock.current=true;setPending(true);setMessage('');try{const result=await onAction(id);if(!mounted.current)return;setMessage(result?.code===g.code&&result.players?.some((q:Player)=>q.id===p.id)?'Your choice is part of your story.':'That choice wasn’t confirmed. Check your connection before trying again.');}catch{if(mounted.current)setMessage('That choice wasn’t confirmed. Please reconnect before trying again.');}finally{lock.current=false;if(mounted.current)setPending(false);}}
+ async function choose(id:string){
+  if(disabled||lock.current)return;
+  const before=structuredClone(p),context=currentContext,key=actionFamiliarityKey(id,p,g),prior=familiarityView(p,{actionKey:key}).count;
+  const actorId=id.startsWith('repair:')?id.slice(7):null;
+  const repair=actorId&&['mina','eli','jo'].includes(actorId)?repairChoice(p,g,actorId as 'mina'|'eli'|'jo'):null;
+  lock.current=true;setPending(true);setMessage('');setPersonResponse(null);
+  try{
+   const result=await onAction(id);if(!mounted.current||latestContext.current!==context)return;
+   const updated:Player|undefined=result?.code===g.code&&result.round===g.round?result.players?.find((q:Player)=>q.id===p.id):undefined;
+   const familiar=updated?familiarityView(updated,{actionKey:key}):null,count=familiar?.count||0;
+   if(!updated||count!==prior+1){setMessage('That choice wasn’t confirmed. Check your connection before trying again.');return;}
+   if(actorId&&repair&&canonicalCharacterById[actorId]){
+    const remote=!!p.world&&p.world.region!=='alder'||p.place!==({mina:'CORNER CAFÉ',eli:'GARDEN',jo:'MAKERSPACE'} as Record<string,string>)[actorId];
+    setPersonResponse({g:result,p:updated,actorId,name:canonicalCharacterById[actorId].name,remote,receipt:capturePersonReceipt({actionId:id,title:repair.title,body:repair.outcome,outcome:repair.outcome,week:result.round},updated,actorId)});
+   }else{
+    const eventReceipt=id.startsWith('event:')?updated.life?.receipts.find(r=>r.resolved?.choiceId===id.slice(6)):undefined;
+    const response=eventReceipt?lifeEventPersonResponse(eventReceipt,before):null;
+    if(response&&canonicalCharacterById[response.speakerId]&&eventReceipt?.resolved){const actorId=response.speakerId;setPersonResponse({g:result,p:updated,actorId,name:canonicalCharacterById[actorId].name,remote:true,receipt:capturePersonReceipt({actionId:id,title:eventReceipt.resolved.title,body:eventReceipt.body,outcome:eventReceipt.resolved.outcome,response,week:eventReceipt.week},updated,actorId)});}
+    else setMessage(actionReaction({actionId:id,count,lastVariant:familiar?.lastVariant})||'You pause over your decision before moving on.');
+   }
+  }catch{if(mounted.current&&latestContext.current===context)setMessage('That choice wasn’t confirmed. Please reconnect before trying again.');}
+  finally{lock.current=false;if(mounted.current&&latestContext.current===context)setPending(false);}
+ }
+
  return <div className="life-story">
  <section className="life-ambition"><small>THE LIFE YOU ARE BUILDING</small><h2>{progress.title}</h2><p className="life-caption">Current footing: {progress.currentTier}</p><p>{qualitativeText(progress.nextStep)}</p><div className="aspiration-grid">{aspirations.map(a=><button key={a.id} aria-pressed={progress.aspiration?.id===a.id} disabled={disabled||pending||!progress.canSelectAspiration} onClick={()=>void choose('aspire:'+a.id)}><strong>{a.title}</strong><span>{a.description}</span></button>)}</div><p className="life-caption">Choose a direction, not a guarantee. You can change direction once each {period}. {progress.selectionReason}</p></section>
- {message&&<p role="status" className="life-response">{message}</p>}
+ {message&&<p role="status" className="life-response">{message}</p>}{personResponse&&<div className="encounter-panel"><PersonResponseStage {...personResponse} spot={personResponse.p.place} known/></div>}
  {event&&<section className="life-incident"><small>{economyMonthLabel(g).toUpperCase()} · A TURN IN YOUR STORY</small><h2>{event.title}</h2><p>{qualitativeText(event.body)}</p><div className="life-impact">{qualitativeText(event.impact)}<small>{qualitativeText(lifeEffectText(event.effects).join(" · "))}</small></div>{event.pending&&choices.length>0?<><h3>What will you do?</h3><div className="life-options">{choices.map(c=><button key={c.id} disabled={disabled||pending||!c.available} onClick={()=>void choose('event:'+c.id)}><strong>{c.title}</strong><p>{qualitativeText(c.body)}</p><span>{qualitativeText(c.previewText.join(' · '))}</span>{!c.available&&<em>{qualitativeText(c.reason)}</em>}</button>)}</div><p className="life-caption">You can act elsewhere first. Ending the {period} without choosing uses the free, cautious response.</p></>:<p className="life-response">{qualitativeText(event.resolved?.outcome||'You have responded to this turn of events.')}</p>}</section>}
  {g.storyVersion===1&&<StoryTimeline g={g} p={p}/>}
  <CastJournal g={g} p={p}/>

@@ -1,14 +1,16 @@
 'use client';
+import {capturePersonReceipt} from '@/lib/person-response';
+import {sharedActorChoices,sharedActorReceipt} from './shared-encounter';
+import {useState} from 'react';
+import {PersonResponseStage,PersonSceneDetails,PersonReturn} from './person-response';
 import {qualitativeText} from '@/lib/point-presentation';
 import {CharacterMotives} from './character-motives';
-import CharacterPortrait from './character-portrait';
-import {scenePortraitExpression} from '@/lib/portrait-expression';
 import {CharacterHistory} from './character-history';
 import type {Game,Player} from '@/lib/game';
 import {economyMonthLabel} from '@/lib/economy';
 import {getStoryView} from '@/lib/story-arcs';
 import {relationshipViews} from '@/lib/life-events';
-import {worldView,worldPlaceName,type WorldChoiceView} from '@/lib/world-life';
+import {worldView,type WorldChoiceView} from '@/lib/world-life';
 import {worldChoiceEffects} from '@/lib/world-choice-presentation';
 import {ArcBeatStrip,StoryTimeline} from './story-timeline';
 import {StoryChoiceDeck,EncounterOutcome,useEncounterCommit,type EncounterChoice,type EncounterReceipt} from './story-choices';
@@ -32,12 +34,15 @@ function OriginalEncounterPanel({g,p,actorId,spot=p.place,disabled,onAction,onCl
  const name=resident?.name||person?.name||relationship?.name||(isNeri?'Neri':'A neighbor');
  const role=resident?.roles.join(' · ')||person?.role||relationship?.role||(isNeri?'Map restorer':'');
  const worldChoices=(world?.choices||[]).filter(c=>(!c.spot||c.spot===spot)&&(c.actorId===actorId||(!c.actorId&&(c.key==='talk:'+actorId||(isNeri&&c.kind==='relationship')))));
- const choices:EncounterChoice[]=scene?.status==='available'?scene.choices.map(c=>({...c,actionId:`story:${scene.id}:${c.id}`})):worldChoices.map(c=>worldEncounterChoice(c,p,g));
+ const choices:EncounterChoice[]=scene?.status==='available'?[...scene.choices.map(c=>({...c,actionId:`story:${scene.id}:${c.id}`})),...sharedActorChoices(g,p,actorId,spot)]:worldChoices.map(c=>worldEncounterChoice(c,p,g));
  const context=[g.code,p.id,g.round,p.world?.region||'alder',actorId,spot].join('|');
  const commit=useEncounterCommit({g,p,disabled,context,choices,onAction,findReceipt:(result,updated,choice)=>{
-  if(choice.actionId.startsWith('story:')){const r=getStoryView(result,updated).recap.find(r=>r.sceneId===scene?.id&&r.choiceId===choice.id);return r?{title:r.title,body:r.body,outcome:r.outcome,week:r.week}:null;}
-  const r=updated.world?.journal.find(r=>r.choiceId===choice.id);return r?{title:r.title,body:r.text,week:r.week}:null;
+  const shared=sharedActorReceipt(result,updated,choice,actorId);if(shared)return shared;
+  if(choice.actionId.startsWith('story:')){const r=getStoryView(result,updated).recap.find(r=>r.sceneId===scene?.id&&r.choiceId===choice.id);return r?capturePersonReceipt(r,updated,actorId):null;}
+  const r=updated.world?.journal.find(r=>r.choiceId===choice.id);return r?capturePersonReceipt({...r,body:r.text},updated,actorId):null;
  }});
+ const [previewState,setPreview]=useState<{context:string;choice:EncounterChoice}|null>(null);
+ const preview=previewState?.context===context?choices.find(c=>c.actionId===previewState.choice.actionId)??null:null;
  const remembered=story.recap.filter(r=>r.characterIds.some(id=>id===actorId)).sort((a,b)=>b.week-a.week)[0];
  const lastReceipt:EncounterReceipt|null=remembered?{title:remembered.title,body:remembered.body,outcome:remembered.outcome,week:remembered.week}:null;
  const currentBio=resident?.currentBio||(isNeri?neri?.dedicatedScene?.body:'')||'';
@@ -49,16 +54,19 @@ function OriginalEncounterPanel({g,p,actorId,spot=p.place,disabled,onAction,onCl
  const tieNames=tie?.id.split('-').map(id=>scene?.people.find(person=>person.id===id)?.name||id).join(' & ');
  const hasLiveScene=scene?.status==='available';
  return <div className="encounter-panel" data-actor={actorId}>
-  <header className="encounter-heading"><CharacterPortrait id={actorId} name={name} expression={scenePortraitExpression(actorId,scene,story.recap.find(r=>r.sceneId===scene?.id&&!r.automatic))}/><div><small className="encounter-eyebrow">{worldPlaceName(p,spot,g)} · {economyMonthLabel(g,g.round).toUpperCase()}</small><h2 id="encounter-title">{name}</h2><p>{role}</p>{(resident?.status||relationship?.status||isNeri)&&<span className="encounter-relationship">{resident?.status||relationship?.status||(isNeri?neri?.status:'')}</span>}</div></header>
+  <header className="encounter-heading person-heading"><div><small className="encounter-eyebrow">{economyMonthLabel(g,g.round).toUpperCase()} · {resident?.status||relationship?.status||(isNeri?neri?.status:'Here in the neighborhood')}</small><h2 id="encounter-title">{name}</h2><p>{role}</p></div></header>
+  <PersonResponseStage g={g} p={p} actorId={actorId} name={name} spot={spot} remote={isNeri&&p.world?.story?.neri.posting==='accepted'&&p.world.region!=='pelagia'} sceneId={scene?.id} known={!!history||!!lastReceipt} settled={!choices.length} available={choices.some(c=>c.available)} preview={preview} pending={commit.busy} error={commit.error} receipt={commit.receipt}/>
+  <EncounterOutcome g={g} receipt={commit.receipt||(!hasLiveScene&&!choices.some(c=>c.available)?lastReceipt||worldReceipt:null)} error={commit.error} compact/>
+  {!commit.receipt&&<StoryChoiceDeck g={g} place={spot} choices={choices} disabled={disabled} busy={commit.busy} onSelect={choice=>setPreview({context,choice})} conversational onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText="No new commitment. You can leave whenever you like."/>}
+  <PersonSceneDetails>
   {hasLiveScene&&scene?<section className="encounter-scene"><ArcBeatStrip beat={scene.beat}/><small className="encounter-eyebrow">{scene.people.map(r=>r.name).join(' · ')}</small><h3>{scene.title}</h3>{scene.body.map((text,i)=><p key={i}>{qualitativeText(text)}</p>)}</section>:<section className="encounter-scene"><h3>{isNeri?neri?.dedicatedScene?.title||'A little room for each other':resident?.talkedThisWeek?'A familiar face':'Pull up a chair'}</h3>{currentBio&&<p>{qualitativeText(currentBio)}</p>}{resident?.welcome&&<p className="encounter-callback">{qualitativeText(resident.welcome)}</p>}{!resident&&!isNeri&&!lastReceipt&&<p>{story.nextBeat||'There is no new conversation here just now. You can return to the venue whenever you like.'}</p>}</section>}
   <CharacterHistory g={g} p={p} actorId={actorId}/>
   {tie&&<p className="encounter-tie"><strong>{tieNames}</strong>{tie.status}</p>}
   {promise&&<p className="encounter-promise"><strong>What you promised</strong>{promise}</p>}
-  <EncounterOutcome g={g} receipt={commit.receipt||(!hasLiveScene&&!choices.some(c=>c.available)?lastReceipt||worldReceipt:null)} error={commit.error}/>
-  {!commit.receipt&&<StoryChoiceDeck g={g} place={spot} choices={choices} disabled={disabled} busy={commit.busy} onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText={story.nextBeat||'You have shared this chapter. Your history stays with you.'}/>}
   {history&&<details className="encounter-memory"><summary>What {name} remembers</summary><p>{qualitativeText(history)}</p>{resident?.independentPlan&&<p>{resident.independentPlan}</p>}</details>}
   <StoryTimeline g={g} p={p} actorId={actorId}/>
+  </PersonSceneDetails>
   <CharacterMotives g={g} p={p} actorId={actorId} spot={spot} disabled={disabled||commit.busy} onAction={onAction}/>
-  <button type="button" className="encounter-return" onClick={onClose}><span aria-hidden="true">←</span> Back to {worldPlaceName(p,spot,g)}</button>
+  <PersonReturn g={g} p={p} spot={spot} onClose={onClose}/>
  </div>;
 }

@@ -1,9 +1,12 @@
 /**
- * Crosswalk's tiny, original procedural score. No files, network, or dependencies.
+ * Crosswalk's original procedural score plus short, licensed action recordings.
  * Call unlock() in a real pointer/keyboard gesture; all other methods are safe
  * before that gesture, during SSR, and in browsers without Web Audio.
  */
-export type AudioEffect =
+import {assetUrl} from './asset-url.ts';
+import {FOLEY_FILES, isFoleyCue, type FoleyCue} from './foley.ts';
+
+export type AudioEffect = FoleyCue
   | 'travel' | 'work' | 'buy' | 'learn' | 'social' | 'rest' | 'craft'
   | 'success' | 'endWeek' | 'start' | 'finish' | 'error' | 'tick' | 'timeUp';
 
@@ -15,11 +18,16 @@ type Voice = {
   nodes: AudioNode[];
   bus: Bus;
   end: number;
+  foley?: boolean;
 };
 type SafariWindow = Window & { webkitAudioContext?: typeof AudioContext };
 const EPSILON = 0.0001;
 const MAX_VOICES = 56;
 const MAX_MUSIC_VOICES = 34;
+const MAX_FOLEY_VOICES = 2;
+const MAX_FOLEY_SECONDS = 6;
+const MAX_FOLEY_BYTES = 600_000;
+const FOLEY_MUSIC_DUCK = 0.3;
 const BPM = 84;
 const EIGHTH = 60 / BPM / 2;
 const SWING = 0.07;
@@ -66,6 +74,22 @@ export class CrosswalkAudio {
   private nextTime = 0;
   private lastEffect = -Infinity;
   private lastEffectName: AudioEffect | null = null;
+  private foleyBuffers = new Map<FoleyCue, AudioBuffer>();
+  private foleyLoads = new Map<FoleyCue, Promise<void>>();
+  private foleyRequests = new Set<AbortController>();
+  private foleyRetryAfter = new Map<FoleyCue, number>();
+  private effectsGeneration = 0;
+
+  /** Capture before an async action; mute, hide, interruption or leaving invalidates it. */
+  get effectToken(): number { return this.effectsGeneration; }
+  foleyStatus(cue: FoleyCue): 'ready' | 'loading' | 'unavailable' {
+    return this.foleyBuffers.has(cue) ? 'ready' : this.foleyLoads.has(cue) ? 'loading' : 'unavailable';
+  }
+  stopEffects(): void {
+    this.effectsGeneration++;
+    this.stopVoices('effects');
+  }
+
 
   get isDisposed(): boolean { return this.disposed; }
 
@@ -74,6 +98,8 @@ export class CrosswalkAudio {
     if (this.disposed || !this.isActive()) return Promise.resolve(false);
     if (!this.context && !this.createContext()) return Promise.resolve(false);
     this.gestureRequested = true;
+    // Loading is preparation only. Completion never plays a queued action.
+    void this.preloadFoley();
     return this.resume(true);
   }
 
@@ -91,7 +117,7 @@ export class CrosswalkAudio {
   setEffectsEnabled(enabled: boolean): void {
     this.effectsEnabled = enabled;
     this.updateGain('effects');
-    if (!enabled) this.stopVoices('effects', true);
+    if (!enabled) this.stopEffects();
   }
 
   setMusicVolume(volume: number): void {
@@ -106,7 +132,7 @@ export class CrosswalkAudio {
   setEffectsVolume(volume: number): void {
     this.effectsVolume = clamp(volume);
     this.updateGain('effects');
-    if (this.effectsVolume === 0) this.stopVoices('effects', true);
+    if (this.effectsVolume === 0) this.stopEffects();
   }
 
   /** Route unmounts or modal pauses here. Visibility is also handled internally. */
@@ -116,13 +142,14 @@ export class CrosswalkAudio {
   }
 
   /** Never queues an effect while locked, muted, hidden, or interrupted. */
-  play(effect: AudioEffect): void {
+  play(effect: AudioEffect, token = this.effectsGeneration): boolean {
     const ctx = this.context;
     if (!ctx || !this.unlocked || !this.isActive() || ctx.state !== 'running'
-      || !this.effectsEnabled || this.effectsVolume <= 0) return;
+      || !this.effectsEnabled || this.effectsVolume <= 0 || token !== this.effectsGeneration) return false;
+    if (isFoleyCue(effect)) return this.playFoley(effect);
     const now = ctx.currentTime;
     // Suppress accidental duplicate taps, but retain genuinely different cues.
-    if (effect === this.lastEffectName && now - this.lastEffect < 0.085) return;
+    if (effect === this.lastEffectName && now - this.lastEffect < 0.085) return false;
     this.lastEffect = now;
     this.lastEffectName = effect;
     const notes = (pitches: number[], gap = 0.09, duration = 0.22, timbre: Timbre = 'bell', level = 0.12) => {
@@ -161,11 +188,18 @@ export class CrosswalkAudio {
       case 'tick': notes([84, 84], 0.105, 0.048, 'pluck', 0.055); break;
       case 'timeUp': notes([79, 72], 0.21, 0.58, 'bell', 0.095); break;
     }
+    return true;
   }
 
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
+    this.effectsGeneration++;
+    for (const request of this.foleyRequests) request.abort();
+    this.foleyRequests.clear();
+    this.foleyLoads.clear();
+    this.foleyBuffers.clear();
+    this.foleyRetryAfter.clear();
     this.unlocked = false;
     this.stopScheduler();
     this.stopVoices();
@@ -183,6 +217,82 @@ export class CrosswalkAudio {
     this.effectsBus = null;
     this.output = null;
     this.noiseBuffer = null;
+  }
+
+  /** Best effort, bounded same-origin downloads. No network starts before unlock(). */
+  async preloadFoley(): Promise<void> {
+    const ctx = this.context;
+    if (!ctx || this.disposed || !this.gestureRequested || !this.effectsEnabled
+      || this.effectsVolume <= 0 || typeof fetch !== 'function') return;
+    await Promise.all((Object.keys(FOLEY_FILES) as FoleyCue[]).map(cue => {
+      if (this.foleyBuffers.has(cue)) return Promise.resolve();
+      const existing = this.foleyLoads.get(cue);
+      if (existing) return existing;
+      if ((this.foleyRetryAfter.get(cue) ?? 0) > Date.now()) return Promise.resolve();
+      const controller = new AbortController();
+      this.foleyRequests.add(controller);
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      const loading = Promise.resolve().then(async () => {
+        try {
+          const response = await fetch(assetUrl(FOLEY_FILES[cue]), { signal: controller.signal });
+          if (!response.ok) throw Error('Recording unavailable');
+          const bytes = await response.arrayBuffer();
+          if (bytes.byteLength === 0 || bytes.byteLength > MAX_FOLEY_BYTES) throw Error('Recording too large');
+          const buffer = await ctx.decodeAudioData(bytes);
+          if (!Number.isFinite(buffer.duration) || buffer.duration <= 0 || buffer.duration > MAX_FOLEY_SECONDS
+            || buffer.numberOfChannels > 2) throw Error('Invalid recording');
+          if (!this.disposed && this.context === ctx && !controller.signal.aborted) {
+            this.foleyBuffers.set(cue, buffer);
+            this.foleyRetryAfter.delete(cue);
+          }
+        } catch {
+          // A subsequent gesture may retry after a cooldown. Never synthesize a substitute.
+          if (!this.disposed) this.foleyRetryAfter.set(cue, Date.now() + 30_000);
+        } finally {
+          clearTimeout(timeout);
+          this.foleyRequests.delete(controller);
+          this.foleyLoads.delete(cue);
+        }
+      });
+      this.foleyLoads.set(cue, loading);
+      return loading;
+    }));
+  }
+
+  private playFoley(cue: FoleyCue): boolean {
+    const ctx = this.context!, buffer = this.foleyBuffers.get(cue);
+    // Deliberately do not await a load here: the next intentional action can use it.
+    if (!buffer || !this.canAdd('effects')) return false;
+    const playing = [...this.voices].filter(voice => voice.foley);
+    if (playing.length >= MAX_FOLEY_VOICES) {
+      const oldest = playing[0];
+      try { oldest.source.stop(); } catch { /* Already ended. */ }
+      this.cleanVoice(oldest);
+    }
+    let source: AudioBufferSourceNode | undefined;
+    let voice: Voice | undefined;
+    try {
+      source = ctx.createBufferSource();
+      source.buffer = buffer;
+      const envelope = ctx.createGain(), at = ctx.currentTime;
+      source.connect(envelope);
+      envelope.connect(this.effectsBus!);
+      envelope.gain.setValueAtTime(EPSILON, at);
+      envelope.gain.linearRampToValueAtTime(0.8, at + 0.006);
+      envelope.gain.setValueAtTime(0.8, at + Math.max(0.006, buffer.duration - 0.025));
+      envelope.gain.linearRampToValueAtTime(EPSILON, at + buffer.duration);
+      voice = { source, envelope, nodes: [envelope], bus: 'effects', end: at + buffer.duration, foley: true };
+      const tracked = voice;
+      this.voices.add(tracked);
+      this.updateGain('music');
+      source.onended = () => this.cleanVoice(tracked);
+      source.start(at);
+      source.stop(tracked.end);
+      return true;
+    } catch {
+      if (voice) this.cleanVoice(voice); else source?.disconnect();
+      return false;
+    }
   }
 
   private isActive(): boolean {
@@ -258,6 +368,7 @@ export class CrosswalkAudio {
   private onVisibility = (): void => { this.reconcileActivity(); };
   private onStateChange = (): void => {
     if (this.context?.state !== 'running' || !this.isActive()) {
+      this.effectsGeneration++;
       this.stopScheduler();
       this.stopVoices();
       if (this.context?.state === 'running') this.reconcileActivity();
@@ -269,6 +380,7 @@ export class CrosswalkAudio {
   private reconcileActivity(): void {
     const ctx = this.context;
     if (!this.isActive()) {
+      this.effectsGeneration++;
       this.stopScheduler();
       this.stopVoices();
       this.lastEffect = -Infinity;
@@ -283,9 +395,9 @@ export class CrosswalkAudio {
   private updateGain(bus: Bus): void {
     const ctx = this.context;
     const gain = (bus === 'music' ? this.musicBus : this.effectsBus)?.gain;
-    if (!ctx || !gain || ctx.state === 'closed') return;
+    if (!ctx || !gain || ctx.state === 'closed' || this.disposed) return;
     const target = bus === 'music'
-      ? (this.musicEnabled ? this.musicVolume : 0)
+      ? (this.musicEnabled ? this.musicVolume * ([...this.voices].some(voice => voice.foley) ? FOLEY_MUSIC_DUCK : 1) : 0)
       : (this.effectsEnabled ? this.effectsVolume : 0);
     gain.cancelScheduledValues(ctx.currentTime);
     gain.setTargetAtTime(target, ctx.currentTime, 0.035);
@@ -427,6 +539,8 @@ export class CrosswalkAudio {
     voice.source.onended = null;
     voice.source.disconnect();
     voice.nodes.forEach((node) => node.disconnect());
+    // Recompute from today's setting, never restore a volume captured before mute.
+    if (voice.foley) this.updateGain('music');
   }
 
   private stopVoices(bus?: Bus, fade = false): void {

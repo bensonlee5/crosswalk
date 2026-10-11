@@ -6,6 +6,8 @@ Preserved design and implementation notes for sound, the modeled town, paintings
 
 ## Sound, architecture, and action-time clock
 
+Current audio update: [semantic action recordings and verification limits](../docs/SEMANTIC-AUDIO.md). The procedural score below is retained; action-category melodies have been replaced by explicit physical-action recordings or intentional silence.
+
 - Original procedural 16-bar neighborhood music and distinct cues for confirmed travel, work, learning, socializing, spending, craft, milestones, and the end of a week. Sound unlocks after a pointer/keyboard gesture; use Sound on the title screen or Sound & music in the game menu. Music/effects have independent volume and mute settings saved locally. Hidden tabs stop audio; returning resumes without replaying missed music. No external music files or borrowed recordings.
 - All 15 locations now have distinct modeled silhouettes and purposeful details, from stepped apartment balconies to the campus clock tower, library pediment, industrial sawtooth roofs, cinema marquee, greenhouse, and transit shelter. Shared materials/static batching remain in place; compatibility mode omits finer decoration. Software-renderer labels follow actual building sign heights.
 - A six-segment brass clock drains and sweeps as actions consume time. Low-time color/ticking cues and zero-time shutters make the limit tangible. Activity previews show their cost on the dial. This remains turn-based: reading, talking and waiting do not consume time. A fresh week/player resets cleanly.
