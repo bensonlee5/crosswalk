@@ -1,6 +1,6 @@
 import { characterVoiceResponse, familyConversation } from './character-voice.ts';
 import { orenNeedsShortVisit, currentMotiveProfile } from './character-cast-canon.ts';
-import type { Game, Player } from './game.ts';
+import type { GameView as Game, Player } from './game.ts';
 import { castPeople } from './character-cast.ts';
 import { historyFamiliarity } from './character-histories.ts';
 import { getStoryView } from './story-arcs.ts';

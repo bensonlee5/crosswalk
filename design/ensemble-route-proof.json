@@ -1,0 +1,1283 @@
+{
+  "scope": "Twenty independent new lives at normal unlock months, no state edits, ordinary employment/travel/bills. Solo finite scene completion; not all stories in one life.",
+  "engineBase": "64e42324d0b432f38cf137dade2fad9667eafb25 plus the reachability follow-on",
+  "results": [
+    {
+      "storyId": "whaleskin",
+      "arrival": {
+        "month": 6,
+        "cash": 10610,
+        "blocks": 5,
+        "energy": 97
+      },
+      "ending": {
+        "month": 6,
+        "cash": 10610,
+        "blocks": 1,
+        "energy": 97,
+        "flags": {
+          "coverOwnedByTavi": true,
+          "prevented": true,
+          "blockedRunoff": false,
+          "inspectionConfirmed": true,
+          "roadSafe": true
+        }
+      },
+      "afterBillCash": 8760,
+      "trace": [
+        {
+          "id": "visit",
+          "destination": "WORK",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 6,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:1:0:apply:t.technical.assistant",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 6,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:1:1:accept:current-offer",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 5,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:1:2:work:accepted-contract.regular",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 5,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 3072,
+          "blocksUsed": 2,
+          "energyChange": -12,
+          "toRegion": "alder"
+        },
+        {
+          "id": "visit",
+          "destination": "THE PARK",
+          "month": 1,
+          "cash": 9072,
+          "blocks": 3,
+          "energy": 58,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "rest",
+          "month": 1,
+          "cash": 9072,
+          "blocks": 3,
+          "energy": 58,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 22,
+          "toRegion": "alder"
+        },
+        {
+          "id": "end",
+          "month": 1,
+          "cash": 9072,
+          "blocks": 2,
+          "energy": 80,
+          "region": "alder",
+          "cashChange": -2210,
+          "blocksUsed": -4,
+          "energyChange": 8,
+          "toRegion": "alder"
+        },
+        {
+          "id": "visit",
+          "destination": "WORK",
+          "month": 2,
+          "cash": 6862,
+          "blocks": 6,
+          "energy": 88,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:2:3:work:accepted-contract.regular",
+          "month": 2,
+          "cash": 6862,
+          "blocks": 6,
+          "energy": 88,
+          "region": "alder",
+          "cashChange": 3072,
+          "blocksUsed": 2,
+          "energyChange": -12,
+          "toRegion": "alder"
+        },
+        {
+          "id": "end",
+          "month": 2,
+          "cash": 9934,
+          "blocks": 4,
+          "energy": 76,
+          "region": "alder",
+          "cashChange": -1850,
+          "blocksUsed": -2,
+          "energyChange": 16,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:3:4:work:accepted-contract.regular",
+          "month": 3,
+          "cash": 8084,
+          "blocks": 6,
+          "energy": 92,
+          "region": "alder",
+          "cashChange": 3072,
+          "blocksUsed": 2,
+          "energyChange": -12,
+          "toRegion": "alder"
+        },
+        {
+          "id": "end",
+          "month": 3,
+          "cash": 11156,
+          "blocks": 4,
+          "energy": 80,
+          "region": "alder",
+          "cashChange": -1850,
+          "blocksUsed": -2,
+          "energyChange": 16,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:4:5:work:accepted-contract.regular",
+          "month": 4,
+          "cash": 9306,
+          "blocks": 6,
+          "energy": 96,
+          "region": "alder",
+          "cashChange": 3072,
+          "blocksUsed": 2,
+          "energyChange": -12,
+          "toRegion": "alder"
+        },
+        {
+          "id": "end",
+          "month": 4,
+          "cash": 12378,
+          "blocks": 4,
+          "energy": 84,
+          "region": "alder",
+          "cashChange": -1850,
+          "blocksUsed": -2,
+          "energyChange": 16,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:5:6:work:accepted-contract.regular",
+          "month": 5,
+          "cash": 10528,
+          "blocks": 6,
+          "energy": 100,
+          "region": "alder",
+          "cashChange": 3072,
+          "blocksUsed": 2,
+          "energyChange": -12,
+          "toRegion": "alder"
+        },
+        {
+          "id": "end",
+          "month": 5,
+          "cash": 13600,
+          "blocks": 4,
+          "energy": 88,
+          "region": "alder",
+          "cashChange": -2210,
+          "blocksUsed": -2,
+          "energyChange": 12,
+          "toRegion": "alder"
+        },
+        {
+          "id": "visit",
+          "destination": "TRANSIT",
+          "month": 6,
+          "cash": 11390,
+          "blocks": 6,
+          "energy": 100,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "world:6:37:12:travel:pelagia",
+          "month": 6,
+          "cash": 11390,
+          "blocks": 6,
+          "energy": 100,
+          "region": "alder",
+          "cashChange": -780,
+          "blocksUsed": 1,
+          "energyChange": -3,
+          "toRegion": "pelagia"
+        },
+        {
+          "id": "visit",
+          "destination": "TRANSIT",
+          "month": 6,
+          "cash": 10610,
+          "blocks": 5,
+          "energy": 97,
+          "region": "pelagia",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "pelagia"
+        },
+        {
+          "id": "ensemble:whaleskin:main:inspect:0",
+          "month": 6,
+          "cash": 10610,
+          "blocks": 5,
+          "energy": 97,
+          "region": "pelagia",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "pelagia"
+        },
+        {
+          "id": "ensemble:whaleskin:main:accurate:1",
+          "month": 6,
+          "cash": 10610,
+          "blocks": 4,
+          "energy": 97,
+          "region": "pelagia",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "pelagia"
+        },
+        {
+          "id": "ensemble:whaleskin:main:context:2",
+          "month": 6,
+          "cash": 10610,
+          "blocks": 3,
+          "energy": 97,
+          "region": "pelagia",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "pelagia"
+        },
+        {
+          "id": "ensemble:whaleskin:main:separate:3",
+          "month": 6,
+          "cash": 10610,
+          "blocks": 2,
+          "energy": 97,
+          "region": "pelagia",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "pelagia"
+        },
+        {
+          "id": "end",
+          "month": 6,
+          "cash": 10610,
+          "blocks": 1,
+          "energy": 97,
+          "region": "pelagia",
+          "cashChange": -1850,
+          "blocksUsed": -5,
+          "energyChange": 3,
+          "toRegion": "pelagia"
+        }
+      ]
+    },
+    {
+      "storyId": "extra_run",
+      "arrival": {
+        "month": 6,
+        "cash": 10610,
+        "blocks": 5,
+        "energy": 97
+      },
+      "ending": {
+        "month": 6,
+        "cash": 10624,
+        "blocks": 3,
+        "energy": 97,
+        "flags": {}
+      },
+      "afterBillCash": 8774,
+      "trace": [
+        {
+          "id": "world:6:37:12:travel:pelagia",
+          "month": 6,
+          "cashChange": -780,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:extra_run:main:small:0",
+          "month": 6,
+          "cashChange": -72,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:extra_run:main:bounded:1",
+          "month": 6,
+          "cashChange": 86,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "missing_shot",
+      "arrival": {
+        "month": 6,
+        "cash": 10610,
+        "blocks": 5,
+        "energy": 97
+      },
+      "ending": {
+        "month": 6,
+        "cash": 10610,
+        "blocks": 3,
+        "energy": 97,
+        "flags": {}
+      },
+      "afterBillCash": 8760,
+      "trace": [
+        {
+          "id": "world:6:37:12:travel:pelagia",
+          "month": 6,
+          "cashChange": -780,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:missing_shot:main:whole:0",
+          "month": 6,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:missing_shot:main:request:1",
+          "month": 6,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "broth",
+      "arrival": {
+        "month": 6,
+        "cash": 10610,
+        "blocks": 5,
+        "energy": 97
+      },
+      "ending": {
+        "month": 6,
+        "cash": 10592,
+        "blocks": 3,
+        "energy": 97,
+        "flags": {}
+      },
+      "afterBillCash": 8742,
+      "trace": [
+        {
+          "id": "world:6:37:12:travel:pelagia",
+          "month": 6,
+          "cashChange": -780,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:broth:main:normal:0",
+          "month": 6,
+          "cashChange": -18,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:broth:main:close:1",
+          "month": 6,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "dalloway",
+      "arrival": {
+        "month": 3,
+        "cash": 7664,
+        "blocks": 5,
+        "energy": 90
+      },
+      "ending": {
+        "month": 3,
+        "cash": 7664,
+        "blocks": 1,
+        "energy": 90,
+        "flags": {
+          "juneOwnsBell": true,
+          "juneRemainsCook": true,
+          "corrected": true,
+          "fullCredit": true,
+          "bellAtPass": true
+        }
+      },
+      "afterBillCash": 5814,
+      "trace": [
+        {
+          "id": "visit",
+          "destination": "WORK",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 6,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:1:0:apply:t.technical.assistant",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 6,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:1:1:accept:current-offer",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 5,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:1:2:work:accepted-contract.regular",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 5,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 3072,
+          "blocksUsed": 2,
+          "energyChange": -12,
+          "toRegion": "alder"
+        },
+        {
+          "id": "visit",
+          "destination": "THE PARK",
+          "month": 1,
+          "cash": 9072,
+          "blocks": 3,
+          "energy": 58,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "rest",
+          "month": 1,
+          "cash": 9072,
+          "blocks": 3,
+          "energy": 58,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 22,
+          "toRegion": "alder"
+        },
+        {
+          "id": "end",
+          "month": 1,
+          "cash": 9072,
+          "blocks": 2,
+          "energy": 80,
+          "region": "alder",
+          "cashChange": -2210,
+          "blocksUsed": -4,
+          "energyChange": 8,
+          "toRegion": "alder"
+        },
+        {
+          "id": "visit",
+          "destination": "WORK",
+          "month": 2,
+          "cash": 6862,
+          "blocks": 6,
+          "energy": 88,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "career:2:3:work:accepted-contract.regular",
+          "month": 2,
+          "cash": 6862,
+          "blocks": 6,
+          "energy": 88,
+          "region": "alder",
+          "cashChange": 3072,
+          "blocksUsed": 2,
+          "energyChange": -12,
+          "toRegion": "alder"
+        },
+        {
+          "id": "end",
+          "month": 2,
+          "cash": 9934,
+          "blocks": 4,
+          "energy": 76,
+          "region": "alder",
+          "cashChange": -1850,
+          "blocksUsed": -2,
+          "energyChange": 16,
+          "toRegion": "alder"
+        },
+        {
+          "id": "visit",
+          "destination": "TRANSIT",
+          "month": 3,
+          "cash": 8084,
+          "blocks": 6,
+          "energy": 92,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "world:3:21:6:travel:embermesa",
+          "month": 3,
+          "cash": 8084,
+          "blocks": 6,
+          "energy": 92,
+          "region": "alder",
+          "cashChange": -420,
+          "blocksUsed": 1,
+          "energyChange": -2,
+          "toRegion": "embermesa"
+        },
+        {
+          "id": "visit",
+          "destination": "CORNER CAF\u00c9",
+          "month": 3,
+          "cash": 7664,
+          "blocks": 5,
+          "energy": 90,
+          "region": "embermesa",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "embermesa"
+        },
+        {
+          "id": "ensemble:dalloway:main:correct:0",
+          "month": 3,
+          "cash": 7664,
+          "blocks": 5,
+          "energy": 90,
+          "region": "embermesa",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "embermesa"
+        },
+        {
+          "id": "ensemble:dalloway:main:full:1",
+          "month": 3,
+          "cash": 7664,
+          "blocks": 4,
+          "energy": 90,
+          "region": "embermesa",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "embermesa"
+        },
+        {
+          "id": "ensemble:dalloway:main:handover:2",
+          "month": 3,
+          "cash": 7664,
+          "blocks": 3,
+          "energy": 90,
+          "region": "embermesa",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "embermesa"
+        },
+        {
+          "id": "ensemble:dalloway:main:smaller:3",
+          "month": 3,
+          "cash": 7664,
+          "blocks": 2,
+          "energy": 90,
+          "region": "embermesa",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "embermesa"
+        },
+        {
+          "id": "end",
+          "month": 3,
+          "cash": 7664,
+          "blocks": 1,
+          "energy": 90,
+          "region": "embermesa",
+          "cashChange": -1850,
+          "blocksUsed": -5,
+          "energyChange": 10,
+          "toRegion": "embermesa"
+        }
+      ]
+    },
+    {
+      "storyId": "empty_counter",
+      "arrival": {
+        "month": 3,
+        "cash": 7664,
+        "blocks": 5,
+        "energy": 90
+      },
+      "ending": {
+        "month": 3,
+        "cash": 7664,
+        "blocks": 3,
+        "energy": 90,
+        "flags": {}
+      },
+      "afterBillCash": 5814,
+      "trace": [
+        {
+          "id": "world:3:21:6:travel:embermesa",
+          "month": 3,
+          "cashChange": -420,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:empty_counter:main:caption:0",
+          "month": 3,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:empty_counter:main:ordinary:1",
+          "month": 3,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "route_green",
+      "arrival": {
+        "month": 3,
+        "cash": 7664,
+        "blocks": 5,
+        "energy": 90
+      },
+      "ending": {
+        "month": 3,
+        "cash": 7592,
+        "blocks": 3,
+        "energy": 90,
+        "flags": {}
+      },
+      "afterBillCash": 5742,
+      "trace": [
+        {
+          "id": "world:3:21:6:travel:embermesa",
+          "month": 3,
+          "cashChange": -420,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:route_green:main:food:0",
+          "month": 3,
+          "cashChange": -72,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:route_green:main:window:1",
+          "month": 3,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "commentary",
+      "arrival": {
+        "month": 3,
+        "cash": 7664,
+        "blocks": 5,
+        "energy": 90
+      },
+      "ending": {
+        "month": 3,
+        "cash": 7664,
+        "blocks": 3,
+        "energy": 90,
+        "flags": {}
+      },
+      "afterBillCash": 5814,
+      "trace": [
+        {
+          "id": "world:3:21:6:travel:embermesa",
+          "month": 3,
+          "cashChange": -420,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:commentary:main:time:0",
+          "month": 3,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:commentary:main:accurate:1",
+          "month": 3,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "bracken",
+      "arrival": {
+        "month": 1,
+        "cash": 6000,
+        "blocks": 6,
+        "energy": 70
+      },
+      "ending": {
+        "month": 1,
+        "cash": 6000,
+        "blocks": 2,
+        "energy": 70,
+        "flags": {
+          "nellOwnsDrumAndDuvet": true,
+          "jonahPaidOccupancy": true,
+          "ruthOwnsRoom": true,
+          "clarified": true,
+          "drumAtRehearsal": true,
+          "drumOnwardTravel": false,
+          "separateLodging": true
+        }
+      },
+      "afterBillCash": 3790,
+      "trace": [
+        {
+          "id": "visit",
+          "destination": "APARTMENTS",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 6,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 0,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "ensemble:bracken:main:clarify:0",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 6,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "ensemble:bracken:main:rehearse:1",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 5,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "ensemble:bracken:main:plain:2",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 4,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "ensemble:bracken:main:respect:3",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 3,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": 0,
+          "blocksUsed": 1,
+          "energyChange": 0,
+          "toRegion": "alder"
+        },
+        {
+          "id": "end",
+          "month": 1,
+          "cash": 6000,
+          "blocks": 2,
+          "energy": 70,
+          "region": "alder",
+          "cashChange": -2210,
+          "blocksUsed": -4,
+          "energyChange": 8,
+          "toRegion": "alder"
+        }
+      ]
+    },
+    {
+      "storyId": "late_loaf",
+      "arrival": {
+        "month": 1,
+        "cash": 6000,
+        "blocks": 6,
+        "energy": 70
+      },
+      "ending": {
+        "month": 1,
+        "cash": 5952,
+        "blocks": 4,
+        "energy": 70,
+        "flags": {}
+      },
+      "afterBillCash": 3742,
+      "trace": [
+        {
+          "id": "ensemble:late_loaf:main:reserve:0",
+          "month": 1,
+          "cashChange": -48,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:late_loaf:main:name:1",
+          "month": 1,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "last_crossing",
+      "arrival": {
+        "month": 1,
+        "cash": 6000,
+        "blocks": 6,
+        "energy": 70
+      },
+      "ending": {
+        "month": 1,
+        "cash": 6000,
+        "blocks": 4,
+        "energy": 70,
+        "flags": {
+          "clear": true
+        }
+      },
+      "afterBillCash": 3790,
+      "trace": [
+        {
+          "id": "ensemble:last_crossing:main:separate:0",
+          "month": 1,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:last_crossing:main:close:1",
+          "month": 1,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "pantry_song",
+      "arrival": {
+        "month": 1,
+        "cash": 6000,
+        "blocks": 6,
+        "energy": 70
+      },
+      "ending": {
+        "month": 1,
+        "cash": 6000,
+        "blocks": 4,
+        "energy": 70,
+        "flags": {}
+      },
+      "afterBillCash": 3790,
+      "trace": [
+        {
+          "id": "ensemble:pantry_song:main:count:0",
+          "month": 1,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:pantry_song:main:listen:1",
+          "month": 1,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "laundry",
+      "arrival": {
+        "month": 4,
+        "cash": 8766,
+        "blocks": 5,
+        "energy": 96
+      },
+      "ending": {
+        "month": 4,
+        "cash": 8742,
+        "blocks": 3,
+        "energy": 96,
+        "flags": {}
+      },
+      "afterBillCash": 6892,
+      "trace": [
+        {
+          "id": "world:4:26:6:travel:glasssteppe",
+          "month": 4,
+          "cashChange": -540,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:laundry:main:early:0",
+          "month": 4,
+          "cashChange": -24,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:laundry:main:finite:1",
+          "month": 4,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "small_pause",
+      "arrival": {
+        "month": 4,
+        "cash": 8766,
+        "blocks": 5,
+        "energy": 96
+      },
+      "ending": {
+        "month": 4,
+        "cash": 8766,
+        "blocks": 3,
+        "energy": 96,
+        "flags": {}
+      },
+      "afterBillCash": 6916,
+      "trace": [
+        {
+          "id": "world:4:26:6:travel:glasssteppe",
+          "month": 4,
+          "cashChange": -540,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:small_pause:main:test:0",
+          "month": 4,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:small_pause:main:first:1",
+          "month": 4,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "timetable",
+      "arrival": {
+        "month": 4,
+        "cash": 8766,
+        "blocks": 5,
+        "energy": 96
+      },
+      "ending": {
+        "month": 4,
+        "cash": 8766,
+        "blocks": 3,
+        "energy": 96,
+        "flags": {}
+      },
+      "afterBillCash": 6916,
+      "trace": [
+        {
+          "id": "world:4:26:6:travel:glasssteppe",
+          "month": 4,
+          "cashChange": -540,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:timetable:main:later:0",
+          "month": 4,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:timetable:main:plain:1",
+          "month": 4,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "portrait",
+      "arrival": {
+        "month": 4,
+        "cash": 8766,
+        "blocks": 5,
+        "energy": 96
+      },
+      "ending": {
+        "month": 4,
+        "cash": 8766,
+        "blocks": 3,
+        "energy": 96,
+        "flags": {}
+      },
+      "afterBillCash": 6916,
+      "trace": [
+        {
+          "id": "world:4:26:6:travel:glasssteppe",
+          "month": 4,
+          "cashChange": -540,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:portrait:main:corner:0",
+          "month": 4,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:portrait:main:drawing:1",
+          "month": 4,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "six_chairs",
+      "arrival": {
+        "month": 2,
+        "cash": 6542,
+        "blocks": 5,
+        "energy": 87
+      },
+      "ending": {
+        "month": 2,
+        "cash": 6518,
+        "blocks": 3,
+        "energy": 87,
+        "flags": {}
+      },
+      "afterBillCash": 4668,
+      "trace": [
+        {
+          "id": "world:2:10:0:travel:saffron",
+          "month": 2,
+          "cashChange": -320,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:six_chairs:main:cue:0",
+          "month": 2,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:six_chairs:main:tea:1",
+          "month": 2,
+          "cashChange": -24,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "closing_hours",
+      "arrival": {
+        "month": 2,
+        "cash": 6542,
+        "blocks": 5,
+        "energy": 87
+      },
+      "ending": {
+        "month": 2,
+        "cash": 6542,
+        "blocks": 3,
+        "energy": 87,
+        "flags": {}
+      },
+      "afterBillCash": 4692,
+      "trace": [
+        {
+          "id": "world:2:10:0:travel:saffron",
+          "month": 2,
+          "cashChange": -320,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:closing_hours:main:clear:0",
+          "month": 2,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:closing_hours:main:guest:1",
+          "month": 2,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "nine_locks",
+      "arrival": {
+        "month": 2,
+        "cash": 6542,
+        "blocks": 5,
+        "energy": 87
+      },
+      "ending": {
+        "month": 2,
+        "cash": 6542,
+        "blocks": 3,
+        "energy": 87,
+        "flags": {}
+      },
+      "afterBillCash": 4692,
+      "trace": [
+        {
+          "id": "world:2:10:0:travel:saffron",
+          "month": 2,
+          "cashChange": -320,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:nine_locks:main:acknowledge:0",
+          "month": 2,
+          "cashChange": 0,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:nine_locks:main:short:1",
+          "month": 2,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    },
+    {
+      "storyId": "first_shift",
+      "arrival": {
+        "month": 2,
+        "cash": 6542,
+        "blocks": 5,
+        "energy": 87
+      },
+      "ending": {
+        "month": 2,
+        "cash": 6470,
+        "blocks": 3,
+        "energy": 87,
+        "flags": {}
+      },
+      "afterBillCash": 4620,
+      "trace": [
+        {
+          "id": "world:2:10:0:travel:saffron",
+          "month": 2,
+          "cashChange": -320,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:first_shift:main:cinema:0",
+          "month": 2,
+          "cashChange": -72,
+          "blocksUsed": 1
+        },
+        {
+          "id": "ensemble:first_shift:main:break:1",
+          "month": 2,
+          "cashChange": 0,
+          "blocksUsed": 1
+        }
+      ]
+    }
+  ]
+}

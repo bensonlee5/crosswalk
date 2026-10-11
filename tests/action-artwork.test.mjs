@@ -34,18 +34,18 @@ assert.equal(actionIllustration({id:'garden_project'},{...game,project:{complete
 let menuChecks=0;
 const p=game.players[0];p.world.discoveredPlacesByRegion.alder=[...worldPlaceIds];
 for(const location of locations)for(const option of availableActions(p,location.place,game)){assert(actionIllustration(option,game));menuChecks++;}
-let fullBytes=0,thumbBytes=0;const hashes=new Set();
+const hashes=new Set();
 for(const illustration of art.values()){
  for(const [path,thumb] of [[illustration.src,false],[illustration.thumb,true]]){
   const b=readFileSync(root+path),m=byPath.get(path);assert(m,`Manifest missing ${path}`);assert.equal(b.toString('ascii',0,4),'RIFF');assert.equal(b.toString('ascii',8,12),'WEBP');assert.equal(statSync(root+path).size,m.bytes);assert(m.alt.length>10&&m.generation==='OpenAI imagegen');assert(!m.source.startsWith('/'));
-  if(thumb){assert.equal(m.width,240);assert.equal(m.height,160);assert(m.bytes<22_000,`Thumbnail budget ${path}`);thumbBytes+=m.bytes;}
-  else{assert(m.width>=760&&m.width<=768);assert(m.height>=508&&m.height<=512);assert(m.bytes<190_000,`Scene budget ${path}`);fullBytes+=m.bytes;const hash=createHash('sha256').update(b).digest('hex');assert(!hashes.has(hash),'Duplicate scene bytes '+path);hashes.add(hash);}
+  if(thumb){assert.equal(m.width,240);assert.equal(m.height,160);assert(m.bytes<22_000,`Thumbnail budget ${path}`);}
+  else{assert(m.width>=760&&m.width<=768);assert(m.height>=508&&m.height<=512);assert(m.bytes<190_000,`Scene budget ${path}`);const hash=createHash('sha256').update(b).digest('hex');assert(!hashes.has(hash),'Duplicate scene bytes '+path);hashes.add(hash);}
  }
 }
 const screen=readFileSync(new URL('../app/game-screen.tsx',import.meta.url),'utf8');
 assert.match(screen,/src=\{art.thumb\}\s+alt=""/,'Selectable cards use decorative optimized thumbnails');
-assert.match(screen,/src=\{selectedArt!.src\}/,'World and original scenes preserve the specific selected action painting');
-assert.match(screen,/alt=\{(?:world\?world.region.description:)?selectedArt!.alt\}/,'Selected scene retains meaningful alt text');
-assert.match(screen,/aria-pressed=\{a.id\s*===\s*option.id\}/);assert.match(screen,/aria-describedby=\{lock\s*\?/);assert.match(screen,/disabled=\{!active\s*\|\|\s*busy\s*\|\|\s*moving\s*\|\|\s*offline\s*\|\|\s*cooldown\s*\|\|\s*!!why\}/,'Execution stays disabled when ineligible');
+assert.match(screen,/src=\{selectedArt\?\.src \?\? locationPainting\(selected.art\)\}/,'Activity scenes preserve the selected action painting; story-only venues have a location fallback');
+assert.match(screen,/alt=\{selectedArt\?\.alt \?\? worldPlaceName\(p, selected.place, g\)\}/,'Selected scene retains meaningful alt text');
+assert.match(screen,/aria-pressed=\{a\?\.id\s*===\s*option.id\}/);assert.match(screen,/aria-describedby=\{lock\s*\?/);assert.match(screen,/disabled=\{!active\s*\|\|\s*busy\s*\|\|\s*moving\s*\|\|\s*offline\s*\|\|\s*cooldown\s*\|\|\s*!!why\}/,'Execution stays disabled when ineligible');
 const image=readFileSync(new URL('../app/game-painting.tsx',import.meta.url),'utf8');assert.match(image,/loading=\{priority\?'eager':'lazy'\}/);assert.match(image,/decoding="async"/);
 console.log(`PASS: ${actions.length} current activity scenes, ${art.size} variants and authored decision scenes, ${menuChecks} menu choices, asset budgets, manifests and accessible previews.`);

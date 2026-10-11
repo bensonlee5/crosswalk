@@ -1,8 +1,8 @@
 /** Presentation only: every invitation is checked against the unchanged game rules. */
 import { economyQuote,economyTimeLabel,monthlyBills } from './economy.ts';
 import { actionPreview } from './game-view.ts';
-import type { Activity,Game,Player } from './game.ts';
-import { actions,activityForPlayer,availableActions,projectGoal,projectProgress,reason } from './game.ts';
+import type { Activity,GameView as Game,Player } from './game.ts';
+import { actions,activityForPlayer,availableActions,reason } from './game.ts';
 import { monthlyPriceBreakdown } from './monthly-prices.ts';
 import { regionalLifeProfile } from './regional-life.ts';
 export const placeStories:Record<string,{promise:string;scene:string;motif:string;material:string;first:string[]}>= {

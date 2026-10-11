@@ -1,4 +1,4 @@
-import type {Activity,Game,Player} from './game.ts';
+import type {Activity,GameView as Game,Player} from './game.ts';
 import {castPeople} from './character-cast.ts';
 import {getStoryView} from './story-arcs.ts';
 import {visiblePlaces,worldView} from './world-life.ts';

@@ -1,3 +1,4 @@
+import {committedHooks} from './committed-hooks.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -26,6 +27,7 @@ export function homeHarness({ api = createTestGameApi(), owner = crypto.randomUU
     const calls = [], sounds = [];
     const record = { owner, failPost: null, failGet: false, unauthorized: false, malformedPost: false, malformedGet: false, protocolFault: false, identityListener: null, held: null, reloads: 0 };
     const react = {
+        useCallback(fn, next) { const index = cursor++; if (!deps[index] || next.some((value, i) => !Object.is(value, deps[index][i]))) {deps[index] = next; slots[index] = fn;} return slots[index]; },
         useState(initial) { const index = cursor++; if (!(index in slots))
             slots[index] = typeof initial === 'function' ? initial() : initial; return [slots[index], value => { const next = typeof value === 'function' ? value(slots[index]) : value; if (!Object.is(next, slots[index])) {
                 slots[index] = next;
@@ -92,6 +94,7 @@ export function homeHarness({ api = createTestGameApi(), owner = crypto.randomUU
         require: id => {
             if (id === 'react')
                 return react;
+            if (id === '@/lib/committed-ref') return committedHooks(react);
             if (id === 'react/jsx-runtime')
                 return require(id);
             if (id === '@/lib/game-api')

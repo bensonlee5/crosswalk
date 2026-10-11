@@ -1,3 +1,4 @@
+import {committedHooks} from './support/committed-hooks.mjs';
 import test from 'node:test';
 import {currentGame} from './current-fixture.mjs';
 import assert from 'node:assert/strict';
@@ -15,7 +16,7 @@ function room(seed=15){return currentGame({names:['Alex'],seed});}
 function harness(onAction){let g=room(),slots=[],deps=[],cleanups=[],cursor=0,dirty=true,effects=[],tree,alive=true;
  const hooks={...React,useRef(v){const i=cursor++;return slots[i]??(slots[i]={current:v});},useState(v){const i=cursor++;if(!(i in slots))slots[i]=typeof v==='function'?v():v;return[slots[i],next=>{slots[i]=typeof next==='function'?next(slots[i]):next;dirty=true;}];},useEffect(fn,d){const i=cursor++;if(!deps[i]||d?.some((v,j)=>v!==deps[i][j])){deps[i]=d;effects.push(()=>{cleanups[i]?.();cleanups[i]=fn();});}}};
  const mod={exports:{}},stage=fake('PersonResponseStage'),stubs={'./person-response':{PersonResponseStage:stage},'./cast-story':{CastJournal:fake('CastJournal')},'./story-timeline':{StoryTimeline:fake('StoryTimeline')},'./game-painting':{__esModule:true,default:fake('GamePainting')}};
- vm.runInNewContext(source,{module:mod,exports:mod.exports,structuredClone,require:id=>id==='react'?hooks:stubs[id]??(id.startsWith('@/')?require(root+'/'+id.slice(2)+'.ts'):id==='./game-art'?require(root+'/app/game-art.ts'):require(id))});
+ vm.runInNewContext(source,{module:mod,exports:mod.exports,structuredClone,require:id=>id==='react'?{...hooks,useLayoutEffect:hooks.useEffect}:stubs[id]??(id==='@/lib/committed-ref'?committedHooks(hooks):id.startsWith('@/')?require(root+'/'+id.slice(2)+'.ts'):id==='./game-art'?require(root+'/app/game-art.ts'):require(id))});
  const props=()=>({g,p:g.players[0],disabled:false,onAction:async id=>{if(onAction)return onAction(id,g);const next=structuredClone(g);G.move(next,id);g=next;dirty=true;return next;}});
  function render(){let n=0;while(dirty&&alive){assert.ok(++n<20);dirty=false;cursor=0;effects=[];const outer=mod.exports.LifeJournal(props());tree=outer.type(outer.props);for(const effect of effects)effect();}return tree;}
  async function settle(){for(let i=0;i<8;i++){render();await Promise.resolve();}}

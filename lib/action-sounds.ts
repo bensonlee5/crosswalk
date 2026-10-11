@@ -58,6 +58,11 @@ export function actionSound(op:string,action:string|undefined,before?:Player,aft
  // Career cues require an exact new employer receipt. An application is paperwork;
  // technical/civic shifts include a documented handover, and repair-maker work
  // really is bench repair. Other roles remain quiet without a faithful recording.
+ if(action.startsWith('ensemble:')){
+  const receipt=after.ensemble?.receipts.find(r=>r.actionId===action);
+  if(!receipt||before.ensemble?.receipts.some(r=>r.id===receipt.id||r.actionId===action))return null;
+  return receipt.soundCue==='sip'?'sip':null;
+ }
  if(action.startsWith('career:')){
   const receipt=after.career?.receipts.find(r=>r.id===action);
   if(!receipt||before.career?.receipts.some(r=>r.id===action))return null;

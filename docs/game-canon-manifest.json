@@ -1,0 +1,19 @@
+{
+  "source": "Current Travel Guide authoring sources; generated runtime adapters are projections, not a second canon.",
+  "sha256": {
+    "docs/guide-content.json": "e68aada19e55d588401c2ce90305e604e5736820166e1e962a98f522b8a91444",
+    "docs/guide-approved-roster.json": "189164c6ec8c7576416535eaff1b36d91794bfed6f3e4fde6e36e0df79b86695",
+    "docs/character-canon/personalities.json": "8290a4ef23b218815fda48f550a95ae7303f7bf9b7d7d8ac61ca7b377587c5b1",
+    "docs/character-canon/families.json": "b89127b4ac3f08f5bd39786d429031bb0ad3eb49e47bd7c1318b25b2ab0dddaf",
+    "docs/manual/venues.json": "72e2f480ff84180a147ccc2b922f8283dc05a26e4ca31d99bea1e7ba68be9eaa",
+    "docs/manual/items.json": "7222f5c3c2ba57779f5d02766aaa356c2dffec7ab6fb894c770c0b50759cc19a",
+    "docs/manual/dispersed-families.json": "fb871d00c6a68229d519a01c46373f40a1ff0f48056f4bad67eb4ef0fa0e7451"
+  },
+  "counts": {
+    "characters": 68,
+    "regions": 5,
+    "venues": 75,
+    "items": 30,
+    "brands": 7
+  }
+}

@@ -1,6 +1,6 @@
 import {careerTracks} from './career-content.ts';
 import {castCharacters} from './cast-characters.ts';
-import type {Game, Player} from './game.ts';
+import type {GameView as Game, Player} from './game.ts';
 import {monthlyBills} from './economy.ts';
 
 /** Earned chapters are a history, not a second score. Reads never award anything.
@@ -229,6 +229,7 @@ export function getLifeProgress(p: Player, g: Game): LifeProgress {
  const q = p as ProgressPlayer;
  const aspiration = aspirations.find(a=>a.id===q.aspiration) ?? null;
  const earned = new Set(q.milestones ?? []);
+ if(p.castRedacted)return {enabled:false,aspiration:null,title:'A life of their own',currentTier:'',nextStep:'',canSelectAspiration:false,selectionReason:'This personal account belongs to the other player.',ladders:[],foundations:[],milestones:allMilestones.filter(m=>earned.has(m.id)).map(m=>({id:m.id,title:m.title,description:m.description})),epilogue:{title:'A life of their own',paragraphs:[]}};
  const ladders = aspirations.map(a=>{
   const definitions = definitionsFor(a.id);
   const currentId = definitions.filter(t=>t.met(q,g)).at(-1)?.id;

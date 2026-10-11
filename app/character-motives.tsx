@@ -7,7 +7,7 @@ import CharacterPortrait from './character-portrait';
 import {assetUrl} from '@/lib/asset-url';
 import {motivePortrait} from '@/lib/motive-portraits';
 import type {MotiveReceipt} from '@/lib/character-motives';
-import type {Game,Player} from '@/lib/game';
+import type {GameView as Game,Player} from '@/lib/game';
 import {motiveScene} from '@/lib/character-motives';
 import {economyMonthLabel} from '@/lib/economy';
 import {StoryChoiceDeck,EncounterOutcome,useEncounterCommit,type EncounterChoice} from './story-choices';

@@ -1,5 +1,5 @@
 import { canonicalCharacterById, canonicalIdentity } from './character-canon.ts';
-import type { Game, Player } from './game.ts';
+import type { GameView as Game, Player } from './game.ts';
 export type CharacterHistory = {
     id: string;
     name: string;

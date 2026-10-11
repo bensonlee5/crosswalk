@@ -326,6 +326,119 @@ export const personSceneProfiles: Record<string, PersonSceneProfile> = {
     farewell: 'Bye-bye.',
     prop: 'cups',
   },
+  lata_rao: {
+      "appearance": "Long dark braid, small gold hoops, and a pale green shirt.",
+      "activity": "Adjusts the folded navy jacket resting over one arm.",
+      "greeting": "I can give you the distance. Whether it feels short is another question.",
+      "familiar": "I have a moment before I check the route again.",
+      "farewell": "I’ll get back to the road. Enjoy your own afternoon.",
+      "prop": "none"
+  },
+  nila_desai: {
+      "appearance": "Curly hair tied high, ochre overshirt, and a dark backpack strap.",
+      "activity": "Adjusts the bag strap and gives the question a sideways look.",
+      "greeting": "I’m wondering what that sentence leaves out. It sounds rather complete.",
+      "familiar": "I can hear a different reading without promising to use it.",
+      "farewell": "I’ll leave that question open while I think. See you.",
+      "prop": "none"
+  },
+  safia_odhiambo: {
+      "appearance": "Short silver curls, gold hoop earrings, and a turquoise blouse.",
+      "activity": "Rests folded fingers beneath her chin, waiting for an answer.",
+      "greeting": "I have an objection. You might enjoy answering it.",
+      "familiar": "I can let you finish before I find the clever part.",
+      "farewell": "I’ll save the next objection for somebody else. Take care.",
+      "prop": "none"
+  },
+  rosa_moreno: {
+      "appearance": "Loose white curls, embroidered rust blouse, and a cream knitted shawl.",
+      "activity": "Turns from her radio with one hand resting against her cheek.",
+      "greeting": "I heard the result. I’m not finished with my opinion of it.",
+      "familiar": "I can hear you. The commentator is only repeating himself.",
+      "farewell": "I’ll get back to listening. Mind how you go.",
+      "prop": "none"
+  },
+  mateo_moreno: {
+      "appearance": "Broad sun hat, dark curls, dusty blue shirt, and folded fleece.",
+      "activity": "Holds the folded fleece while considering an unfinished thought.",
+      "greeting": "I had an idea for a corridor. You wouldn’t want to walk down it.",
+      "familiar": "I can talk about the story without explaining what it teaches.",
+      "farewell": "I’ll leave that image where it is for now. See you.",
+      "prop": "none"
+  },
+  nell_harper: {
+      "appearance": "Copper curls, freckles, dark outdoor layers, and a broad backpack strap.",
+      "activity": "Adjusts her backpack strap and pauses before the next question.",
+      "greeting": "I know where the case is. The evening takes a little more explaining.",
+      "familiar": "I can answer the question you actually asked. Start there.",
+      "farewell": "I’ll leave you to your plans. Mine still need a look.",
+      "prop": "none"
+  },
+  ruth_harper: {
+      "appearance": "Wavy silver-and-copper hair, blue cardigan, patterned scarf, and tortoiseshell glasses.",
+      "activity": "Holds her glasses near her cheek, considering a mischievous title.",
+      "greeting": "I’m considering a title. The people involved might prefer a quieter one.",
+      "familiar": "I can leave the story there if you would rather.",
+      "farewell": "I’ll keep my glasses out. There may be something worth noticing.",
+      "prop": "none"
+  },
+  jonah_bell: {
+      "appearance": "Short dark twists, trimmed beard, yellow shirt, and a dark jacket.",
+      "activity": "Opens one hand, then waits to see whether anybody answers.",
+      "greeting": "I like that phrase. Give me a second before I make it worse.",
+      "familiar": "I can have a conversation without auditioning the entire time.",
+      "farewell": "I’ll let the sentence end there. Take care.",
+      "prop": "none"
+  },
+  lucien_morel: {
+      "appearance": "Short grey curls, silver moustache, dark coat, and a rust scarf.",
+      "activity": "Lifts a finger, then gives the other person room to speak.",
+      "greeting": "I can think of one exception. That doesn’t necessarily spoil the whole idea.",
+      "familiar": "I have a question before I offer the counterexample.",
+      "farewell": "I’ll leave you the last word. This time.",
+      "prop": "none"
+  },
+  qiao_chen: {
+      "appearance": "Short dark hair streaked grey, burgundy padded vest, and navy knitwear.",
+      "activity": "Glances aside, leaving a clipped question hanging for a moment.",
+      "greeting": "I can tell you when. First tell me how much.",
+      "familiar": "I have a minute. It doesn’t need an invoice.",
+      "farewell": "I’ll leave you to it. I have an evening to get to.",
+      "prop": "none"
+  },
+  akira_mori: {
+      "appearance": "Swept-back grey hair, brown coat, green sweater, and a red scarf.",
+      "activity": "Opens his palm, then catches himself extending the explanation.",
+      "greeting": "I have a very small part. The explanation is rather larger.",
+      "familiar": "I can leave room for another voice. Go on.",
+      "farewell": "I’ll stop there, before I add the rehearsal to the goodbye.",
+      "prop": "none"
+  },
+  ines_valdes: {
+      "appearance": "Grey-streaked curls, pearl earrings, plum blouse, and a cream patterned shawl.",
+      "activity": "Tilts her head, waiting to hear how a sentence will end.",
+      "greeting": "I can explain why it matters without telling you the ending. Probably.",
+      "familiar": "I want to hear what moved you, if anything did.",
+      "farewell": "I’ll leave the ending alone. Enjoy the rest of your day.",
+      "prop": "none"
+  },
+  vera_valdes: {
+      "appearance": "Dark curls, pale green overshirt, backpack strap, and a blue game box.",
+      "activity": "Keeps her own game box close at an adult-run public table.",
+      "greeting": "I want to check the rule before we start. Winning afterward is more satisfying.",
+      "familiar": "I’m deciding whether I want another game. Give me a minute.",
+      "farewell": "I’m keeping my box with me. Bye.",
+      "prop": "none"
+  },
+  rafael_valdes: {
+      "appearance": "Dark curls, salt-and-pepper stubble, pale blue shirt, and a straw hat.",
+      "activity": "Turns the straw hat in his hands before answering.",
+      "greeting": "I was going to say nearly finished. Let me check before I say it.",
+      "familiar": "I can give this conversation a little attention without promising the afternoon.",
+      "farewell": "I’ll go when I said I would. Good to see you.",
+      "prop": "none"
+  },
+
 };
 
 export type PersonFamiliarityLines = {
@@ -723,4 +836,145 @@ export const personFamiliarityLines: Record<string, PersonFamiliarityLines> = {
     routine: ['Hi!', 'Cup here.'],
     habit: ['You!', 'Hi, you!'],
   },
+  lata_rao: {
+      "routine": [
+          "Hello again. I can stop briefly without adding a stop to the route.",
+          "I recognize you. Is this a route question or an ordinary hello?"
+      ],
+      "habit": [
+          "There you are. I’m leaving the delivery book closed for a moment.",
+          "We cross paths often enough. I can ask how you are without calculating the distance."
+      ]
+  },
+  nila_desai: {
+      "routine": [
+          "Oh, hello again. I’m still entitled to a different answer today.",
+          "I recognize you. Let me finish this thought before I explain it."
+      ],
+      "habit": [
+          "We keep crossing paths. I can talk about something that isn’t an edit.",
+          "Hello again. I’m listening; that doesn’t mean I’ve agreed with the framing."
+      ]
+  },
+  safia_odhiambo: {
+      "routine": [
+          "There you are again. I’m trying a question that actually waits for an answer.",
+          "I recognize you. We can start somewhere other than my opinion."
+      ],
+      "habit": [
+          "Hello again. I may have a good objection. I needn’t make it immediately.",
+          "We keep meeting. An ordinary hello can survive without a rebuttal."
+      ]
+  },
+  rosa_moreno: {
+      "routine": [
+          "It’s you again. I can turn it down; I’m not surrendering the commentary.",
+          "Hello again. I’d rather hear your news than another explanation of what I should enjoy."
+      ],
+      "habit": [
+          "There you are. I recognize the face, but I still want the answer to my question.",
+          "We do keep meeting. I’m allowed a quiet greeting, even after that referee."
+      ]
+  },
+  mateo_moreno: {
+      "routine": [
+          "Hello again. I’m not working on a roof at this particular moment.",
+          "I recognize you. A thought about a story can wait until someone wants to hear it."
+      ],
+      "habit": [
+          "There you are. I can have an ordinary afternoon without making it useful research.",
+          "We keep meeting between things. I like having time for a sentence that goes nowhere."
+      ]
+  },
+  nell_harper: {
+      "routine": [
+          "Oh, you again. I can say hello without turning it into an invitation.",
+          "I recognize you. Which question did I almost skip just now?"
+      ],
+      "habit": [
+          "There you are. I’m trying to finish this conversation before starting the next idea.",
+          "We keep crossing paths. That’s an observation, not a travel plan."
+      ]
+  },
+  ruth_harper: {
+      "routine": [
+          "Hello again. I recognize you without needing a film of the occasion.",
+          "There you are. I can ask about today before telling you about three other years."
+      ],
+      "habit": [
+          "We keep meeting. I’m trying not to give that a dramatic title.",
+          "Hello again. I have a question, and this one isn’t an introduction to my anecdote."
+      ]
+  },
+  jonah_bell: {
+      "routine": [
+          "Hello again. I can recognize you without trying the opening line again.",
+          "There you are. I’m listening before looking for the funny part."
+      ],
+      "habit": [
+          "We keep crossing paths. That doesn’t make you my permanent audience.",
+          "Hello again. I can leave a perfectly ordinary pause alone."
+      ]
+  },
+  lucien_morel: {
+      "routine": [
+          "Hello again. I recognize you; I haven’t decided whether to object yet.",
+          "There you are. I can listen to the end before remembering a better example."
+      ],
+      "habit": [
+          "Our paths cross often. I’m not keeping score, whatever the expression suggests.",
+          "Hello again. I can admit I don’t know how that story ended."
+      ]
+  },
+  qiao_chen: {
+      "routine": [
+          "Hello again. I can recognize a face without remembering anybody’s laundry.",
+          "There you are. Is this business, or can I leave the price list alone?"
+      ],
+      "habit": [
+          "We keep meeting. I’m trying not to turn every pause into a collection window.",
+          "Hello again. I can talk without offering a rush service."
+      ]
+  },
+  akira_mori: {
+      "routine": [
+          "There you are again. I can start with hello instead of the whole account.",
+          "I recognize you. Give me a moment to put the digression down."
+      ],
+      "habit": [
+          "We keep meeting. I’m learning that a short greeting doesn’t need a supporting speech.",
+          "Hello again. I have something to say, but you may have something too."
+      ]
+  },
+  ines_valdes: {
+      "routine": [
+          "Hello again. I can greet you without introducing a film.",
+          "There you are. I’m asking, not announcing what you ought to enjoy."
+      ],
+      "habit": [
+          "We keep meeting. I needn’t make every conversation an opening speech.",
+          "Hello again. I can leave a little mystery in my account."
+      ]
+  },
+  vera_valdes: {
+      "routine": [
+          "Oh, hi again. I’m still choosing whether to play.",
+          "I remember you. That doesn’t mean I have to ask for a rematch."
+      ],
+      "habit": [
+          "You again! I can say hi without explaining the whole rule sheet.",
+          "Hi. I’m keeping my game shut for now. We can talk about something else."
+      ]
+  },
+  rafael_valdes: {
+      "routine": [
+          "Hello again. I can stop briefly without calling it no time at all.",
+          "I recognize you. Let me answer before I reach for the reassuring version."
+      ],
+      "habit": [
+          "There you are. I’m trying to give the time I actually have.",
+          "We keep crossing paths. I can be pleased to see you and still leave on time."
+      ]
+  },
+
 };

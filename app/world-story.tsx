@@ -3,7 +3,7 @@ import { actionFamiliarityKey,familiarityView } from '@/lib/action-familiarity';
 import { actionReaction } from '@/lib/action-reactions';
 import { canonicalCharacterById } from '@/lib/character-canon';
 import { economyMonthLabel } from '@/lib/economy';
-import type { Game,Player } from '@/lib/game';
+import type { GameView as Game,Player } from '@/lib/game';
 import { capturePersonReceipt,type ResponseReceipt } from '@/lib/person-response';
 import { qualitativeText } from '@/lib/point-presentation';
 import { sharedOpportunityView } from '@/lib/shared-opportunities';

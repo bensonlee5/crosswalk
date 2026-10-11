@@ -1,6 +1,6 @@
 import {careerStoryGig} from './career-story.ts';
 import {financialPayQuote,recordFinancialPay} from './financial-recovery.ts';
-import type {Game,Player} from './game.ts';
+import type {GameView as Game,Player} from './game.ts';
 import {economyThresholds,economyAutomaticLoss,economyWorkReason,recordEconomyPaidHours} from './economy.ts';
 
 /** Serializable current life events. Game imports use only delayed domain helpers.
@@ -228,6 +228,7 @@ export function repairRelationship(g:Game,p:Player,npc:LifeNpc){
  log(g,`${p.name}: ${c.title}.`);return c;
 }
 export function relationshipViews(p:Player):LifeRelationshipView[]{
+ if(p.castRedacted)return [];
  return lifeNpcs.map(id=>{const r=relation(p,id);return{id,name:names[id],role:roles[id],trust:r.trust,support:r.support,rivalry:r.rivalry,reciprocity:r.reciprocity,status:r.rivalry?'Strained, with room to repair':r.trust>=2?'Trusted friend':r.trust>=1||r.support?'A growing bond':r.trust<0?'Distance, not a closed door':'Getting to know each other',history:[...r.history],...(r.lastRepairWeek!==undefined?{lastRepairWeek:r.lastRepairWeek}:{})};});
 }
 /** Integration hook: call exactly once after each successful ordinary action, never on a preview or denied move. */

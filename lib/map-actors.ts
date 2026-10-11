@@ -1,4 +1,4 @@
-import type {Game,Player} from './game.ts';
+import type {GameView as Game,Player} from './game.ts';
 import {castPeople} from './character-cast.ts';
 import {venuePeople} from './venue-scene.ts';
 import {visiblePlaces} from './world-life.ts';

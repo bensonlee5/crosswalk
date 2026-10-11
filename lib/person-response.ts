@@ -1,4 +1,4 @@
-import type {Game,Player} from './game.ts';
+import type {GameView as Game,Player} from './game.ts';
 import type {CareerNotice} from './careers.ts';
 import type {PortraitExpression} from './portrait-expression.ts';
 import {scenePortraitExpression} from './portrait-expression.ts';

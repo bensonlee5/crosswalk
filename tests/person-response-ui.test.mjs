@@ -1,3 +1,4 @@
+import {committedHooks} from './support/committed-hooks.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -5,6 +6,8 @@ import {createRequire} from 'node:module';
 import vm from 'node:vm';
 import {createGame} from '../supabase/functions/crosswalk-game/game-service.ts';
 import {castPeople} from '../lib/character-cast.ts';
+import {characterCameos} from '../lib/character-cameos.ts';
+import {characterVoices} from '../lib/character-voice.ts';
 import {motiveScene} from '../lib/character-motives.ts';
 import {getStoryView} from '../lib/story-arcs.ts';
 import {regionDefinitions,worldPlaceIds,worldView,worldPlaceName} from '../lib/world-life.ts';
@@ -25,7 +28,8 @@ function uiModules(react = React, globals = {}) {
     loaded.set(file,module);
     const js = ts.transpileModule(readFileSync(file,'utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
     vm.runInNewContext(js, {module,exports:module.exports,...globals,require:id =>
-      id === 'react' ? react :
+      id === 'react' ? {...react, useLayoutEffect: react.useEffect} :
+      id === '@/lib/committed-ref' ? committedHooks(react) :
       id === './game-painting' ? {__esModule:true,default:({src,alt,className})=>React.createElement('img',{src,alt,className})} :
       id === './game-art' ? require(root+'/app/game-art.ts') :
       id.startsWith('@/') ? require(root+'/'+id.slice(2)+'.ts') :
@@ -75,9 +79,9 @@ function harness(select,initialProps,globals={}) {
   return {render:renderNow,get result(){return result;},unmount(){unmounted=true;for(const cleanup of cleanups)cleanup?.();}};
 }
 
-test('all 39 portraits keep actual venue, activity, visible gesture and emotion across every month', () => {
+test('all 53 portraits keep actual venue, activity, visible gesture and emotion across every month', () => {
   const ids = Object.keys(personSceneProfiles);
-  assert.equal(ids.length,39);
+  assert.equal(ids.length,53);
   for(let round=1;round<=8;round++) {
     const {g,p}=fixture(round);
     for(const actorId of ids) {
@@ -131,7 +135,7 @@ test('real encounter panels render all currently accessible actor routes through
       }
     }
   }
-  assert.deepEqual([...seen].sort(),Object.keys(personSceneProfiles).sort());
+  assert.deepEqual([...seen].sort(),[...Object.keys(characterVoices),...characterCameos.map(person=>person.id)].sort());
   assert.equal(rounds.size,8);
   assert.ok(rendered>200,`${rendered} actual encounter routes rendered`);
   t.diagnostic(`${rendered} actual encounter routes, ${seen.size} people, ${rounds.size} months`);

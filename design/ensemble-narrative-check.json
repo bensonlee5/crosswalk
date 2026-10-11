@@ -1,0 +1,39 @@
+{
+  "scope": "Foreground narrative rewrite; mechanics and public summaries fixed",
+  "mechanicalBaseline": "4dc502ff635d1e5e7964050adb1411556dc85fc0",
+  "integratedValidationBase": "2ab7ab772f5c38f9c9caccc548e9d75676ecf39f",
+  "threads": 20,
+  "stages": 60,
+  "alternatives": 169,
+  "changed": {
+    "stageTitles": 60,
+    "stagePrompts": 60,
+    "choiceLabels": 169,
+    "personalOutcomes": 169,
+    "responseSpeech": 169,
+    "responseActivity": 169
+  },
+  "beforeAndAfterMechanicsSha256": "b3b8121462ba1f837f813980b2062760ac3552ee256e7bb21bbd04bc307bfcd9",
+  "publicSummaries": "verbatim unchanged",
+  "derivedPublicEffects": "identical",
+  "preserved": [
+    "choice IDs and order",
+    "source IDs and signals",
+    "previous-choice predicates",
+    "source-dependent predicates",
+    "cash/time/work costs",
+    "flags and claims",
+    "NPC/public narration",
+    "response speaker identity"
+  ],
+  "automatedMeaning": "Structural equivalence and receipt/render integrity, not human enjoyment",
+  "validation": {
+    "focusedStoryPrivacyResponseTests": {
+      "passed": 56,
+      "failed": 0
+    },
+    "frontendTypecheck": "passed on integrated overlay",
+    "changedSourceAndTestLint": "passed",
+    "fullAggregate": "publisher baseline passed 649 before this foreground-only change; final exact-copy aggregate remains publisher-owned"
+  }
+}

@@ -1,4 +1,4 @@
-import type {Game,Player} from './game.ts';
+import type {GameView as Game,Player} from './game.ts';
 import type {CareerLeadDefinition} from './career-content.ts';
 import {regionDefinitions} from './world-life.ts';
 

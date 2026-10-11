@@ -4,7 +4,7 @@ import {createRequire} from 'node:module';
 import vm from 'node:vm';
 import {currentGame} from './current-fixture.mjs';
 const root=new URL('..',import.meta.url).pathname.replace(/\/$/,''),require=createRequire(root+'/package.json'),ts=require('typescript'),React=require('react'),{renderToStaticMarkup}=require('react-dom/server');
-const G=require(root+'/lib/game.ts'),L=require(root+'/lib/life-events.ts'),W=require(root+'/lib/world-life.ts'),C=require(root+'/lib/character-cast.ts'),Progress=require(root+'/lib/life-progress.ts'),E=require(root+'/lib/economy.ts');
+const W=require(root+'/lib/world-life.ts'),C=require(root+'/lib/character-cast.ts'),Progress=require(root+'/lib/life-progress.ts'),E=require(root+'/lib/economy.ts');
 const guardedProgress={...Progress,getLifeProgress:(p,g)=>{assert.notEqual(p.castRedacted,true,'Never recompute personal life from redacted relationship data');return Progress.getLifeProgress(p,g);}};
 const loaded=new Map();
 function load(file){if(loaded.has(file))return loaded.get(file).exports;const module={exports:{}};loaded.set(file,module);const js=ts.transpileModule(readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;vm.runInNewContext(js,{exports:module.exports,module,require:id=>id==='./game-painting'?{__esModule:true,default:props=>React.createElement('img',{src:props.src,alt:props.alt})}:id==='./game-art'?require(root+'/app/game-art.ts'):id==='@/lib/life-progress'?guardedProgress:id.startsWith('@/')?require(root+'/'+id.slice(2)+'.ts'):id.startsWith('./')?load(root+'/app/'+id.slice(2)+'.tsx'):require(id)});return module.exports;}

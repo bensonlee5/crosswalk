@@ -1,4 +1,4 @@
-import type { Game } from './game.ts';
+import type { GameView as Game } from './game.ts';
 import type { CastCharacter } from './cast-characters.ts';
 import { canonicalCharacterById } from './character-canon.ts';
 import { characterVoiceResponse } from './character-voice.ts';

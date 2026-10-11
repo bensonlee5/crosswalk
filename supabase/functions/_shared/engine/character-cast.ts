@@ -1,7 +1,7 @@
 import { cameoAppearances, cameoPeople, resolveCameoChoice } from './character-cameos.ts';
 import { currentCastCharacter, castCanonResponse } from './character-cast-canon.ts';
 import { availableHistoryScene } from './character-history-scenes.ts';
-import type { Game, Player } from './game.ts';
+import type { GameView as Game, Player } from './game.ts';
 import type { RegionId } from './world-life.ts';
 import { visiblePlaces } from './world-life.ts';
 import { castCharacters, type CastCharacter } from './cast-characters.ts';

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "title": "Objects with lives of their own",
-  "introduction": "Food, familiar packaging, useful kitchenware and personal belongings connect the people and places of the Crosswalk Travel Guide. Seven recurring fictional makers give related products a family resemblance; fresh food and handmade work remain their makers’ own. Names, appearances and everyday shared uses extend the established biographies. Whaleskin, Dalloway and Bracken are approved story-development directions, with their possible events labeled separately. Inclusion here does not add usable game inventory.",
+  "introduction": "Food, familiar packaging, useful kitchenware and personal belongings connect the people and places of the Crosswalk Travel Guide. Seven recurring fictional makers give related products a family resemblance; fresh food and handmade work remain their makers’ own. Whaleskin, Dalloway and Bracken appear in playable story situations. Their transfers, uses and consequences depend on what happens in each life; a guide entry does not grant inventory or establish a completed event.",
   "items": [
     {
       "id": "kestrel_breakfast_tea",
@@ -1331,14 +1331,14 @@
     {
       "id": "whaleskin",
       "name": "Whaleskin",
-      "kind": "Proposed fitted van cover",
+      "kind": "Fitted van cover · story object",
       "summary": "Two useless mirror sleeves make a supposedly universal cover impossible to mistake.",
       "description": [
         "Whaleskin is a silver-grey waterproof fitted van cover with two conspicuously floppy wing-mirror sleeves and a bright stitched name label. Spread on the ground, it still looks unmistakably meant for a vehicle. Its advertised universal fit supplies the joke: on Lata’s van, the back would remain uncovered despite the price.",
-        "In the proposed story, Lata buys it and later gives the misfit to Tavi for sheltering produce-staging equipment beside a platform. That is a transfer of ownership, rather than an unexplained chain of borrowing. The loose hem would need proper assessment in its new setting. A recognizable sleeve could identify the material; only Mara’s professional inspection would establish what it had done."
+        "In the playable story, Lata buys the cover and gives the misfit to Tavi for sheltering produce-staging equipment beside a platform. That gift transfers ownership. The loose hem needs proper assessment in its new setting: a recognizable sleeve can identify the material, while Mara’s professional inspection establishes its effect on runoff. An early check can prevent the obstruction; later consequences depend on the choices and weather recorded in that life."
       ],
       "history": [
-        "This object has no established event history. It was devised from Lata’s delivery work, Tavi’s harbor growing and Mara’s maintenance expertise. Its proposed comic consequence is that the pinned waterproof edge obstructs runoff. A later photograph of the removed cover could make Lata look more heroic than the full sequence warrants."
+        "The story draws on Lata’s delivery work, Tavi’s harbor growing and Mara’s maintenance expertise. The mirror sleeves make a failed promise of universal fit visible before anyone understands the risk of its new use. A later photograph can tell a selective version of the work, but neither a heroic account nor a blocked outlet is guaranteed history. Each life records whether the edge was checked, what the weather affected and what the crew actually established."
       ],
       "regionIds": [
         "pelagia"
@@ -1346,15 +1346,15 @@
       "people": [
         {
           "id": "lata_rao",
-          "relationship": "Proposed purchaser and first owner"
+          "relationship": "Purchaser and original owner in the story; gives the misfit to Tavi"
         },
         {
           "id": "pelagia_tavi",
-          "relationship": "Proposed recipient who reuses the cover"
+          "relationship": "Recipient and owner after the gift; decides how the cover is reused"
         },
         {
           "id": "pelagia_mara",
-          "relationship": "Proposed engineer who diagnoses its effect on drainage"
+          "relationship": "Engineer whose professional inspection can establish the cover’s effect on drainage"
         }
       ],
       "venueIds": [
@@ -1362,37 +1362,37 @@
         "pelagia-garden",
         "pelagia-work"
       ],
-      "storyStatus": "proposed_story_object",
-      "gameStatus": "worldbuilding",
+      "storyStatus": "playable_story_object",
+      "gameStatus": "implemented",
       "brand": "Whaleskin",
       "image": {
         "src": "items/whaleskin.webp",
         "alt": "A silver-grey fitted van cover laid loose, with two floppy mirror sleeves and a stitched Whaleskin label.",
         "type": "object_portrait"
       },
-      "placeNote": "All use and movement here belong to a proposed Pelagian storyline, not an event already recorded at these venues.",
-      "storyNote": "Proposed storyline only: Lata buys the badly fitting cover, gives it to Tavi, and Mara later establishes that its reused edge blocked runoff. These events have not happened in the game or the established biographies.",
+      "placeNote": "The story begins at Gatehouse Landing, linking the public loading route with Tavi’s growing work and Mara’s inspection responsibilities. Produce deliveries can affect other harbor routines, but the guide does not promise an object at every linked venue.",
+      "storyNote": "Playable story situation: an ill-fitting purchase becomes a gift and a tempting reuse. Checking the outlet early can prevent a problem. If runoff is obstructed, its cause is established by professional inspection rather than a bystander’s guess. Ownership, any later agreed custody and the public account follow the events actually recorded in this life.",
       "ownership": {
-        "ownerLabel": "Proposed sequence: Lata buys it, then gives it to Tavi."
+        "ownerLabel": "In the story, Lata buys the cover and gives it to Tavi. Later agreed custody is recorded separately from ownership."
       },
       "brandId": "whaleskin",
       "brandIds": [
         "whaleskin"
       ],
-      "brandRole": "Manufacturer of the proposed fitted cover.",
-      "canonStatus": "proposed_story_direction"
+      "brandRole": "Manufacturer of the fitted cover; the story distinguishes its universal-fit claim from the fit and use of this particular object.",
+      "canonStatus": "playable_story_direction"
     },
     {
       "id": "dalloway",
       "name": "Dalloway",
-      "kind": "Proposed bicycle bell",
+      "kind": "Two-note bicycle bell · story object",
       "summary": "June’s repaired bell could become an excellent way for grateful diners to ask for more.",
       "description": [
         "Dalloway’s Two-Note is a battered chrome bicycle bell clipped to the diner counter, its name stamped beside a worn thumb paddle. It rings a bright ding on the press and a lower dong when released. The return spring is ordinary and repairable; the recognizability comes from the two notes and the slightly ridiculous place where the bell has ended up.",
-        "In the proposed story, June owns the bell and restores its spring before a farewell to her station-announcing work. Esperanza’s “JUNE’S LAST ORDERS” tag and Kit’s empty-counter drawing would make the wrong workplace sound as though it were losing her. Meanwhile, appreciative customers could use her successful repair to summon still more service."
+        "In the playable story, June owns the bell and repairs its return spring while considering a change to her station-announcing work. Esperanza’s “JUNE’S LAST ORDERS” tag and Kit’s empty-counter drawing can make the wrong workplace sound as though it is losing her. Meanwhile, appreciative customers can use her successful repair to summon still more service. June’s work decision remains hers; the diner is still open."
       ],
       "history": [
-        "There is no established Dalloway episode. The proposal builds on June’s existing combination of cooking, bicycle repair and station announcements. Moving the bell by agreement to the kitchen pass, to announce finished plates, would change its demand on her. June would remain a cook; neither the bell nor somebody else’s farewell decides which work she leaves."
+        "The story builds on June’s established combination of cooking, bicycle repair and station announcements. The bell makes her competence audible while revealing how readily people ask for more of it. Moving it by agreement to the kitchen pass, to announce finished plates, changes what the ringing asks of her. June remains a cook; whether she leaves or retains station work follows the actual story outcome."
       ],
       "regionIds": [
         "embermesa"
@@ -1400,15 +1400,15 @@
       "people": [
         {
           "id": "mesa_june",
-          "relationship": "Proposed bell owner, repairer and decision-maker about its use"
+          "relationship": "Bell owner, repairer and decision-maker about its use and her work"
         },
         {
           "id": "esperanza_vega",
-          "relationship": "Proposed farewell-label maker"
+          "relationship": "Farewell-label maker in the story"
         },
         {
           "id": "kit",
-          "relationship": "Proposed illustrator of the empty-counter image"
+          "relationship": "Illustrator whose empty-counter image can be mistaken for news about the diner"
         }
       ],
       "venueIds": [
@@ -1416,37 +1416,40 @@
         "embermesa-transit",
         "embermesa-makerspace"
       ],
-      "storyStatus": "proposed_story_object",
-      "gameStatus": "worldbuilding",
+      "storyStatus": "playable_story_object",
+      "gameStatus": "implemented",
       "brand": "Dalloway",
       "image": {
         "src": "items/dalloway.webp",
         "alt": "A battered chrome bicycle bell clipped to a diner counter, with a worn thumb paddle and stamped Dalloway name.",
         "type": "object_portrait"
       },
-      "placeNote": "Proposed uses connect the diner, bicycle work and station; no retirement or farewell has already occurred.",
-      "storyNote": "Proposed storyline only: June repairs the bell before leaving station announcing, a farewell is mistaken for departure from the diner, and its eventual placement is decided with her. June’s announced decision and these events are not established biography.",
+      "placeNote": "The story begins at Last Light Diner. Its bell, repair work and station-farewell confusion connect this counter with The Second Try and Mesa Rail Station; a link does not mean June has left either job.",
+      "storyNote": "Playable story situation: a repaired bell and an unclear farewell can bring June exactly the extra service she hoped to escape. The sign can be corrected, food commitments still need honoring and the bell’s use can be changed with her agreement. June stays a cook; her station decision, any kitchen-pass placement and their consequences are recorded within each life.",
       "ownership": {
-        "ownerLabel": "June would own the bell in the proposed storyline."
+        "ownerIds": [
+          "mesa_june"
+        ],
+        "ownerLabel": "June owns the bell. Moving it by agreement changes its use, not its owner."
       },
       "brandId": "dalloway",
       "brandIds": [
         "dalloway"
       ],
-      "brandRole": "Manufacturer of the proposed Two-Note bicycle bell.",
-      "canonStatus": "proposed_story_direction"
+      "brandRole": "Manufacturer of the Two-Note bicycle bell; June’s repair and decisions determine the use of her particular bell.",
+      "canonStatus": "playable_story_direction"
     },
     {
       "id": "bracken",
       "name": "Bracken",
-      "kind": "Proposed bass drum",
+      "kind": "Redbank bass drum · story object",
       "summary": "A transparent drumhead makes Nell’s “one thing in storage” visibly include a place to sleep.",
       "description": [
         "The Bracken Redbank is a large dark-red bass drum with chrome lugs and a transparent front head. Nell’s own blue-check duvet is plainly visible inside, where bedding can legitimately damp the sound. A small maker’s mark stays secondary to that unmistakable circle of blue checks. The instrument is ordinary; its contents make an understatement difficult to sustain.",
-        "In the proposed story, Nell owns both drum and duvet. Ruth has allowed storage, then rents the room to Jonah. Calling the remaining obstruction “one drum” would minimize how much room and fallback lodging Nell still expects. Ruth’s hospitality and Jonah’s rent create different claims that need an actual conversation."
+        "The playable scene begins after Jonah has paid to occupy Ruth’s spare room. Nell owns both the drum and the blue-check duvet inside it; Ruth’s earlier storage permission is a different agreement from Jonah’s tenancy. Calling the remaining obstruction “one drum” minimizes how much room and fallback lodging Nell still expects. Ruth’s hospitality and Jonah’s paid occupancy create different claims that require a conversation."
       ],
       "history": [
-        "Nell’s traveling work and amateur drumming, Ruth’s home, and Jonah’s wish for a room of their own provide the existing character foundations. The drum, storage arrangement and tenancy are new proposals. Moving it to rehearsal, travel or paid storage would change cost and access, but no destination automatically settles Nell’s relationships or requires her to choose a permanent home."
+        "The story draws on Nell’s traveling work and amateur drumming, Ruth’s home and Jonah’s wish for a room of their own. The opening tenancy is a fact of this scene, not a change to their pre-story biographies. The drum’s clear head makes the hidden expectation of a bed visible. Rehearsal, travel or paid storage can change costs and access, but a destination does not automatically settle Nell’s relationships or require her to choose a permanent home."
       ],
       "regionIds": [
         "traveler",
@@ -1455,15 +1458,15 @@
       "people": [
         {
           "id": "nell_harper",
-          "relationship": "Proposed owner of the drum and the blue-check duvet inside"
+          "relationship": "Owner of the drum and the blue-check duvet inside it"
         },
         {
           "id": "ruth_harper",
-          "relationship": "Proposed room owner and temporary storage host"
+          "relationship": "Room owner and temporary storage host in the story"
         },
         {
           "id": "jonah_bell",
-          "relationship": "Proposed paying occupant whose room access is affected"
+          "relationship": "Paying occupant whose agreed room access is affected when this scene begins"
         }
       ],
       "venueIds": [
@@ -1471,25 +1474,28 @@
         "alder-community",
         "alder-transit"
       ],
-      "storyStatus": "proposed_story_object",
-      "gameStatus": "worldbuilding",
+      "storyStatus": "playable_story_object",
+      "gameStatus": "implemented",
       "brand": "Bracken",
       "image": {
         "src": "items/bracken.webp",
         "alt": "A dark-red bass drum with chrome lugs and a clear front head showing a blue-check duvet inside.",
         "type": "object_portrait"
       },
-      "placeNote": "Proposed Alder room-storage and rehearsal associations; Ruth’s room is not an established visitable rental in the game.",
-      "storyNote": "Proposed storyline only: Nell’s drum and bedding remain in Ruth’s room after Jonah rents it, and the adults negotiate where the belongings will go. No such tenancy, storage agreement or resolution is established yet.",
+      "placeNote": "The story begins in the Alder home setting associated with Rainwell Court, with later rehearsal and travel connections to Common Table Hall and Alder Ferry & Rail. Ruth’s room is a story setting, not an extra apartment contract offered to the player.",
+      "storyNote": "Playable story situation: Nell’s drum and bedding remain in Ruth’s room after Jonah rents it. The adults can distinguish storage, room access and accommodation, then decide where the belongings will go. Nell keeps ownership of drum and duvet; destination, expense, access and any later arrangement depend on the choices recorded in this life.",
       "ownership": {
-        "ownerLabel": "Nell would own both drum and duvet; Ruth would own the room, with Jonah holding the proposed agreed occupancy."
+        "ownerIds": [
+          "nell_harper"
+        ],
+        "ownerLabel": "Nell owns the drum and duvet. In this scene Ruth owns the room, and Jonah has paid for the agreed occupancy."
       },
       "brandId": "bracken",
       "brandIds": [
         "bracken"
       ],
-      "brandRole": "Manufacturer of the proposed Redbank bass drum; Nell owns the drum and duvet in that proposal.",
-      "canonStatus": "proposed_story_direction"
+      "brandRole": "Manufacturer of the Redbank bass drum; Nell owns the drum and the separate duvet used inside it.",
+      "canonStatus": "playable_story_direction"
     }
   ],
   "brands": [
@@ -1658,7 +1664,7 @@
       ],
       "description": [
         "Rowan’s basket is useful because it separates damp plants from dry books. A Dalloway name tells them where the basket came from, while its pale replacement strip records the work of keeping this particular one in use.",
-        "June’s proposed bell supplies the sharper joke: a successful repair can make an object better at doing something its owner would rather it stopped demanding."
+        "June’s story bell supplies the sharper joke: a successful repair can make an object better at doing something its owner would rather it stopped demanding. What its renewed ringing means depends on the arrangements made in that life."
       ],
       "voices": [
         {
@@ -1667,8 +1673,8 @@
         },
         {
           "characterId": "mesa_june",
-          "text": "In the proposed story, repairs the bell readily enough and then must decide what its renewed ringing is for.",
-          "storyStatus": "proposed_story_object"
+          "text": "In her story, repairs the bell and must decide what its renewed ringing is for. The outcome depends on the arrangements made.",
+          "storyStatus": "playable_story_object"
         }
       ],
       "itemIds": [
@@ -1696,7 +1702,7 @@
       ],
       "description": [
         "Amir cares about what a keyboard lets him try quietly. Rosa wants a radio dial she can reach while delivering an opinion about the commentary. The same maker serves active music-making and happily opinionated listening.",
-        "The proposed Bracken drum is a larger, costlier member of the same family. Its clear head makes Nell’s blue-check duvet more visually memorable than the discreet maker’s mark."
+        "The Redbank story drum is a larger, costlier member of the same family. Its clear head makes Nell’s blue-check duvet more visually memorable than the discreet maker’s mark."
       ],
       "voices": [
         {
@@ -1709,8 +1715,8 @@
         },
         {
           "characterId": "nell_harper",
-          "text": "In the proposed story, the bass drum is both an instrument she values and a bulky claim on someone else’s room.",
-          "storyStatus": "proposed_story_object"
+          "text": "In her story, values the bass drum while its visible duvet makes a bulky claim on someone else’s room difficult to ignore.",
+          "storyStatus": "playable_story_object"
         }
       ],
       "itemIds": [
@@ -1737,11 +1743,11 @@
       "quality": "Good protective materials and serviceable closures, with a reputation for bulky construction. A standard fit still needs checking against the actual object.",
       "history": [
         "Whaleskin began with protective wraps for working-port goods and broadened into instrument cases and vehicle covers. That shared origin explains why a small notebook sleeve and a technician’s large case carry the same navy seam.",
-        "The firm’s useful promise is to protect something already worth carrying. Its weak point is how readily a broad product label can sound like a personal guarantee. The badly fitting van cover is a proposed example, not an established scandal or failed product recall."
+        "The firm’s useful promise is to protect something already worth carrying. Its weak point is how readily a broad product label can sound like a personal guarantee. The badly fitting van cover in Lata’s story is one particular purchase, not an established scandal or a product recall."
       ],
       "description": [
         "Nell favors a case that can take an ordinary knock during a transfer. Priya needs only a wipe-clean sleeve that lets her read a notebook in damp weather.",
-        "Their different requirements make Whaleskin recognizable without making it everyone’s favorite. Lata’s proposed costly misfit would put the same brand in an altogether less flattering conversation."
+        "Their different requirements make Whaleskin recognizable without making it everyone’s favorite. Lata’s costly story misfit can put the same brand in an altogether less flattering conversation."
       ],
       "voices": [
         {
@@ -1754,8 +1760,8 @@
         },
         {
           "characterId": "lata_rao",
-          "text": "In the proposed story, resents paying for a universal cover that leaves the van’s rear exposed.",
-          "storyStatus": "proposed_story_object"
+          "text": "In her story, resents paying for a universal cover that leaves the van’s rear exposed; its later use and consequences depend on the actual choices.",
+          "storyStatus": "playable_story_object"
         }
       ],
       "itemIds": [

@@ -69,7 +69,7 @@ export function qualitativeText(input:string):string {
  return text.replace(/(^|[.!?]\s+)([a-z])/g,(_m,start,letter)=>start+letter.toUpperCase());
 }
 /** The browser's visible-game reader is a presentation surface, not a save dump. */
-export function visibleGameSummary(g:import('./game').Game|null){
+export function visibleGameSummary(g:import('./game').GameView|null){
  if(!g)return null;
  return{code:g.code,status:g.status,round:g.round,maxRounds:g.maxRounds,currentPlayer:g.players[g.turn]?.name,players:g.players.map(p=>({name:p.name,place:p.place,cash:p.cash,hours:p.hours,energy:qualitativeStat('energy',p.energy),mood:qualitativeStat('joy',p.joy),learning:qualitativeStat('skill',p.skill),connections:qualitativeStat('social',p.social),creativeLife:qualitativeStat('craft',p.craft||0),legacy:qualitativeStat('legacy',p.legacy||0)})),recentEvents:g.log.slice(0,8).map(qualitativeText)};
 }

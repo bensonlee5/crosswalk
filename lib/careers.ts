@@ -1,5 +1,5 @@
 import { eligibleCareerConversation, careerNoticeSpeech } from './career-evidence.ts';
-import type { Game, Player } from './game.ts';
+import type { GameView as Game, Player } from './game.ts';
 import { weatherEffect, consumeWeather } from './weather.ts';
 import { careerTracks, careerCourses, careerPostings, careerLeads, type CareerField, type CareerRoleDefinition, type CareerPostingDefinition } from './career-content.ts';
 import { economyProfile, economyQuote, economyRegionalWorkQuote, economyWorkReason, recordEconomyPaidHours, formatEconomyMoney, monthlyBills } from './economy.ts';
@@ -493,12 +493,13 @@ export function recordCareerEvidence(g: Game, p: Player, context: {
     round: number;
     replay: boolean;
     actionId?: string;
+    workField?: CareerField;
 }, paidHoursGained = 0) {
     if (!state(p) || context.replay || context.round !== g.round || context.actionKey.startsWith('career:'))
         return;
     const s = state(p)!;
     let changed = false;
-    const field = context.actionKey==='weekly_opportunity'?'civic':(/^shared:[^:]+:prepare/.test(context.actionKey) ? 'service' : /^story:.*:(setup|coordinate|take_shift)$/.test(context.actionKey) ? 'civic' : /independent_service/.test(context.actionKey) ? 'technical' : /jo_referral/.test(context.actionKey) ? 'practical' : /community_pivot/.test(context.actionKey) ? 'civic' : undefined);
+    const field = context.actionKey.startsWith('ensemble:') ? context.workField : context.actionKey==='weekly_opportunity'?'civic':(/^shared:[^:]+:prepare/.test(context.actionKey) ? 'service' : /^story:.*:(setup|coordinate|take_shift)$/.test(context.actionKey) ? 'civic' : /independent_service/.test(context.actionKey) ? 'technical' : /jo_referral/.test(context.actionKey) ? 'practical' : /community_pivot/.test(context.actionKey) ? 'civic' : undefined);
     if (paidHoursGained > 0 && field) {
         gainExperience(p, g, field, paidHoursGained, context.actorIds[0]);
         changed = true;

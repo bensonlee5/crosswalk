@@ -124,3 +124,17 @@ test('chapter boundaries and clock alerts remain separate from semantic foley',(
  assert.equal(clockSound(p,p),null);
  assert.equal(clockSound(p,{...p,id:'other',hours:0}),null);
 });
+
+ test('ensemble audio requires a fresh exact personal physical-action receipt',()=>{
+ const {p}=fixture(),action='ensemble:bracken:personal:tea:2';
+ const receipt={id:'confirmed-tea',actionId:action,soundCue:'sip'};
+ const before={...p,ensemble:{version:1,receipts:[]}};
+ const after={...before,hours:before.hours-1,ensemble:{version:1,receipts:[receipt]}};
+ assert.equal(actionSound('move',action,before,after),'sip');
+ assert.equal(actionSound('move',action,after,after),null);
+ assert.equal(actionSound('move',action,{...after,hours:before.hours},after),null);
+ assert.equal(actionSound('move',action,before,{...after,ensemble:{version:1,receipts:[]}}),null);
+ assert.equal(actionSound('move',action,before,{...after,hours:before.hours}),null);
+ assert.equal(actionSound('move',action,before,{...after,ensemble:{version:1,receipts:[{...receipt,soundCue:undefined}]}}),null);
+ assert.equal(actionSound('move','ensemble:bracken:personal:pay:2',before,after),null);
+ });

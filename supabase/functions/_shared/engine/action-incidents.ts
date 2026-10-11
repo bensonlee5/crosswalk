@@ -1,4 +1,4 @@
-import type { Activity, Game, Player } from './game.ts';
+import type { Activity, GameView as Game, Player } from './game.ts';
 import { ordinaryIncidentFamilies, incidentDrafts, contextualIncidentLines, type IncidentFamily } from './action-incident-content.ts';
 import { incidentalPeople, type IncidentPersonLine } from './action-incident-people.ts';
 import { canonicalCharacterById } from './character-canon.ts';

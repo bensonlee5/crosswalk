@@ -1,4 +1,4 @@
-import type {Game,Player} from './game.ts';
+import type {GameView as Game,Player} from './game.ts';
 /** Story work uses the same preparation and paid practice as venue careers. */
 export function careerStoryGig(_g:Game,p:Player,id:string){
  if(id!=='independent_service'||!p.career)return null;

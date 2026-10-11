@@ -1,3 +1,4 @@
+import {afterEnsembleAction} from '../lib/ensemble-story.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {move} from '../lib/game.ts';
@@ -44,6 +45,8 @@ test('all four later conversations have real persisted consequences without inve
  for(const scene of historyScenes)for(const key of ['history_share','history_boundary'])for(const remote of [false,true]){
   const g=fixture(),p=g.players[0];g.round=6;close(g,scene.person);if(scene.other==='jo')p.life.relationships.jo.history.push('PRIVATE JO MEMORY');else {p.world.localBonds[scene.other]=1;p.world.story.localTalks[scene.other]=1;}
   const c=castCharacters.find(c=>c.id===scene.person);p.world.region=c.region;g.cast.schedule[6]=remote?[]:[{id:c.id,region:c.region,spot:'COMMUNITY',kind:'local'}];
+  // This fixture changes towns directly; complete the current arrival hook before measuring the conversation.
+  afterEnsembleAction(g);
   p.hours=key==='history_boundary'?0:1;const old={cash:p.cash,energy:p.energy,joy:p.joy,world:structuredClone(p.world),life:structuredClone(p.life)};
   const choice=act(g,c.id,key);assert.equal(choice.cost.time,key==='history_share'?1:0);assert.equal(p.hours,0);assert.equal(p.cash,old.cash);assert.equal(p.energy,old.energy);assert.equal(p.joy,old.joy);assert.deepEqual(p.world,old.world);assert.deepEqual(p.life,old.life);
   assert.equal(p.cast.bonds[c.id].historyScene.id,scene.id);assert.ok(castEnding(g,p).some(t=>t.includes(choice.outcome)));assert.ok(!choice.outcome.includes('PRIVATE JO MEMORY'));

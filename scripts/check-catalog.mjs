@@ -28,6 +28,12 @@ for (const item of items) {
   for (const field of ['name','kind','summary','description','history','storyNote','placeNote','brandRole']) for (const value of paragraphs(item[field])) assert.ok(html.includes(escape(value)), `${item.id}/${field}`);
   assert.ok(html.includes(`data-item-status="${item.storyStatus}"`));
   if (item.storyStatus === 'proposed_story_object') assert.match(html, /Proposed story use/);
+  if (item.storyStatus === 'playable_story_object') {
+    assert.equal(item.gameStatus, 'implemented');
+    assert.match(html, /<strong>Story object<\/strong>/);
+    assert.match(html, /Ownership, custody and consequences follow what actually happens in each life/);
+    assert.doesNotMatch(html, /not a playable quest|This proposal is separate from/);
+  }
   if (!item.image) assert.doesNotMatch(html, /<img\b/, 'Objects without their own art must be text-led');
   for (const person of item.people) {
     assert.ok(html.includes(`href="../../characters/${person.id}/"`));

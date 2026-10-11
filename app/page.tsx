@@ -1,4 +1,5 @@
 'use client';
+import {useCommittedEvent} from '@/lib/committed-ref';
 import AccountPanel from '@/components/account-panel';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
@@ -13,6 +14,7 @@ import { economyMonthLabel } from '@/lib/economy';
 import { isFoleyCue } from '@/lib/foley';
 import type { Player } from '@/lib/game';
 import { gameFetch, getOwnerSession, subscribeOwnerSession } from '@/lib/game-api';
+import {gameErrorEnvelope, type OwnedGameSnapshot, type RoomLookupSnapshot} from '@/lib/game-response';
 import { snapshotIsCurrent, weekPreview } from '@/lib/game-view';
 import { getLifeEvent } from '@/lib/life-events';
 import { qualitativeStat, qualitativeText, visibleGameSummary } from '@/lib/point-presentation';
@@ -32,9 +34,10 @@ import './save-progress.css';
 import { SoundSettings, useGameSound } from './sound-controls';
 import WeatherIcon from './weather-icon';
 const colors = ['#ef8767', '#7aa4ef', '#ad89d6', '#dfb851'];
+type ModelContextDocument = Document & { modelContext?: { registerTool?: (tool: { name: string; description: string; inputSchema: { type: 'object'; properties: Record<string, never>; additionalProperties: false }; annotations: { readOnlyHint: true }; execute: () => { game: ReturnType<typeof visibleGameSummary> } }, options: { signal: AbortSignal }) => unknown } };
 const money = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
 export default function Home() {
-    const [g, setG] = useState<any>(null), [screen, setScreen] = useState('home'), [mode, setMode] = useState('hotseat'), [count, setCount] = useState(2), [names, setNames] = useState(['Alex', 'Sam', 'Charlie', 'Jordan']), [name, setName] = useState(''), [code, setCode] = useState(''), [busy, setBusy] = useState(false), [error, setError] = useState(''), [offline, setOffline] = useState(false), [rules, setRules] = useState(false), [handoff, setHandoff] = useState(false), [copied, setCopied] = useState(false), [lastRoom, setLastRoom] = useState(''), [restoring, setRestoring] = useState(false), [reviewWeek, setReviewWeek] = useState(false), [reviewStart, setReviewStart] = useState(false), [lastSync, setLastSync] = useState(0);
+    const [g, setG] = useState<OwnedGameSnapshot | null>(null), [screen, setScreen] = useState('home'), [mode, setMode] = useState('hotseat'), [count, setCount] = useState(2), [names, setNames] = useState(['Alex', 'Sam', 'Charlie', 'Jordan']), [name, setName] = useState(''), [code, setCode] = useState(''), [busy, setBusy] = useState(false), [error, setError] = useState(''), [offline, setOffline] = useState(false), [rules, setRules] = useState(false), [handoff, setHandoff] = useState(false), [copied, setCopied] = useState(false), [lastRoom, setLastRoom] = useState(''), [restoring, setRestoring] = useState(false), [reviewWeek, setReviewWeek] = useState(false), [reviewStart, setReviewStart] = useState(false), [lastSync, setLastSync] = useState(0);
     const [newsOpen, setNewsOpen] = useState(false);
     const [refreshRequired, setRefreshRequired] = useState(false);
     const [newLifeRequired, setNewLifeRequired] = useState(false);
@@ -49,11 +52,11 @@ export default function Home() {
     const [soundOpen, setSoundOpen] = useState(false);
     const sound = useGameSound(screen === 'game' && g?.status === 'playing');
     const [tutorialReplay, setTutorialReplay] = useState(0), [tutorialOfferRoom, setTutorialOfferRoom] = useState('');
-    const current = useRef<any>(null), lock = useRef(false), session = useRef({ epoch: 0, code: '' });
-    current.current = g;
+    const current = useRef<OwnedGameSnapshot | null>(null), lock = useRef(false), session = useRef({ epoch: 0, code: '' });
+    // receive/leave own this authoritative value; a speculative render must never roll it back.
     const audioReceipts = useRef(new ActionAudioReceipts());
-    function receive(data: any, epoch: number) { if (epoch !== session.current.epoch)
-        return false; if (data.mine) {
+    function receive(data: RoomLookupSnapshot, epoch: number) { if (epoch !== session.current.epoch)
+        return false; if (isOwnedGameSnapshot(data)) {
         const old = current.current;
         if (!snapshotIsCurrent(old, data))
             return false;
@@ -72,14 +75,14 @@ export default function Home() {
             try {
                 seen = sessionStorage.getItem('cw_news_' + data.code + '_' + data.round) === 'read';
             }
-            catch { }
+            catch { /* The Chronicle can be shown again if session storage is unavailable. */ }
             if (!seen)
                 setNewsOpen(true);
         }
         try {
             localStorage.setItem('cw_room', data.code);
         }
-        catch { }
+        catch { /* The authoritative saved-game history remains available without this local shortcut. */ }
         setLastRoom(data.code);
         historyRequest.current++;
         setHistoryLoading(false);
@@ -106,8 +109,8 @@ export default function Home() {
         setError('');
     } const epoch = session.current.epoch; try {
         const r = await gameFetch(currentGameQuery({ code: c }), { cache: 'no-store' });
-        const d: any = await r.json();
-        if (d.newLifeRequired) {
+        const d: unknown = await r.json(), failure = gameErrorEnvelope(d);
+        if (failure.newLifeRequired) {
             if (epoch === session.current.epoch) {
                 setNewLifeRequired(true);
                 setOffline(false);
@@ -115,16 +118,16 @@ export default function Home() {
             }
             return;
         }
-        if (d.refreshRequired) {
+        if (failure.refreshRequired) {
             if (epoch === session.current.epoch) {
                 setRefreshRequired(true);
                 setOffline(false);
-                setError(d.error || 'Open the latest Crosswalk page to resume. Your saved seat is unchanged.');
+                setError(failure.error || 'Open the latest Crosswalk page to resume. Your saved seat is unchanged.');
             }
             return;
         }
         if (!r.ok)
-            throw Error(d.error);
+            throw Error(failure.error);
         if (!isRoomLookupSnapshot(d, c))
             throw Error('The server response was incomplete. Your last confirmed game is unchanged.');
         if (epoch !== session.current.epoch || session.current.code !== c)
@@ -162,12 +165,12 @@ export default function Home() {
     function clearPending(id: string) { try {
         forgetPending(localStorage, id);
     }
-    catch { } const records = readPending(); const next = records.find(p => p.request.requestId !== id && !p.deferred) || null; pendingRef.current = next; setPending(next); setDeferredSaves(records.filter(p => p.deferred)); setOwnerMismatch(false); }
+    catch { /* Continue updating in-memory recovery state if browser storage cannot be cleared. */ } const records = readPending(); const next = records.find(p => p.request.requestId !== id && !p.deferred) || null; pendingRef.current = next; setPending(next); setDeferredSaves(records.filter(p => p.deferred)); setOwnerMismatch(false); }
     function checkLater(unsupported = false) { const value = pendingRef.current; if (!value)
         return; const deferred = { ...value, deferred: true, ...(unsupported ? { unsupported: true } : {}) }; let persisted = false; try {
         persisted = rememberPending(localStorage, deferred);
     }
-    catch { } setDeferredSaves(saves => [deferred, ...saves.filter(s => s.request.requestId !== value.request.requestId)]); pendingRef.current = null; setPending(null); setOwnerMismatch(false); leave(); if (!persisted) {
+    catch { /* Report the failed persistence below while retaining this request in memory. */ } setDeferredSaves(saves => [deferred, ...saves.filter(s => s.request.requestId !== value.request.requestId)]); pendingRef.current = null; setPending(null); setOwnerMismatch(false); leave(); if (!persisted) {
         setStorageWarning(true);
         setError('This browser could not remember Check later. Keep this tab open to return to the unconfirmed action.');
     } }
@@ -197,28 +200,7 @@ export default function Home() {
                 setHistoryLoading(false);
         }
     }
-    useEffect(() => subscribeOwnerSession(accountChanged), []);
-    useEffect(() => { try {
-        setLastRoom(localStorage.getItem('cw_room') || '');
-    }
-    catch {
-        setStorageWarning(true);
-    } void loadHistory(); const c = new URLSearchParams(location.search).get('room')?.toUpperCase(); const all = readPending(); setDeferredSaves(all.filter(p => p.deferred)); const saved = all.filter(p => !p.deferred); const uncertain = (c ? saved.find(p => p.request.code === c) : saved[0]) || saved[0]; if (uncertain) {
-        pendingRef.current = uncertain;
-        setPending(uncertain);
-        void send(uncertain.request.op, {}, uncertain);
-    }
-    else if (c) {
-        setCode(c);
-        void refresh(c, true);
-    } }, []);
-    useEffect(() => { if (!g || g.status === 'finished' || newLifeRequired)
-        return; const c = g.code; const poll = () => { if (document.visibilityState === 'visible' && !lock.current && !pendingRef.current)
-        void refresh(c); }; const reconnect = () => { if (pendingRef.current)
-        void send(pendingRef.current.request.op, {}, pendingRef.current);
-    else
-        poll(); }; const i = setInterval(poll, 3000); window.addEventListener('focus', poll); window.addEventListener('online', reconnect); document.addEventListener('visibilitychange', poll); return () => { clearInterval(i); window.removeEventListener('focus', poll); window.removeEventListener('online', reconnect); document.removeEventListener('visibilitychange', poll); }; }, [g?.code, g?.status, newLifeRequired]);
-    async function send(op: string, extra: any = {}, recovery?: PendingSave) {
+    async function send(op: string, extra: Partial<SaveRequest> = {}, recovery?: PendingSave) {
         if ((refreshRequired || newLifeRequired) && !recovery)
             return;
         if (recovery && (recovery.unsupported || !isCurrentSaveRequest(recovery.request))) {
@@ -256,8 +238,9 @@ export default function Home() {
             keepPending(intent);
             uncertain = true;
             const { response: r, data: d } = await postSavedRequest(intent.request, gameFetch);
+            const failure = gameErrorEnvelope(d);
             if (!r.ok) {
-                if (d.newLifeRequired) {
+                if (failure.newLifeRequired) {
                     if (epoch === session.current.epoch) {
                         setNewLifeRequired(true);
                         setOwnerMismatch(false);
@@ -266,19 +249,19 @@ export default function Home() {
                     }
                     return;
                 }
-                if (d.refreshRequired) {
+                if (failure.refreshRequired) {
                     if (epoch === session.current.epoch) {
                         setRefreshRequired(true);
                         setOwnerMismatch(false);
                         setOffline(false);
-                        setError(d.error || 'Open the latest Crosswalk page, then check this saved action. Your progress is safe.');
+                        setError(failure.error || 'Open the latest Crosswalk page, then check this saved action. Your progress is safe.');
                     }
                     return;
                 }
-                if (r.status === 401 || d.sessionRequired || r.status === 403 && d.identityMismatch) {
+                if (r.status === 401 || failure.sessionRequired || r.status === 403 && failure.identityMismatch) {
                     if (epoch === session.current.epoch) {
                         setOwnerMismatch(true);
-                        setError(d.error || 'Return to the account or guest session that owns this action, then check it again.');
+                        setError(failure.error || 'Return to the account or guest session that owns this action, then check it again.');
                     }
                     return;
                 }
@@ -294,7 +277,7 @@ export default function Home() {
                     session.current.code = intent.request.code;
                     await refresh(intent.request.code);
                 }
-                throw Error(r.status === 428 ? 'This browser is not keeping a saved session. Allow site storage before starting a game.' : d.error || 'The saved action could not be checked.');
+                throw Error(r.status === 428 ? 'This browser is not keeping a saved session. Allow site storage before starting a game.' : failure.error || 'The saved action could not be checked.');
             }
             if (!isOwnedGameSnapshot(d) || (intent.request.op !== 'create' && d.code !== intent.request.code))
                 throw Error('The server response was incomplete. Check your saved action again.');
@@ -314,7 +297,7 @@ export default function Home() {
             setOffline(false);
             if (audioReceipts.current.consume({ request: intent.request, epoch, currentEpoch: session.current.epoch, currentOwner: ownerRef.current, recovery: !!recovery, accepted, before: state, after: d })) {
                 const beforePlayer: Player | undefined = state?.players?.[state.turn], afterPlayer: Player | undefined = d.players?.find((p: Player) => p.id === beforePlayer?.id);
-                if (op === 'move' && beforePlayer && afterPlayer) {
+                if (op === 'move' && state && beforePlayer && afterPlayer) {
                     const actionId = intent.request.action || '', worldChoice = actionId.startsWith('world:') ? worldChoices(beforePlayer, state).find(c => c.id === actionId.slice(6)) : undefined;
                     const transition = actionId === 'end' ? 'end' : worldChoice && !worldChoice.actorId && ['travel', 'relocate'].includes(worldChoice.kind) ? worldChoice.kind : null;
                     if (transition) {
@@ -364,20 +347,47 @@ export default function Home() {
     }
     else
         void loadHistory(); }
-    useEffect(() => { const context = (document as any).modelContext; if (!context?.registerTool)
+    // Only subscriptions use stable current callbacks. Rendered action handlers keep their
+    // captured snapshot so an old button cannot target a newer room or turn.
+    const ownerChanged = useCommittedEvent(accountChanged), loadRoomHistory = useCommittedEvent(loadHistory);
+    const refreshRoom = useCommittedEvent(refresh), sendPending = useCommittedEvent(send);
+    useEffect(() => subscribeOwnerSession(ownerChanged), [ownerChanged]);
+    useEffect(() => { try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- Mount bootstrap reconciles optional browser storage with authoritative history/recovery; Strict Mode and exact-ID recovery tests cover replay.
+        setLastRoom(localStorage.getItem('cw_room') || '');
+    }
+    catch {
+        setStorageWarning(true);
+    } void loadRoomHistory(); const c = new URLSearchParams(location.search).get('room')?.toUpperCase(); const all = readPending(); setDeferredSaves(all.filter(p => p.deferred)); const saved = all.filter(p => !p.deferred); const uncertain = (c ? saved.find(p => p.request.code === c) : saved[0]) || saved[0]; if (uncertain) {
+        pendingRef.current = uncertain;
+        setPending(uncertain);
+        void sendPending(uncertain.request.op, {}, uncertain);
+    }
+    else if (c) {
+        setCode(c);
+        void refreshRoom(c, true);
+    } }, [loadRoomHistory, refreshRoom, sendPending]);
+    const pollingRoom = g?.code, pollingStatus = g?.status;
+    useEffect(() => { if (!pollingRoom || pollingStatus === 'finished' || newLifeRequired)
+        return; const c = pollingRoom; const poll = () => { if (document.visibilityState === 'visible' && !lock.current && !pendingRef.current)
+        void refreshRoom(c); }; const reconnect = () => { if (pendingRef.current)
+        void sendPending(pendingRef.current.request.op, {}, pendingRef.current);
+    else
+        poll(); }; const i = setInterval(poll, 3000); window.addEventListener('focus', poll); window.addEventListener('online', reconnect); document.addEventListener('visibilitychange', poll); return () => { clearInterval(i); window.removeEventListener('focus', poll); window.removeEventListener('online', reconnect); document.removeEventListener('visibilitychange', poll); }; }, [pollingRoom, pollingStatus, newLifeRequired, refreshRoom, sendPending]);
+    useEffect(() => { const context = (document as ModelContextDocument).modelContext; if (!context?.registerTool)
         return; const abort = new AbortController(); try {
         context.registerTool({ name: 'read_crosswalk_game', description: 'Read the visible Crosswalk game and qualitative player status.', inputSchema: { type: 'object', properties: {}, additionalProperties: false }, annotations: { readOnlyHint: true }, execute: () => ({ game: visibleGameSummary(current.current) }) }, { signal: abort.signal });
     }
-    catch { } return () => abort.abort(); }, []);
-    const p: Player | undefined = g?.players?.[g.turn], active = !!p && g.mine?.includes(p.id) && g.status === 'playing';
-    const billPreview = p && active ? weekPreview(p, g) : null;
+    catch { /* The optional read-only browser integration must not block gameplay. */ } return () => abort.abort(); }, []);
+    const p: Player | undefined = g?.players?.[g.turn], active = !!p && !!g && g.mine.includes(p.id) && g.status === 'playing';
+    const billPreview = p && active && g ? weekPreview(p, g) : null;
     const period = 'month';
     function startNewLife() { if (pendingRef.current)
         checkLater(true);
     else
         leave(); }
     function leave() { setNewLifeRequired(false); setRefreshRequired(false); setClosingReaction(null); sound.stopEffects(); session.current.epoch++; session.current.code = ''; lock.current = false; setBusy(false); setRestoring(false); setOffline(false); setG(null); current.current = null; setHandoff(false); setNewsOpen(false); setReviewWeek(false); setReviewStart(false); setScreen('home'); setError(''); history.replaceState(null, '', location.pathname); void loadHistory(); window.scrollTo({ top: 0, behavior: 'instant' }); }
-    async function copy() { try {
+    async function copy() { if (!g) return; try {
         await navigator.clipboard.writeText(location.origin + location.pathname + '?room=' + g.code);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
@@ -682,7 +692,7 @@ export default function Home() {
               </p>
             </section>}
             <p className="fine-print">Shown before the next {period}’s shared city event.</p>
-            {p && getLifeEvent(p, g)?.pending && <p className="overdraft-warning">You still have a personal decision this {period}. Ending now takes its free, cautious response, included in the figures above. Open Your little life first if you want another option.</p>}
+            {g && p && getLifeEvent(p, g)?.pending && <p className="overdraft-warning">You still have a personal decision this {period}. Ending now takes its free, cautious response, included in the figures above. Open Your little life first if you want another option.</p>}
             {g && p && <CastPromiseNotice g={g} p={p}/>}
             {g && nextWeather(g) && <div className="ledger-forecast">
               <WeatherIcon type={nextWeather(g)?.type}/>
@@ -709,7 +719,7 @@ export default function Home() {
         onClose={() => { setNewsOpen(false); try {
         sessionStorage.setItem('cw_news_' + g.code + '_' + g.round, 'read');
     }
-    catch { } }}/>}
+    catch { /* Closing the Chronicle still applies for this visit when storage is unavailable. */ } }}/>}
 
       <Dialog open={handoff && !newsOpen} onOpenChange={setHandoff}>
         <DialogContent className="handoff">

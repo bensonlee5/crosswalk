@@ -87,7 +87,7 @@ function TurnClockFace({hours, max = 6, previewCost = 0, announce = true, period
     } else {
       setAnnouncement(`${display(state.remaining)} priority ${state.remaining === 1 ? 'block' : 'blocks'} left this ${period}.`);
     }
-  }, [state.remaining]);
+  }, [state.remaining, period]);
 
   const label = `${display(state.remaining)} of ${display(state.capacity)} priority blocks left this ${period}.${state.requestedCost > 0 ? ` Selected action uses ${display(state.requestedCost)}.${state.requestedCost > state.remaining ? ' Not enough time remains.' : ''}` : ''}`;
 

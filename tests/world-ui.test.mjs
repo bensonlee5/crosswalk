@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 import {currentGame} from './current-fixture.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url)).replace(/\/$/,''),require=createRequire(root+'/package.json'),ts=require('typescript'),React=require('react'),{renderToStaticMarkup}=require('react-dom/server');
-const G=require(root+'/lib/game.ts'),L=require(root+'/lib/life-events.ts'),W=require(root+'/lib/world-life.ts');
+const W=require(root+'/lib/world-life.ts');
 const loaded=new Map();
 function load(file){if(loaded.has(file))return loaded.get(file).exports;const module={exports:{}};loaded.set(file,module);const js=ts.transpileModule(readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;vm.runInNewContext(js,{exports:module.exports,module,require:id=>id==='./game-painting'?{__esModule:true,default:props=>React.createElement('img',{src:props.src,alt:props.alt})}:id==='./game-art'?require(root+'/app/game-art.ts'):id.startsWith('@/')?require(root+'/'+id.slice(2)+'.ts'):id.startsWith('./')?load(root+'/app/'+id.slice(2)+'.tsx'):require(id)});return module.exports;}
 const WorldStory=load(root+'/app/world-story.tsx').default;

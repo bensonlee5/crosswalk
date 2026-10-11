@@ -6,7 +6,7 @@ import {PersonResponseStage,PersonSceneDetails,PersonReturn} from './person-resp
 import {qualitativeText} from '@/lib/point-presentation';
 import {CharacterMotives} from './character-motives';
 import {CharacterHistory} from './character-history';
-import type {Game,Player} from '@/lib/game';
+import type {GameView as Game,Player} from '@/lib/game';
 import {economyMonthLabel} from '@/lib/economy';
 import {getStoryView} from '@/lib/story-arcs';
 import {relationshipViews} from '@/lib/life-events';

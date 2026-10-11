@@ -1,5 +1,5 @@
 /** Explicit activity art coverage. Do not replace missing entries with location art. */
-import type { Activity,Game } from './game';
+import type { Activity,GameView as Game } from './game';
 import { getWeather } from './weather.ts';
 export type ActionIllustration={src:string;thumb:string;alt:string};
 const painting=(file:string,alt:string):ActionIllustration=>({src:`/paintings/${file}.webp`,thumb:`/paintings/actions/thumbs/${file.replaceAll('/','--')}.webp`,alt});

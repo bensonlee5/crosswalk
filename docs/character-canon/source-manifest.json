@@ -25,13 +25,25 @@
     "lin",
     "bea"
   ],
-  "onstageCharacters": 39,
-  "backgroundCharacters": 29,
   "ageDistribution": {
     "adult": 57,
     "adolescent": 5,
     "child": 5,
     "toddler": 1
   },
-  "manualSourceCommit": "5e6ae521b6c4d3950ad3ded96f9963f3230fa77c"
+  "manualSourceCommit": "5e6ae521b6c4d3950ad3ded96f9963f3230fa77c",
+  "coreOnstageCharacters": 39,
+  "coreBackgroundCharacters": 29,
+  "ensembleLeadAdditions": [
+    "lata_rao",
+    "nila_desai",
+    "rosa_moreno",
+    "nell_harper",
+    "qiao_chen",
+    "akira_mori",
+    "ines_valdes"
+  ],
+  "directlyInteractiveCharacters": 46,
+  "contextAndPresentationCoverage": 53,
+  "ensembleScopeNote": "The ensemble stories add seven distinct lead counterparts to the core 39. Contextual mentions and presentation profiles are not map schedules. All 68 identities remain canonical."
 }

@@ -1,3 +1,4 @@
+import {CURRENT_GAME_SCHEMA} from '../lib/current-game.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -41,7 +42,7 @@ test('all families are reciprocal, typed from the authored graph, and never infe
 });
 
 test('current rooms contain 13 bounded rotating cameos and retain their seeded schedules',()=>{
- const {g,p}=fixture();assert.equal(g.schemaVersion,1);assert.equal(characterCameos.length,13);const schedule=JSON.stringify(g.cast.schedule);g.lifeSeed=999;initializeCast(g);assert.equal(JSON.stringify(g.cast.schedule),schedule);
+ const {g,p}=fixture();assert.equal(g.schemaVersion,CURRENT_GAME_SCHEMA);assert.equal(characterCameos.length,13);const schedule=JSON.stringify(g.cast.schedule);g.lifeSeed=999;initializeCast(g);assert.equal(JSON.stringify(g.cast.schedule),schedule);
  const visible=new Set();for(let month=1;month<=8;month++){g.round=month;for(const region of Object.keys(regionDefinitions)){p.world.region=region;for(const c of cameoPeople(g,p))visible.add(c.id);}}
  for(const id of ['celia_baptiste','farah_hussain','liang_chen','ravi_desai','esperanza_vega','mei_chen','hana_mori','yuna_park','asha','nico','lin','jian_wu'])assert.ok(visible.has(id),`${id} never appears`);assert.ok(visible.size<68);
 });
@@ -107,7 +108,7 @@ test('canon personalities and personal cameo outcomes never leak through another
 });
 
 test('new regional setting descriptions follow climate and settlement canon without changing climate rules',()=>{
- const {g,p}=fixture();const expected={alder:/cool, wet urban/i,saffron:/Mediterranean low-rise suburb/i,glasssteppe:/cold highland rail city/i,pelagia:/warm monsoon harbor.*rural/i,embermesa:/arid rural mesa/i};
+ const {g,p}=fixture();const expected={alder:/dense working.port.*cool, wet maritime/i,saffron:/coastal suburban.*Mediterranean/i,glasssteppe:/compact railway city.*cold continental highland/i,pelagia:/harbor town.*rural hinterland.*monsoonal/i,embermesa:/rural settlement.*arid interior/i};
  const saved=JSON.stringify(g);for(const [region,pattern] of Object.entries(expected)){p.world.region=region;assert.match(worldView(p,g).region.description,pattern);assert.match(worldView(p,g).destinations.find(d=>d.id===region).description,pattern);}
  p.world.region='alder';assert.equal(JSON.stringify(g),saved);
 });

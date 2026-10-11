@@ -1,7 +1,8 @@
 'use client';
-import {useEffect,useRef,useState} from 'react';
+import {useCommittedRef} from '@/lib/committed-ref';
+import {useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {qualitativeText,effortLabel} from '@/lib/point-presentation';
-import type {Game,Player} from '@/lib/game';
+import type {GameView as Game,Player} from '@/lib/game';
 import {economyMonthLabel,economyTimeLabel} from '@/lib/economy';
 import GamePainting from './game-painting';
 import {decisionIllustration,isQuietEffect,narrativeExpectation} from '@/lib/decision-presentation';
@@ -15,23 +16,24 @@ const dollars=(n:number)=>'$'+Math.max(0,n).toLocaleString('en-US');
  * when the authoritative room contains a receipt for this exact submitted ID. */
 export function useEncounterCommit({g,p,disabled,context,choices,onAction,findReceipt}:{g:Game;p:Player;disabled:boolean;context:string;choices:EncounterChoice[];onAction:(id:string)=>Promise<unknown>;findReceipt:ConfirmedReceipt}){
  const alive=useRef(true),request=useRef<{context:string;id:string}|null>(null),submitted=useRef(new Set<string>());
- const latest=useRef({g,p,disabled,context,choices,onAction,findReceipt});latest.current={g,p,disabled,context,choices,onAction,findReceipt};
+ const latest=useCommittedRef({g,p,disabled,context,choices,onAction,findReceipt});
  const [busy,setBusy]=useState(false),[receiptState,setReceipt]=useState<{context:string;receipt:EncounterReceipt}|null>(null),[error,setError]=useState('');
  useEffect(()=>{alive.current=true;return()=>{alive.current=false}},[]);
- useEffect(()=>{setReceipt(null);setError('');setBusy(false);submitted.current.clear();},[context]);
+ // eslint-disable-next-line react-hooks/set-state-in-effect -- Invalidate the previous scene's request/private reply before paint; real Strict Mode tests cover replacement, stale callbacks and late replies.
+ useLayoutEffect(()=>{request.current=null;setReceipt(null);setError('');setBusy(false);submitted.current.clear();},[context]);
  async function commit(choice:EncounterChoice){
   const state=latest.current,current=state.choices.find(c=>c.actionId===choice.actionId);
-  if(state.disabled||request.current||submitted.current.has(choice.actionId)||!current?.available)return;
+  if(!alive.current||state.context!==context||state.disabled||request.current||submitted.current.has(choice.actionId)||!current?.available)return;
   const token={context:state.context,id:choice.actionId};request.current=token;setBusy(true);setError('');setReceipt(null);
   try{
    const result=await state.onAction(choice.actionId);
-   if(!alive.current||latest.current.context!==token.context)return;
+   if(!alive.current||latest.current.context!==token.context||request.current!==token)return;
    const confirmed=result as Game|undefined,updated=confirmed?.code===state.g.code?confirmed.players?.find(q=>q.id===state.p.id):undefined;
    const found=updated&&confirmed?state.findReceipt(confirmed,updated,choice):null;
    if(found){submitted.current.add(choice.actionId);setReceipt({context:token.context,receipt:{...found,actionId:choice.actionId}});}
    else setError('This choice wasn’t confirmed. Check your connection before trying again.');
-  }catch{if(alive.current&&latest.current.context===token.context)setError('This choice wasn’t confirmed. Reconnect and check the latest scene before trying again.');}
-  finally{if(request.current===token)request.current=null;if(alive.current&&latest.current.context===token.context)setBusy(false);}
+  }catch{if(alive.current&&latest.current.context===token.context&&request.current===token)setError('This choice wasn’t confirmed. Reconnect and check the latest scene before trying again.');}
+  finally{if(request.current===token){request.current=null;if(alive.current&&latest.current.context===token.context)setBusy(false);}}
  }
  return{busy,receipt:receiptState?.context===context?receiptState.receipt:null,error,commit,isSubmitted:(id:string)=>submitted.current.has(id)};
 }

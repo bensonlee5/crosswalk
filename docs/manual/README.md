@@ -7,7 +7,7 @@ The full [Crosswalk Travel Guide](https://bensonlee5.github.io/crosswalk/manual/
 Start with one of five town chapters. Each brings together the regional setting, climate and practical considerations, local venues, residents, histories and meaningful objects. The guide also offers:
 
 - All 75 visitable venues, with individual histories, architecture, community life, associated people, and separately labeled current-game activities and access conditions
-- An exactly 30-object searchable catalog, recurring fictional brands and maker profiles, ownership/use relationships, associated places and explicitly labeled story proposals
+- An exactly 30-object searchable catalog, recurring fictional brands and maker profiles, ownership/use relationships, associated places and explicitly labeled playable story objects
 - 68 complete biographies, portraits, ages, cultural backgrounds and personality profiles
 - Six geography pages, including travelers, and a family browser with reciprocal relationships and cross-region histories
 
@@ -19,7 +19,9 @@ Search by keyword and region, plus venue or object type. Items can also be filte
 
 `scripts/manual-expansion.mjs`, `docs/manual/catalog.css`, `docs/manual/catalog.js` and `scripts/check-catalog.mjs` are shared byte-for-byte with the private guide's corresponding renderer, presentation and validation files. Do not fork the templates between destinations.
 
-Established world objects are not presented as usable inventory unless explicitly implemented. Story proposals are labeled in cards, profiles, and backlinks. Venue histories and architecture are labeled worldbuilding; current actions and access restrictions have their own section. Associated places do not imply that an object is available to pick up there.
+The game projects these same files with `npm run canon:build`; `npm run canon:check` rejects any drift. See [guide/game alignment](../GUIDE-GAME-ALIGNMENT.md) for adapter ownership and the cross-region, venue and object checks.
+
+Established world objects are not presented as usable inventory unless explicitly implemented. Playable story objects are labeled “Story object”; their outcomes remain conditional on the events of each life. Any unimplemented proposals keep separate labels in cards, profiles, and backlinks. Venue histories and architecture are labeled worldbuilding; current actions and access restrictions have their own section. Associated places do not imply that an object is available to pick up there.
 
 The guide shares artwork in `public/paintings/`; no image bytes are duplicated under `public/manual/`. Images use content-hash revisions. An object without bespoke artwork receives a text-led card. Venue illustrations are labeled regional settings rather than building-specific images. All navigation and asset paths are relative and resolve beneath `/crosswalk/manual/` or a custom-domain root.
 

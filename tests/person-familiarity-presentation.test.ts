@@ -5,7 +5,7 @@ import {personSceneProfiles} from '../lib/person-scene-profiles.ts';
 import {familiarityView} from '../lib/action-familiarity.ts';
 function fixture(){const g=createGame({mode:'hotseat',names:['Reader'],ownerSession:'owner',requestId:'familiar-presentation'},'FAMILI');return{g,p:g.players[0]};}
 function history(p,actorId,count){p.familiarity={version:1,startedRound:1,actions:{},people:{[actorId]:{count,lastRound:1,lastVariant:(count-1)%12}}};}
-test('all 39 people change confirmed responses through familiar, routine and custom stages without immediate repeats',()=>{
+test('all presented people change confirmed responses through familiar, routine and custom stages without immediate repeats',()=>{
  for(const actorId of Object.keys(personSceneProfiles)){
   const {g,p}=fixture();let prior='';
   for(let count=1;count<=40;count++){

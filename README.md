@@ -26,7 +26,7 @@ There is room to recover from setbacks. Your story is more than a points total.
 3. Open **Work & learning** to compare entry jobs and career paths. Visit the employer, apply, and separately accept an offer before choosing a shift.
 4. Preview an activity's time, cost, and outcome before confirming. Review your bills before ending the month.
 
-The [Crosswalk Travel Guide](https://bensonlee5.github.io/crosswalk/manual/) starts with five town chapters, covers all 75 visitable venues and meaningful local objects, and includes all 68 character backstories, portraits, personality profiles, regional histories and linked families. The [player guide](https://bensonlee5.github.io/crosswalk/guide/) explains how to play. Games draw on 39 regular neighbors and occasional visitors; the wider cast also includes people whose lives remain in the background.
+The [Crosswalk Travel Guide](https://bensonlee5.github.io/crosswalk/manual/) starts with five town chapters, covers all 75 visitable venues and meaningful local objects, and includes all 68 character backstories, portraits, personality profiles, regional histories and linked families. The [player guide](https://bensonlee5.github.io/crosswalk/guide/) explains how to play. The game has 39 regular neighbors and occasional visitors, plus seven additional lead counterparts in its crossing stories. All 68 people belong to the world; contextual mentions do not imply a scheduled map encounter. Twenty playable threads connect decisions, objects, work and other people’s plans.
 
 ## Find your way around
 

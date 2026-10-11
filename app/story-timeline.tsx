@@ -1,6 +1,6 @@
 'use client';
 import {qualitativeText} from '@/lib/point-presentation';
-import type {Game,Player} from '@/lib/game';
+import type {GameView as Game,Player} from '@/lib/game';
 import {economyMonthLabel} from '@/lib/economy';
 import {getStoryView} from '@/lib/story-arcs';
 import {worldPlaceName} from '@/lib/world-life';

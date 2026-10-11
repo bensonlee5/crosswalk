@@ -1,6 +1,6 @@
 'use client';
 import CharacterPortrait from './character-portrait';
-import type {Game,Player} from '@/lib/game';
+import type {GameView as Game,Player} from '@/lib/game';
 import {characterHistoryView} from '@/lib/character-histories';
 
 export function CharacterHistory({g,p,actorId}:{g:Game;p:Player;actorId:string}){

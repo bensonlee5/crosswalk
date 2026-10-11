@@ -1,5 +1,5 @@
 import {financialPayQuote,recordFinancialPay} from './financial-recovery.ts';
-import type {Game, Player} from './game.ts';
+import type {GameView as Game, Player} from './game.ts';
 import {applySharedVenueChange,regionDefinitions} from './world-life.ts';
 import {economyWorkReason,recordEconomyPaidHours} from './economy.ts';
 

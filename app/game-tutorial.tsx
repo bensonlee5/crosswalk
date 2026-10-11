@@ -1,10 +1,10 @@
 'use client';
 import { monthlyBills } from '@/lib/economy';
-import type { Game,Player } from '@/lib/game';
+import type { GameView as Game,Player } from '@/lib/game';
 import { qualitativeText } from '@/lib/point-presentation';
 import { advanceTutorial,restoreTutorial,TUTORIAL_STORAGE_KEY,type TutorialEvent,type TutorialState } from '@/lib/tutorial';
 import { BookOpen,X } from 'lucide-react';
-import { useEffect,useRef,useState } from 'react';
+import { useCallback,useEffect,useRef,useState } from 'react';
 
 export function useGameTutorial(room: string, replay: number, offer: boolean) {
   const [state, setState] = useState<TutorialState | null>(null);
@@ -13,16 +13,17 @@ export function useGameTutorial(room: string, replay: number, offer: boolean) {
   const lastNext = useRef(0);
   useEffect(() => {
     let raw = null;
-    try { raw = localStorage.getItem(TUTORIAL_STORAGE_KEY); } catch {}
+    try { raw = localStorage.getItem(TUTORIAL_STORAGE_KEY); } catch { /* Storage is optional; offer the tutorial for this visit when reading fails. */ }
     const restored = restoreTutorial(raw, room, offer);
     current.current = restored;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Synchronize optional browser storage on room/offer changes; restoration, replay, Strict Mode and blocked-storage tests cover it.
     setState(restored);
     // Save the invitation too: a reload while the first Chronicle is open must not lose it.
     if (restored.status === 'active') {
-      try { localStorage.setItem(TUTORIAL_STORAGE_KEY, JSON.stringify(restored)); } catch {}
+      try { localStorage.setItem(TUTORIAL_STORAGE_KEY, JSON.stringify(restored)); } catch { /* Keep the restored invitation usable in memory when storage is unavailable. */ }
     }
   }, [room, offer]);
-  function send(event: TutorialEvent) {
+  const send = useCallback((event: TutorialEvent) => {
     if (!current.current) return;
     if (event === 'next') {
       const now = Date.now();
@@ -33,11 +34,11 @@ export function useGameTutorial(room: string, replay: number, offer: boolean) {
     if (next === current.current) return;
     current.current = next;
     setState(next);
-    try { localStorage.setItem(TUTORIAL_STORAGE_KEY, JSON.stringify(next)); } catch {}
-  }
+    try { localStorage.setItem(TUTORIAL_STORAGE_KEY, JSON.stringify(next)); } catch { /* Tutorial progress still applies to this visit when persistence fails. */ }
+  }, []);
   useEffect(() => {
     if (replaySeen.current !== replay) { replaySeen.current = replay; send('replay'); }
-  }, [replay]);
+  }, [replay, send]);
   return {state, send, visible: state?.status === 'active'};
 }
 

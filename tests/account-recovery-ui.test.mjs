@@ -37,7 +37,8 @@ test('closing the account dialog clears fresh-start acknowledgment',()=>{
  h.nodes().find(n=>n.type==='Dialog').props.onOpenChange(false);h.render();
  assert.equal(h.button('Start a separate guest history').props.disabled,true);assert.equal(h.fresh,0);
 });
-test('original-game link stays present even when backend setup is disabled',()=>{
- const h=harness({configured:false,lost:false});const old=h.nodes().find(n=>n.type==='a');
- assert.equal(old.props.href,'https://crosswalk-life-game.bensonlee5.chatgpt.site');assert.match(h.text(old),/Continue an old game/);
+test('account panel does not route players to a retired game site',()=>{
+ const h=harness({configured:false,lost:false});
+ assert.equal(h.nodes().some(n=>n.type==='a'&&String(n.props.href).includes('crosswalk-life-game')),false);
+ assert.doesNotMatch(h.text(h.tree),/Continue an old game|Games started on the original site/);
 });

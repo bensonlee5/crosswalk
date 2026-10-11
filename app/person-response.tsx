@@ -1,6 +1,6 @@
 'use client';
 import {useEffect,useRef} from 'react';
-import type {Game,Player} from '@/lib/game';
+import type {GameView as Game,Player} from '@/lib/game';
 import {worldPlaceName,regionDefinitions} from '@/lib/world-life';
 import {personProfile,personReply,personCareerNotices,type PersonSceneInput,type PersonReply} from '@/lib/person-response';
 import {motivePortrait} from '@/lib/motive-portraits';

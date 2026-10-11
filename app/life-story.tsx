@@ -1,10 +1,11 @@
 'use client';
+import {useCommittedRef} from '@/lib/committed-ref';
 import { actionFamiliarityKey,familiarityView } from '@/lib/action-familiarity';
 import { actionReaction } from '@/lib/action-reactions';
 import { canonicalCharacterById } from '@/lib/character-canon';
 import { castEnding } from '@/lib/character-cast';
 import { economyMonthLabel } from '@/lib/economy';
-import type { Game,Player } from '@/lib/game';
+import type { GameView as Game,Player } from '@/lib/game';
 import { getLifeEvent,lifeChoices,lifeEffectText,relationshipViews,repairChoice,repairHomeChoice } from '@/lib/life-events';
 import { aspirations,getLifeProgress } from '@/lib/life-progress';
 import { lifeEventPersonResponse } from '@/lib/person-event-responses';
@@ -12,7 +13,7 @@ import { capturePersonReceipt } from '@/lib/person-response';
 import { qualitativeText } from '@/lib/point-presentation';
 import { storyEnding } from '@/lib/story-arcs';
 import { regionDefinitions,worldView } from '@/lib/world-life';
-import { useEffect,useRef,useState } from 'react';
+import { useEffect,useLayoutEffect,useRef,useState } from 'react';
 import { CastJournal } from './cast-story';
 import { portraitPainting } from './game-art';
 import GamePainting from './game-painting';
@@ -32,7 +33,7 @@ export function LifeHeadingLabel({g,p}:{g:Game;p:Player}){
  return <>{p.castRedacted?'Personal life is private':getLifeProgress(p,g).title}</>;
 }
 
-type LifeJournalProps={g:Game;p:Player;disabled:boolean;onAction:(id:string)=>Promise<any>};
+type LifeJournalProps={g:Game;p:Player;disabled:boolean;onAction:(id:string)=>Promise<Game|undefined>};
 export function LifeJournal(props:LifeJournalProps){
  return props.p.castRedacted?<PublicLifeSummary g={props.g} p={props.p}/>:<PersonalLifeJournal {...props}/>;
 }
@@ -41,20 +42,21 @@ function PersonalLifeJournal({g,p,disabled,onAction}:LifeJournalProps){
  const progress=getLifeProgress(p,g),event=getLifeEvent(p,g),choices=lifeChoices(p,g),period='month';
  const mounted=useRef(true);useEffect(()=>{mounted.current=true;return()=>{mounted.current=false}},[]);
  const [personResponse,setPersonResponse]=useState<{g:Game;p:Player;actorId:string;name:string;remote:boolean;receipt:{actionId:string;title:string;body:string;outcome:string}}|null>(null);
- const currentContext=[g.code,p.id,g.round,p.world?.region||'alder'].join('|'),latestContext=useRef(currentContext);latestContext.current=currentContext;
- useEffect(()=>{setMessage('');setPersonResponse(null);},[currentContext]);
- const lock=useRef(false),[pending,setPending]=useState(false),[message,setMessage]=useState('');
+ const currentContext=[g.code,p.id,g.round,p.world?.region||'alder'].join('|'),latestContext=useCommittedRef(currentContext);
+ const request=useRef<object|null>(null),[pending,setPending]=useState(false),[message,setMessage]=useState('');
+ // eslint-disable-next-line react-hooks/set-state-in-effect -- Invalidate the previous context's request/private reply before paint; real Strict Mode tests cover late replies and the newer request lock.
+ useLayoutEffect(()=>{request.current=null;setPending(false);setMessage('');setPersonResponse(null);},[currentContext]);
  async function choose(id:string){
-  if(disabled||lock.current)return;
+  if(disabled||request.current)return;
   const context=currentContext,key=actionFamiliarityKey(id,p,g),prior=familiarityView(p,{actionKey:key}).count;
   const actorId=id.startsWith('repair:')?id.slice(7):null;
   const repair=actorId&&['mina','eli','jo'].includes(actorId)?repairChoice(p,g,actorId as 'mina'|'eli'|'jo'):null;
-  lock.current=true;setPending(true);setMessage('');setPersonResponse(null);
+  const token={};request.current=token;setPending(true);setMessage('');setPersonResponse(null);
   try{
-   const result=await onAction(id);if(!mounted.current||latestContext.current!==context)return;
+   const result=await onAction(id);if(!mounted.current||latestContext.current!==context||request.current!==token)return;
    const updated:Player|undefined=result?.code===g.code&&result.round===g.round?result.players?.find((q:Player)=>q.id===p.id):undefined;
    const familiar=updated?familiarityView(updated,{actionKey:key}):null,count=familiar?.count||0;
-   if(!updated||count!==prior+1){setMessage('That choice wasn’t confirmed. Check your connection before trying again.');return;}
+   if(!result||!updated||count!==prior+1){setMessage('That choice wasn’t confirmed. Check your connection before trying again.');return;}
    if(actorId&&repair&&canonicalCharacterById[actorId]){
     const remote=!!p.world&&p.world.region!=='alder'||p.place!==({mina:'CORNER CAFÉ',eli:'GARDEN',jo:'MAKERSPACE'} as Record<string,string>)[actorId];
     setPersonResponse({g:result,p:updated,actorId,name:canonicalCharacterById[actorId].name,remote,receipt:capturePersonReceipt({actionId:id,title:repair.title,body:repair.outcome,outcome:repair.outcome,week:result.round},updated,actorId)});
@@ -64,8 +66,8 @@ function PersonalLifeJournal({g,p,disabled,onAction}:LifeJournalProps){
     if(response&&canonicalCharacterById[response.speakerId]&&eventReceipt?.resolved){const actorId=response.speakerId;setPersonResponse({g:result,p:updated,actorId,name:canonicalCharacterById[actorId].name,remote:true,receipt:capturePersonReceipt({actionId:id,title:eventReceipt.resolved.title,body:eventReceipt.body,outcome:eventReceipt.resolved.outcome,response,week:eventReceipt.week},updated,actorId)});}
     else setMessage(actionReaction({actionId:id,count,lastVariant:familiar?.lastVariant})||'You pause over your decision before moving on.');
    }
-  }catch{if(mounted.current&&latestContext.current===context)setMessage('That choice wasn’t confirmed. Please reconnect before trying again.');}
-  finally{lock.current=false;if(mounted.current&&latestContext.current===context)setPending(false);}
+  }catch{if(mounted.current&&latestContext.current===context&&request.current===token)setMessage('That choice wasn’t confirmed. Please reconnect before trying again.');}
+  finally{if(request.current===token){request.current=null;if(mounted.current&&latestContext.current===context)setPending(false);}}
  }
 
  return <div className="life-story">

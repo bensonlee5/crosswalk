@@ -2,7 +2,7 @@
 import { canonicalCharacterById } from '@/lib/character-canon';
 import { castPeople,type CastPersonView } from '@/lib/character-cast';
 import { economyMonthLabel } from '@/lib/economy';
-import type { Game,Player } from '@/lib/game';
+import type { GameView as Game,Player } from '@/lib/game';
 import { capturePersonReceipt } from '@/lib/person-response';
 import { qualitativeText } from '@/lib/point-presentation';
 import { worldPlaceName } from '@/lib/world-life';

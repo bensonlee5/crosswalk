@@ -1,6 +1,8 @@
+import type { CareerField } from './career-content.ts';
+import { ensembleActionMetadata } from './ensemble-story.ts';
 import {careerChoices} from './careers.ts';
 import {lifeEventPersonActor} from './person-event-responses.ts';
-import type {Game,Player} from './game.ts';
+import type {GameView as Game,Player} from './game.ts';
 import {worldChoices} from './world-life.ts';
 import {getStoryView} from './story-arcs.ts';
 
@@ -9,7 +11,7 @@ import {getStoryView} from './story-arcs.ts';
 export type FamiliarityEntry={count:number;lastRound:number;lastVariant:number};
 export type ActionFamiliarityState={version:1;startedRound:number;actions:Record<string,FamiliarityEntry>;people:Record<string,FamiliarityEntry>};
 export type FamiliarityView={count:number;stage:'first'|'familiar'|'routine'|'custom';lastVariant:number;tracked:boolean;lastRound?:number};
-export type FamiliarityContext={actionKey:string;actorIds:string[];round:number;replay:boolean};
+export type FamiliarityContext={actionKey:string;actorIds:string[];round:number;replay:boolean;workField?:CareerField};
 type FamiliarityPlayer=Player&{familiarity?:ActionFamiliarityState;sharedPersonal?:{receipts:{actionId:string}[]}};
 const MAX=Number.MAX_SAFE_INTEGER;
 function entryView(e?:FamiliarityEntry):FamiliarityView{const count=e&&Number.isSafeInteger(e.count)&&e.count>=0?e.count:0;return{count,stage:count<2?'first':count<4?'familiar':count<7?'routine':'custom',lastVariant:e&&Number.isSafeInteger(e.lastVariant)?e.lastVariant:0,tracked:!!e,...(e?{lastRound:e.lastRound}:{})};}
@@ -21,6 +23,7 @@ function worldKey(actionId:string){const parts=actionId.slice(6).split(':');whil
 /** One semantic-key implementation shared by engine and all presenters. Capture
  * it before mutation, because travel and a shared claim can change the context. */
 export function actionFamiliarityKey(actionId:string,p:FamiliarityPlayer,g:Game,destination?:string):string{
+ if(actionId.startsWith('ensemble:'))return actionId.split(':').slice(0,4).join(':');
  if(actionId.startsWith('career:')){const parts=actionId.split(':'),target=parts.slice(4).join(':');if(parts[3]==='work'){const [contractId,kind]=target.split('.'),c=p.career?.contracts.find(c=>c.id===contractId);if(c)return `career:work:${c.region}:${c.target}:${kind}`;}return `career:${parts[3]}:${target}`;}
  if(actionId==='visit')return `visit:${p.world?.region??'alder'}:${destination??p.place}`;
  if(actionId.startsWith('world:shared:')){const parts=actionId.split(':'),region=parts[4],kind=parts[5];let qualifier='';if(kind==='reserve')qualifier=':'+parts[6];if(kind==='use'){const id=parts.slice(6).join(':');qualifier=':'+((g as Game&{sharedOpportunities?:{bookings:{id:string;purpose:string}[]}}).sharedOpportunities?.bookings.find(b=>b.id===id)?.purpose??'room');}return `shared:${region}:${kind}${qualifier}`;}
@@ -32,6 +35,7 @@ export function actionFamiliarityKey(actionId:string,p:FamiliarityPlayer,g:Game,
  return actionId;
 }
 function replayed(p:FamiliarityPlayer,id:string){
+ if(id.startsWith('ensemble:'))return !!p.ensemble?.receipts.some(r=>r.actionId===id);
  if(id.startsWith('career:'))return !!p.career?.receipts.some(r=>r.id===id);
  if(id.startsWith('world:shared:'))return !!p.sharedPersonal?.receipts.some(r=>r.actionId===id);
  if(id.startsWith('world:'))return !!p.world?.acceptedChoices.includes(id.slice(6));
@@ -44,7 +48,8 @@ function replayed(p:FamiliarityPlayer,id:string){
 export function actionFamiliarityContext(g:Game,p:FamiliarityPlayer,id:string,destination?:string):FamiliarityContext{
  const context:FamiliarityContext={actionKey:actionFamiliarityKey(id,p,g,destination),actorIds:[],round:g.round,replay:replayed(p,id)||(id==='visit'&&destination===p.place)};
  if(context.replay)return context;
- if(id.startsWith('career:')){const choice=careerChoices(g,p).find(c=>c.id===id);if(choice?.actorId)context.actorIds=[choice.actorId];}
+ if(id.startsWith('ensemble:')){const metadata=ensembleActionMetadata(g,p,id);if(metadata){context.actorIds=[metadata.actorId];if(metadata.workField)context.workField=metadata.workField;}}
+ else if(id.startsWith('career:')){const choice=careerChoices(g,p).find(c=>c.id===id);if(choice?.actorId)context.actorIds=[choice.actorId];}
  else if(id.startsWith('world:')){const choice=worldChoices(p,g).find(c=>c.id===id.slice(6));if(choice?.actorId)context.actorIds=[choice.actorId];else if(choice?.key.startsWith('talk:'))context.actorIds=[choice.key.slice(5)];else if(choice?.kind==='relationship')context.actorIds=['neri'];}
  else if(id.startsWith('cast:')||id.startsWith('motive:'))context.actorIds=[id.split(':')[2]];
  else if(id.startsWith('event:')){const actorId=lifeEventPersonActor(id);if(actorId)context.actorIds=[actorId];}

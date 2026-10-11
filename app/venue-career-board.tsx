@@ -1,6 +1,6 @@
 'use client';
 import {useState,useRef} from 'react';
-import type {Game,Player} from '@/lib/game';
+import type {GameView as Game,Player} from '@/lib/game';
 import {careerView,type CareerChoice} from '@/lib/careers';
 import {careerEncounterChoice,careerConfirmedReceipt} from '@/lib/career-presentation';
 import {financialRecoveryView} from '@/lib/financial-recovery';

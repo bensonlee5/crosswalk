@@ -1,4 +1,4 @@
-import type {Game,Player} from '@/lib/game';
+import type {GameView as Game,Player} from '@/lib/game';
 import {sharedWorldChoices,sharedOpportunityView} from '@/lib/shared-opportunities';
 import {worldChoiceEffects} from '@/lib/world-choice-presentation';
 import {capturePersonReceipt} from '@/lib/person-response';

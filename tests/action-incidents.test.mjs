@@ -1,3 +1,4 @@
+import {CURRENT_GAME_PROTOCOL,CURRENT_GAME_SCHEMA} from '../lib/current-game.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createGame,memberView,parseMutation} from '../supabase/functions/crosswalk-game/game-service.ts';
@@ -16,7 +17,7 @@ const at=(g,id)=>{const p=g.players[g.turn],a=activityForPlayer(p,actions.find(a
 function select(g,id,incidentId,{cash}={}){const base=structuredClone(g);for(let seed=1;seed<4000;seed++){const candidate=structuredClone(base),p=candidate.players[candidate.turn];candidate.actionIncidentRng[p.id]={words:words(seed)};const context=at(candidate,id);if(cash!==undefined)p.cash=cash;const r=commitActionIncident(candidate,p,context,1);if(r.incidentId===incidentId)return{g:candidate,p,r,context,seed};}throw Error('No fixture for '+incidentId);}
 
 test('new rooms initialize incidents once, independent seeds stay hidden from every member snapshot',()=>{
- const g=room(4);assert.equal(g.schemaVersion,1);const before=json(g);initializeActionIncidents(g,()=>{throw Error('must not reseed');});assert.equal(json(g),before);
+ const g=room(4);assert.equal(g.schemaVersion,CURRENT_GAME_SCHEMA);const before=json(g);initializeActionIncidents(g,()=>{throw Error('must not reseed');});assert.equal(json(g),before);
  g.members={[owner]:[g.players[0].id,g.players[1].id],[other]:[g.players[2].id]};
  for(const actor of [owner,other]){const v=memberView({state:g,code:g.code,version:1,updated_at:0},actor);assert.equal(v.actionIncidentRng,undefined);assert.equal(json(v).includes('"words"'),false);for(const p of v.players)assert.equal(!!p.actionIncidents,g.members[actor].includes(p.id));}
  assert.equal(new Set(Object.values(g.actionIncidentRng).map(json)).size,4);
@@ -75,7 +76,7 @@ test('private receipt helpers preserve original context and reject another seat 
 
 test('previews give practical cash bounds without rolling; caller cannot supply seed or odds in commands',()=>{
  const g=room(),p=g.players[0],before=json(g);assert.equal(actionIncidentPreview(g,p,'cafe_break').cashLossMax,6);assert.equal(actionIncidentPreview(g,p,'cafe_break').cashGainMax,5);assert.equal(actionIncidentPreview(g,p,'home_reset').cashLossMax,0);assert.equal(json(g),before);
- const command=parseMutation({protocolVersion:1,op:'move',ownerSession:owner,code:'CHANCE',version:1,action:'cafe_break',requestId:'spoof',actionIncidentRng:{words:[0,0,0,0]},probability:1,actionIncidentsVersion:999},owner);assert.equal(command.actionIncidentRng,undefined);assert.equal(command.probability,undefined);
+ const command=parseMutation({protocolVersion:CURRENT_GAME_PROTOCOL,op:'move',ownerSession:owner,code:'CHANCE',version:1,action:'cafe_break',requestId:'spoof',actionIncidentRng:{words:[0,0,0,0]},probability:1,actionIncidentsVersion:999},owner);assert.equal(command.actionIncidentRng,undefined);assert.equal(command.probability,undefined);
  assert.equal(actionIncidentRules.maxPerMonth,2);
 });
 
@@ -100,4 +101,4 @@ test('history and resource extremes remain bounded without reused receipt IDs or
  const f=select(room(),'home_reset','quiet_delight');for(let round=2;round<=35;round++){f.g.round=round;for(let i=0;i<3;i++)commitActionIncident(f.g,f.p,at(f.g,'home_reset'),1);}assert.equal(f.p.actionIncidents.receipts.length,64);assert.equal(new Set(f.p.actionIncidents.receipts.map(r=>r.id)).size,64);assert.equal(f.p.hours,6);assert.ok(f.p.joy>=0&&f.p.joy<=100);
 });
 
-test('all current room modes initialize incidents without a feature option',()=>{for(const mode of ['online','hotseat']){const command=parseMutation({protocolVersion:1,op:'create',ownerSession:owner,requestId:'current',mode,...(mode==='online'?{name:'One'}:{names:['One']})},owner),g=createGame(command,'ALWAYS');assert.ok(g.players[0].actionIncidents);assert.ok(g.actionIncidentRng[g.players[0].id]);assert.ok(g.players[0].career);assert.ok(g.players[0].finance);}});
+test('all current room modes initialize incidents without a feature option',()=>{for(const mode of ['online','hotseat']){const command=parseMutation({protocolVersion:CURRENT_GAME_PROTOCOL,op:'create',ownerSession:owner,requestId:'current',mode,...(mode==='online'?{name:'One'}:{names:['One']})},owner),g=createGame(command,'ALWAYS');assert.ok(g.players[0].actionIncidents);assert.ok(g.actionIncidentRng[g.players[0].id]);assert.ok(g.players[0].career);assert.ok(g.players[0].finance);}});

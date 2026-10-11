@@ -1,3 +1,4 @@
+import {initializeEnsemble,initializeEnsemblePlayer,ensembleMemberState,ensembleMemberPlayers} from '../_shared/engine/ensemble-story.ts';
 import {CURRENT_GAME_PROTOCOL,CURRENT_GAME_SCHEMA,REFRESH_GAME_MESSAGE,NEW_LIFE_MESSAGE,isCurrentGameState} from '../_shared/engine/current-game.ts';
 import {initializeActionIncidents,actionIncidentMemberPlayers} from '../_shared/engine/action-incidents.ts';
 import {initializeCareerPlayer,careerMemberPlayers} from '../_shared/engine/careers.ts';
@@ -46,6 +47,7 @@ export class GameError extends Error {
 }
 export const validActor = (s: unknown): s is string => typeof s === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s);
 export const validCode = (s: unknown): s is string => typeof s === 'string' && /^[A-Z0-9]{6}$/.test(s);
+// eslint-disable-next-line no-control-regex -- Rejecting all C0 control characters in request IDs is intentional input validation.
 const validRequestId = (s: unknown): s is string => typeof s === 'string' && s.length > 0 && s.length <= 80 && !/[\u0000-\u001f]/.test(s);
 const cleanName = (s: unknown) => typeof s === 'string' ? s.trim().slice(0, 20) : '';
 
@@ -98,10 +100,13 @@ export function requireCurrentGame(value: unknown): void {
 }
 export function memberView(room: RoomRow, actor: string) {
   requireCurrentGame(room.state);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Rest destructuring deliberately strips private RNG, schedules, and creation identifiers from the member response.
   const { members, host, lifeSeed, lifeSchedule, actionIncidentRng, creationRequestId, ...safe } = room.state;
   if (!members[actor]?.length) throw new GameError(403, 'This identity does not own a seat in this room');
   const castSafe=castMemberFields(room.state,members[actor]);
-  return { ...safe, ...castSafe, players:financeMemberPlayers(careerMemberPlayers(actionIncidentMemberPlayers(familiarityMemberPlayers(sharedMemberPlayers(room.state,members[actor],(castSafe as {players?:Game['players']}).players??safe.players),members[actor]),members[actor]),members[actor]),members[actor]), mine: members[actor], isHost: host === actor, version: room.version };
+  const mine = members[actor];
+  const projectedPlayers = financeMemberPlayers(careerMemberPlayers(actionIncidentMemberPlayers(familiarityMemberPlayers(sharedMemberPlayers(room.state,mine,(castSafe as {players?:Game['players']}).players??safe.players),mine),mine),mine),mine);
+  return { ...safe, ...castSafe, ensemble: ensembleMemberState(room.state, mine), players: ensembleMemberPlayers(projectedPlayers, mine), mine, isHost: host === actor, version: room.version };
 }
 export function roomView(room: RoomRow, actor: string) {
   requireCurrentGame(room.state);
@@ -127,7 +132,8 @@ export function createGame(command: Mutation, code: string): SavedGame {
   initializeStory(g);
   initializeCast(g);for(const p of g.players){initializeMotivesPlayer(g,p);initializeCareerPlayer(g,p);initializeFinancialRecovery(g,p);}
   initializeActionIncidents(g);
-  if (command.mode === 'hotseat') { g.status = 'playing'; initializeStory(g); }
+  initializeEnsemble(g);
+  if (command.mode === 'hotseat') { g.status = 'playing'; initializeStory(g); initializeEnsemble(g); }
   requireCurrentGame(g);
   return g;
 }
@@ -138,7 +144,7 @@ function applyCommand(room: RoomRow, command: Mutation): SavedGame {
     if (g.members[actor]?.length) return g;
     if (g.status !== 'lobby' || g.mode !== 'online' || g.players.length >= 4) throw new GameError(400, 'This room is no longer accepting players');
     const p = player(command.name!);
-    initializeLifePlayer(p); initializeWorldPlayer(p);
+    initializeLifePlayer(p); initializeWorldPlayer(p); initializeEnsemblePlayer(p);
     initializeEconomyPlayer(p, g); initializeStoryPlayer(p);
     initializeCastPlayer(g,p);initializeMotivesPlayer(g,p);initializeCareerPlayer(g,p);initializeFinancialRecovery(g,p);
     g.players.push(p);initializeSharedOpportunityPlayer(g,p);initializeActionIncidents(g);
@@ -149,7 +155,7 @@ function applyCommand(room: RoomRow, command: Mutation): SavedGame {
     if (command.version !== room.version) throw new GameError(409, 'The room changed. Refresh the saved game; this action was not applied.');
     if (command.op === 'start') {
       if (g.host !== actor || g.status !== 'lobby' || g.players.length < 1) throw new GameError(400, 'The host can start once everyone has joined');
-      g.status = 'playing'; initializeStory(g);
+      g.status = 'playing'; initializeStory(g); initializeEnsemble(g);
     } else {
       if (!g.members[actor].includes(g.players[g.turn]?.id)) throw new GameError(403, 'It is another player’s turn');
       try { move(g, command.action!, command.destination); }

@@ -1,0 +1,18 @@
+.venue-guide{margin:0 0 1.1rem;color:var(--ink,#403b35);font-size:.88rem;line-height:1.5}
+.venue-guide-intro{margin:0 0 .6rem}
+.venue-guide details{border:1px solid rgba(94,77,52,.17);border-radius:.75rem;background:rgba(255,255,255,.32)}
+.venue-guide summary{cursor:pointer;padding:.6rem .75rem;font-weight:650}
+.venue-guide summary span{display:block;margin-left:1rem;font-size:.75rem;font-weight:400;opacity:.75}
+.venue-guide summary:focus-visible,.venue-guide a:focus-visible{outline:3px solid #746744;outline-offset:3px;border-radius:.2rem}
+.venue-guide-notes{padding:0 .85rem .85rem}
+.venue-guide-notes>p{margin:.55rem 0}
+.venue-guide-notes strong{display:block;font-size:.75rem;letter-spacing:.025em}
+.venue-guide-objects{margin-top:.8rem;padding-top:.65rem;border-top:1px solid rgba(94,77,52,.14)}
+.venue-guide-objects h4{font:inherit;font-weight:650;margin:0}
+.venue-guide-objects p{font-size:.75rem;line-height:1.45;margin:.3rem 0 .6rem;opacity:.8}
+.venue-guide-objects ul{list-style:none;padding:0;margin:0}
+.venue-guide-objects li{margin:.5rem 0}
+.venue-guide-objects li span{display:block;font-size:.75rem;line-height:1.4}
+.venue-guide a{text-underline-offset:.18em;overflow-wrap:anywhere;color:inherit}
+.venue-guide-link{display:inline-block;margin-top:.65rem;font-size:.8rem;font-weight:600}
+@media(max-width:420px){.venue-guide{font-size:.84rem}.venue-guide summary span{margin-left:0}.venue-guide-notes{padding-inline:.7rem}}

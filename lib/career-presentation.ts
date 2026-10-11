@@ -1,4 +1,4 @@
-import type {Game,Player} from './game.ts';
+import type {GameView as Game,Player} from './game.ts';
 import type {CareerChoice,CareerReceipt} from './careers.ts';
 import {capturePersonReceipt,type ResponseReceipt} from './person-response.ts';
 import {formatEconomyMoney as money} from './economy.ts';

@@ -1,4 +1,4 @@
-import type {Game,Player} from './game';
+import type {GameView as Game,Player} from './game';
 import {worldPlaceName,type WorldChoiceView} from './world-life.ts';
 
 /** Display names belong at the UI boundary; effects and saved receipts keep IDs.

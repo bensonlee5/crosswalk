@@ -1,3 +1,4 @@
+import {CURRENT_GAME_SCHEMA} from '../lib/current-game.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createGame,memberView} from '../supabase/functions/crosswalk-game/game-service.ts';
@@ -24,7 +25,7 @@ test('sanitized member snapshots and all multiplayer seats share the authoritati
  g.players.forEach((p,i)=>{p.world.region=regions[i+1];});
  for(let turn=0;turn<count;turn++)for(let round=1;round<=8;round++){
  g.turn=turn;g.round=round;const client=memberView({state:g,code:g.code,version:1,updated_at:0},owner);
- assert.equal(client.lifeSeed,undefined);assert.equal(client.schemaVersion,1);assert.deepEqual(getWeather(client),getWeather(g));
+ assert.equal(client.lifeSeed,undefined);assert.equal(client.schemaVersion,CURRENT_GAME_SCHEMA);assert.deepEqual(getWeather(client),getWeather(g));
  for(let seat=0;seat<count;seat++)assert.deepEqual(weatherEffect(client.players[seat],{id:'park_run',energy:-8},client),weatherEffect(g.players[seat],{id:'park_run',energy:-8},g));
  }
  }

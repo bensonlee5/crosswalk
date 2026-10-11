@@ -1,7 +1,7 @@
 import { financialSettlementQuote } from './financial-recovery.ts';
 import { monthlyBills, economyGardenReward } from './economy.ts';
 import { getLifeEvent, lifeChoices } from './life-events.ts';
-import type { Player, Game } from './game.ts';
+import type { Player, GameView as Game } from './game.ts';
 import { actions, effects, activityForPlayer, projectProgress, projectGoal } from './game.ts';
 export function snapshotIsCurrent(current: {
     code: string;

@@ -1,4 +1,5 @@
 'use client';
+import {useCommittedRef} from '@/lib/committed-ref';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { actionIllustration } from '@/lib/action-art';
 import { actionFamiliarityKey, familiarityView } from '@/lib/action-familiarity';
@@ -8,7 +9,7 @@ import { careerChoices, careerCurrentRole } from '@/lib/careers';
 import { castPeople } from '@/lib/character-cast';
 import { activityIntent, narrativeExpectation } from '@/lib/decision-presentation';
 import { economyMonthLabel, economyTimeLabel } from '@/lib/economy';
-import { availableActions, Game, opportunity, Player, projectGoal, projectProgress, reason } from '@/lib/game';
+import { availableActions, GameView as Game, opportunity, Player, projectGoal, projectProgress, reason } from '@/lib/game';
 import { actionPreview } from '@/lib/game-view';
 import { getLifeEvent } from '@/lib/life-events';
 import { locationFor, locations, marbleColors } from '@/lib/locations';
@@ -23,7 +24,7 @@ import { getWeather } from '@/lib/weather';
 import { weatherStory } from '@/lib/weather-presentation';
 import { visiblePlaces, worldPlaceName, worldView } from '@/lib/world-life';
 import { ArrowRight, BookOpen, Clock, Flag, Leaf, LocateFixed, MapPin, Maximize2, Menu, Minus, Newspaper, Plus } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { CastMeetups } from './cast-story';
 import CharacterPortrait from './character-portrait';
 import EncounterPanel from './encounter-panel';
@@ -40,6 +41,9 @@ import TurnClock from './turn-clock';
 import VenueCareerBoard from './venue-career-board';
 import WeatherIcon from './weather-icon';
 import WorldStory from './world-story';
+import { EnsembleStories, EnsembleJournal } from './ensemble-story';
+import { VenueGuide } from './venue-guide';
+import { getEnsembleView } from '@/lib/ensemble-story';
 const money = (n: number) => '$' + n.toLocaleString('en-US');
 type EncounterTarget = {
     actorId: string;
@@ -57,12 +61,12 @@ type PendingVisit = {
 };
 const gameContext = (g: Game) => [g.code, g.players[g.turn].id, g.round, g.players[g.turn].world?.region || 'alder'].join('|');
 export default function GameScreen({ g, active, busy, offline, onVisit, onAction, onEnd, onRules, onHome, onCopy, onNews, onSound, tutorialReplay, tutorialOffer, tutorialBlocked, newsOpen, billsOpen, onTutorialReplay }: {
-    g: any;
+    g: Game;
     active: boolean;
     busy: boolean;
     offline: boolean;
-    onVisit: (place: string) => Promise<any>;
-    onAction: (id: string) => Promise<any>;
+    onVisit: (place: string) => Promise<Game | undefined>;
+    onAction: (id: string) => Promise<Game | undefined>;
     onEnd: () => void;
     onRules: () => void;
     onHome: () => void;
@@ -79,15 +83,13 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
     const p: Player = g.players[g.turn];
     const weather = getWeather(g);
     const world = worldView(p, g), visible = visiblePlaces(p, g), cast = castPeople(g, p);
-    const host = useRef<HTMLDivElement>(null), engine = useRef<TownControl | null>(null), latest = useRef({ g, active, busy, offline });
-    latest.current = { g, active, busy, offline };
+    const host = useRef<HTMLDivElement>(null), engine = useRef<TownControl | null>(null), latest = useCommittedRef({ g, active, busy, offline });
     const context = gameContext(g), period = 'month';
     const [encounter, setEncounter] = useState<EncounterTarget | null>(null);
-    const focusedEncounter = encounter?.context === context ? encounter : null;
-    const encounterRef = useRef(focusedEncounter);
-    encounterRef.current = focusedEncounter;
+    const encounterAllowed = !!encounter && encounter.context === context && p.place === encounter.spot && visible.includes(encounter.spot);
+    const focusedEncounter = encounterAllowed ? encounter : null;
+    const encounterRef = useCommittedRef(focusedEncounter);
     const queuedEncounter = useRef<EncounterTarget | null>(null);
-    const interfaceLocked = useRef(false);
     const [cooldown, setCooldown] = useState(false);
     const [personResponse, setPersonResponse] = useState<{
         g: Game;
@@ -98,43 +100,50 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         contextNote?: string;
     } | null>(null);
     const [actionStatus, setActionStatus] = useState<'idle' | 'pending' | 'success' | 'unconfirmed'>('idle');
-    const [lowQuality, setLowQuality] = useState(false);
-    const [ready, setReady] = useState(false), [loadError, setLoadError] = useState(false), [moving, setMoving] = useState(false), [place, setPlace] = useState<string | null>(null), [menuState, setMenuState] = useState<{
+    const [lowQuality, setLowQuality] = useState(() => typeof window !== 'undefined' && window.innerWidth < 700);
+    const qualityRef = useCommittedRef(lowQuality);
+    const [ready, setReady] = useState(false), [loadError, setLoadError] = useState(false), [moving, setMoving] = useState(false), [placeState, setPlaceState] = useState<{open: string | null; last: string | null}>({open: null, last: null}), [menuState, setMenuState] = useState<{
         open: MenuView | null;
         last: MenuView;
-    }>({ open: null, last: 'life' }), [choice, setChoice] = useState(''), [feedback, setFeedback] = useState(''), [district, setDistrict] = useState(locationFor(p.place).district);
+    }>({ open: null, last: 'life' }), [choice, setChoice] = useState(''), [feedback, setFeedback] = useState(''), [districtChoice, setDistrictChoice] = useState({place: p.place, district: locationFor(p.place).district});
+    // A location change resets only presentation state during render, before it can paint.
+    if (districtChoice.place !== p.place) setDistrictChoice({place: p.place, district: locationFor(p.place).district});
+    const district = districtChoice.place === p.place ? districtChoice.district : locationFor(p.place).district;
+    const setDistrict = (next: string) => setDistrictChoice({place: p.place, district: next});
+    const place = placeState.open, visiblePlace = placeState.open ?? placeState.last;
+    const setPlace = useCallback((next: string | null) => setPlaceState(state => state.open === next ? state : {open: next, last: next ?? state.last}), []);
     const menu = menuState.open, menuView = menuState.open ?? menuState.last, menuRef = useRef<MenuView | null>(null);
     const setMenu = useCallback((next: MenuView | null) => { menuRef.current = next; setMenuState(state => state.open === next ? state : { open: next, last: next ?? state.last }); }, []);
     const workSession = useRef(0), [workGeneration, setWorkGeneration] = useState(0);
     const nextWorkSession = useCallback(() => { workSession.current++; setWorkGeneration(workSession.current); }, []);
     const [careerFocus, setCareerFocus] = useState<string | undefined>(), [worldFocus, setWorldFocus] = useState<string | undefined>();
+    const [ensembleFocus, setEnsembleFocus] = useState<{ context: string; place: string; storyId: string } | null>(null);
     const privateWork = !!p.castRedacted || !p.career;
     const role = privateWork ? 'Work details are private' : careerCurrentRole(p)?.title ?? 'No active main role';
     const shownLife = useRef('');
     const tutorial = useGameTutorial(g.code, tutorialReplay, tutorialOffer);
+    const tutorialStep = tutorial.state?.step, sendTutorial = tutorial.send;
     const viewedNews = useRef(false), viewedBills = useRef(false);
-    useEffect(() => { if (newsOpen && tutorial.state?.step === 'weather')
+    useEffect(() => { if (newsOpen && tutorialStep === 'weather')
         viewedNews.current = true; if (!newsOpen && viewedNews.current) {
         viewedNews.current = false;
-        tutorial.send('forecast-read');
-    } }, [newsOpen, tutorial.state?.step]);
-    useEffect(() => { if (billsOpen && tutorial.state?.step === 'month')
+        sendTutorial('forecast-read');
+    } }, [newsOpen, tutorialStep, sendTutorial]);
+    useEffect(() => { if (billsOpen && tutorialStep === 'month')
         viewedBills.current = true; if (!billsOpen && viewedBills.current) {
         viewedBills.current = false;
-        tutorial.send('bills-reviewed');
-    } }, [billsOpen, tutorial.state?.step]);
-    const movingRef = useRef(false);
-    movingRef.current = moving;
+        sendTutorial('bills-reviewed');
+    } }, [billsOpen, tutorialStep, sendTutorial]);
+    const movingRef = useCommittedRef(moving);
     const alive = useRef(true);
-    const pending = useRef<PendingVisit | null>(null), visitLock = useRef(false), actionLock = useRef<object | null>(null), timers = useRef<ReturnType<typeof setTimeout>[]>([]), onVisitRef = useRef(onVisit);
-    onVisitRef.current = onVisit;
+    const pending = useRef<PendingVisit | null>(null), visitLock = useRef(false), actionLock = useRef<object | null>(null), timers = useRef<ReturnType<typeof setTimeout>[]>([]), onVisitRef = useCommittedRef(onVisit);
     const requestedAction = useRef<string | null>(null);
     const [venueInvitation, setVenueInvitation] = useState<(VenueInvitation & {
         context: string;
         session: number;
     }) | null>(null);
-    const venueSession = useRef(0), openPlace = useRef(place);
-    useEffect(() => { openPlace.current = place; }, [place]);
+    const venueSession = useRef(0), openPlace = useCommittedRef(place);
+    const interfaceLocked = useCommittedRef(!!(moving || place || menu || focusedEncounter || tutorialBlocked));
     function dismissPlace() { setPersonResponse(null); venueSession.current++; setVenueInvitation(null); setPlace(null); }
     const localInvitation = regionalInvitation(p, g);
     function chooseAction(id: string) { setPersonResponse(null); venueSession.current++; setVenueInvitation(null); setChoice(id); requestAnimationFrame(() => { const target = document.querySelector<HTMLElement>('.game-action-detail'); if (window.innerWidth < 761)
@@ -147,6 +156,11 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         setVenueInvitation(null);
         const requested = requestedAction.current;
         requestedAction.current = null;
+        if (requested?.startsWith('ensemble-preview:')) {
+            const storyId = requested.slice('ensemble-preview:'.length);
+            if (getEnsembleView(state.g, player, storyId, location).scenes.some(scene => scene.id === storyId))
+                setEnsembleFocus({ context: gameContext(state.g), place: location, storyId });
+        }
         if (requested?.startsWith('career:')) {
             const current = careerChoices(state.g, player).find(c => c.id === requested && c.place === location);
             queuedEncounter.current = null;
@@ -175,7 +189,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
                 setFeedback('This opportunity changed. Open Work & learning to review it again.');
             return;
         }
-        if (!availableActions(player, location, state.g).length && careerChoices(state.g, player).some(c => c.place === location)) {
+        if (!requested?.startsWith('ensemble-preview:') && !availableActions(player, location, state.g).length && careerChoices(state.g, player).some(c => c.place === location)) {
             queuedEncounter.current = null;
             setPlace(null);
             setEncounter(null);
@@ -199,8 +213,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         }
         tutorial.send('arrived');
     }
-    const openRef = useRef(openLocation);
-    openRef.current = openLocation;
+    const openRef = useCommittedRef(openLocation);
     function finishArrival(token: PendingVisit) {
         const state = latest.current;
         if (!alive.current || pending.current !== token || token.context !== gameContext(state.g) || !token.confirmed || state.g.players[state.g.turn].place !== token.location)
@@ -219,8 +232,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         setFeedback(token.reaction || 'Arrived at ' + worldPlaceName(state.g.players[state.g.turn], token.location, state.g));
         openRef.current(token.location);
     }
-    const arrivalRef = useRef(finishArrival);
-    arrivalRef.current = finishArrival;
+    const arrivalRef = useCommittedRef(finishArrival);
     async function visit(location: string, actionId?: string, target?: EncounterTarget) {
         const state = latest.current, player: Player = state.g.players[state.g.turn];
         if (!state.active || state.busy || state.offline || movingRef.current || visitLock.current || !visiblePlaces(player, state.g).includes(location))
@@ -283,9 +295,8 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         if (target && target.context === gameContext(state.g) && player.place === target.spot && visiblePlaces(player, state.g).includes(target.spot))
             openRef.current(target.spot);
     }
-    const visitRef = useRef(visit);
-    visitRef.current = visit;
-    useEffect(() => { alive.current = true; const initialQuiet = window.innerWidth < 700; setLowQuality(initialQuiet); let disposed = false; import('./game-engine').then(({ createTown }) => { if (disposed || !host.current)
+    const visitRef = useCommittedRef(visit);
+    useEffect(() => { const lifecycleTimers = timers.current; alive.current = true; const initialQuiet = qualityRef.current; let disposed = false; import('./game-engine').then(({ createTown }) => { if (disposed || !host.current)
         return; engine.current = createTown(host.current, (spot, actorId) => { const state = latest.current, player: Player = state.g.players[state.g.turn]; if (actorId) {
         if (venuePeople(state.g, player, spot).some(person => person.id === actorId && !person.remote))
             void visitRef.current(spot, undefined, { actorId, spot, context: gameContext(state.g) });
@@ -299,22 +310,18 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         pending.current.arrived = true;
         arrivalRef.current(pending.current);
     } }, () => { setLoadError(true); setReady(false); }); engine.current.quality(initialQuiet); const s = latest.current; engine.current.sync(s.g.players, s.g.turn, s.active && !s.busy && !s.offline && !interfaceLocked.current, s.g.project, s.g, mapActors(s.g, s.g.players[s.g.turn])); engine.current.weather(getWeather(s.g)); }).catch(() => { if (!disposed)
-        setLoadError(true); }); return () => { disposed = true; alive.current = false; engine.current?.destroy(); engine.current = null; timers.current.forEach(clearTimeout); }; }, []);
-    interfaceLocked.current = !!(moving || place || menu || focusedEncounter || tutorialBlocked);
+        setLoadError(true); }); return () => { disposed = true; alive.current = false; engine.current?.destroy(); engine.current = null; lifecycleTimers.forEach(clearTimeout); }; }, [arrivalRef, interfaceLocked, latest, qualityRef, visitRef]);
     useEffect(() => { engine.current?.sync(g.players, g.turn, active && !busy && !offline && !moving && !place && !menu && !focusedEncounter && !tutorialBlocked, g.project, g, mapActors(g, g.players[g.turn])); engine.current?.weather(getWeather(g)); }, [g, active, busy, offline, moving, place, menu, focusedEncounter, tutorialBlocked]);
-    useEffect(() => { setPersonResponse(null); venueSession.current++; setVenueInvitation(null); actionLock.current = null; setCooldown(false); setActionStatus('idle'); setPlace(null); setMenu(null); setEncounter(null); queuedEncounter.current = null; pending.current = null; requestedAction.current = null; visitLock.current = false; nextWorkSession(); setCareerFocus(undefined); setWorldFocus(undefined); setMoving(false); setFeedback(''); }, [context, nextWorkSession, setMenu]);
-    useEffect(() => { const key = context; if (active && !newsOpen && !tutorialBlocked && !focusedEncounter && !pending.current && getLifeEvent(p, g)?.pending && shownLife.current !== key) {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Invalidate old turn/venue sessions and clear private transient UI before paint; context and delayed-response regressions cover this boundary.
+    useLayoutEffect(() => { setPersonResponse(null); venueSession.current++; setVenueInvitation(null); actionLock.current = null; setCooldown(false); setActionStatus('idle'); setPlace(null); setMenu(null); setEncounter(null); queuedEncounter.current = null; pending.current = null; requestedAction.current = null; visitLock.current = false; nextWorkSession(); setCareerFocus(undefined); setWorldFocus(undefined); setMoving(false); setFeedback(''); }, [context, nextWorkSession, setMenu, setPlace]);
+    const lifePending = !!getLifeEvent(p, g)?.pending;
+    useEffect(() => { const key = context; if (active && !newsOpen && !tutorialBlocked && !focusedEncounter && !pending.current && lifePending && shownLife.current !== key) {
         shownLife.current = key;
         setPlace(null);
         setMenu('life');
-    } }, [context, active, newsOpen, tutorialBlocked, focusedEncounter]);
-    useEffect(() => { if (focusedEncounter && (p.place !== focusedEncounter.spot || !visible.includes(focusedEncounter.spot)))
-        setEncounter(null); }, [focusedEncounter, p.place, visible.join('|')]);
-    useEffect(() => { setDistrict(locationFor(p.place).district); }, [p.place]);
-    const lastPlace = useRef<string | null>(null);
-    if (place)
-        lastPlace.current = place;
-    const visiblePlace = place || lastPlace.current;
+    } }, [context, active, newsOpen, tutorialBlocked, focusedEncounter, lifePending, setMenu, setPlace]);
+    // Discard invalid selection as render-owned state; a discarded render cannot publish it.
+    if (encounter && !encounterAllowed) setEncounter(null);
     const hosts = visiblePlace ? venuePeople(g, p, visiblePlace) : [];
     const coffeeInvitation = venueInvitation?.context === context && venueInvitation.spot === place && hosts.some(person => person.id === venueInvitation.actorId && !person.remote && person.canTalk) ? venueInvitation : null;
     const selected = visiblePlace ? locationFor(visiblePlace) : null, options = availableActions(p, visiblePlace || '', g), a = options.find(a => a.id === choice) || options.find(a => a.id === firstPlaceAction(p, visiblePlace || '', g)) || options[0], preview = a ? actionPreview(p, a.id, g) : null, why = a ? reason(p, a.id, g) : '', selectedArt = a ? actionIllustration(a, g) : null;
@@ -341,7 +348,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
             if (!current())
                 return;
             const now: Player | undefined = result?.code === state.g.code && result.round === state.g.round ? result.players?.find((v: Player) => v.id === before.id) : undefined;
-            if (!now || now.place !== spot || (now.world?.region || 'alder') !== (before.world?.region || 'alder') || now.hours !== before.hours - a.time) {
+            if (!result || !now || now.place !== spot || (now.world?.region || 'alder') !== (before.world?.region || 'alder') || now.hours !== before.hours - a.time) {
                 unconfirmed();
                 return;
             }
@@ -446,6 +453,27 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         finally {
             if (actionLock.current === token)
                 actionLock.current = null;
+        }
+    }
+    function visitEnsemble(location: string, storyId?: string) {
+        if (!navigationAllowed() || !storyId) return;
+        const state = latest.current, player = state.g.players[state.g.turn];
+        if (!getEnsembleView(state.g, player, storyId, location).scenes.some(scene => scene.id === storyId)) return;
+        void visit(location, 'ensemble-preview:' + storyId);
+    }
+    async function commitEnsemble(actionId: string) {
+        if (!navigationAllowed() || (menuRef.current !== 'places' && openPlace.current !== latest.current.g.players[latest.current.g.turn].place)) return;
+        const state = latest.current, player = state.g.players[state.g.turn];
+        const storyId = actionId.split(':')[1];
+        if (!getEnsembleView(state.g, player, storyId, player.place).scenes.some(scene => scene.choices.some(choice => choice.actionId === actionId && choice.available))) return;
+        const token = {};
+        actionLock.current = token;
+        try {
+            const result = await onAction(actionId);
+            if (result?.players.find(player => player.id === p.id)?.ensemble?.receipts.some(receipt => receipt.actionId === actionId) && alive.current && context === gameContext(latest.current.g)) tutorial.send('acted');
+            return result;
+        } finally {
+            if (actionLock.current === token) actionLock.current = null;
         }
     }
     const boardOpportunity = actionPreview(p, 'weekly_opportunity', g);
@@ -659,9 +687,9 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
             className="game-location-dialog"
             data-material={selected ? placeStory(selected.place).material : undefined}
             onCloseAutoFocus={returnToGame}>
-          {selected && a && preview && <>
+          {selected && <>
             <div className="game-scene-banner">
-              <GamePainting key={a.id} src={selectedArt!.src} alt={selectedArt!.alt} priority/>
+              <GamePainting key={a?.id ?? selected.place} src={selectedArt?.src ?? locationPainting(selected.art)} alt={selectedArt?.alt ?? worldPlaceName(p, selected.place, g)} priority/>
               <div>
                 <small>
                   {placeStory(selected.place).motif}
@@ -676,11 +704,11 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
             </div>
             <div className="game-location-body">
               {tutorialPanel(true)}
-              <div className="place-welcome">
-                <p>
-                  {selected.place === 'TRANSIT' ? placeStory(selected.place).scene.replace('turn a spare hour into a gig', 'make time for paid local work') : placeStory(selected.place).scene}
-                </p>
-              </div>
+              <VenueGuide regionId={p.world?.region ?? 'alder'} placeId={selected.place}/>
+              {!p.castRedacted && <EnsembleStories g={g} p={p} disabled={!active || busy || moving || offline}
+                selectedVenue={selected.place}
+                storyId={ensembleFocus?.context === context && ensembleFocus.place === selected.place ? ensembleFocus.storyId : undefined}
+                onAction={commitEnsemble} onVisit={visitEnsemble}/>}
               <div className="interaction-heading">
                 <span>What would you like to do?</span>
                 <span>{options.length} activities{hosts.some(person => !person.remote) ? ` · ${hosts.filter(person => !person.remote).length} people here` : ''}</span>
@@ -724,13 +752,13 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
     } const option = item.activity; const view = actionPreview(p, option.id, g), lock = reason(p, option.id, g), art = actionIllustration(option, g), unitPrice = monthlyPriceBreakdown(p, option, g); return <button
                       key={option.id}
                       className={lock ? 'activity-locked' : ''}
-                      aria-pressed={a.id === option.id}
+                      aria-pressed={a?.id === option.id}
                       aria-describedby={lock ? 'action-lock-' + option.id : undefined}
                       onClick={() => chooseAction(option.id)}>
                     <GamePainting className="activity-thumbnail" src={art.thumb} alt=""/>
                     <span className="activity-copy">
                       <span className="activity-selection">
-                        {a.id === option.id ? 'Selected' : 'View activity'}
+                        {a?.id === option.id ? 'Selected' : 'View activity'}
                       </span>
                       <strong>
                         {option.title}
@@ -749,7 +777,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
                     </span>
                   </button>; })}
                 </div>
-                <div className="game-action-detail" tabIndex={-1}>
+                {a && preview && <div className="game-action-detail" tabIndex={-1}>
                   <div className="game-action-preview">
                     <div className="action-clock-preview">
                       <TurnClock period={period} hours={p.hours} turnKey={g.code + ':' + g.round + ':' + p.id} previewCost={a.time}/>
@@ -812,8 +840,9 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
                   {why && <p className="game-action-lock">
                     {qualitativeText(why)}
                   </p>}
-                </div>
+                </div>}
               </div>
+              {!a && workEntry}
               {hosts.some(person => person.remote) && <details className="cast-contact-routes">
                 <summary>Keep in touch <span>People you can reach from here</span></summary>
                 <p>Call or send a message to someone you know.</p>
@@ -931,6 +960,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
             </section>
           </div> : menuView === 'places' ? <>
             {workEntry}
+            {!p.castRedacted && <EnsembleStories g={g} p={p} disabled={!active || busy || moving || offline} onAction={commitEnsemble} onVisit={visitEnsemble}/>}
             <ArcSpotlight g={g} p={p} disabled={!active || busy || moving || offline} onOpen={openEncounter}/>
             {localInvitation && <section className="place-invitations regional-civic-invitation" aria-label="Local invitation">
               <div className="invitation-heading">
@@ -986,7 +1016,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
               disabled={!active || busy || moving || offline}
               onAction={onAction}
               onEncounter={openEncounter}/>}
-          </> : <>{workEntry}{p.castRedacted ? <PublicLifeSummary g={g} p={p}/> : <LifeJournal key={context} g={g} p={p} disabled={!active || busy || moving || offline} onAction={onAction}/>}  <div className="game-menu-actions">
+          </> : <>{workEntry}{p.castRedacted ? <PublicLifeSummary g={g} p={p}/> : <LifeJournal key={context} g={g} p={p} disabled={!active || busy || moving || offline} onAction={onAction}/>} {!p.castRedacted && <EnsembleJournal g={g} p={p}/>} <div className="game-menu-actions">
               <button onClick={() => { setMenu(null); onSound(); }}>Sound & music</button>
               <button aria-pressed={lowQuality} onClick={() => { const low = !lowQuality; setLowQuality(low); engine.current?.quality(low); }}>
                 {lowQuality ? 'Weather motion: quiet' : 'Weather motion: animated'}

@@ -1,3 +1,4 @@
+import {CURRENT_GAME_PROTOCOL} from '../lib/current-game.ts';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {readFileSync} from 'node:fs';
@@ -12,7 +13,7 @@ import {choiceTerms,firstPlaceAction,placeStories,regionalInvitation} from '../l
 import {worldPlaceIds,regionDefinitions} from '../lib/world-life.ts';
 import {createGame} from '../supabase/functions/crosswalk-game/game-service.ts';
 const require=createRequire(import.meta.url);
-function setup(){const g=createGame({op:'create',mode:'hotseat',names:['Planner'],ownerSession:'00000000-0000-4000-8000-000000000001',requestId:crypto.randomUUID(),protocolVersion:1},'PLAN01'),p=g.players[0];for(const region of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[region]=[...worldPlaceIds];return{g,p};}
+function setup(){const g=createGame({op:'create',mode:'hotseat',names:['Planner'],ownerSession:'00000000-0000-4000-8000-000000000001',requestId:crypto.randomUUID(),protocolVersion:CURRENT_GAME_PROTOCOL},'PLAN01'),p=g.players[0];for(const region of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[region]=[...worldPlaceIds];return{g,p};}
 function load(file){const module={exports:{}},source=readFileSync(new URL(file,import.meta.url),'utf8'),js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;vm.runInNewContext(js,{module,exports:module.exports,require:id=>id.startsWith('@/')?require('../'+id.slice(2)+'.ts'):require(id)});return module.exports;}
 const {ChoiceTerms,ChoiceBenefit}=load('../app/place-invitations.tsx');
 const render=(C,props)=>renderToStaticMarkup(React.createElement(C,props));

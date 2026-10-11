@@ -1,4 +1,4 @@
-import type { Game, Player } from './game.ts';
+import type { GameView as Game, Player } from './game.ts';
 import { monthlyBills, formatEconomyMoney } from './economy.ts';
 
 

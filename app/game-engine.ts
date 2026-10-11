@@ -2,7 +2,7 @@ import {visiblePlaces,worldView,worldPlaceName} from '@/lib/world-life';
 import {locations,marbleColors} from '@/lib/locations';
 import {assetUrl} from '@/lib/asset-url';
 import {characterVisualIdentity} from '@/lib/character-visuals';
-import type {Player,Game} from '@/lib/game';
+import type {Player,GameView as Game} from '@/lib/game';
 import type {Weather} from '@/lib/weather';
 import {regionLayout,type LayoutRegion} from './region-layouts';
 import {SCENE_WIDTH,SCENE_HEIGHT,sceneRegion,regionArt,sceneDoor,sceneRoute,venueShape,venueDepth,pointAlong,pathLength,pathData,screenToWorld,worldToScreen,zoomAt,clampView,inPolygon,personMarkup,type ScreenPoint,type SceneView} from './isometric-scene';

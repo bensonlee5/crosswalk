@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "node scripts/build-manual.mjs && vite build",
+    "build": "npm run canon:check && node scripts/build-manual.mjs && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test --test-concurrency=1 tests/*.test.mjs tests/*.test.ts",
@@ -19,7 +19,9 @@
     "guide:build": "node scripts/build-guide.mjs",
     "guide:check": "node scripts/build-guide.mjs --check",
     "manual:build": "node scripts/build-manual.mjs",
-    "manual:check": "node scripts/build-manual.mjs --check"
+    "manual:check": "node scripts/build-manual.mjs --check",
+    "canon:build": "node scripts/build-game-canon.mjs",
+    "canon:check": "node scripts/build-game-canon.mjs --check"
   },
   "dependencies": {
     "class-variance-authority": "0.7.1",
@@ -49,7 +51,8 @@
     "@electric-sql/pglite": "0.5.8",
     "supabase": "2.120.0",
     "deno": "2.9.6",
-    "esbuild": "0.28.0"
+    "esbuild": "0.28.0",
+    "jsdom": "27.4.0"
   },
   "type": "module"
 }

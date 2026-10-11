@@ -1,5 +1,5 @@
 import { financialPayQuote, recordFinancialPay } from './financial-recovery.ts';
-import type { Game, Player } from './game.ts';
+import type { GameView as Game, Player } from './game.ts';
 import { economyProfile, economyWorkReason, recordEconomyPaidHours } from './economy.ts';
 import { regionDefinitions, visiblePlaces, type RegionId, type WorldChoiceView } from './world-life.ts';
 /** Two bounded everyday crossings. Public orders/room commitments are shared;

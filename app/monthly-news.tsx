@@ -1,6 +1,6 @@
 'use client';
 import { Dialog,DialogContent,DialogDescription,DialogTitle } from '@/components/ui/dialog';
-import type { Game } from '@/lib/game';
+import type { GameView as Game } from '@/lib/game';
 import { getLifeEvent } from '@/lib/life-events';
 import { campaignWeather,getWeather,nextWeather } from '@/lib/weather';
 import { weatherStory } from '@/lib/weather-presentation';

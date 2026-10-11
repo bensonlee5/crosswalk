@@ -1,3 +1,4 @@
+import {committedHooks} from './support/committed-hooks.mjs';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
@@ -20,11 +21,11 @@ function harness({g,active=true,busy=false,offline=false,renderer='webgl',width=
  const nodes=new Map(),doc={querySelector(selector){if(selector.startsWith('[data-state='))return traverse(tree,e=>e.type===Dialog&&e.props.open).length?{}:null;const key=selector.includes('game-action-detail')?'game-action-detail':selector.includes('game-do-action')?'game-do-action':'game-tools-button';if(!nodes.has(key))nodes.set(key,node(key));return nodes.get(key);}};
  const engine={sync:(...args)=>controls.push(['sync',...args]),weather:w=>controls.push(['weather',w]),quality:l=>controls.push(['quality',l]),celebrate:()=>controls.push(['celebrate']),destroy:()=>controls.push(['destroy']),pan:(...p)=>controls.push(['pan',...p]),zoom:z=>controls.push(['zoom',z]),focus:()=>controls.push(['focus']),overview:()=>controls.push(['overview']),district:d=>controls.push(['district',d])};
  let callbacks={};
- const modules={'./venue-career-board':{__esModule:true,default:fakeComponent('VenueCareerBoard')},'./person-response':{PersonResponseStage:fakeComponent('PersonResponseStage')},'./cast-story':{CastMeetups:fakeComponent('CastMeetups'),CastJournal:fakeComponent('CastJournal')},'./encounter-panel':{__esModule:true,default:fakeComponent('EncounterPanel')},'./story-timeline':{ArcSpotlight:fakeComponent('ArcSpotlight'),StoryTimeline:fakeComponent('StoryTimeline')},'./world-story':{__esModule:true,default:fakeComponent('WorldStory')},'./life-story':{LifeJournal:fakeComponent('LifeJournal'),PublicLifeSummary:fakeComponent('PublicLifeSummary'),LifeHeadingLabel:fakeComponent('LifeHeadingLabel')},'@/components/ui/dialog':{Dialog,DialogContent,DialogTitle:fakeComponent('DialogTitle'),DialogDescription:fakeComponent('DialogDescription')},'./game-tutorial':{default:fakeComponent('GameTutorial'),useGameTutorial:()=>({state:tutorialState,visible:!!tutorialState,send:event=>events.push({type:'tutorial',event})}),__esModule:true},'./game-engine':{createTown:(host,pick,ready,travel,failure)=>{callbacks={pick,ready,travel,failure};if(renderer==='failed')throw Error('Forced unavailable renderer');ready(renderer==='software');return engine;}}};
+ const modules={'./ensemble-story':{EnsembleStories:fakeComponent('EnsembleStories'),EnsembleJournal:fakeComponent('EnsembleJournal')},'./venue-guide':{VenueGuide:fakeComponent('VenueGuide')},'./venue-career-board':{__esModule:true,default:fakeComponent('VenueCareerBoard')},'./person-response':{PersonResponseStage:fakeComponent('PersonResponseStage')},'./cast-story':{CastMeetups:fakeComponent('CastMeetups'),CastJournal:fakeComponent('CastJournal')},'./encounter-panel':{__esModule:true,default:fakeComponent('EncounterPanel')},'./story-timeline':{ArcSpotlight:fakeComponent('ArcSpotlight'),StoryTimeline:fakeComponent('StoryTimeline')},'./world-story':{__esModule:true,default:fakeComponent('WorldStory')},'./life-story':{LifeJournal:fakeComponent('LifeJournal'),PublicLifeSummary:fakeComponent('PublicLifeSummary'),LifeHeadingLabel:fakeComponent('LifeHeadingLabel')},'@/components/ui/dialog':{Dialog,DialogContent,DialogTitle:fakeComponent('DialogTitle'),DialogDescription:fakeComponent('DialogDescription')},'./game-tutorial':{default:fakeComponent('GameTutorial'),useGameTutorial:()=>({state:tutorialState,visible:!!tutorialState,send:event=>events.push({type:'tutorial',event})}),__esModule:true},'./game-engine':{createTown:(host,pick,ready,travel,failure)=>{callbacks={pick,ready,travel,failure};if(renderer==='failed')throw Error('Forced unavailable renderer');ready(renderer==='software');return engine;}}};
  for(const path of ['./character-portrait','./game-painting','./game-glyph','./turn-clock','./weather-icon'])modules[path]={default:fakeComponent(path),__esModule:true};
  modules['./place-invitations']=Object.fromEntries(['ChoiceTerms','ChoiceBenefit'].map(n=>[n,fakeComponent(n)]));
  const source=fs.readFileSync(root+'/app/game-screen.tsx','utf8'),js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText,compiledModule={exports:{}};
- vm.runInNewContext(js,{module:compiledModule,exports:compiledModule.exports,require:id=>id==='react'?hooks:modules[id]??(id.startsWith('@/')?require(root+'/'+id.slice(2)+'.ts'):id==='./game-art'?require(root+'/app/game-art.ts'):require(id)),structuredClone,requestAnimationFrame:fn=>(raf.push(fn),raf.length),setTimeout:(fn,delay)=>(timers.set(++seq,{at:now+delay,fn}),seq),clearTimeout:id=>timers.delete(id),window:{innerWidth:width},document:doc,console});
+ vm.runInNewContext(js,{module:compiledModule,exports:compiledModule.exports,require:id=>id==='react'?{...hooks,useLayoutEffect:hooks.useEffect}:modules[id]??(id==='@/lib/committed-ref'?committedHooks(hooks):id.startsWith('@/')?require(root+'/'+id.slice(2)+'.ts'):id==='./game-art'?require(root+'/app/game-art.ts'):require(id)),structuredClone,requestAnimationFrame:fn=>(raf.push(fn),raf.length),setTimeout:(fn,delay)=>(timers.set(++seq,{at:now+delay,fn}),seq),clearTimeout:id=>timers.delete(id),window:{innerWidth:width},document:doc,console});
  props={g,active,busy,offline,onAction:async id=>{apiCalls.push(['action',id]);return onAction?onAction(id,h):defaultAction(id);},onVisit:async place=>{apiCalls.push(['visit',place]);return onVisit?onVisit(place,h):defaultVisit(place);},onEnd:()=>events.push({type:'end'}),onNews:()=>events.push({type:'news'}),onHome:()=>events.push({type:'home'}),onRules:()=>events.push({type:'rules'}),onCopy:()=>events.push({type:'copy'}),onSound:()=>events.push({type:'sound'}),onTutorialReplay:()=>events.push({type:'replay'}),tutorialReplay:0,tutorialOffer:false,tutorialBlocked:false,newsOpen:false,billsOpen:false};
  function defaultAction(id){const next=structuredClone(props.g);game.move(next,id);next.version++;props.g=next;dirty=true;return next;}
  function defaultVisit(place){const next=structuredClone(props.g);game.move(next,'visit',place);next.version++;props.g=next;dirty=true;return next;}
@@ -235,6 +236,60 @@ await check('Only the explicit career decision submits once and an application d
 await check('Neighborhood opening cash matches the authoritative preview before and during recovery',async()=>{for(const recovery of [false,true]){const g=currentRoom();if(recovery)Object.assign(g.players[0].finance,{arrears:5000,missedSettlements:2,onTimeSettlements:0,recovering:true});const h=harness({g});await h.settle();await h.click(h.byClass('game-board-button')[0]);const expected=require(root+'/lib/game-view.ts').actionPreview(h.props.g.players[0],'weekly_opportunity',h.props.g);assert.ok(textContent(h.byClass('neighborhood-board')[0]).includes('+$'+expected.cash.toLocaleString('en-US')+' to cash'));h.unmount();}return{states:2,authoritativeQuote:true};});
 await check('Watched and redacted career seats show private work and pay, never an invented contract',async()=>{
  for(const redact of [true,false]){const g=careerRoom();delete g.players[0].career;if(redact)g.players[0].castRedacted=true;const h=harness({g,active:false});await h.settle();await h.click(h.byLabel('Game menu')[0]);assert.match(textContent(h.byClass('game-menu-dialog')[0]),/Work details are private/);assert.doesNotMatch(textContent(h.byClass('game-menu-dialog')[0]),/No active main role|Café crew/);const entry=h.byClass('career-menu-entry')[0];assert.equal(entry.props.disabled,true);entry.props.onClick();h.render();assert.equal(component(h,'VenueCareerBoard'),undefined);h.closeDialog();await h.click(h.byClass('game-board-button')[0]);assert.match(textContent(h.byClass('neighborhood-board')[0]),/Pay details are private/);assert.doesNotMatch(textContent(h.byClass('neighborhood-board')[0]),/\+\$[\d,]+ to cash/);assert.equal(h.apiCalls.length,0);h.unmount();}return{maskedAndUnknownSafe:true,privateAmountsHidden:true};
+});
+await check('A same-context venue closure dismisses an encounter permanently even if the venue returns',async()=>{
+ const g=currentRoom(),venue=require(root+'/lib/venue-scene.ts');let target;
+ for(const spot of ['GARDEN','MAKERSPACE','CINEMA','LIBRARY','MARKET','CAMPUS']){g.players[0].place=spot;const person=venue.venuePeople(g,g.players[0],spot).find(person=>!person.remote&&person.canTalk);if(person){target={spot,actor:person.id};break;}}
+ assert.ok(target,'fixture has an available encounter at a closable venue');const h=harness({g});await h.settle();component(h,'ArcSpotlight').props.onOpen(target.actor,target.spot);h.render();assert.ok(component(h,'EncounterPanel'));
+ const closed=structuredClone(g);W.applySharedVenueChange(closed,{id:'closed-during-chat',region:'alder',place:target.spot,status:'closed',name:'Closed venue',description:'Closed',reason:'A public change',source:'story'});h.update({g:closed});assert.equal(component(h,'EncounterPanel'),undefined);
+ h.update({g:structuredClone(g)});assert.equal(component(h,'EncounterPanel'),undefined);h.unmount();return{sameContextClosureClearsSelection:true,noGhostReopen:true};
+});
+await check('Location changes reset manual district selection without resurrecting an older choice',async()=>{
+ const g=currentRoom(),h=harness({g});await h.settle();const tabs=()=>traverse(h.byClass('game-district-tabs')[0],e=>e.type==='button');await h.click(tabs().find(e=>textContent(e).includes('Westside')));assert.equal(tabs().find(e=>textContent(e).includes('Westside')).props['aria-pressed'],true);
+ const location=require(root+'/lib/locations.ts'),next=structuredClone(g);next.players[0].place=location.locations.find(l=>l.district==='main'&&l.place!==g.players[0].place).place;h.update({g:next});assert.equal(tabs().find(e=>textContent(e).includes('Main Street')).props['aria-pressed'],true);
+ h.update({g:structuredClone(g)});const expected=location.locationFor(g.players[0].place).district;assert.equal(tabs().find(e=>textContent(e).includes(expected==='main'?'Main Street':'Westside')).props['aria-pressed'],true);h.unmount();return{locationReset:true,noOldManualChoice:true};
+});
+await check('Tutorial completion requires opening and closing the matching Chronicle or bills lesson',async()=>{
+ const tutorialState={status:'active',step:'weather'},h=harness({tutorialState});await h.settle();
+ const sent=event=>h.events.filter(e=>e.type==='tutorial'&&e.event===event).length;
+ h.update({newsOpen:false});assert.equal(sent('forecast-read'),0);h.update({newsOpen:true});assert.equal(sent('forecast-read'),0);h.update({newsOpen:false});assert.equal(sent('forecast-read'),1);h.update({newsOpen:false});assert.equal(sent('forecast-read'),1);
+ tutorialState.step='month';h.update({billsOpen:false});assert.equal(sent('bills-reviewed'),0);h.update({billsOpen:true});assert.equal(sent('bills-reviewed'),0);h.update({billsOpen:false});assert.equal(sent('bills-reviewed'),1);h.update({billsOpen:false});assert.equal(sent('bills-reviewed'),1);assert.equal(h.apiCalls.length,0);h.unmount();return{matchingOpenCloseOnly:true,noDuplicateCompletion:true,noGameMutation:true};
+});
+await check('A same-context pending life event opens the journal only once and respects dismissal',async()=>{
+ const life=require(root+'/lib/life-events.ts'),g=currentRoom();while(g.status==='playing'&&!life.getLifeEvent(g.players[0],g)?.pending)game.move(g,'end');assert.ok(life.getLifeEvent(g.players[0],g)?.pending,'fixture reaches an actual pending life event');
+ const quiet=structuredClone(g);quiet.players[0].life.receipts=quiet.players[0].life.receipts.filter(r=>r.week!==quiet.round);const h=harness({g:quiet});await h.settle();assert.equal(component(h,'LifeJournal'),undefined);
+ h.update({g});assert.ok(component(h,'LifeJournal'));h.closeDialog();const resolved=structuredClone(g);life.getLifeEvent(resolved.players[0],resolved).pending=false;h.update({g:resolved});h.update({g:structuredClone(g)});assert.equal(component(h,'LifeJournal'),undefined);assert.equal(h.apiCalls.length,0);h.unmount();return{sameContextPendingRecognized:true,dismissalRetained:true};
+});
+await check('Ensemble invitations open real venues without spending a story choice and retain the requested scene',async()=>{
+ const ensemble=require(root+'/lib/ensemble-story.ts'),g=currentRoom();ensemble.initializeEnsemble(g);
+ const p=g.players[0],scene=ensemble.getEnsembleView(g,p).scenes.find(s=>s.choices.length);assert.ok(scene);
+ const h=harness({g});await h.settle();await h.click(h.byClass('game-tools-button')[0]);
+ const invite=component(h,'EnsembleStories');assert.ok(invite);const before=p.hours;
+ invite.props.onVisit(scene.place,scene.id);await h.settle();h.advance(1400);
+ const shown=traverse(h.tree,e=>e.type?.displayName==='EnsembleStories'&&e.props.selectedVenue===scene.place)[0]??component(h,'EnsembleStories');
+ assert.equal(shown.props.selectedVenue,scene.place);assert.equal(shown.props.storyId,scene.id);
+ assert.equal(h.props.g.players[0].hours,before);assert.ok(h.apiCalls.every(call=>call[0]==='visit'));
+ assert.equal(component(h,'VenueGuide').props.placeId,scene.place);
+ const oldAction=shown.props.onAction,changed=structuredClone(h.props.g);changed.round++;h.update({g:changed});
+ const count=h.apiCalls.length;await oldAction(scene.choices[0].actionId);assert.equal(h.apiCalls.length,count,'stale scene callback cannot commit');
+ h.unmount();return{freePreview:true,realVenue:true,focusRetained:true,staleCommitBlocked:true};
+});
+await check('Watched ensemble scenes cannot submit actions and private recaps stay hidden',async()=>{
+ const ensemble=require(root+'/lib/ensemble-story.ts'),g=currentRoom();ensemble.initializeEnsemble(g);g.players[0].castRedacted=true;
+ const h=harness({g,active:false});await h.settle();await h.click(h.byLabel('Game menu')[0]);assert.equal(component(h,'EnsembleJournal'),undefined);
+ h.closeDialog();await h.click(h.byClass('game-tools-button')[0]);assert.equal(component(h,'EnsembleStories'),undefined);assert.equal(h.apiCalls.length,0);h.unmount();return{privateStoriesHidden:true};
+});
+await check('A story at WORK renders its venue and choices even with no ordinary activities',async()=>{
+ const ensemble=require(root+'/lib/ensemble-story.ts'),g=currentRoom(),p=g.players[0];
+ p.world.region='glasssteppe';p.world.localeHistory.glasssteppe={...p.world.localeHistory.glasssteppe,arrivals:1};p.world.localeHistory.alder.arrivals=0;
+ p.world.discoveredPlacesByRegion.glasssteppe=[...W.worldPlaceIds];delete g.ensemble;ensemble.initializeEnsemble(g);
+ const scene=ensemble.getEnsembleView(g,p,'laundry','WORK').scenes.find(scene=>scene.id==='laundry');assert.ok(scene);
+ const h=harness({g});await h.settle();await h.click(h.byClass('game-tools-button')[0]);
+ component(h,'EnsembleStories').props.onVisit('WORK','laundry');await h.settle();h.advance(1400);
+ assert.equal(h.props.g.players[0].place,'WORK');assert.equal(game.availableActions(h.props.g.players[0],'WORK',h.props.g).length,0);
+ assert.equal(h.byClass('game-location-dialog').length,1);assert.equal(component(h,'VenueGuide').props.placeId,'WORK');
+ assert.equal(component(h,'EnsembleStories').props.storyId,'laundry');assert.equal(component(h,'VenueCareerBoard'),undefined);
+ assert.equal(h.byClass('game-do-action').length,0);assert.ok(h.byClass('career-menu-entry').length);h.unmount();return{storyVisibleWithoutActivity:true,careerAccessRetained:true};
 });
 console.log(JSON.stringify(output,null,2));
 if(results.some(r=>!r.ok))process.exitCode=1;

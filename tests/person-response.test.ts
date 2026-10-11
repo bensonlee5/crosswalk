@@ -35,9 +35,9 @@ function validReply(input: PersonSceneInput) {
   return reply;
 }
 
-test('all 39 onstage people have pure first, repeat, paused, unavailable and private responses in all eight months', () => {
+test('all 53 presented people have pure first, repeat, paused, unavailable and private responses in all eight months', () => {
   const ids = Object.keys(personSceneProfiles);
-  assert.equal(ids.length, 39);
+  assert.equal(ids.length, 53);
   for (let round = 1; round <= 8; round++) {
     const {g, p} = fixture(round);
     for (const actorId of ids) {

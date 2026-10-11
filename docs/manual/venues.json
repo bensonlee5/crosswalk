@@ -3,7 +3,7 @@
   "guideNotes": [
     "The five towns contain 75 visitable places. Each has a local proper name, with its everyday function shown alongside it. Town portraits illustrate the regional atmosphere rather than a surveyed building plan.",
     "Local-history, architecture and atmosphere passages are authored worldbuilding grounded in the established town and character canon. They do not add interactable rooms, opening-hour systems or tested physical-access certifications.",
-    "The “In the current game” sections describe new monthly shared-story games. Follow the current preview for money, time, paid work hours and what is available to your character. Costs, recovery, weather, learning and story circumstances can affect an activity. Older saved rooms keep their earlier rules.",
+    "The “In the current game” sections describe Crosswalk’s monthly lives. Follow the current preview for money, time, paid work hours and what is available to your character. Costs, recovery, weather, learning and story circumstances can affect an activity. Unsupported saved formats require a new life.",
     "Moving locally to a discovered, open place is free. The labeled Places list is an alternative to selecting a map marker, and the game also exposes it with the L key. This is an implemented navigation option, not a claim of tested browser, mobile-device or physical-building accessibility.",
     "People links can mean an owner, worker, historical contributor or local association; the descriptions distinguish them. Current encounters vary as the month and personal story develop. Remote contacts remain remote, and someone’s hometown does not promise their presence at every local venue.",
     "Exploring, ordinary activities and local introductions help you discover a town. Compact Alder and Glasssteppe favor nearby, sheltered service routes; Saffron, Pelagia and Ember Mesa have more open stretches where weather is worth considering. Follow your current map for discovered and open places.",
@@ -188,7 +188,7 @@
         "Available on arrival as an essential place for home, work, rest, food or community life."
       ],
       "gameplayNotes": [
-        "Mina, Eli and Jo’s shared monthly scenes appear at their marked current venue. The earlier three fixed personal-chapter actions are replaced in shared-story games; follow the active scene rather than assuming a character is always here.",
+        "Mina, Eli and Jo’s shared monthly scenes appear at their marked current venue. Follow the active scene and its choices rather than assuming a character is always here.",
         "Neri’s introduction and later conversations use café or transit meeting points according to their story stage. Later contact may be a remote call rather than physical presence; the game labels that distinction.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
         "Nico’s scheduled family visit takes place with Tess nearby at the café; children do not take paid work or obligation tracks.",
@@ -257,7 +257,7 @@
         "Available on arrival as an essential place for home, work, rest, food or community life."
       ],
       "gameplayNotes": [
-        "Mina, Eli and Jo’s shared monthly scenes appear at their marked current venue. The earlier three fixed personal-chapter actions are replaced in shared-story games; follow the active scene rather than assuming a character is always here.",
+        "Mina, Eli and Jo’s shared monthly scenes appear at their marked current venue. Follow the active scene and its choices rather than assuming a character is always here.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
         "The community room can carry remote conversations with already-known cast characters who are currently away. A remote contact does not mean the person is physically in this town.",
         "Use Work & learning to review civic roles and local commitments. Shared supper preparation is separately listed when a real order is open."
@@ -529,7 +529,7 @@
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner."
       ],
       "gameplayNotes": [
-        "Mina, Eli and Jo’s shared monthly scenes appear at their marked current venue. The earlier three fixed personal-chapter actions are replaced in shared-story games; follow the active scene rather than assuming a character is always here.",
+        "Mina, Eli and Jo’s shared monthly scenes appear at their marked current venue. Follow the active scene and its choices rather than assuming a character is always here.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
         "An evolving local program may add a qualifier to this place’s name. It remains the same venue and stable destination, with ordinary repair or growing uses alongside its current program.",
         "Use Work & learning to review practical roles and creative commitments at this venue. The current preview shows relevant preparation, experience, materials and pay."
@@ -707,7 +707,7 @@
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner."
       ],
       "gameplayNotes": [
-        "Mina, Eli and Jo’s shared monthly scenes appear at their marked current venue. The earlier three fixed personal-chapter actions are replaced in shared-story games; follow the active scene rather than assuming a character is always here.",
+        "Mina, Eli and Jo’s shared monthly scenes appear at their marked current venue. Follow the active scene and its choices rather than assuming a character is always here.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
         "Harvest work can depend on the current shared story. Check its notice before planning a paid harvest; tending and rest remain separate choices.",
         "An evolving local program may add a qualifier to this place’s name. It remains the same venue and stable destination, with ordinary repair or growing uses alongside its current program."

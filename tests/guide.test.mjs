@@ -20,7 +20,7 @@ test('semantic document, viewport, title and readable progressive enhancement',(
 test('all chapter anchors resolve and only verified external destinations are used',()=>{
  for(const [,target] of page.matchAll(/href="#([^"]+)"/g))assert.ok(ids.includes(target),`Missing target ${target}`);
  const urls=[...page.matchAll(/href="(https:[^"]+)"/g)].map(m=>m[1]);
- assert.deepEqual([...new Set(urls)].sort(),['https://crosswalk-life-game.bensonlee5.chatgpt.site','https://github.com/bensonlee5/crosswalk#readme'].sort());
+ assert.deepEqual([...new Set(urls)].sort(),['https://github.com/bensonlee5/crosswalk#readme'].sort());
  assert.equal((page.match(/href="\.\.\/"/g)||[]).length,3);
 });
 test('68 unique spoiler-free profile cards map to canonical portrait files',()=>{
@@ -34,7 +34,7 @@ test('68 unique spoiler-free profile cards map to canonical portrait files',()=>
 test('current economy and account limitations stay explicit',()=>{
  for(const value of ['$6,000','$1,250','$380','$220','$1,850','$3,072','200-hour','80%','$140','$144','$100','$260'])assert.ok(page.includes(value),value);
  assert.match(page,/Email accounts are currently unavailable/);assert.match(page,/same device, browser profile and site address/);
- assert.match(page,/not a recovery key/);assert.match(page,/do not automatically move to GitHub Pages/);
+ assert.match(page,/not a recovery key/);assert.doesNotMatch(page,/crosswalk-life-game|Started on the old site/);
  assert.match(page,/earlier game formats are unsupported/);
  assert.match(page,/older records are not migrated or deleted/i);
  assert.match(page,/Start a new life/);
@@ -43,7 +43,7 @@ test('current economy and account limitations stay explicit',()=>{
  assert.match(page,/One main contract can sit alongside separately chosen fixed commitments/);
  assert.match(page,/Free Library study and paid Campus courses/);
  assert.match(page,/then separately accept an offer before choosing paid work/);
- assert.doesNotMatch(page,/older saves retain their original|follows your room’s edition/);
+ assert.doesNotMatch(page,/older saves retain their original|follows your room’s edition|Saved rooms retain the edition|old room talk about weeks|When a room.s rules differ|in every edition/);
 });
 test('search and place filter handle combined, empty and repeated changes',()=>{
  const people=[{dataset:{region:'alder'},textContent:'Mina Songwriter',hidden:false},{dataset:{region:'pelagia'},textContent:'Esme Archivist',hidden:false}];

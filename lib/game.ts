@@ -1,3 +1,5 @@
+import { CURRENT_GAME_SCHEMA } from './current-game.ts';
+import { resolveEnsembleChoice, beginEnsembleMonth, afterEnsembleAction, type EnsembleState, type EnsemblePlayerState } from './ensemble-story.ts';
 import { actionIncidentContext, commitActionIncident, type ActionIncidentState, type IncidentRandomState } from './action-incidents.ts';
 import { resolveCareerChoice, recordCareerEvidence, endCareerMonth, type CareerState } from './careers.ts';
 import { financialRestriction, settleFinancialMonth, reserveRecoveryAdministration, type FinanceState } from './financial-recovery.ts';
@@ -21,7 +23,8 @@ import { weatherEffect, consumeClimateEffect, getWeather, seasonalOpportunity } 
 import type { WeatherId, WeatherUsage } from './weather.ts';
 export { createEnvironment } from './weather.ts';
 export type Player = {
-    schemaVersion: 1;
+    ensemble?: EnsemblePlayerState;
+    schemaVersion: typeof CURRENT_GAME_SCHEMA;
     career?: CareerState;
     finance?: FinanceState;
     actionIncidents?: ActionIncidentState;
@@ -53,8 +56,10 @@ export type Player = {
     legacy?: number;
     weatherUsage?: WeatherUsage;
 };
-export type Game = {
-    schemaVersion: 1;
+/** Shared rule/view data. This shape conveys no seat ownership or authority. */
+export type GameView = {
+    ensemble?: EnsembleState;
+    schemaVersion: typeof CURRENT_GAME_SCHEMA;
     actionIncidentRng?: Record<string, IncidentRandomState>;
     sharedOpportunities?: SharedOpportunitiesState;
     cast?: CastState;
@@ -62,8 +67,6 @@ export type Game = {
     sharedWorld?: SharedWorldState;
     code: string;
     mode: 'hotseat' | 'online';
-    host: string;
-    members: Record<string, string[]>;
     players: Player[];
     status: 'lobby' | 'playing' | 'finished';
     round: number;
@@ -85,6 +88,9 @@ export type Game = {
         completed: boolean;
     };
 };
+/** Only authoritative saved state has host and membership information. */
+export type Game = GameView & { host: string; members: Record<string, string[]> };
+
 export type Activity = {
     id: string;
     title: string;
@@ -191,7 +197,7 @@ export const opportunities = [
 export const opportunity = (g: Pick<Game, 'round' | 'weatherSchedule' | 'players' | 'turn' | 'code'>) => seasonalOpportunity(g, opportunities[[1, 0, 3, 2, 4, 5, 6, 7][(g.round - 1) % opportunities.length]]);
 export const projectGoal = (g: Pick<Game, 'players'>) => g.players.length * 2;
 export const projectProgress = (g: Pick<Game, 'project'>) => Object.values(g.project?.contributions || {}).reduce((a, b) => a + b, 0);
-export function effects(p: Player, a: Activity, g?: Game) {
+export function effects(p: Player, a: Activity, g?: GameView) {
     a = activityForPlayer(p, a, g);
     let craft = a.craft || 0, social = a.social || 0, joy = a.joy || 0;
     if (a.special === 'opportunity' && g) {
@@ -203,8 +209,8 @@ export function effects(p: Player, a: Activity, g?: Game) {
     const weather = weatherEffect(p, a, g, { joy, energy: a.energy || 0 }), participation = regionalParticipation(p, a.id, g, joy + weather.joy, visiblePlaces(p, g).includes(a.place));
     return { cash: economyQuote(p, a, g).cash, energy: Math.max(-p.energy, Math.min(a.energy || 0, 100 - p.energy)) + weather.energy, joy: Math.max(-p.joy, Math.min(joy, 100 - p.joy)) + weather.joy + participation.joy, participation, skill: Math.min(a.skill || 0, 6 - p.skill), social, craft: Math.min(craft, 8 - (p.craft || 0)), weather, requiredEnergy: weather.requiredEnergy };
 }
-export function player(name: string): Player { return { schemaVersion: 1, id: crypto.randomUUID(), name, cash: 6000, skill: 0, joy: 40, energy: 70, hours: 6, social: 0, housing: 0, place: 'APARTMENTS', craft: 0, legacy: 0, economyWork: { round: 1, paidHours: 0 }, economyHabits: { round: 1, ids: [] }, familiarity: { version: 1, startedRound: 1, actions: {}, people: {} } }; }
-export function reason(p: Player, id: string, g?: Game) {
+export function player(name: string): Player { return { schemaVersion: CURRENT_GAME_SCHEMA, id: crypto.randomUUID(), name, cash: 6000, skill: 0, joy: 40, energy: 70, hours: 6, social: 0, housing: 0, place: 'APARTMENTS', craft: 0, legacy: 0, economyWork: { round: 1, paidHours: 0 }, economyHabits: { round: 1, ids: [] }, familiarity: { version: 1, startedRound: 1, actions: {}, people: {} } }; }
+export function reason(p: Player, id: string, g?: GameView) {
     const original = actions.find(x => x.id === id);
     if (!original)
         return 'Unknown action';
@@ -246,12 +252,13 @@ export function reason(p: Player, id: string, g?: Game) {
         return `Needs ${a.needCraft} craft levels`;
     return '';
 }
-export function availableActions(p: Player, place: string, g?: Game) { return actions.map(a => activityForPlayer(p, a, g)).filter(a => a.place === place && visiblePlaces(p, g).includes(place)); }
+export function availableActions(p: Player, place: string, g?: GameView) { return actions.map(a => activityForPlayer(p, a, g)).filter(a => a.place === place && visiblePlaces(p, g).includes(place)); }
 export function move(g: Game, id: string, destination?: string) {
     const p = g.players[g.turn], paidBefore = p ? economyPaidHours(p, g) : 0, before = JSON.stringify(g), context = p ? actionFamiliarityContext(g, p, id, destination) : undefined;
     const original = actions.find(a => a.id === id), incidentContext = p ? actionIncidentContext(g, p, original ? activityForPlayer(p, original, g) : undefined) : null;
     moveCore(g, id, destination);
     const applied = JSON.stringify(g) !== before;
+    if (applied) afterEnsembleAction(g);
     if (p) {
         const updated = g.players.find(q => q.id === p.id) ?? p;
         recordMotiveEvidence(g, updated, id);
@@ -271,6 +278,13 @@ function moveCore(g: Game, id: string, destination?: string) {
     if (g.status !== 'playing')
         throw Error('The game is not running');
     const p = g.players[g.turn];
+    if (id.startsWith('ensemble:')) {
+        if (p.ensemble?.receipts.some(receipt => receipt.actionId === id)) return;
+        resolveEnsembleChoice(g, p, id);
+        afterWorldAction(g, p, id);
+        recordLifeProgress(g, p);
+        return;
+    }
     if (id.startsWith('career:')) {
         resolveCareerChoice(g, p, id);
         recordLifeProgress(g, p);
@@ -395,6 +409,7 @@ function moveCore(g: Game, id: string, destination?: string) {
                 beginLifeWeek(g);
                 beginWorldWeek(g);
                 arriveStoryWeek(g);
+                beginEnsembleMonth(g);
                 for (const q of g.players)
                     recordLifeProgress(g, q);
             }

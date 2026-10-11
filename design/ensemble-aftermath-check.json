@@ -1,0 +1,291 @@
+{
+  "scope": "Preliminary same-policy seed13 comparison; 4 seats, 8 real months, ordinary money/work/travel/bills and at most 3 visible cards. Full independent 84-run acceptance remains separate. Exposure is synthetic UI-card reading, not human attention or enjoyment.",
+  "beforeCommit": "5ab2f4d1b20455fade164801d53bface264a606b",
+  "methodChange": "Only explicit cause.crossingId lookup replaces old action-ID inference; reachability and policy selection are unchanged. Causal ancestry and direct other-player source counts are reported separately.",
+  "results": [
+    {
+      "policy": "local_mixed",
+      "before": [
+        {
+          "seat": "Seat 1",
+          "ancestryOffers": 1,
+          "ancestryAccepted": 1,
+          "directPlayerOffers": 1,
+          "directPlayerAccepted": 1,
+          "emptyViewedTurns": 4
+        },
+        {
+          "seat": "Seat 2",
+          "ancestryOffers": 4,
+          "ancestryAccepted": 1,
+          "directPlayerOffers": 4,
+          "directPlayerAccepted": 1,
+          "emptyViewedTurns": 4
+        },
+        {
+          "seat": "Seat 3",
+          "ancestryOffers": 3,
+          "ancestryAccepted": 0,
+          "directPlayerOffers": 3,
+          "directPlayerAccepted": 0,
+          "emptyViewedTurns": 4
+        },
+        {
+          "seat": "Seat 4",
+          "ancestryOffers": 4,
+          "ancestryAccepted": 1,
+          "directPlayerOffers": 4,
+          "directPlayerAccepted": 1,
+          "emptyViewedTurns": 5
+        }
+      ],
+      "after": [
+        {
+          "seat": "Seat 1",
+          "ancestryOffers": 21,
+          "ancestryAccepted": 11,
+          "directPlayerOffers": 16,
+          "directPlayerAccepted": 9,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 2",
+          "ancestryOffers": 21,
+          "ancestryAccepted": 9,
+          "directPlayerOffers": 17,
+          "directPlayerAccepted": 7,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 3",
+          "ancestryOffers": 19,
+          "ancestryAccepted": 7,
+          "directPlayerOffers": 15,
+          "directPlayerAccepted": 6,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 4",
+          "ancestryOffers": 21,
+          "ancestryAccepted": 10,
+          "directPlayerOffers": 16,
+          "directPlayerAccepted": 9,
+          "emptyViewedTurns": 0
+        }
+      ]
+    },
+    {
+      "policy": "cause_first",
+      "before": [
+        {
+          "seat": "Seat 1",
+          "ancestryOffers": 0,
+          "ancestryAccepted": 0,
+          "directPlayerOffers": 0,
+          "directPlayerAccepted": 0,
+          "emptyViewedTurns": 4
+        },
+        {
+          "seat": "Seat 2",
+          "ancestryOffers": 2,
+          "ancestryAccepted": 1,
+          "directPlayerOffers": 2,
+          "directPlayerAccepted": 1,
+          "emptyViewedTurns": 4
+        },
+        {
+          "seat": "Seat 3",
+          "ancestryOffers": 3,
+          "ancestryAccepted": 3,
+          "directPlayerOffers": 3,
+          "directPlayerAccepted": 3,
+          "emptyViewedTurns": 4
+        },
+        {
+          "seat": "Seat 4",
+          "ancestryOffers": 2,
+          "ancestryAccepted": 2,
+          "directPlayerOffers": 2,
+          "directPlayerAccepted": 2,
+          "emptyViewedTurns": 4
+        }
+      ],
+      "after": [
+        {
+          "seat": "Seat 1",
+          "ancestryOffers": 17,
+          "ancestryAccepted": 12,
+          "directPlayerOffers": 13,
+          "directPlayerAccepted": 9,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 2",
+          "ancestryOffers": 16,
+          "ancestryAccepted": 8,
+          "directPlayerOffers": 14,
+          "directPlayerAccepted": 7,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 3",
+          "ancestryOffers": 16,
+          "ancestryAccepted": 13,
+          "directPlayerOffers": 12,
+          "directPlayerAccepted": 11,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 4",
+          "ancestryOffers": 21,
+          "ancestryAccepted": 12,
+          "directPlayerOffers": 16,
+          "directPlayerAccepted": 9,
+          "emptyViewedTurns": 0
+        }
+      ]
+    },
+    {
+      "policy": "late_interest",
+      "before": [
+        {
+          "seat": "Seat 1",
+          "ancestryOffers": 0,
+          "ancestryAccepted": 0,
+          "directPlayerOffers": 0,
+          "directPlayerAccepted": 0,
+          "emptyViewedTurns": 1
+        },
+        {
+          "seat": "Seat 2",
+          "ancestryOffers": 0,
+          "ancestryAccepted": 0,
+          "directPlayerOffers": 0,
+          "directPlayerAccepted": 0,
+          "emptyViewedTurns": 1
+        },
+        {
+          "seat": "Seat 3",
+          "ancestryOffers": 0,
+          "ancestryAccepted": 0,
+          "directPlayerOffers": 0,
+          "directPlayerAccepted": 0,
+          "emptyViewedTurns": 1
+        },
+        {
+          "seat": "Seat 4",
+          "ancestryOffers": 0,
+          "ancestryAccepted": 0,
+          "directPlayerOffers": 0,
+          "directPlayerAccepted": 0,
+          "emptyViewedTurns": 1
+        }
+      ],
+      "after": [
+        {
+          "seat": "Seat 1",
+          "ancestryOffers": 11,
+          "ancestryAccepted": 5,
+          "directPlayerOffers": 8,
+          "directPlayerAccepted": 4,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 2",
+          "ancestryOffers": 9,
+          "ancestryAccepted": 5,
+          "directPlayerOffers": 9,
+          "directPlayerAccepted": 5,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 3",
+          "ancestryOffers": 10,
+          "ancestryAccepted": 5,
+          "directPlayerOffers": 9,
+          "directPlayerAccepted": 4,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 4",
+          "ancestryOffers": 11,
+          "ancestryAccepted": 7,
+          "directPlayerOffers": 6,
+          "directPlayerAccepted": 4,
+          "emptyViewedTurns": 0
+        }
+      ]
+    },
+    {
+      "policy": "travel_circuit",
+      "before": [
+        {
+          "seat": "Seat 1",
+          "ancestryOffers": 0,
+          "ancestryAccepted": 0,
+          "directPlayerOffers": 0,
+          "directPlayerAccepted": 0,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 2",
+          "ancestryOffers": 2,
+          "ancestryAccepted": 1,
+          "directPlayerOffers": 2,
+          "directPlayerAccepted": 1,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 3",
+          "ancestryOffers": 3,
+          "ancestryAccepted": 3,
+          "directPlayerOffers": 3,
+          "directPlayerAccepted": 3,
+          "emptyViewedTurns": 3
+        },
+        {
+          "seat": "Seat 4",
+          "ancestryOffers": 2,
+          "ancestryAccepted": 2,
+          "directPlayerOffers": 2,
+          "directPlayerAccepted": 2,
+          "emptyViewedTurns": 0
+        }
+      ],
+      "after": [
+        {
+          "seat": "Seat 1",
+          "ancestryOffers": 4,
+          "ancestryAccepted": 3,
+          "directPlayerOffers": 2,
+          "directPlayerAccepted": 1,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 2",
+          "ancestryOffers": 3,
+          "ancestryAccepted": 2,
+          "directPlayerOffers": 3,
+          "directPlayerAccepted": 2,
+          "emptyViewedTurns": 0
+        },
+        {
+          "seat": "Seat 3",
+          "ancestryOffers": 9,
+          "ancestryAccepted": 7,
+          "directPlayerOffers": 6,
+          "directPlayerAccepted": 5,
+          "emptyViewedTurns": 1
+        },
+        {
+          "seat": "Seat 4",
+          "ancestryOffers": 6,
+          "ancestryAccepted": 6,
+          "directPlayerOffers": 5,
+          "directPlayerAccepted": 5,
+          "emptyViewedTurns": 0
+        }
+      ]
+    }
+  ]
+}

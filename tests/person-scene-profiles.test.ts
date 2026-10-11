@@ -8,11 +8,12 @@ import {canonicalCharacterById} from '../lib/character-canon.ts';
 
 const words = (text: string) => text.trim().split(/\s+/).length;
 
-test('all 39 onstage people have authored scene profiles and canonical portraits', () => {
+test('core cast and 14 additional story actors have authored profiles and canonical portraits', () => {
   const onstageIds = [...Object.keys(characterVoices), ...characterCameos.map(person => person.id)];
   assert.equal(new Set(onstageIds).size, 39);
-  assert.deepEqual(Object.keys(personSceneProfiles).sort(), onstageIds.sort());
-  for (const id of onstageIds) {
+  const additionalStoryIds = ["lata_rao", "nila_desai", "safia_odhiambo", "rosa_moreno", "mateo_moreno", "nell_harper", "ruth_harper", "jonah_bell", "lucien_morel", "qiao_chen", "akira_mori", "ines_valdes", "vera_valdes", "rafael_valdes"];
+  assert.deepEqual(Object.keys(personSceneProfiles).sort(), [...onstageIds, ...additionalStoryIds].sort());
+  for (const id of Object.keys(personSceneProfiles)) {
     assert.ok(canonicalCharacterById[id], `${id} has approved canon`);
     assert.ok(existsSync(new URL(`../public/paintings/character-portraits/${id}.webp`, import.meta.url)), `${id} has a portrait`);
   }
@@ -113,4 +114,21 @@ test('familiarity does not promise access, friendship, or future availability', 
   const oren = [...personFamiliarityLines.oren.routine, ...personFamiliarityLines.oren.habit].join(' ');
   assert.match(oren, /still need a short visit/);
   assert.doesNotMatch(oren, /cure|recover|chemotherapy|treatment|healthy|improv(?:ed|ing)|more energy|stronger|better now/i);
+});
+
+
+test('new story portraits use inspected details and Vera keeps ordinary supervised hobby boundaries', () => {
+  const observed: Record<string, RegExp> = {
+    lata_rao: /braid.*green shirt/, nila_desai: /ochre overshirt/, safia_odhiambo: /silver curls.*turquoise/,
+    rosa_moreno: /white curls.*rust blouse.*shawl/, mateo_moreno: /sun hat.*blue shirt/,
+    nell_harper: /Copper curls.*freckles.*backpack/, ruth_harper: /blue cardigan.*tortoiseshell glasses/,
+    jonah_bell: /twists.*beard.*yellow shirt/, lucien_morel: /silver moustache.*rust scarf/,
+    qiao_chen: /burgundy padded vest.*navy/, akira_mori: /brown coat.*red scarf/,
+    ines_valdes: /pearl earrings.*plum blouse/, vera_valdes: /pale green.*blue game box/,
+    rafael_valdes: /pale blue shirt.*straw hat/,
+  };
+  for (const [id, detail] of Object.entries(observed)) assert.match(personSceneProfiles[id].appearance, detail, id);
+  assert.equal(canonicalCharacterById.vera_valdes.age,14);
+  assert.match(personSceneProfiles.vera_valdes.activity,/her own game box.*adult-run public table/);
+  assert.doesNotMatch(Object.values(personSceneProfiles.vera_valdes).join(' '),/wage|shift|bet|owes|appointment|promise|commission|caregiver/);
 });

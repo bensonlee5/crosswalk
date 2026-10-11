@@ -1,3 +1,4 @@
+import {CURRENT_GAME_PROTOCOL} from '../lib/current-game.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -13,7 +14,7 @@ const require=createRequire(import.meta.url),source=readFileSync(new URL('../app
 function load(states=[]){let hook=0;const compiled={exports:{}},js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
  vm.runInNewContext(js,{module:compiled,exports:compiled.exports,require:id=>id==='react'?{...React,useState:initial=>[states[hook++]??initial,()=>{}],useRef:()=>({current:null}),useEffect:()=>{}}:id.endsWith('.css')?{}:id==='./game-painting'?{default:props=>React.createElement('img',{src:props.src,alt:props.alt}),__esModule:true}:id==='./story-choices'?{useEncounterCommit:()=>({busy:false,receipt:null,error:'',commit:()=>{},isSubmitted:()=>false}),StoryChoiceDeck:props=>React.createElement('div',{'data-confirm-choice':props.choices[0]?.id},props.choices[0]?.body),EncounterOutcome:()=>null}:id==='./person-response'?{PersonResponseStage:()=>null}:id.startsWith('@/')?require('../'+id.slice(2)+'.ts'):require(id)});return compiled.exports.default;
 }
-function setup(){const g=createGame({op:'create',mode:'hotseat',names:['Worker'],ownerSession:'00000000-0000-4000-8000-000000000001',requestId:crypto.randomUUID(),protocolVersion:1},'CAREER'),p=g.players[0];for(const r of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[r]=[...worldPlaceIds];return{g,p};}
+function setup(){const g=createGame({op:'create',mode:'hotseat',names:['Worker'],ownerSession:'00000000-0000-4000-8000-000000000001',requestId:crypto.randomUUID(),protocolVersion:CURRENT_GAME_PROTOCOL},'CAREER'),p=g.players[0];for(const r of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[r]=[...worldPlaceIds];return{g,p};}
 const elements=node=>!node||typeof node!=='object'?[]:[node,...React.Children.toArray(node.props?.children).flatMap(elements)];
 const props=()=>({disabled:false,onAction:async()=>{},onVisit:()=>{},...setup()});
 const render=(p,states)=>renderToStaticMarkup(React.createElement(load(states),p));

@@ -63,7 +63,6 @@ export default function AccountPanel({ onSessionChange, disabled = false }: Prop
   const label = state?.lostGuestOwner ? 'Recover your saved games' : user && !isGuest ? 'Your account' : 'Save your guest account';
   return <section className="cw-account">
     <button type="button" className="text-button cw-account-trigger" onClick={() => setOpen(true)}><UserRound size={16} />{label}</button>
-    <p className="cw-original-game"><a href="https://crosswalk-life-game.bensonlee5.chatgpt.site" target="_blank" rel="noopener noreferrer">Continue an old game</a><small>Games started on the original site remain there.</small></p>
     {state?.lostGuestOwner && <p className="cw-account-error" role="status">Your previous guest session is missing. No replacement guest has been created. Open account recovery to choose what happens next.</p>}
     <small>Guest access depends on this browser’s site data. If all site data is cleared, we cannot detect the earlier guest identity.</small>
     {!backendConfigured && <small>Online saving is waiting for setup.</small>}

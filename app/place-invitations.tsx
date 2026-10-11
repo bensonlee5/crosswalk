@@ -1,5 +1,5 @@
 import { activityIntent } from '@/lib/decision-presentation';
-import type { Activity,Game,Player } from '@/lib/game';
+import type { Activity,GameView as Game,Player } from '@/lib/game';
 import { choiceTerms } from '@/lib/place-invitations';
 import { effortLabel,qualitativeText } from '@/lib/point-presentation';
 export function ChoiceTerms({p,a,g}:{p:Player;a:Activity;g:Game}){

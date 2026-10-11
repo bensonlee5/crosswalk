@@ -1,3 +1,4 @@
+import {CURRENT_GAME_SCHEMA} from '../lib/current-game.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {currentGame} from './current-fixture.mjs';
@@ -8,7 +9,7 @@ import {worldPlaceIds} from '../lib/world-life.ts';
 import {isCurrentGameState} from '../lib/current-game.ts';
 
 test('every fresh player and room have exactly one complete current ruleset',()=>{
- for(const names of [['A'],['A','B','C','D']]){const g=currentGame({names});assert.ok(isCurrentGameState(g));assert.equal(g.schemaVersion,1);for(const p of g.players){assert.equal(p.cash,6000);assert.equal(p.job,undefined);assert.equal(p.stories,undefined);assert.deepEqual(Object.keys(p).filter(k=>k.endsWith('Version')),['schemaVersion']);assert.ok(p.career&&p.finance&&p.actionIncidents&&p.familiarity&&p.world&&p.cast&&p.motives);}assert.deepEqual(Object.keys(g).filter(k=>k.endsWith('Version')),['schemaVersion']);}
+ for(const names of [['A'],['A','B','C','D']]){const g=currentGame({names});assert.ok(isCurrentGameState(g));assert.equal(g.schemaVersion,CURRENT_GAME_SCHEMA);for(const p of g.players){assert.equal(p.cash,6000);assert.equal(p.job,undefined);assert.equal(p.stories,undefined);assert.deepEqual(Object.keys(p).filter(k=>k.endsWith('Version')),['schemaVersion']);assert.ok(p.career&&p.finance&&p.actionIncidents&&p.familiarity&&p.world&&p.cast&&p.motives);}assert.deepEqual(Object.keys(g).filter(k=>k.endsWith('Version')),['schemaVersion']);}
 });
 test('unsupported ordinary commands cannot invoke discarded jobs, promotions or chapter engines',()=>{
  const g=currentGame(),p=g.players[0];for(const id of ['work','work_short','apply','study','story_mina_1']){const before=structuredClone(g);assert.equal(reason(p,id,g),'Unknown action');assert.throws(()=>move(g,id),/Unknown/);assert.deepEqual(g,before);}assert.equal(actions.length,38);

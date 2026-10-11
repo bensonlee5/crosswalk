@@ -9,7 +9,7 @@ import {isQuietEffect} from '../lib/decision-presentation.ts';
 import {currentGame} from './current-fixture.mjs';
 import {worldChoiceEffects} from '../lib/world-choice-presentation.ts';
 const root=fileURLToPath(new URL('../',import.meta.url)).replace(/\/$/,''),require=createRequire(root+'/package.json'),React=require('react'),ts=require('typescript'),{renderToStaticMarkup}=require('react-dom/server');
-const G=require(root+'/lib/game.ts'),W=require(root+'/lib/world-life.ts'),L=require(root+'/lib/life-events.ts'),E=require(root+'/lib/economy.ts'),S=require(root+'/lib/story-arcs.ts');
+const G=require(root+'/lib/game.ts'),W=require(root+'/lib/world-life.ts'),L=require(root+'/lib/life-events.ts');
 const leak=/(?:[+−-]?\d+(?:\.\d+)?(?:\/\d+)?\s*(?:%\s*)?(?:(?:local participation|weather|career|extra)\s+)?(?:energy|happiness|joy|skills?|craft(?: levels?)?|connections?|legacy|life points?|bond|trust)\b|\b(?:energy|happiness|joy|skills?|craft|connections?|legacy|score|trust)\s*[:(+−-]?\s*\d+(?:\.\d+)?|\b(?:one|two|three|four|five|six|seven|eight)\s+(?:(?:practical|career|earned)\s+)*(?:skills?|craft levels?|connections?)\b)/i;
 const plain=html=>html.replace(/<[^>]*>/g,' ').replace(/&(?:#x27|apos);/g,"'");
 function noPoints(html){assert.doesNotMatch(plain(html),leak);assert.doesNotMatch(html,/aria-value(?:now|max|min)=/);for(const [,value]of html.matchAll(/(?:aria-label|title)="([^"]*)"/g))assert.doesNotMatch(value,leak);}
@@ -83,7 +83,7 @@ test('world discoveries use evolved shared venues and destination names before t
  assert.equal(JSON.stringify(g),snapshot);noPoints(choiceHtml(explore,p,g));noPoints(choiceHtml(travel,p,g));
 });
 test('shared evolved venue names survive reload and later public closure',()=>{
- const {p,g}=room();
+ const {g}=room();
  W.applySharedVenueChange(g,{id:'cinema-renamed',region:'alder',place:'CINEMA',status:'repurposed',name:'Quay Film House',description:'A shared screening room',reason:'A new chapter',source:'story'});
  const saved=JSON.parse(JSON.stringify(g)),q=saved.players[0],before=JSON.stringify(saved);
  assert.equal(W.worldPlaceName(q,'CINEMA',saved),'Quay Film House');

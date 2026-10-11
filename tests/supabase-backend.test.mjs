@@ -1,3 +1,4 @@
+import {CURRENT_GAME_PROTOCOL,CURRENT_GAME_SCHEMA} from '../lib/current-game.ts';
 import { after, before, beforeEach, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
@@ -30,8 +31,8 @@ const asOwner = async sql => { await pg.exec('reset role'); try { return (await 
 const count = async () => (await pg.query('select public.crosswalk_usage_counts() as value')).rows[0].value;
 function request(actor, body, query = '', extras = {}) {
   if(extras.protocol!==false){
-    if(body)body={protocolVersion:1,...body};
-    else if(!new URLSearchParams(query).has('protocolVersion'))query+=(query?'&':'?')+'protocolVersion=1';
+    if(body)body={protocolVersion:CURRENT_GAME_PROTOCOL,...body};
+    else if(!new URLSearchParams(query).has('protocolVersion'))query+=(query?'&':'?')+`protocolVersion=${CURRENT_GAME_PROTOCOL}`;
   }
   const headers = { Origin: origin, Authorization: `Bearer ${tokens[actor]}`, apikey: 'sb_publishable_TEST_ONLY', ...(body ? { 'Content-Type': 'application/json' } : {}), ...extras.headers };
   return new Request(`${origin}/functions/v1/crosswalk-game${query}`, { method: body ? 'POST' : 'GET', ...extras, headers, ...(body ? { body: JSON.stringify(body) } : {}) });
@@ -40,7 +41,7 @@ async function call(actor, body, query = '', extras = {}) {
   const response = await handler(request(actor, body, query, extras));
   return { response, status: response.status, body: await response.json() };
 }
-const post = (actor, body) => call(actor, { protocolVersion:1, requestId: crypto.randomUUID(), ownerSession: users[actor], ...body });
+const post = (actor, body) => call(actor, { protocolVersion:CURRENT_GAME_PROTOCOL, requestId: crypto.randomUUID(), ownerSession: users[actor], ...body });
 const create = (actor = 0, mode = 'hotseat', id = crypto.randomUUID()) => post(actor, { op: 'create', mode, ...(mode === 'hotseat' ? { names: ['First'] } : { name: 'First' }), requestId: id });
 const join = (actor, code, id = crypto.randomUUID()) => post(actor, { op: 'join', code, name: `Player ${actor}`, requestId: id });
 const move = (actor, room, action, id = crypto.randomUUID(), destination) => post(actor, { op: 'move', code: room.code, version: room.version, action, requestId: id, ...(destination ? { destination } : {}) });
@@ -88,8 +89,8 @@ test('server authors initial state; stranger preview and history cannot expose p
   const room = await post(0, { op: 'create', mode: 'online', name: 'Host', state: { players: [{ cash: 999999 }] }, economyVersion: 999 });
   assert.equal(room.status, 200);
   assert.equal(room.body.players[0].cash, 6000);
-  assert.equal(room.body.schemaVersion, 1);
-  assert.equal(room.body.players[0].schemaVersion, 1);
+  assert.equal(room.body.schemaVersion, CURRENT_GAME_SCHEMA);
+  assert.equal(room.body.players[0].schemaVersion, CURRENT_GAME_SCHEMA);
   assert.equal(room.body.economyVersion, undefined);
   assert.equal(room.body.members, undefined); assert.equal(room.body.lifeSeed, undefined); assert.equal(room.body.seen, undefined);
   const preview = await call(1, null, `?code=${room.body.code}`);
@@ -251,8 +252,8 @@ test('body limits and invalid commands fail without writes', async () => {
 });
 
 test('same normalized request has same fingerprint regardless of JSON property order', async () => {
-  const a = { protocolVersion:1, op: 'create', mode: 'hotseat', names: ['One'], requestId: 'id', ownerSession: users[0] };
-  const b = { protocolVersion:1, names: ['One'], ownerSession: users[0], mode: 'hotseat', op: 'create', requestId: 'id', cash: 88888 };
+  const a = { protocolVersion:CURRENT_GAME_PROTOCOL, op: 'create', mode: 'hotseat', names: ['One'], requestId: 'id', ownerSession: users[0] };
+  const b = { protocolVersion:CURRENT_GAME_PROTOCOL, names: ['One'], ownerSession: users[0], mode: 'hotseat', op: 'create', requestId: 'id', cash: 88888 };
   assert.equal(await fingerprint(parseMutation(a, users[0])), await fingerprint(parseMutation(b, users[0])));
 });
 
@@ -307,7 +308,7 @@ test('new cast schedules are server-authored; saved retries do not reroll or spe
   const first = await post(0, {op:'create',mode:'hotseat',names:['First'],castVersion:999,historyVersion:999,cast:{schedule:{}}});
   assert.equal(first.status,200);
   let room = first.body;
-  assert.equal(room.schemaVersion,1);
+  assert.equal(room.schemaVersion,CURRENT_GAME_SCHEMA);
   assert.equal(room.castVersion,undefined);
   assert.equal(room.historyVersion,undefined);
   assert.deepEqual(Object.keys(room.cast.schedule),[String(room.round)]);
@@ -373,7 +374,7 @@ test('authoritative motive exchanges persist once, ignore forged flags and redac
  const {castPeople}=await import('../supabase/functions/_shared/engine/character-cast.ts');
  const {motiveScene}=await import('../supabase/functions/_shared/engine/character-motives.ts');
  const created=await post(0,{op:'create',mode:'online',name:'Motive owner',motivesVersion:999});
- assert.equal(created.body.motivesVersion,undefined);assert.equal(created.body.schemaVersion,1);assert.deepEqual(created.body.players[0].motives.bonds,{});
+ assert.equal(created.body.motivesVersion,undefined);assert.equal(created.body.schemaVersion,CURRENT_GAME_SCHEMA);assert.deepEqual(created.body.players[0].motives.bonds,{});
  const joined=await join(1,created.body.code);
  let room=(await post(0,{op:'start',code:created.body.code,version:joined.body.version})).body;
  const npc=castPeople(room,room.players[0])[0];room=(await move(0,room,'visit',crypto.randomUUID(),npc.spot)).body;
@@ -423,11 +424,11 @@ test('incidents keep RNG server-private and consume exactly one draw set for acc
 test('one exact current protocol gates every request including saved replays',async()=>{
  const room=(await create(0,'online','protocol-room')).body,code=room.code;
  const before=JSON.stringify(await store.read(users[0],code));
- for(const protocolVersion of [undefined,null,0,2,'1',[],{}]){
+ for(const protocolVersion of [undefined,null,0,1,CURRENT_GAME_PROTOCOL+1,String(CURRENT_GAME_PROTOCOL),[],{}]){
   const body={op:'create',mode:'online',name:'Cached',ownerSession:users[0],requestId:'cached',protocolVersion};
   const result=await call(0,body);assert.equal(result.status,409);assert.equal(result.body.refreshRequired,true);assert.equal(result.body.players,undefined);
  }
- for(const query of [`?code=${code}`,'?history=1','?session=1',`?code=${code}&protocolVersion=2`,`?code=${code}&protocolVersion=1&protocolVersion=1`]){
+ for(const query of [`?code=${code}`,'?history=1','?session=1',`?code=${code}&protocolVersion=1`,`?code=${code}&protocolVersion=${CURRENT_GAME_PROTOCOL+1}`,`?code=${code}&protocolVersion=${CURRENT_GAME_PROTOCOL}&protocolVersion=${CURRENT_GAME_PROTOCOL}`]){
   const result=await call(0,null,query,{protocol:false});assert.equal(result.status,409);assert.equal(result.body.refreshRequired,true);
  }
  for(const body of [{op:'join',name:'Guest'}, {op:'start',version:0}, {op:'move',version:0,action:'home_reset'}, {op:'create',mode:'online',name:'First',requestId:'protocol-room'}]){
@@ -445,12 +446,12 @@ test('one exact current protocol gates every request including saved replays',as
 
 test('every new life and joined player has the current features without opt-in modes', async()=>{
  for(const mode of ['online','hotseat']){
-  const created=await create(0,mode),room=created.body;assert.equal(created.status,200);assert.equal(room.schemaVersion,1);assert.equal(room.requiredRules,undefined);
-  for(const p of room.players){assert.equal(p.schemaVersion,1);assert.equal(p.cash,6000);assert.ok(p.career);assert.equal(p.finance.arrears,0);assert.equal(p.actionIncidents.ordinal,0);assert.ok(p.familiarity);assert.ok(p.life);assert.ok(p.world);assert.ok(p.story);assert.ok(p.cast);assert.ok(p.motives);}
+  const created=await create(0,mode),room=created.body;assert.equal(created.status,200);assert.equal(room.schemaVersion,CURRENT_GAME_SCHEMA);assert.equal(room.requiredRules,undefined);
+  for(const p of room.players){assert.equal(p.schemaVersion,CURRENT_GAME_SCHEMA);assert.equal(p.cash,6000);assert.ok(p.career);assert.equal(p.finance.arrears,0);assert.equal(p.actionIncidents.ordinal,0);assert.ok(p.familiarity);assert.ok(p.life);assert.ok(p.world);assert.ok(p.story);assert.ok(p.cast);assert.ok(p.motives);assert.deepEqual(p.ensemble,{version:1,receipts:[],personal:[]});}
   for(const key of Object.keys(room))assert.ok(!key.endsWith('Version')||key==='schemaVersion',key);
   if(mode==='online'){
-   const joined=await join(1,room.code);assert.equal(joined.status,200);const p=joined.body.players.find(p=>joined.body.mine.includes(p.id));assert.equal(p.schemaVersion,1);assert.ok(p.career);assert.ok(p.finance);assert.ok(p.actionIncidents);assert.ok(p.familiarity);
-   const other=joined.body.players.find(p=>!joined.body.mine.includes(p.id));for(const field of ['career','finance','actionIncidents','familiarity','sharedPersonal','cast','motives'])assert.equal(other[field],undefined,field);
+   const joined=await join(1,room.code);assert.equal(joined.status,200);const p=joined.body.players.find(p=>joined.body.mine.includes(p.id));assert.equal(p.schemaVersion,CURRENT_GAME_SCHEMA);assert.ok(p.career);assert.ok(p.finance);assert.ok(p.actionIncidents);assert.ok(p.familiarity);assert.deepEqual(p.ensemble,{version:1,receipts:[],personal:[]});
+   const other=joined.body.players.find(p=>!joined.body.mine.includes(p.id));for(const field of ['ensemble','career','finance','actionIncidents','familiarity','sharedPersonal','cast','motives'])assert.equal(other[field],undefined,field);
   }
  }
 });
@@ -469,4 +470,303 @@ test('an authoritative refused career interaction cannot mint a reference or pri
  const apply=async action=>{const r=await move(0,room,action);assert.equal(r.status,200,r.body.error);room=r.body;};
  room=(await move(0,room,'visit',crypto.randomUUID(),'CORNER CAFÉ')).body;await apply('world:'+worldChoices(room.players[0],room).find(c=>c.key==='talk:alder_tess').id);await apply(careerChoices(room,room.players[0]).find(c=>c.target==='t.service.crew').id);await apply(careerChoices(room,room.players[0]).find(c=>c.verb==='accept').id);await apply(careerChoices(room,room.players[0]).find(c=>c.verb==='work'&&c.target.endsWith('.regular')).id);
  const press=motiveScene(room,room.players[0],'alder_tess').choices.find(c=>c.key==='press'),before=structuredClone(room),requestId=crypto.randomUUID(),result=await move(0,room,press.id,requestId);assert.equal(result.status,200);const p=result.body.players[0];assert.equal(p.motives.receipts.at(-1).response,'boundary');assert.equal(p.career.leads['tess-ferry'].referenceRound,undefined);assert.equal(p.career.notices.some(n=>n.actionId===press.id),false);assert.deepEqual((await move(0,before,press.id,requestId)).body,result.body);const reload=(await call(0,null,`?code=${room.code}`)).body;assert.deepEqual(reload.players[0].career.notices,p.career.notices);
+});
+
+test('ensemble stories persist through create, join, start, choices, replay, private reads, reload and finish', async () => {
+  const { getEnsembleView } = await import('../lib/ensemble-story.ts');
+  const { ensembleById } = await import('../lib/ensemble-story-content.ts');
+  const { isCurrentGameState } = await import('../lib/current-game.ts');
+  let room = (await create(0, 'online', 'ensemble-room')).body;
+  const code = room.code, hostSeat = room.mine[0];
+  assert.equal(Object.keys(room.ensemble.threads).length, 20);
+  assert.ok(Object.values(room.ensemble.threads).every(thread => thread.status === 'queued'));
+  assert.deepEqual(room.players[0].ensemble, {version: 1, receipts: [], personal: []});
+  const lobby = JSON.stringify(await store.read(users[0], code));
+  assert.equal((await call(0, null, `?code=${code}`)).status, 200);
+  assert.equal((await call(2, null, `?code=${code}`)).body.ensemble, undefined);
+  assert.equal(JSON.stringify(await store.read(users[0], code)), lobby);
+
+  room = (await join(1, code, 'ensemble-join')).body;
+  const guestSeat = room.mine[0];
+  assert.deepEqual(room.players.find(p => p.id === guestSeat).ensemble, {version: 1, receipts: [], personal: []});
+  assert.equal(room.players.find(p => p.id === hostSeat).ensemble, undefined);
+  room = (await post(0, {op: 'start', code, version: room.version, requestId: 'ensemble-start'})).body;
+  assert.equal(room.status, 'playing');
+  const active = Object.values(room.ensemble.threads).filter(thread => thread.status === 'active');
+  assert.ok(active.length > 0 && active.length <= 8);
+  assert.ok(active.every(thread => ensembleById[thread.id].region === 'alder'));
+  assert.ok(Object.values(room.ensemble.threads).filter(thread => ensembleById[thread.id].region !== 'alder').every(thread => thread.status === 'queued'));
+  assert.equal(room.ensemble.arrivedMonth, 1);
+  assert.ok(isCurrentGameState((await store.read(users[0], code)).state));
+
+  const scene = getEnsembleView(room, room.players[0], 'bracken').scenes.find(scene => scene.id === 'bracken');
+  const clarify = scene.choices.find(choice => choice.actionId === 'ensemble:bracken:main:clarify:0');
+  assert.equal(clarify.available, true, clarify.reason);
+  const submitted = structuredClone(room);
+  assert.equal((await move(1, submitted, clarify.actionId, 'ensemble-wrong-seat')).status, 403);
+  const competingIds = ['ensemble-choice-a', 'ensemble-choice-b'];
+  const competing = await Promise.all(competingIds.map(id => move(0, submitted, clarify.actionId, id)));
+  assert.deepEqual(competing.map(result => result.status).sort(), [200, 409]);
+  const winner = competing.findIndex(result => result.status === 200), choiceId = competingIds[winner];
+  room = competing[winner].body;
+  assert.equal(room.ensemble.threads.bracken.beat, 1);
+  assert.equal(room.players[0].ensemble.receipts.length, 1);
+  assert.equal(room.players[0].familiarity.people.nell_harper.count, 1);
+  const persisted = JSON.stringify(await store.read(users[0], code));
+  assert.deepEqual((await move(0, submitted, clarify.actionId, choiceId)).body, room);
+  assert.equal((await move(0, submitted, clarify.actionId, 'ensemble-stale')).status, 409);
+  assert.equal(JSON.stringify(await store.read(users[0], code)), persisted);
+
+  const personal = getEnsembleView(room, room.players[0], 'bracken').scenes.find(s => s.id === 'bracken').choices.find(c => c.actionId.includes(':personal:'));
+  const own = await move(0, room, personal.actionId, 'ensemble-personal');
+  assert.equal(own.status, 200, own.body.error);room = own.body;
+  const privateReceipt = room.players[0].ensemble.receipts.at(-1);
+  const beforeReads = JSON.stringify(await store.read(users[0], code));
+  const other = (await call(1, null, `?code=${code}`)).body;
+  assert.equal(other.players.find(p => p.id === hostSeat).ensemble, undefined);
+  assert.equal(JSON.stringify(other).includes(privateReceipt.body), false);
+  assert.deepEqual(other.players.find(p => p.id === guestSeat).ensemble.receipts, []);
+  assert.equal(other.ensemble.events.at(-1).actor.id, hostSeat);
+  const publicRoom = (await call(2, null, `?code=${code}`)).body;
+  assert.equal(publicRoom.ensemble, undefined);assert.deepEqual(publicRoom.players, [{name: 'First'}, {name: 'Player 1'}]);
+
+  const reloaded = createHandler({store: postgresStore({rpc}), allowedOrigins: [origin], authenticate: async token => {
+    const index = tokens.indexOf(token);return index < 0 ? null : {id: users[index], role: 'authenticated', is_anonymous: true};
+  }});
+  const reload = await reloaded(request(0, null, `?code=${code}`));
+  assert.equal(reload.status, 200);assert.deepEqual(await reload.json(), room);
+  assert.equal(JSON.stringify(await store.read(users[0], code)), beforeReads);
+
+  room = (await move(0, room, 'end')).body;
+  // Use the guest's actual private projection for their independent choice.
+  const guestView = (await call(1, null, `?code=${code}`)).body;
+  const guestPersonal = getEnsembleView(guestView, guestView.players.find(p => p.id === guestSeat), 'bracken').scenes.find(s => s.id === 'bracken').choices.find(c => c.actionId.includes(':personal:'));
+  assert.equal(guestPersonal.available, true, guestPersonal.reason);
+  const guestAccepted = await move(1, guestView, guestPersonal.actionId);
+  assert.equal(guestAccepted.status, 200, guestAccepted.body.error);room = guestAccepted.body;
+  while (room.status === 'playing') {
+    const actor = room.players[room.turn].id === hostSeat ? 0 : 1;
+    const next = await move(actor, room, 'end');assert.equal(next.status, 200, next.body.error);room = next.body;
+    assert.ok(isCurrentGameState((await store.read(users[0], code)).state));
+  }
+  assert.equal(room.status, 'finished');
+  const final = await store.read(users[0], code);
+  assert.equal(final.state.players[0].ensemble.receipts.length, 2);
+  assert.equal(final.state.players[1].ensemble.receipts.length, 1);
+  assert.ok(final.state.ensemble.events.some(event => event.actor.kind === 'npc'));
+  const finished = JSON.stringify(final);
+  assert.equal((await move(0, room, 'ensemble:bracken:main:clarify:0')).status, 400);
+  assert.equal(JSON.stringify(await store.read(users[0], code)), finished);
+  const recovered = (await call(0, null, `?code=${code}`)).body;
+  assert.equal(recovered.status, 'finished');assert.deepEqual(recovered.players[0].ensemble, final.state.players[0].ensemble);
+});
+
+test('real travel, individual story tickets and bounded paid story work retain private accounting on retry', async () => {
+  const { getEnsembleView } = await import('../lib/ensemble-story.ts');
+  const { worldChoices, visiblePlaces } = await import('../lib/world-life.ts');
+  let room = (await create(0, 'online')).body;
+  room = (await join(1, room.code)).body;
+  room = (await post(0, {op: 'start', code: room.code, version: room.version})).body;
+  const code = room.code, hostSeat = room.mine[0];
+  const apply = async (action, destination) => {const result = await move(0, room, action, crypto.randomUUID(), destination);assert.equal(result.status, 200, result.body.error);room = result.body;};
+  const endMonth = async () => {
+    const month = room.round;
+    while (room.round === month || room.players[room.turn].id !== hostSeat) {
+      const actor = room.players[room.turn].id === hostSeat ? 0 : 1;
+      const ended = await move(actor, room, 'end');assert.equal(ended.status, 200, ended.body.error);room = ended.body;
+    }
+    room = (await call(0, null, `?code=${code}`)).body;
+  };
+  await endMonth();await endMonth();assert.equal(room.round, 3);
+  while (!visiblePlaces(room.players[0], room).includes('TRANSIT')) {
+    const explore = worldChoices(room.players[0], room).find(choice => choice.key === 'explore');
+    assert.equal(explore.available, true, explore.reason);await apply(`world:${explore.id}`);
+  }
+  await apply('visit', 'TRANSIT');
+  const travel = worldChoices(room.players[0], room).find(choice => choice.key === 'travel:embermesa');
+  assert.equal(travel.available, true, travel.reason);await apply(`world:${travel.id}`);
+  assert.equal(room.players[0].world.region, 'embermesa');
+  assert.ok(visiblePlaces(room.players[0], room).includes('CORNER CAFÉ'));
+  await apply('visit', 'CORNER CAFÉ');
+  const scene = () => getEnsembleView(room, room.players[0], 'dalloway').scenes.find(scene => scene.id === 'dalloway');
+  assert.equal(room.ensemble.threads.dalloway.beat, 0);
+  assert.equal(room.ensemble.threads.dalloway.openedMonth, room.round);
+  assert.deepEqual(room.ensemble.threads.dalloway.history, []);
+  const opening = scene().choices.find(choice => choice.actionId === 'ensemble:dalloway:main:correct:0');
+  assert.equal(opening.available, true, opening.reason);await apply(opening.actionId);
+  const ticket = scene().choices.find(choice => choice.actionId.includes(':personal:'));
+  assert.equal(ticket.available, true, ticket.reason);
+  const ticketBefore = structuredClone(room), ticketId = crypto.randomUUID();
+  const bought = await move(0, room, ticket.actionId, ticketId);assert.equal(bought.status, 200, bought.body.error);room = bought.body;
+  assert.equal(ticketBefore.players[0].cash - room.players[0].cash, 30);
+  assert.deepEqual((await move(0, ticketBefore, ticket.actionId, ticketId)).body, room);
+  const order = room.ensemble.orders.find(order => order.payerId === hostSeat);assert.equal(order.amount, 30);
+  const other = (await call(1, null, `?code=${code}`)).body;
+  const hiddenOrder = other.ensemble.orders.find(otherOrder => otherOrder.id === order.id);
+  assert.equal(hiddenOrder.amount, 0);assert.equal(hiddenOrder.absorbedWages, 0);
+  assert.equal(other.players[0].ensemble, undefined);
+  assert.equal((await store.read(users[0], code)).state.ensemble.orders.find(saved => saved.id === order.id).amount, 30);
+
+  const fullCredit = scene().choices.find(choice => choice.actionId === 'ensemble:dalloway:main:full:1');
+  assert.equal(fullCredit.available, true, fullCredit.reason);await apply(fullCredit.actionId);
+  const nextMain = scene().choices.find(choice => choice.actionId === 'ensemble:dalloway:main:own_choice:2');
+  assert.equal(nextMain.available, false);assert.match(nextMain.reason, /two main parts/);
+  await endMonth();assert.equal(room.round, 4);
+  const work = scene().choices.find(choice => choice.actionId === 'ensemble:dalloway:main:cover:3');
+  assert.equal(work.available, true, work.reason);
+  const beforePay = structuredClone(room), workId = crypto.randomUUID();
+  const paid = await move(0, room, work.actionId, workId);assert.equal(paid.status, 200, paid.body.error);room = paid.body;
+  const receipt = room.players[0].ensemble.receipts.at(-1);
+  assert.equal(receipt.paidHours, 4);assert.ok(receipt.cash > 0);
+  assert.equal(room.players[0].cash - beforePay.players[0].cash, receipt.cash);
+  assert.equal(room.players[0].economyWork.paidHours - beforePay.players[0].economyWork.paidHours, 4);
+  assert.equal(room.ensemble.orders.find(saved => saved.id === order.id).status, 'served');
+  const committed = JSON.stringify(await store.read(users[0], code));
+  assert.deepEqual((await move(0, beforePay, work.actionId, workId)).body, room);
+  assert.equal((await move(0, beforePay, work.actionId)).status, 409);
+  assert.equal(JSON.stringify(await store.read(users[0], code)), committed);
+  assert.deepEqual((await call(0, null, `?code=${code}`)).body.players[0].ensemble, room.players[0].ensemble);
+  assert.equal((await call(1, null, `?code=${code}`)).body.players[0].ensemble, undefined);
+});
+
+test('older and incomplete ensemble saves reject reads, join, start, moves and saved replays without any writes', async () => {
+  const created = await create(0, 'online', 'ensemble-integrity'), code = created.body.code;
+  const original = (await store.read(users[0], code)).state;
+  const edits = [
+    g => {g.schemaVersion = 1;}, g => {g.players[0].schemaVersion = 1;},
+    g => {delete g.ensemble;}, g => {g.ensemble = {version: 1};},
+    g => {delete g.ensemble.threads.bracken;}, g => {delete g.ensemble.events;},
+    g => {delete g.players[0].ensemble;}, g => {delete g.players[0].ensemble.receipts;},
+  ];
+  for (const edit of edits) {
+    const broken = structuredClone(original);edit(broken);
+    await pg.query('update crosswalk_private.rooms set state=$1::jsonb where code=$2', [JSON.stringify(broken), code]);
+    const before = JSON.stringify(await store.read(users[0], code)), counts = await count();
+    const receipts = (await pg.query('select count(*)::int as n from crosswalk_private.request_receipts')).rows[0].n;
+    const attempts = [await call(0, null, `?code=${code}`), await call(1, null, `?code=${code}`), await join(1, code),
+      await post(0, {op: 'start', code, version: 0}), await move(0, {code, version: 0}, 'ensemble:bracken:main:clarify:0'),
+      await create(0, 'online', 'ensemble-integrity')];
+    for (const result of attempts) {assert.equal(result.status, 409);assert.equal(result.body.newLifeRequired, true);assert.equal(result.body.players, undefined);}
+    assert.equal(JSON.stringify(await store.read(users[0], code)), before);assert.deepEqual(await count(), counts);
+    assert.equal((await pg.query('select count(*)::int as n from crosswalk_private.request_receipts')).rows[0].n, receipts);
+    assert.equal((await store.history(users[0]))[0].code, code);assert.deepEqual(await store.history(users[1]), []);
+  }
+});
+
+test('private histories stay owner-only across actual aftermath, travel, fresh-handler reads, posts, replay and saved lists', async () => {
+  const { getEnsembleView } = await import('../lib/ensemble-story.ts');
+  const { getStoryView } = await import('../lib/story-arcs.ts');
+  const { worldChoices } = await import('../lib/world-life.ts');
+  let room = (await create(0, 'online', 'private-history-room')).body;
+  room = (await join(1, room.code, 'private-history-join')).body;
+  room = (await post(0, {op: 'start', code: room.code, version: room.version})).body;
+  const code = room.code, ownerSeat = room.mine[0];
+  const owner = () => room.players.find(p => p.id === ownerSeat);
+  const apply = async (action, destination) => {
+    const result = await move(0, room, action, crypto.randomUUID(), destination);
+    assert.equal(result.status, 200, result.body.error);room = result.body;
+  };
+  await apply('aspire:home');
+  await apply('visit', 'CORNER CAFÉ');
+  const firstScene = getStoryView(room, owner()).scenes.find(scene => scene.id === 'quay-promise');
+  const listen = firstScene.choices.find(choice => choice.id.startsWith('listen~'));
+  assert.equal(listen.available, true, listen.reason);await apply(`story:${firstScene.id}:${listen.id}`);
+  const conversation = worldChoices(owner(), room).find(choice => choice.key === 'talk:alder_tess');
+  assert.equal(conversation.available, true, conversation.reason);await apply(`world:${conversation.id}`);
+  await apply('visit', 'MARKET');
+  await apply('ensemble:late_loaf:main:normal:0');
+  await apply('ensemble:late_loaf:main:name:1');
+  await apply('visit', 'APARTMENTS');
+  await apply('ensemble:bracken:main:clarify:0');
+  while (room.round < 2 || room.players[room.turn].id !== ownerSeat) {
+    const actor = room.players[room.turn].id === ownerSeat ? 0 : 1;
+    const result = await move(actor, room, 'end');assert.equal(result.status, 200, result.body.error);room = result.body;
+  }
+  room = (await call(0, null, `?code=${code}`)).body;
+  await apply('visit', 'MARKET');
+  const bakery = getEnsembleView(room, owner(), 'late_loaf').scenes.find(scene => scene.id === 'late_loaf');
+  const privateChoice = bakery.choices.find(choice => choice.actionId.includes(':aftermath:') && choice.available && choice.cost.time === 1);
+  assert.ok(privateChoice, 'A source-linked, personal bakery aftermath is reachable through legal actions');
+  const privateRequest = {protocolVersion: CURRENT_GAME_PROTOCOL, ownerSession: users[0], requestId: 'private-aftermath', op: 'move', code, version: room.version, action: privateChoice.actionId};
+  const accepted = await call(0, privateRequest);assert.equal(accepted.status, 200, accepted.body.error);room = accepted.body;
+  const privateReceipt = owner().ensemble.receipts.find(receipt => receipt.actionId === privateChoice.actionId);
+  const alternative = privateChoice.actionId.split(':')[3];
+  assert.equal(owner().world.actionCounts[privateChoice.actionId], 1);
+  assert.equal(owner().world.localeHistory.alder.lastAction, privateChoice.actionId);
+  assert.ok(owner().life.relationships.mina.history.length > 0);
+  assert.ok(owner().story.receipts.length > 0);
+  assert.equal(owner().aspiration, 'home');
+  assert.equal(owner().world.story.localTalks.alder_tess, 1);
+  assert.ok(owner().world.localBonds.alder_tess > 0);
+
+  const assertPrivateAbsent = response => {
+    const bytes = JSON.stringify(response);
+    assert.equal(bytes.includes(privateChoice.actionId), false);
+    assert.equal(bytes.includes(`:aftermath:${alternative}:`), false);
+    assert.equal(bytes.includes(JSON.stringify(alternative)), false);
+    assert.equal(bytes.includes(privateReceipt.body), false);
+  };
+  const assertOtherSeat = (view, state) => {
+    assertPrivateAbsent(view);
+    const masked = view.players.find(p => p.id === ownerSeat), original = state.players.find(p => p.id === ownerSeat);
+    assert.equal(masked.castRedacted, true);
+    for (const key of ['life', 'story', 'aspiration', 'aspirationWeek', 'ensemble', 'economyWork', 'economyHabits', 'regionalLifeUsage', 'weatherUsage']) assert.equal(masked[key], undefined, key);
+    assert.equal(masked.world.story, undefined);
+    for (const key of ['actionCounts', 'localBonds', 'localTalkWeeks']) assert.deepEqual(masked.world[key], {}, key);
+    for (const key of ['acceptedChoices', 'journal']) assert.deepEqual(masked.world[key], [], key);
+    assert.equal(masked.world.companionBond, 0);assert.equal(masked.world.companionStatus, 'unmet');
+    for (const [region, history] of Object.entries(masked.world.localeHistory)) {
+      assert.equal(history.arrivals, original.world.localeHistory[region].arrivals);
+      assert.equal(history.actions, 0);assert.equal(history.lastAction, undefined);assert.deepEqual(history.completedOpportunities, []);
+      assert.equal(history.departures.length, original.world.localeHistory[region].departures.length);
+      for (const departure of history.departures) {assert.equal(departure.actions, 0);assert.equal(departure.lastAction, undefined);assert.deepEqual(departure.bonds, {});}
+    }
+    for (const key of ['place', 'cash', 'hours', 'energy', 'joy', 'skill', 'social']) assert.equal(masked[key], original[key], `public ${key}`);
+    assert.equal(masked.world.region, original.world.region);
+    assert.deepEqual(masked.world.discoveredRegions, original.world.discoveredRegions);
+    assert.deepEqual(masked.world.discoveredPlacesByRegion, original.world.discoveredPlacesByRegion);
+    const publicEffect = state.ensemble.events.find(event => event.id === privateReceipt.eventId);
+    assert.match(publicEffect.actionId, /:aftermath:public:/);
+    assert.deepEqual(view.ensemble.events.find(event => event.id === publicEffect.id), publicEffect);
+  };
+  const beforeReload = await store.read(users[0], code), beforeReloadBytes = JSON.stringify(beforeReload);
+  assert.deepEqual(owner(), beforeReload.state.players.find(p => p.id === ownerSeat));
+  const otherBeforeTravel = await call(1, null, `?code=${code}`);
+  assert.equal(otherBeforeTravel.status, 200);assertOtherSeat(otherBeforeTravel.body, beforeReload.state);
+
+  const fresh = createHandler({store: postgresStore({rpc}), allowedOrigins: [origin], authenticate: async token => {
+    const index = tokens.indexOf(token);return index < 0 ? null : {id: users[index], role: 'authenticated', is_anonymous: true};
+  }});
+  const freshCall = async (actor, body, query = '') => {const response = await fresh(request(actor, body, query));return {status: response.status, body: await response.json()};};
+  const reloaded = await freshCall(0, null, `?code=${code}`), replayed = await freshCall(0, privateRequest);
+  for (const result of [reloaded, replayed]) {assert.equal(result.status, 200);assert.deepEqual(result.body.players.find(p => p.id === ownerSeat), beforeReload.state.players.find(p => p.id === ownerSeat));}
+  assert.equal(JSON.stringify(await store.read(users[0], code)), beforeReloadBytes);
+
+  await apply('visit', 'TRANSIT');
+  const travel = worldChoices(owner(), room).find(choice => choice.key === 'travel:saffron');
+  assert.equal(travel.available, true, travel.reason);
+  const travelRequest = {protocolVersion: CURRENT_GAME_PROTOCOL, ownerSession: users[0], requestId: 'private-travel', op: 'move', code, version: room.version, action: `world:${travel.id}`};
+  const travelled = await freshCall(0, travelRequest);assert.equal(travelled.status, 200, travelled.body.error);room = travelled.body;
+  const saved = await store.read(users[0], code), stored = saved.state.players.find(p => p.id === ownerSeat), savedBytes = JSON.stringify(saved);
+  assert.equal(stored.world.region, 'saffron');
+  assert.equal(stored.world.localeHistory.alder.departures.at(-1).lastAction, privateChoice.actionId);
+  assert.equal(stored.world.actionCounts[privateChoice.actionId], 1);
+  assert.deepEqual(owner(), stored);
+  for (const result of [await freshCall(0, null, `?code=${code}`), await freshCall(0, travelRequest), await freshCall(0, privateRequest)]) {
+    assert.equal(result.status, 200);assert.deepEqual(result.body.players.find(p => p.id === ownerSeat), stored);
+  }
+  const guestRequest = {protocolVersion: CURRENT_GAME_PROTOCOL, ownerSession: users[1], requestId: 'private-guest-reload', op: 'join', code, name: 'Player 1'};
+  for (const result of [await freshCall(1, null, `?code=${code}`), await freshCall(1, guestRequest), await freshCall(1, guestRequest)]) {
+    assert.equal(result.status, 200);assertOtherSeat(result.body, saved.state);
+  }
+  const outsider = await freshCall(2, null, `?code=${code}`);
+  assert.equal(outsider.status, 200);assertPrivateAbsent(outsider.body);
+  assert.equal(outsider.body.ensemble, undefined);assert.equal(outsider.body.story, undefined);
+  assert.deepEqual(outsider.body.players, [{name: 'First'}, {name: 'Player 1'}]);
+  for (const actor of [0, 1, 2]) {
+    const history = await freshCall(actor, null, '?history=1');assert.equal(history.status, 200);assertPrivateAbsent(history.body);
+    assert.equal(history.body.rooms.length, actor === 2 ? 0 : 1);
+    for (const summary of history.body.rooms) assert.deepEqual(Object.keys(summary).sort(), ['code', 'maxRounds', 'mode', 'names', 'round', 'status', 'updatedAt', 'version']);
+  }
+  assert.equal(JSON.stringify(await store.read(users[0], code)), savedBytes, 'projection, reload and retries must not redact or rewrite the authoritative histories');
 });

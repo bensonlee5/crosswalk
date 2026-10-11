@@ -1,5 +1,5 @@
 import { financialPayQuote, recordFinancialPay } from './financial-recovery.ts';
-import type { Game, Player } from './game.ts';
+import type { GameView as Game, Player } from './game.ts';
 
 
 export const economyStartingCash = 6000;
@@ -121,7 +121,9 @@ export function recordEconomyPaidHours(p: EconomyPlayer, g: Pick<EconomyGame, 'r
         throw Error(reason);
     p.economyWork = { round: g.round, paidHours: economyPaidHours(p, g) + hours };
 }
-function paidQuote(p: EconomyPlayer, g: Pick<EconomyGame, 'round'>, gross: number, paidHours: number, cost = 0): EconomyQuote {
+export function economyPaidQuote(p: EconomyPlayer, g: Pick<EconomyGame, 'round'>, gross: number, paidHours: number, cost = 0): EconomyQuote {
+    if (![gross, paidHours, cost].every(Number.isFinite) || gross < 0 || paidHours <= 0 || cost < 0)
+        throw Error('Invalid paid commitment terms');
     gross = money(gross);
     cost = money(cost);
     const takeHome = money(gross * economyTakeHomeRatio), reason = economyWorkReason(p, g, paidHours);
@@ -134,7 +136,7 @@ export function economyRegionalWorkQuote(p: EconomyPlayer, g: Pick<EconomyGame, 
     residentBonus?: boolean;
 }): EconomyQuote {
     const hours = options.kind === 'regular' ? 160 : 40, profile = economyProfile(p, options.region);
-    return paidQuote(p, g, hours * profile.entryRate + (options.kind === 'regular' && options.residentBonus ? 250 : 0), hours);
+    return economyPaidQuote(p, g, hours * profile.entryRate + (options.kind === 'regular' && options.residentBonus ? 250 : 0), hours);
 }
 export const economyTravelCost=(_p:EconomyPlayer,to:string)=>profiles[regionId(to)].travel;
 
@@ -233,7 +235,7 @@ export function economyActivity<T extends EconomyActivity>(p: EconomyPlayer, a: 
 export function economyQuote(p: EconomyPlayer, a: EconomyActivity, g?: Pick<EconomyGame, 'round'>): EconomyQuote {
     const adjusted = economyActivity(p, a, g), pay = activityPay(p, adjusted, g);
     if (pay)
-        return paidQuote(p, g ?? { round: 1 }, pay.gross, pay.paidHours, adjusted.cost);
+        return economyPaidQuote(p, g ?? { round: 1 }, pay.gross, pay.paidHours, adjusted.cost);
     const earn = adjusted.earn ?? 0, reason = economyHabitReason(p, a, g);
     return { gross: earn, withholding: 0, takeHome: earn, cost: adjusted.cost, cash: earn - adjusted.cost, paidHours: 0, available: !reason, reason };
 }
