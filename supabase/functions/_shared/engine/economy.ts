@@ -94,9 +94,9 @@ export const economyStudioMoveCost=(p:EconomyPlayer)=>hasModernEconomy(p)?econom
 
 export type EconomyHabit = {id:string;title:string;quantity:number;unitCost:number;groceryCredit:number;cost:number;desc:string};
 const habitDefinitions:Record<string,Omit<EconomyHabit,'id'|'cost'>>={
- cafe_break:{title:'Make weekday coffee your quiet ritual',quantity:20,unitCost:7,groceryCredit:0,desc:'20 weekday coffees × $7 = $140 for this month. A familiar window seat and time to yourself. Drinks are extras above ordinary groceries. Choose once this month; it does not renew automatically.'},
- friends:{title:'Keep a twice-weekly café date with friends',quantity:8,unitCost:18,groceryCredit:0,desc:'8 café meetups × $18 = $144 for this month. Coffee, snacks and familiar faces twice a week; these are extras, not replacement meals. Choose once this month; it does not renew automatically.'},
- home_meal:{title:'Make good home cooking a monthly habit',quantity:20,unitCost:5,groceryCredit:0,desc:'20 dinners × $5 in better ingredients = $100 extra this month. Basic groceries are already in your monthly bills; this pays only for upgrades. Choose once this month; it does not renew automatically.'},
+ cafe_break:{title:'Make weekday coffee your quiet ritual',quantity:20,unitCost:7,groceryCredit:0,desc:'20 weekday coffees × $7 = $140 for this month. An espresso at a familiar window seat, with time to yourself. Drinks are extras above ordinary groceries. Choose once this month; it does not renew automatically.'},
+ friends:{title:'Keep a twice-weekly café date with friends',quantity:8,unitCost:18,groceryCredit:0,desc:'8 café meetups × $18 = $144 for this month. Coffee, lemon biscuits and familiar faces twice a week; these are extras, not replacement meals. Choose once this month; it does not renew automatically.'},
+ home_meal:{title:'Make good home cooking a monthly habit',quantity:20,unitCost:5,groceryCredit:0,desc:'20 dinners × $5 in better ingredients = $100 extra this month. Roast vegetables, simmer lentils and vary the herbs. Basic groceries are already in your monthly bills; this pays only for upgrades. Choose once this month; it does not renew automatically.'},
  market_taste:{title:'Make market lunches part of your month',quantity:20,unitCost:18,groceryCredit:100,desc:'20 weekday lunches × $18 = $360, less $100 of groceries those lunches replace: $260 extra this month. This is already the net addition to your normal food bill; no second grocery adjustment. Choose once this month; it does not renew automatically.'},
 };
 /** A monthly habit is an explicit current-month choice, never a subscription. */
@@ -128,10 +128,10 @@ const activityPatches:Record<string,Partial<EconomyActivity>>={
  work_mentor:{cost:180,desc:'Four guided sessions with a senior colleague: $180 across the month.'},
  career_portfolio:{cost:250,desc:'Complete a portfolio project over the month: $250 for materials and tools.'},
  community_skill:{cost:75,desc:'A subsidized workshop series: $75 and a longer commitment of 3 priority blocks.'},
- maker_intro:{cost:240,desc:'A hands-on repair course: $240 for tools, materials and bench access.'},
+ maker_intro:{cost:240,desc:'Practice filing a hinge and setting a bench vise: $240 for tools, materials and bench access.'},
  creative_practice:{cost:90,desc:'A month of regular practice: $90 in materials and 2 priority blocks. One craft level.'},
  maker_commission:{cost:180},creative_commission:{cost:220},
- home_host:{cost:65,desc:'Host a potluck: $65 for your share of the food and a welcoming table.'},
+ home_host:{cost:65,desc:'Host a potluck: $65 for bread, lentils and your share of the table. Leave room for everyone’s dish.'},
  market_resell:{cost:120},
  garden_project:{desc:'One contribution each month. When the shared garden opens, every contributor receives $600 and 4 legacy points.'},
  weekly_opportunity:{title:'Take the monthly project opening',desc:'An 80-paid-hour community contract. One opening for the whole table; check its exact take-home pay.'},

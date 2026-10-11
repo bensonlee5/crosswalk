@@ -12,6 +12,7 @@ import {characterAges,characterFamilies,publicCharacterIdentity} from '../lib/ch
 import {motivePortrait} from '../lib/motive-portraits.ts';
 import {motiveLegacyCampaign} from './support/motive-legacy-campaign.mjs';
 import {historicalVenueLabels} from './support/venue-name-snapshot.mjs';
+import {historicalDescriptiveCopy} from './support/descriptive-copy-snapshot.mjs';
 import {characterHistories} from '../lib/character-histories.ts';
 import {characterMotiveProfiles,motiveIntroductions} from '../lib/character-motive-profiles.ts';
 import {initializeMotivesPlayer,motiveScene,resolveMotiveChoice,recordMotiveEvidence} from '../lib/character-motives.ts';
@@ -177,12 +178,12 @@ test('client/server and serialized new-save continuations remain deterministic, 
 });
 
 
-test('81 frozen-baseline states retain every byte apart from the explicitly authorized local venue labels',async()=>{
+test('81 frozen-baseline states retain every byte apart from reviewed venue labels and descriptive prose',async()=>{
  const fixtures=JSON.parse(readFileSync(new URL('./support/motive-legacy-hashes.json',import.meta.url),'utf8'));
  assert.equal(fixtures.sourceCommit,'4216605a69c95ce18048e6fc1fc7d105fc174a60');
  for(const {seed,edition,sha256}of fixtures.campaigns){
   const states=await motiveLegacyCampaign(new URL('../lib/',import.meta.url),seed,edition);
-  assert.deepEqual(states.map(s=>createHash('sha256').update(historicalVenueLabels(s)).digest('hex')),sha256,`${edition} seed ${seed}`);
+  assert.deepEqual(states.map(s=>createHash('sha256').update(historicalVenueLabels(historicalDescriptiveCopy(s))).digest('hex')),sha256,`${edition} seed ${seed}`);
  }
 });
 

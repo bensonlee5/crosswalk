@@ -27,8 +27,8 @@ export function currentCastCharacter(g:Game,c:CastCharacter):CastCharacter{
   next.farewell='Oren remembers that a visit could leave room for a little comedy and a stopping point. The cardboard ferry stays his to work on or put aside. He is glad the friendship can include company without a project.';
 
   if(orenNeedsShortVisit(g)){
-   next.intro='Oren stays seated with the tea tin nearby. “Company, yes. A building session, no.” Treatment fatigue limits today’s work; he still has a joke about a ferry passenger and a clear preference about the visit.';
-   next.help='Oren asks you to leave the extra cardboard window off today’s list. He keeps the small comedy his own and puts the materials aside. He closes the tea tin at the stopping point he chose.';
+   next.intro='Oren stays seated with his blue Kestrel tea tin nearby. “Company, yes. A building session, no.” Treatment fatigue limits today’s work; he still has a joke about a ferry passenger and a clear preference about the visit.';
+   next.help='Oren asks you to leave the extra cardboard window off today’s list. He keeps the small comedy his own and puts the materials aside. He closes the Kestrel tin at the stopping point he chose.';
    next.support='Oren offers a short hearing of one rough idea, seated, with no demonstration. “Which bit matters? Keep that.” He ends the exchange when he needs to rest.';
   }
  }
