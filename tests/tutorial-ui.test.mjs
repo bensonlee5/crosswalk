@@ -5,31 +5,28 @@ import vm from 'node:vm';
 import ts from 'typescript';
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {player,createEnvironment} from '../lib/game.ts';
+import {createGame} from '../supabase/functions/crosswalk-game/game-service.ts';
 import {startTutorial,tutorialSteps,TUTORIAL_STORAGE_KEY} from '../lib/tutorial.ts';
 const require=createRequire(import.meta.url);
 const source=readFileSync(new URL('../app/game-tutorial.tsx',import.meta.url),'utf8');
 const js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
 function load(react=React,storage={getItem:()=>null,setItem:()=>{}},clock=Date){const module={exports:{}};vm.runInNewContext(js,{exports:module.exports,module,require:id=>id==='react'?react:id.startsWith('@/')?require('../'+id.slice(2)+'.ts'):require(id),localStorage:storage,Date:clock});return module.exports;}
 const Component=load().default;
-const p=player('Learner');const game={code:'DEMO',mode:'hotseat',host:'x',members:{x:[p.id]},players:[p],status:'playing',round:1,turn:0,maxRounds:8,log:[],seen:[],event:0,rulesVersion:2,...createEnvironment()};
+const game=createGame({op:'create',mode:'hotseat',names:['Learner'],ownerSession:'00000000-0000-4000-8000-000000000001',requestId:crypto.randomUUID(),protocolVersion:1},'DEM001'),p=game.players[0];
 let calls=0;const no=()=>calls++;const props={g:game,p,active:true,busy:false,place:null,menu:null,send:no,onPlaces:no,onWork:no,onLife:no,onBoard:no,onNews:no,onBills:no,onFocusAction:no};
 for(const step of tutorialSteps){const html=renderToStaticMarkup(React.createElement(Component,{...props,state:{...startTutorial('DEMO'),step}}));assert.ok(html.includes('aria-label="Guided tutorial"'));assert.ok(html.includes('aria-label="Skip tutorial"'));assert.ok(html.includes('tabindex="-1"'));assert.ok(!html.includes('NaN'));}
 assert.equal(calls,0,'rendering or restoring a lesson never invokes a gameplay action');
 const html=(step,extra={})=>renderToStaticMarkup(React.createElement(Component,{...props,...extra,state:{...startTutorial('DEMO'),step}}));
-assert.match(html('week'),/\$505/);assert.match(html('week',{p:{...p,housing:1}}),/\$705/);
+assert.match(html('month'),/\$1,850/);assert.match(html('month',{p:{...p,housing:1}}),/\$3,050/);
 assert.match(html('activity',{active:false}),/disabled=""/);assert.match(html('activity',{active:false,g:{...game,mode:'online'}}),/Actions are available on your turn/);
-assert.match(html('paths'),/ending remembers your choices/);assert.match(html('paths',{p:{...p,rulesVersion:undefined}}),/broad sense/);
-assert.match(html('weather'),/Two weeks each/);assert.match(html('weather',{g:{...game,environmentVersion:undefined}}),/no seasonal weather/);
-assert.match(html('travel',{menu:'places'}),/Visit The Shift/);
-// Modern tutorial uses the same lease/bill scale as the active economy.
-const modernPlayer={...p,storyVersion:1,economyVersion:1,world:{story:{homeRegion:'pelagia'}}};
-const modernGame={...game,storyVersion:1,economyVersion:1,lifeVersion:1,players:[modernPlayer]};
-assert.match(html('week',{p:modernPlayer,g:modernGame}),/\$2,250/);
-assert.match(html('week',{p:{...modernPlayer,housing:1},g:modernGame}),/\$3,550/);
-assert.match(html('resources',{p:modernPlayer,g:modernGame}),/priority blocks.*160 paid hours/s);
-assert.doesNotMatch(html('week',{p:modernPlayer,g:modernGame}),/\$505|end week|weekly/i);
-
+assert.match(html('paths'),/named achievements/);
+assert.match(html('weather'),/Two representative months/);
+assert.match(html('travel',{menu:'places'}),/Open Work &amp; learning/);
+assert.match(html('travel',{menu:'work'}),/start without a contract/);
+assert.match(html('activity',{menu:'work'}),/Applying takes time; accepting an offer and working are separate decisions/);
+assert.match(html('resources'),/priority blocks.*160 paid hours/s);
+assert.match(html('month'),/Unpaid bills become arrears/);
+for(const step of tutorialSteps)assert.doesNotMatch(html(step),/\$505|\$705|end week|weekly|classic|original rules/i);
 
 // A deterministic hook harness exercises real initialization/replay/storage effects, without a browser.
 const records=new Map();let now=1000;const clock={now:()=>now};
@@ -47,12 +44,4 @@ h=harness();result=h.render('FIRST',0,false);assert.equal(result.state.step,'tra
 result.send('skip');result=h.render('FIRST',0,false);assert.equal(result.visible,false);result=h.render('FIRST',1,false);assert.equal(result.state.step,'resources');assert.equal(result.visible,true);
 const broken={getItem(){throw Error('blocked storage')},setItem(){throw Error('quota exceeded')}};h=harness(broken);result=h.render('PRIVATE',0,true);result.send('skip');assert.equal(h.render('PRIVATE',0,true).visible,false);
 records.clear();h=harness();assert.equal(h.render('EXISTING',0,false).visible,false);assert.equal(records.size,0,'existing saves never write a synthetic skip preference');
-console.log('PASS: every tutorial panel server-renders, classic/weather/weekly-bill/online copy and disabled actions; real hook invitation-before-click reload, duplicate clicks, dialog recovery, skip/replay and blocked storage');
-
-const careerPlayer={...modernPlayer,career:{version:1}},careerGame={...modernGame,careerVersion:1,players:[careerPlayer]};
-const careerTutorial=(step,extra={})=>html(step,{p:careerPlayer,g:careerGame,...extra});
-assert.match(careerTutorial('travel',{menu:'places'}),/Open Work &amp; learning/);
-assert.match(careerTutorial('travel',{menu:'work'}),/start without a contract/);
-assert.match(careerTutorial('activity',{menu:'work'}),/Applying takes time; accepting an offer and working are separate decisions/);
-assert.match(careerTutorial('week'),/Unpaid bills become arrears/);
-assert.doesNotMatch(careerTutorial('week'),/nobody is eliminated|six fresh priority blocks/);
+console.log('PASS: current monthly tutorial panels, work/learning/recovery, disabled actions, invitation reload, duplicate clicks, dialog recovery, skip/replay and blocked storage');

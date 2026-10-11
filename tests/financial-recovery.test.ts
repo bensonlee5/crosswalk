@@ -1,6 +1,7 @@
+import {currentGame} from './current-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createGame} from '../supabase/functions/crosswalk-game/game-service.ts';
+
 import {move,reason,type Game,type Player,actions,effects} from '../lib/game.ts';
 import {careerChoices,resolveCareerChoice} from '../lib/careers.ts';
 import {financialPayQuote,recordFinancialPay,financialSettlementQuote,settleFinancialMonth,reserveRecoveryAdministration,financialRecoveryView,financeMemberPlayers} from '../lib/financial-recovery.ts';
@@ -10,8 +11,8 @@ import {weekPreview} from '../lib/game-view.ts';
 import {getStoryView,resolveStoryChoice} from '../lib/story-arcs.ts';
 import {initializeSharedOpportunities,sharedOpportunityView,resolveSharedChoice} from '../lib/shared-opportunities.ts';
 import {getWeather} from '../lib/weather.ts';
-const actor='00000000-0000-4000-8000-000000000001';
-function setup(){const g=createGame({op:'create',mode:'hotseat',names:['Worker'],requestId:crypto.randomUUID(),ownerSession:actor,careerMode:'venue',supportedRules:['venue-careers-v1']},'RECOVR');const p=g.players[0];for(const r of Object.keys(regionDefinitions))p.world!.discoveredPlacesByRegion[r as keyof typeof regionDefinitions]=[...worldPlaceIds];return{g,p};}
+function setup(){const g=currentGame({names:['Worker']}),p=g.players[0];for(const region of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[region]=[...worldPlaceIds];return{g,p};}
+
 function entry(g:Game,p:Player){p.place='WORK';const a=careerChoices(g,p).find(c=>c.target==='t.technical.assistant')!;resolveCareerChoice(g,p,a.id);const offer=careerChoices(g,p).find(c=>c.verb==='accept')!;resolveCareerChoice(g,p,offer.id);return careerChoices(g,p).find(c=>c.verb==='work'&&c.target.endsWith('.regular'))!;}
 function recovering(p:Player){Object.assign(p.finance!,{arrears:5000,recovering:true,ceiling:5000,missedSettlements:2});}
 test('second missed settlement previews housing, time and tuition consequences, and applies once',()=>{
@@ -47,22 +48,21 @@ test('story paid work is quoted net of repayment while preserving the scene’s 
  const{g,p}=setup();g.round=5;p.hours=6;p.place='COMMUNITY';recovering(p);const scene=getStoryView(g,p).scenes[0];assert.ok(scene);p.place=scene.spot;const choice=getStoryView(g,p).scenes[0].choices.find(c=>c.id.startsWith('setup~'));assert.ok(choice);assert.match(choice.body,/repays arrears/);const cash=p.cash,debt=p.finance!.arrears;resolveStoryChoice(g,p,scene.id,choice.id);assert.equal(p.cash-cash,choice.preview.cash);assert.equal(debt-p.finance!.arrears,p.finance!.payReceipts.at(-1)!.repayment);const done=structuredClone(g);resolveStoryChoice(g,p,scene.id,choice.id);assert.deepEqual(g,done);
 });
 test('old direct paid-role paths are disabled; visitor actions and read-only private finance remain safe',()=>{
- const{g,p}=setup();assert.match(reason(p,'work',g),/work desk/);assert.match(reason(p,'study',g),/Learning/);p.place='CORNER CAFÉ';assert.equal(reason(p,'friends',g),'');for(const c of worldChoices(p,g).filter(c=>['regional_work','region_shift'].includes(c.key))){assert.equal(c.available,false);assert.match(c.reason,/listed workplace/);}
+ const{g,p}=setup();assert.match(reason(p,'work',g),/Unknown action/);assert.match(reason(p,'study',g),/Unknown action/);p.place='CORNER CAFÉ';assert.equal(reason(p,'friends',g),'');assert.ok(!worldChoices(p,g).some(c=>['regional_work','region_shift'].includes(c.key)));
  const snapshot=structuredClone(g);financialRecoveryView(g,p);financialPayQuote(g,p,2000);assert.deepEqual(g,snapshot);assert.equal(financeMemberPlayers([p],[])[0].finance,undefined);assert.equal(financeMemberPlayers([p],[p.id])[0].finance,p.finance);
 });
 test('free entry applications remain available after a shock temporarily pushes cash below zero',()=>{
  const{g,p}=setup();p.cash=-100;const c=entry(g,p);assert.equal(c.available,true,c.reason);resolveCareerChoice(g,p,c.id);assert.equal(p.cash,-100+c.cash);
 });
 test('every authored paid life choice uses one quoted payroll deduction; unpaid choices do not',async()=>{
- const{beginLifeWeek,lifeChoices,resolveLifeChoice,lifeEventIds}=await import('../lib/life-events.ts');const paidKeys=['first_workshop','independent_service','jo_referral','community_pivot','eli_coop','choose_eli','solo_sale','mina_benefit','accept_support'];const seen=new Set<string>();
+ const{beginLifeWeek,lifeChoices,resolveLifeChoice,lifeEventIds}=await import('../lib/life-events.ts');const paidKeys=['independent_service','jo_referral','community_pivot'];const seen=new Set<string>();
  for(const eventId of lifeEventIds){const{g,p}=setup();p.life!.receipts=[];g.lifeSchedule=[{week:1,eventId}];p.cash=20000;p.energy=100;p.hours=6;p.skill=6;p.social=15;p.craft=8;p.career!.training['technical:foundation']={round:1,courseId:'technical-foundation-class'};p.career!.experience.technical={paidHours:160,commitments:1,months:[1]};for(const n of ['mina','eli','jo'] as const){p.life!.relationships[n].trust=2;p.life!.relationships[n].support=true;}recovering(p);beginLifeWeek(g);
   for(const choice of lifeChoices(p,g).filter(c=>c.available&&paidKeys.includes(c.id.split(':').at(-1)!))){const clone=structuredClone(g),q=clone.players[0],offer=lifeChoices(q,clone).find(c=>c.id===choice.id)!;assert.match(offer.body,/repays arrears/);const cash=q.cash,debt=q.finance!.arrears;resolveLifeChoice(clone,q,offer.id);assert.equal(q.cash-cash,offer.preview.cash);assert.equal(debt-q.finance!.arrears,q.finance!.payReceipts.at(-1)!.repayment);assert.ok(economyPaidHours(q,clone)>0);seen.add(offer.id.split(':').at(-1)!);const done=structuredClone(clone);resolveLifeChoice(clone,q,offer.id);assert.deepEqual(clone,done);}
  }
- assert.equal(seen.size,9,`covered ${[...seen]}`);
+ assert.equal(seen.size,3,`covered ${[...seen]}`);
 });
-test('regional career contract and legacy regional payroll both use their real quote exactly once',async()=>{
+test('regional career contract uses its real quote exactly once',async()=>{
  const{g,p}=setup();p.place='TRANSIT';recovering(p);const a=careerChoices(g,p).find(c=>c.target==='r.local')!;resolveCareerChoice(g,p,a.id);resolveCareerChoice(g,p,careerChoices(g,p).find(c=>c.verb==='accept')!.id);const shift=careerChoices(g,p).find(c=>c.verb==='work')!,cash=p.cash,debt=p.finance!.arrears;resolveCareerChoice(g,p,shift.id);assert.equal(p.cash-cash,shift.cash);assert.equal(debt-p.finance!.arrears,shift.repayment);
- const other=setup();delete other.g.careerVersion;other.p.place='WORK';recovering(other.p);const c=worldChoices(other.p,other.g).find(c=>c.key==='region_shift')!;assert.equal(c.available,true,c.reason);assert.match(c.body,/repays arrears/);const oldCash=other.p.cash,oldDebt=other.p.finance!.arrears;move(other.g,'world:'+c.id);assert.equal(other.p.cash-oldCash,c.preview.cash);assert.equal(oldDebt-other.p.finance!.arrears,other.p.finance!.payReceipts.at(-1)!.repayment);
 });
 test('full recurring home/work/home/rest/bill cycle uses actual fares, blocks and climate, and warns before a remote offer',async()=>{
  const{careerCommuteQuote}=await import('../lib/careers.ts');let worst={margin:Infinity,home:'',employer:'',fares:0};const local:Record<string,number>={};

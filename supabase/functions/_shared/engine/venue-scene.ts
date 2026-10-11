@@ -18,10 +18,10 @@ export function venuePeople(g:Game,p:Player,spot:string):VenuePerson[]{
   const here=conversation?.spot?choices.some(c=>c.spot===spot):resident.places.includes(spot);
   if(here)people.push({id:resident.id,name:resident.name,role:resident.roles.join(' · '),status:resident.status,canTalk:choices.some(c=>(!c.spot||c.spot===spot)&&c.available)});
  }
- if(g.storyVersion===1&&(p.world?.region||'alder')==='alder')for(const scene of getStoryView(g,p).scenes.filter(scene=>scene.spot===spot))for(const person of scene.people){
+ if((p.world?.region||'alder')==='alder')for(const scene of getStoryView(g,p).scenes.filter(scene=>scene.spot===spot))for(const person of scene.people){
   if(!people.some(q=>q.id===person.id))people.push({id:person.id,name:person.name,role:person.role,status:'Here in the neighborhood',canTalk:scene.choices.some(c=>c.available)});
  }
- if(world&&(world.companion.dedicatedScene?.spot===spot||(g.storyVersion!==1&&spot==='CORNER CAFÉ'&&world.companion.status!=='unmet'))){
+ if(world&&(world.companion.dedicatedScene?.spot===spot)){
   const remote=p.world?.story?.neri.posting==='accepted'&&p.world.region!=='pelagia';
   people.push({id:'neri',name:'Neri',role:'Map restorer',status:world.companion.status,remote,canTalk:world.choices.some(c=>(c.actorId==='neri'||c.kind==='relationship')&&(!c.spot||c.spot===spot)&&c.available)});
  }

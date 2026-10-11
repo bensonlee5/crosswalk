@@ -4,8 +4,8 @@ import type {Game,Player} from './game.ts';
 import {worldChoices} from './world-life.ts';
 import {getStoryView} from './story-arcs.ts';
 
-/** Observational history only. First recorded action is not a claim about an old
- * save's unrecorded past. No relationship, currency or opportunity is changed. */
+/** Observational history of confirmed current actions only.
+ * No relationship, currency or opportunity is changed. */
 export type FamiliarityEntry={count:number;lastRound:number;lastVariant:number};
 export type ActionFamiliarityState={version:1;startedRound:number;actions:Record<string,FamiliarityEntry>;people:Record<string,FamiliarityEntry>};
 export type FamiliarityView={count:number;stage:'first'|'familiar'|'routine'|'custom';lastVariant:number;tracked:boolean;lastRound?:number};
@@ -42,23 +42,21 @@ function replayed(p:FamiliarityPlayer,id:string){
  return false;
 }
 export function actionFamiliarityContext(g:Game,p:FamiliarityPlayer,id:string,destination?:string):FamiliarityContext{
- const context:FamiliarityContext={actionKey:actionFamiliarityKey(id,p,g,destination),actorIds:[],round:g.round,replay:replayed(p,id)||(id==='visit'&&destination===(p.place==='HOME'?'APARTMENTS':p.place))};
+ const context:FamiliarityContext={actionKey:actionFamiliarityKey(id,p,g,destination),actorIds:[],round:g.round,replay:replayed(p,id)||(id==='visit'&&destination===p.place)};
  if(context.replay)return context;
  if(id.startsWith('career:')){const choice=careerChoices(g,p).find(c=>c.id===id);if(choice?.actorId)context.actorIds=[choice.actorId];}
  else if(id.startsWith('world:')){const choice=worldChoices(p,g).find(c=>c.id===id.slice(6));if(choice?.actorId)context.actorIds=[choice.actorId];else if(choice?.key.startsWith('talk:'))context.actorIds=[choice.key.slice(5)];else if(choice?.kind==='relationship')context.actorIds=['neri'];}
  else if(id.startsWith('cast:')||id.startsWith('motive:'))context.actorIds=[id.split(':')[2]];
- else if(id.startsWith('event:')){const actorId=lifeEventPersonActor(id,p);if(actorId)context.actorIds=[actorId];}
+ else if(id.startsWith('event:')){const actorId=lifeEventPersonActor(id);if(actorId)context.actorIds=[actorId];}
  else if(id.startsWith('repair:'))context.actorIds=[id.slice(7)];
  else if(id.startsWith('story:'))context.actorIds=getStoryView(g,p).scenes.find(s=>s.id===id.split(':')[1])?.characters??[];
- else if(/^story_(mina|eli|jo)_/.test(id))context.actorIds=[id.split('_')[1]];
  return context;
 }
 /** Called once after a successful actual state change inside the authenticated
  * command transaction. Server retries are handled before this engine is called. */
 export function recordActionFamiliarity(p:FamiliarityPlayer,context:FamiliarityContext){
  if(context.replay)return;
- p.familiarity??={version:1,startedRound:context.round,actions:{},people:{}};
- if(p.familiarity.version!==1)return;
+ if(!p.familiarity)throw Error('Missing action familiarity state');
  const update=(map:Record<string,FamiliarityEntry>,key:string)=>{if(!key)return;const old=map[key];const count=Math.min(MAX,(old&&Number.isSafeInteger(old.count)&&old.count>=0?old.count:0)+1);map[key]={count,lastRound:context.round,lastVariant:old?((old.lastVariant??0)+1)%12:0};};
  update(p.familiarity.actions,context.actionKey);for(const id of new Set(context.actorIds))update(p.familiarity.people,id);
 }

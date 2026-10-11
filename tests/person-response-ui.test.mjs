@@ -371,7 +371,7 @@ test('shared host work remains visible beside resident conversations and confirm
 
 test('a captured work lead is an immediate private continuation and never adds another animation on polls',()=>{
  const {g,p}=fixture();const actionId='cast:1:jo:help',speech='Ask about the supervised opening at Foundry. The application remains your choice.';
- g.careerVersion=1;p.career={version:1,revision:0,experience:{},training:{},leads:{},offers:{},contracts:[],receipts:[],colleagues:{},milestones:[],notices:[{id:actionId+':lead',actionId,actorId:'jo',round:g.round,kind:'lead',leadId:'jo-practical',region:'alder',place:'MAKERSPACE',employer:'Foundry',regionName:'Alder Quay',speech}]};
+ p.career={version:1,revision:0,experience:{},training:{},leads:{},offers:{},contracts:[],receipts:[],colleagues:{},milestones:[],notices:[{id:actionId+':lead',actionId,actorId:'jo',round:g.round,kind:'lead',leadId:'jo-practical',region:'alder',place:'MAKERSPACE',employer:'Foundry',regionName:'Alder Quay',speech}]};
  const receipt=capturePersonReceipt({id:actionId,actionId,week:g.round,title:'One handover',body:'Confirmed.',response:{speakerId:'jo',speech:'One checked edge.',activity:'Puts down the ruler.',emotion:'warm',gesture:'offer'}},p,'jo');let animations=0;
  const target={animate(){animations++;return{cancel(){}};}};const props={g,p,actorId:'jo',name:'Jo',spot:'COMMUNITY',receipt};
  const h=harness(m=>m('person-response').PersonResponseStage,props,{window:{matchMedia:()=>({matches:false})},attach:tree=>{tree.props.ref.current={querySelector:()=>target};}});

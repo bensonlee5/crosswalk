@@ -2,9 +2,9 @@
 
 Implementation reference, with story details. This is separate from the spoiler-free player guide.
 
-## Scope and compatibility
+## Current scope
 
-Newly created rooms receive `motivesVersion: 1` from either authoritative create path. Existing rooms without that marker do not acquire state on reads, joins, actions, or settlement. The player state is additive JSON; no SQL, account, security, or live-data migration is needed.
+Current lives initialize motive state for the established 26 adult anchors.
 
 All 26 characters have an authored goal, commitment to that particular goal, competing obligation, small practical contribution, full support, smaller support, boundary, and repair. The layer does not reschedule the existing cast or replace original world/shared-story scenes. It never creates a player promise by implication.
 
@@ -39,32 +39,10 @@ The following cases are authored, situational responses rather than mood labels 
 
 Specific deeper Hugo/Miro/Oren recollections remain behind the existing familiarity gates. Early versions of the same emotional cases use present-day behavior and do not disclose the gated incident.
 
-Only Mina has the four new direct-expression images: sadness, envy, love, anger. `motive-portraits.ts` selects an image only for a supported emotion on an actual visible Mina receipt. Other people/emotions and image failure use that person’s neutral portrait. A rendered choice preview does not forecast an expression. The four reviewed 640×640 WebPs use the existing `/paintings/character-expressions/mina-{emotion}.webp` paths and one `individual-manifest.json`; the original three four-cue sheets are unchanged.
+Only Mina has the four new direct-expression images: sadness, envy, love, anger. `motive-portraits.ts` selects an image only for a supported emotion on an actual visible Mina receipt. Other people/emotions and image failure use that person’s neutral portrait. A rendered choice preview does not forecast an expression. The four reviewed 640×640 WebPs use the existing `/paintings/character-expressions/mina-{emotion}.webp` paths and one `individual-manifest.json`; the three core sheets are aligned with the current Mina, Jo and Eli identities.
 
-## Geography and family
+## Canon and verification
 
-`character-identities.ts` is the canonical public age/family metadata. Ages span 24–72. All nine already explicit ages are preserved, including Neri at 29. New public family identity is distinct from private incidents:
+The complete public cast is the 68-person guide roster, including five adolescents, five school-age children and Bea, the sole toddler. Current onstage encounters select 39 of those people. Use the canonical character module and guide sources for ages, homes and reciprocal family links rather than duplicating them here.
 
-- Leila (44) is Tomas’s (39) older sister.
-- Miro (62) is Oren’s (57) older brother; they live in Glasssteppe and Alder Quay.
-- Jo (54) is Kit’s (28) parent; Kit has an independent adult life in Ember Mesa while Jo works in Alder Quay.
-
-Jo and Kit each have a small optional family-care exchange: word an offer that can be declined, or ask for encouragement without surrendering an artistic decision. No answer, delivery, or new obligation is assumed.
-
-Existing selective connections remain intact. Two additional potential introductions are bounded, consent-based, and personal to the player’s actual choices:
-
-1. Bram and Ren can compare practical route annotations.
-2. Priya and Tavi can compare dated observations with uncertainty intact.
-
-The player must know both. One exchange asks the first person about an invitation; a later exchange at the second person’s actual meeting handles the reply. The initial note never claims the second person agreed. Public manual wording describes only the affinity, not triggers or results.
-
-## Verification
-
-- `tests/character-motives.test.mjs`: all 26 authored profiles, exact effects, support/refusal/repair, repeated work, current obligations, native evidence, promises, idempotence, stale and wrong-place requests, routes, public identities, family actions, introduction consent, eight emotional categories, deeper-history gates, remote correspondence, privacy, client/server parity, and old/new serialization.
-- `tests/support/motive-legacy-hashes.json`: nine campaigns captured from frozen `4216605a69c95ce18048e6fc1fc7d105fc174a60`, across three seeds and cast/pre-history/pre-cast editions. All 81 initial/settlement byte hashes must remain identical.
-- `tests/motive-ui.test.mjs`: pure and redacted rendering, no counters or future facial cue, confirmed-receipt image and journal, serialized UI recovery, exact direct-image failure fallback, and asset integrity.
-- `tests/cast-api.test.mjs`: D1 marker authority, motive state, retries, reloads, and other-seat/anonymous redaction.
-- `tests/supabase-backend.test.mjs`: authoritative PostgreSQL-backed motive request and replay, ignored forged marker, reload, and other-seat redaction.
-- Shared engine sources and their integrity manifest are synchronized. The parent release integration owns the final combined aggregate and bundle checks.
-
-These checks do not establish player enjoyment, production deployment, or live account/recovery behavior. No publication was performed as part of this feature work.
+Test receipt-bound trust, capacity, refusal, repair, privacy, exact previews and retries. Oren’s treatment can limit a visit regardless of trust; later callbacks must remember the bounded visit rather than fabricate demanding work. Engine and UI checks must use current complete state, with no alternate historical campaign fixtures.

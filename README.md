@@ -12,7 +12,7 @@ Across eight representative months, balance work, home, friendships, learning, a
 - Meet regular neighbors and occasional visitors across generations, with family ties, their own hopes, and different amounts of time to give.
 - Get to know people through short dialogue bubbles, visible gestures, shared experiences, and choices they remember.
 - Notice everyday actions become familiar routines, with brief responses that change as you return.
-- In new rooms, supper orders and shared-room bookings can open or change opportunities for other players; local hosts keep these crossings moving in solo play too.
+- In shared rooms, supper orders and shared-room bookings can open or change opportunities for other players; local hosts keep these crossings moving in solo play too.
 - Apply for work at named venues, build relevant experience, and make time for training. People you know can point you toward opportunities elsewhere.
 - Encounter occasional small surprises during everyday activities, with the actual result shown when the action finishes.
 - See your choices remembered in your journal and the life you build.
@@ -26,7 +26,7 @@ There is room to recover from setbacks. Your story is more than a points total.
 3. Open **Work & learning** to compare entry jobs and career paths. Visit the employer, apply, and separately accept an offer before choosing a shift.
 4. Preview an activity's time, cost, and outcome before confirming. Review your bills before ending the month.
 
-The [Crosswalk Travel Guide](https://bensonlee5.github.io/crosswalk/manual/) starts with five town chapters, covers all 75 visitable venues and meaningful local objects, and includes all 68 character backstories, portraits, personality profiles, regional histories and linked families. The [player guide](https://bensonlee5.github.io/crosswalk/guide/) explains how to play. New games draw on 39 regular neighbors and occasional visitors; the wider cast also includes people whose lives remain in the background. Older saved rooms retain their original cast.
+The [Crosswalk Travel Guide](https://bensonlee5.github.io/crosswalk/manual/) starts with five town chapters, covers all 75 visitable venues and meaningful local objects, and includes all 68 character backstories, portraits, personality profiles, regional histories and linked families. The [player guide](https://bensonlee5.github.io/crosswalk/guide/) explains how to play. Games draw on 39 regular neighbors and occasional visitors; the wider cast also includes people whose lives remain in the background.
 
 ## Find your way around
 
@@ -34,17 +34,17 @@ Click or tap a building, or use **Places** to choose a destination. Drag to pan 
 
 ## Work, learning and setbacks
 
-New lives offer café service, technical, practical and civic career paths, plus separately chosen short commitments. Entry jobs need no earlier job or contact. Campus courses cost time and money; longer Library preparation is free. A reference can help, but each employer still checks the role’s requirements.
+Choose from café service, technical, practical and civic career paths, plus separately chosen short commitments. Entry jobs need no earlier job or contact. Campus courses cost time and money; longer Library preparation is free. A reference can help, but each employer still checks the role’s requirements.
 
 Unpaid household bills become arrears. Repeated missed settlements lead to shared housing, an administration commitment and wage repayments. Free learning, entry applications, rest and relationships remain available while you recover. The game shows these consequences before settlement.
 
-These career, recovery and small-surprise rules apply to newly created lives. Resuming an older room keeps its original rules.
+Every life uses the same monthly rules for careers, financial recovery and everyday surprises.
 
 ## Keep your game
 
 Guest play is available now. Return in the **same browser and keep its site data** to retain access to your saved games. A room code alone cannot recover your guest seat. Email accounts and cross-device recovery are currently unavailable.
 
-[Games started on the original site stay there](https://crosswalk-life-game.bensonlee5.chatgpt.site); they do not transfer automatically. Older saved rooms keep their original rules. They begin remembering newly completed actions for familiarity responses from this update onward; earlier, unrecorded habits are not invented.
+Saved lives from earlier game formats are unsupported. Start a new life to play the current game. Older stored records are not migrated or deleted.
 
 ---
 

@@ -205,7 +205,10 @@ test('player introduction distinguishes the wider cast and illustrated navigatio
   assert.match(readme,/illustrated isometric neighborhoods/);
   assert.match(readme,/68 character backstories/);
   assert.match(readme,/39 regular neighbors and occasional visitors/);
-  assert.match(readme,/Older saved rooms retain their original cast/);
+  assert.match(readme,/earlier game formats are unsupported/);
+  assert.match(readme,/older stored records are not migrated or deleted/i);
+  assert.match(readme,/Apply for work at named venues/);
+  assert.doesNotMatch(readme,/Older saved rooms retain their original cast/);
   for(const text of [readme,page]){
     assert.doesNotMatch(text,/painted 3D town|Drag to orbit|two fingers to pan/);
     assert.match(text,/Find me/);

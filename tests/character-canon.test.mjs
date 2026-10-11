@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-import {createGame,memberView} from '../supabase/functions/crosswalk-game/game-service.ts';
-import {move,player} from '../lib/game.ts';
+import {memberView} from '../supabase/functions/crosswalk-game/game-service.ts';
+import {move} from '../lib/game.ts';
 import {move as serverMove} from '../supabase/functions/_shared/engine/game.ts';
 import {castPeople,initializeCast,resolveCastChoice} from '../lib/character-cast.ts';
 import {characterCameos,cameoPeople} from '../lib/character-cameos.ts';
@@ -15,10 +15,11 @@ import {worldView,worldPlaceIds,regionDefinitions} from '../lib/world-life.ts';
 import {characterVisualIdentity} from '../lib/character-visuals.ts';
 import {characterHistoryView} from '../lib/character-histories.ts';
 const root=new URL('../docs/character-canon/',import.meta.url);
-const guide=JSON.parse(readFileSync(new URL('guide.json',root),'utf8'));
+const guide=JSON.parse(readFileSync(new URL('../guide-content.json',root),'utf8'));
 const families=JSON.parse(readFileSync(new URL('families.json',root),'utf8'));
 const personalities=JSON.parse(readFileSync(new URL('personalities.json',root),'utf8'));
-function fixture(){const g=createGame({mode:'hotseat',names:['Ari'],ownerSession:'owner',requestId:'canon-test'},'CANON1');const p=g.players[0];p.id='fixed-canon';g.members.owner=[p.id];for(const region of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[region]=[...worldPlaceIds];return{g,p};}
+import {currentGame} from './current-fixture.mjs';
+function fixture(names=['Ari']){const g=currentGame({names}),p=g.players[0];for(const region of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[region]=[...worldPlaceIds];return{g,p};}
 function cameo(g,p,id){const c=canonicalCharacterById[id];p.world.region=c.region;return castPeople(g,p).find(c=>c.id===id);}
 
 test('68 immutable canonical IDs, ages, places and voices reproduce approved manual facts',()=>{
@@ -28,7 +29,7 @@ test('68 immutable canonical IDs, ages, places and voices reproduce approved man
  for(const c of guide.characters){const actual=canonicalCharacterById[c.id];for(const field of ['name','age','region','role','intro','family','culturalBackground'])assert.deepEqual(actual[field],c[field],`${c.id} ${field}`);}
  const count={adult:0,adolescent:0,child:0,toddler:0};for(const c of canonicalCharacters)count[c.age<3?'toddler':c.age<13?'child':c.age<18?'adolescent':'adult']++;
  assert.deepEqual(count,{adult:57,adolescent:5,child:5,toddler:1});assert.equal(canonicalCharacterById.bea.age,2);assert.equal(canonicalCharacterById.oren.age,57);
- const manifest=JSON.parse(readFileSync(new URL('source-manifest.json',root),'utf8'));for(const [name,hash] of Object.entries(manifest.sha256))assert.equal(createHash('sha256').update(readFileSync(new URL(name,root))).digest('hex'),hash,name);
+ const manifest=JSON.parse(readFileSync(new URL('source-manifest.json',root),'utf8'));for(const [name,hash] of Object.entries(manifest.sha256)){assert.match(hash,/^[a-f0-9]{64}$/);if(name!=='guide.json')assert.equal(createHash('sha256').update(readFileSync(new URL(name,root))).digest('hex'),hash,name);}
 });
 
 test('all families are reciprocal, typed from the authored graph, and never inferred from resemblance',()=>{
@@ -39,15 +40,10 @@ test('all families are reciprocal, typed from the authored graph, and never infe
  assert.ok(families.edges.some(e=>[e.fromId,e.toId].includes('hugo')&&[e.fromId,e.toId].includes('jonah_bell')&&e.type.includes('chosen')));
 });
 
-test('new rooms opt in once, with13 bounded rotating cameos and unchanged old schedules',()=>{
- const {g,p}=fixture();assert.equal(g.characterCanonVersion,1);assert.equal(characterCameos.length,13);
- const old=structuredClone(g);delete old.characterCanonVersion;delete old.cast;initializeCast(old);
- assert.ok(!Object.values(old.cast.schedule).flat().some(a=>characterCameos.some(c=>c.id===a.id)));
- const saved=JSON.stringify(old);initializeCast(old);castPeople(old,old.players[0]);assert.equal(JSON.stringify(old),saved);
- const canonicalSchedule=JSON.stringify(g.cast.schedule);g.lifeSeed=999;initializeCast(g);assert.equal(JSON.stringify(g.cast.schedule),canonicalSchedule);
- const visible=new Set();for(let week=1;week<=8;week++){g.round=week;for(const region of Object.keys(regionDefinitions)){p.world.region=region;for(const c of cameoPeople(g,p))visible.add(c.id);}}
- for(const id of ['celia_baptiste','farah_hussain','liang_chen','ravi_desai','esperanza_vega','mei_chen','hana_mori','yuna_park','asha','nico','lin','jian_wu'])assert.ok(visible.has(id),`${id} never appears`);
- assert.ok(visible.size<68);assert.equal(cameoPeople(old,old.players[0]).length,0);
+test('current rooms contain 13 bounded rotating cameos and retain their seeded schedules',()=>{
+ const {g,p}=fixture();assert.equal(g.schemaVersion,1);assert.equal(characterCameos.length,13);const schedule=JSON.stringify(g.cast.schedule);g.lifeSeed=999;initializeCast(g);assert.equal(JSON.stringify(g.cast.schedule),schedule);
+ const visible=new Set();for(let month=1;month<=8;month++){g.round=month;for(const region of Object.keys(regionDefinitions)){p.world.region=region;for(const c of cameoPeople(g,p))visible.add(c.id);}}
+ for(const id of ['celia_baptiste','farah_hussain','liang_chen','ravi_desai','esperanza_vega','mei_chen','hana_mori','yuna_park','asha','nico','lin','jian_wu'])assert.ok(visible.has(id),`${id} never appears`);assert.ok(visible.size<68);
 });
 
 test('minors only have age-appropriate local choices, no favor, promise, bond or reward track',()=>{
@@ -105,8 +101,8 @@ test('all onstage characters have their own reviewed portraits and age-accurate 
 });
 
 test('canon personalities and personal cameo outcomes never leak through another seat',()=>{
- const {g,p}=fixture();g.round=1;let view=cameo(g,p,'celia_baptiste');p.place=view.spot;view=cameo(g,p,'celia_baptiste');move(g,view.choices[0].id);
- const other=player('Other',1);other.id='other';g.players.push(other);g.members.different=[other.id];g.mode='online';const stranger=memberView({state:g,version:3},'different');const serialized=JSON.stringify(stranger);assert.ok(!serialized.includes(p.cast.receipts[0].outcome));assert.equal(stranger.players[0].cast,undefined);assert.equal(cameoPeople(stranger,stranger.players[0]).length,0);
+ const {g,p}=fixture(['Ari','Other']);g.round=1;let view=cameo(g,p,'celia_baptiste');p.place=view.spot;view=cameo(g,p,'celia_baptiste');move(g,view.choices[0].id);
+ const other=g.players[1];g.members.owner=[p.id];g.members.different=[other.id];g.mode='online';const stranger=memberView({state:g,version:3},'different');const serialized=JSON.stringify(stranger);assert.ok(!serialized.includes(p.cast.receipts[0].outcome));assert.equal(stranger.players[0].cast,undefined);assert.equal(cameoPeople(stranger,stranger.players[0]).length,0);
  assert.doesNotMatch(serialized,/coreNeeds|communicationStyle|ocean|mbti|INFP/);
 });
 
@@ -114,12 +110,8 @@ test('new regional setting descriptions follow climate and settlement canon with
  const {g,p}=fixture();const expected={alder:/cool, wet urban/i,saffron:/Mediterranean low-rise suburb/i,glasssteppe:/cold highland rail city/i,pelagia:/warm monsoon harbor.*rural/i,embermesa:/arid rural mesa/i};
  const saved=JSON.stringify(g);for(const [region,pattern] of Object.entries(expected)){p.world.region=region;assert.match(worldView(p,g).region.description,pattern);assert.match(worldView(p,g).destinations.find(d=>d.id===region).description,pattern);}
  p.world.region='alder';assert.equal(JSON.stringify(g),saved);
- const old=structuredClone(g);delete old.characterCanonVersion;for(const region of Object.keys(expected)){old.players[0].world.region=region;assert.equal(worldView(old.players[0],old).region.description,regionDefinitions[region].description);}
 });
 
-test('old, unknown and forged canon versions cannot unlock new local actions or alter held schedules',()=>{
- for(const marker of [undefined,0,2]){const {g,p}=fixture();g.characterCanonVersion=marker;delete g.cast;initializeCast(g);const before=JSON.stringify(g);assert.equal(cameoPeople(g,p).length,0);assert.throws(()=>resolveCastChoice(g,p,'cast:1:celia_baptiste:cameo_listen'));assert.equal(JSON.stringify(g),before);}
-});
 
 test('Oren short-visit callbacks and farewell remember the actual encounter, not superseded ferry acting',()=>{
  const {g,p}=fixture();p.world.region='alder';

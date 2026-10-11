@@ -13,7 +13,7 @@ const require=createRequire(import.meta.url),source=readFileSync(new URL('../app
 function load(states=[]){let hook=0;const compiled={exports:{}},js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
  vm.runInNewContext(js,{module:compiled,exports:compiled.exports,require:id=>id==='react'?{...React,useState:initial=>[states[hook++]??initial,()=>{}],useRef:()=>({current:null}),useEffect:()=>{}}:id.endsWith('.css')?{}:id==='./game-painting'?{default:props=>React.createElement('img',{src:props.src,alt:props.alt}),__esModule:true}:id==='./story-choices'?{useEncounterCommit:()=>({busy:false,receipt:null,error:'',commit:()=>{},isSubmitted:()=>false}),StoryChoiceDeck:props=>React.createElement('div',{'data-confirm-choice':props.choices[0]?.id},props.choices[0]?.body),EncounterOutcome:()=>null}:id==='./person-response'?{PersonResponseStage:()=>null}:id.startsWith('@/')?require('../'+id.slice(2)+'.ts'):require(id)});return compiled.exports.default;
 }
-function setup(){const g=createGame({op:'create',mode:'hotseat',names:['Worker'],ownerSession:'00000000-0000-4000-8000-000000000001',requestId:crypto.randomUUID(),careerMode:'venue',supportedRules:['venue-careers-v1']},'CAREER'),p=g.players[0];for(const r of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[r]=[...worldPlaceIds];return{g,p};}
+function setup(){const g=createGame({op:'create',mode:'hotseat',names:['Worker'],ownerSession:'00000000-0000-4000-8000-000000000001',requestId:crypto.randomUUID(),protocolVersion:1},'CAREER'),p=g.players[0];for(const r of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[r]=[...worldPlaceIds];return{g,p};}
 const elements=node=>!node||typeof node!=='object'?[]:[node,...React.Children.toArray(node.props?.children).flatMap(elements)];
 const props=()=>({disabled:false,onAction:async()=>{},onVisit:()=>{},...setup()});
 const render=(p,states)=>renderToStaticMarkup(React.createElement(load(states),p));
@@ -36,4 +36,12 @@ test('recovery gives an explicit warning before the second missed bill and a bil
 test('same confirmed-receipt controller handles pending/errors/context; mobile styles keep one-column readable cards',()=>{
  assert.match(source,/useEncounterCommit/);assert.match(source,/findReceipt:.*careerConfirmedReceipt/);assert.match(source,/pending=\{commit.busy\}/);assert.match(source,/error=\{commit.error\}/);assert.match(source,/g.code,p.id,g.round,p.world\?\.region,p.place/);assert.match(source,/scrollIntoView/);assert.match(source,/tabIndex=\{-1\}/);
  const css=readFileSync(new URL('../app/venue-career-board.css',import.meta.url),'utf8');assert.match(css,/@media\(max-width:480px\)/);assert.match(css,/grid-template-columns:1fr/);assert.match(css,/min-height:44px/);assert.match(css,/:focus-visible/);
+});
+
+test('learning cards show each exact prerequisite once while keeping distinct lock details',()=>{
+ const text=n=>typeof n==='string'||typeof n==='number'?String(n):Array.isArray(n)?n.map(text).join(''):n?.props?text(n.props.children):'';
+ for(const discovered of [true,false]){const p=props();if(!discovered)p.p.world.discoveredPlacesByRegion.alder=['APARTMENTS','WORK','CORNER CAFÉ','COMMUNITY','THE PARK'];
+  const cards=elements(load(['learning'])(p)).filter(n=>n.type==='article'&&n.props.className==='venue-work-card');assert.ok(cards.length>=8);
+  for(const card of cards){const lines=elements(card).filter(n=>['venue-work-requirement','career-lock-reason'].includes(n.props?.className)).map(text).map(s=>s.trim()).filter(Boolean);assert.equal(new Set(lines).size,lines.length,'duplicate prerequisite on '+card.props['data-career-id']);assert.ok(lines.length,'the prerequisite remains visible');}
+ }
 });

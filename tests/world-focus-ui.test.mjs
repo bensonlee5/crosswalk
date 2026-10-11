@@ -14,7 +14,7 @@ const require=createRequire(import.meta.url),root=new URL('..',import.meta.url).
 const component=name=>Object.assign(()=>null,{displayName:name});
 const Deck=component('StoryChoiceDeck'),Outcome=component('EncounterOutcome'),Person=component('PersonResponseStage');
 const find=(node,predicate)=>Array.isArray(node)?node.flatMap(n=>find(n,predicate)):!node||typeof node!=='object'?[]:[...(predicate(node)?[node]:[]),...find(node.props?.children,predicate)];
-function fixture(){const g=createGame({op:'create',mode:'hotseat',names:['Worker'],ownerSession:'00000000-0000-4000-8000-000000000001',requestId:crypto.randomUUID(),careerMode:'venue',supportedRules:['venue-careers-v1']},'FOCUS'),p=g.players[0];p.world.discoveredPlacesByRegion.alder=[...worldPlaceIds];p.world.discoveredRegions.push('saffron');return{g,p};}
+function fixture(){const g=createGame({op:'create',mode:'hotseat',names:['Worker'],ownerSession:'00000000-0000-4000-8000-000000000001',requestId:crypto.randomUUID(),protocolVersion:1},'FOCUS'),p=g.players[0];p.world.discoveredPlacesByRegion.alder=[...worldPlaceIds];p.world.discoveredRegions.push('saffron');return{g,p};}
 function harness(initial){
  const slots=[],deps=[],cleanups=[];let cursor=0,dirty=true,effects=[],tree,props=initial;
  const hooks={...React,useRef(value){const i=cursor++;return slots[i]??(slots[i]={current:value});},useState(value){const i=cursor++;if(!(i in slots))slots[i]=typeof value==='function'?value():value;return[slots[i],next=>{const value=typeof next==='function'?next(slots[i]):next;if(!Object.is(value,slots[i])){slots[i]=value;dirty=true;}}];},useEffect(fn,next){const i=cursor++;if(!deps[i]||!next||next.some((v,j)=>!Object.is(v,deps[i][j]))){deps[i]=next;effects.push(()=>{cleanups[i]?.();cleanups[i]=fn();});}}};

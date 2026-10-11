@@ -11,27 +11,20 @@ import {worldChoices as serverWorldChoices,resolveWorldChoice as serverResolve} 
 const regions=['alder','saffron','glasssteppe','pelagia','embermesa'];
 const owner='00000000-0000-4000-8000-000000000001';
 function game(region='alder',round=1,code='CLIMAT'){
- const g=createGame({op:'create',mode:'hotseat',actionIncidents:true,supportedRules:['action-incidents-v1','venue-careers-v1'],names:['One','Two'],ownerSession:owner,requestId:crypto.randomUUID()},code);g.round=round;
+ const g=createGame({op:'create',mode:'hotseat',names:['One','Two'],ownerSession:owner,requestId:crypto.randomUUID()},code);g.round=round;
  for(const p of g.players){p.world.region=region;p.world.discoveredRegions=[...regions];p.cash=20000;p.energy=70;p.joy=40;p.hours=6;
  for(const r of regions)p.world.discoveredPlacesByRegion[r]=[...worldPlaceIds];}
  return g;
 }
 function rawView(g){const c=structuredClone(g);delete c.lifeSeed;delete c.lifeSchedule;return c;}
 
-test('new rooms automatically use the climate version; unknown/missing versions preserve regional weather',()=>{
- const g=game();assert.equal(g.climateVersion,1);assert.equal(getWeather(g).climate,'Cool maritime');
- for(const marker of [undefined,0,2]){const old={...g,climateVersion:marker};const before=JSON.stringify(old);assert.equal(getWeather(old).climate,undefined);assert.equal(JSON.stringify(old),before);}
- const old=game('pelagia',8);delete old.climateVersion;assert.ok(['cold','rain'].includes(getWeather(old).type));
- assert.notEqual(getWeather(game('pelagia',8)).type,'cold');
-});
-
 test('sanitized member snapshots and all multiplayer seats share the authoritative forecast',()=>{
  for(let count=1;count<=4;count++){
- const g=createGame({op:'create',mode:'hotseat',actionIncidents:true,supportedRules:['action-incidents-v1','venue-careers-v1'],names:Array.from({length:count},(_,i)=>`Seat ${i}`),ownerSession:owner,requestId:crypto.randomUUID()},'SEAT42');
+ const g=createGame({op:'create',mode:'hotseat',names:Array.from({length:count},(_,i)=>`Seat ${i}`),ownerSession:owner,requestId:crypto.randomUUID()},'SEAT42');
  g.players.forEach((p,i)=>{p.world.region=regions[i+1];});
  for(let turn=0;turn<count;turn++)for(let round=1;round<=8;round++){
  g.turn=turn;g.round=round;const client=memberView({state:g,code:g.code,version:1,updated_at:0},owner);
- assert.equal(client.lifeSeed,undefined);assert.equal(client.climateVersion,1);assert.deepEqual(getWeather(client),getWeather(g));
+ assert.equal(client.lifeSeed,undefined);assert.equal(client.schemaVersion,1);assert.deepEqual(getWeather(client),getWeather(g));
  for(let seat=0;seat<count;seat++)assert.deepEqual(weatherEffect(client.players[seat],{id:'park_run',energy:-8},client),weatherEffect(g.players[seat],{id:'park_run',energy:-8},g));
  }
  }
@@ -52,7 +45,7 @@ test('all five climates remain geographic and seasonal across room codes and rel
 
 test('every activity preview equals authoritative outcome and client/server costs in every region and season',()=>{
  let checked=0;
- for(const region of regions)for(let round=1;round<=8;round++)for(const id of ['rest','park_run','garden_tend','garden_harvest','cafe_break','library_read','home_reset','weekly_opportunity']){
+ for(const region of regions)for(let round=1;round<=8;round++)for(const id of ['rest','park_run','garden_tend','garden_workshop','cafe_break','library_read','home_reset','weekly_opportunity']){
  const g=game(region,round),p=g.players[0];p.place=actions.find(a=>a.id===id).place;
  if(reason(p,id,g))continue;
  const server=structuredClone(g),client=rawView(g),preview=actionPreview(p,id,g);assert.deepEqual(preview,actionPreview(client.players[0],id,client));
@@ -89,11 +82,10 @@ test('shared exposure and benefit caps survive travel, reload, high resources an
  const cold=game('glasssteppe',7),c=cold.players[0];c.energy=99;assert.equal(weatherEffect(c,{id:'home_reset',energy:0},cold).recoveryUsed,1);
 });
 
-test('new-climate outdoor world choices match previews, indoor jobs avoid exposure, legacy journeys remain unchanged',()=>{
+test('current outdoor world choices match their exact previews',()=>{
  for(const region of regions)for(const round of [3,7]){
  const g=game(region,round),p=g.players[0];p.world.discoveredPlacesByRegion[region]=['APARTMENTS','WORK','THE PARK','CORNER CAFÉ','COMMUNITY'];
  for(const key of ['explore','region_rest']){const v=worldChoices(p,g).find(c=>c.key===key);const before=structuredClone(p);resolveWorldChoice(g,p,v.id);for(const resource of ['energy','joy','cash','hours'])assert.equal(p[resource]-before[resource],v.preview[resource]);}
- const work=worldChoices(p,g).find(c=>c.key==='regional_work');if(work)assert.doesNotMatch(work.body,/extra energy for exposed/);
- const old=game(region,round);delete old.climateVersion;const travel=worldChoices(old.players[0],old).find(c=>c.kind==='travel');assert.equal(travel.preview.energy,0);assert.doesNotMatch(travel.body,/Weather adds/);
+ assert.ok(!worldChoices(p,g).some(c=>['regional_work','region_shift'].includes(c.key)));
  }
 });

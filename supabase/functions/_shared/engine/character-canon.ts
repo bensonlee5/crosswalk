@@ -2165,8 +2165,7 @@ export function canonicalIdentity(id:string){
  return{age:c.age,family:c.family.map(link=>({otherId:link.id,relationship:link.label.replace(/ of$/,''),otherRelationship:canonicalCharacterById[link.id]?.family.find(f=>f.id===id)?.label.replace(/ of$/,'')??'',fact:`${c.name} is ${canonicalCharacterById[link.id]?.name??link.id}’s ${link.label.replace(/ of$/,'').toLowerCase()}.${familyResidenceFact(c,canonicalCharacterById[link.id])}`}))};
 }
 /** Family time changes only the current public meeting, never a stored receipt. */
-export function canonicalFamilyVenue(version:number|undefined,round:number,id:string):string|null{
- if(version!==1)return null;
+export function canonicalFamilyVenue(round:number,id:string):string|null{
  if(id==='alder_tess'&&round%2===0)return 'CORNER CAFÉ';
  if(id==='pelagia_mara'&&round%2===1)return 'COMMUNITY';
  return null;

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
-import {initializeWorldPlayer,initializeSharedWorld,worldChoices,worldView,resolveWorldChoice,beginWorldWeek,regionDefinitions,worldPlaceIds} from '../lib/world-life.ts';
-const make=()=>{const p={id:'p',name:'Pat',cash:6000,hours:6,energy:85,joy:40,social:0,housing:0,job:0,skill:0,place:'APARTMENTS',storyVersion:1,economyVersion:1,life:{version:1,flags:[],relationships:{eli:{trust:0,support:false,rivalry:false}}}};initializeWorldPlayer(p);const g={players:[p],turn:0,round:1,maxRounds:8,lifeVersion:1,storyVersion:1,economyVersion:1,status:'playing',log:[]};initializeSharedWorld(g);return g;};
+import {worldChoices,worldView,resolveWorldChoice,beginWorldWeek,regionDefinitions,worldPlaceIds} from '../lib/world-life.ts';
+import {currentGame} from './current-fixture.mjs';
+const make=()=>{const g=currentGame({names:['Pat']});g.players[0].energy=85;return g;};
 const pick=(g,key)=>worldChoices(g.players[0],g).find(c=>c.key===key);
 const choose=(g,key)=>{const p=g.players[0];let c=pick(g,key);assert.ok(c,key);if(c.actorId)p.place=c.spot;c=pick(g,key);assert.ok(c.available,`${key}: ${c.reason}`);return resolveWorldChoice(g,p,c.id);};
 const next=(g,m)=>{g.round=m;g.players[0].hours=6;beginWorldWeek(g);};

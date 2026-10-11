@@ -6,7 +6,7 @@ export async function getOwnerSession(): Promise<string> {
   return session.user.id;
 }
 
-/** The same API shape as the old route; secrets, cookies and authority never move into the client. */
+/** Authenticated commands go only to the authoritative game service. */
 export const gameFetch: typeof fetch = async (input, init) => {
   const requestPath = input instanceof Request ? input.url : String(input);
   const parsed = new URL(requestPath, window.location.origin);

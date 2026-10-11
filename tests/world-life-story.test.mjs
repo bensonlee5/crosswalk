@@ -1,14 +1,13 @@
 import assert from 'node:assert/strict';
-import {initializeWorldPlayer,initializeSharedWorld,initializeStoryWorldPlayer,worldChoices,resolveWorldChoice,worldView,beginWorldWeek,afterWorldAction,applySharedVenueChange,getSharedVenueState,sharedVenueReason,visiblePlaces,worldPlaceName,worldPlaceIds,regionDefinitions} from '../lib/world-life.ts';
-import {monthlyBills,economyPaidHours} from '../lib/economy.ts';
-const person=id=>({id,name:id,cash:6000,skill:0,job:0,joy:40,energy:70,hours:6,social:0,housing:0,place:'APARTMENTS',rulesVersion:2,storyVersion:1,economyVersion:1,life:{version:1,flags:[],relationships:{eli:{trust:0,support:false,rivalry:false}}}});
-const game=(count=1)=>{const players=Array.from({length:count},(_,i)=>person(`p${i}`));players.forEach(initializeWorldPlayer);const g={players,turn:0,round:1,maxRounds:8,lifeVersion:1,storyVersion:1,economyVersion:1,status:'playing',log:[]};initializeSharedWorld(g);return g;};
+import {initializeSharedWorld,worldChoices,resolveWorldChoice,worldView,beginWorldWeek,afterWorldAction,applySharedVenueChange,getSharedVenueState,sharedVenueReason,visiblePlaces,worldPlaceName,worldPlaceIds,regionDefinitions} from '../lib/world-life.ts';
+import {monthlyBills} from '../lib/economy.ts';
+import {currentGame} from './current-fixture.mjs';
+const game=(count=1)=>currentGame({names:Array.from({length:count},(_,i)=>`P${i}`)});
 const pick=(g,key,p=g.players[g.turn])=>{const c=worldChoices(p,g).find(c=>c.key===key);assert.ok(c,`missing ${key}`);return c;};
 const choose=(g,key,p=g.players[g.turn])=>{let c=pick(g,key,p);if(c.spot&&c.actorId){assert.ok(visiblePlaces(p,g).includes(c.spot),`unavailable spot ${c.spot} for ${key}`);p.place=c.spot;c=pick(g,key,p);}assert.equal(c.available,true,`${key}: ${c.reason}`);return resolveWorldChoice(g,p,c.id);};
 const advance=(g,round)=>{g.round=round;for(const p of g.players){p.hours=6;p.energy=85;}beginWorldWeek(g);};
-// Explicit opt-in, reads and initialization are idempotent; no legacy migration.
+// Current initialization and all reads preserve existing state.
 {
- const p=person('old');delete p.storyVersion;delete p.economyVersion;initializeWorldPlayer(p);const g={players:[p],round:1,turn:0,maxRounds:8,lifeVersion:1,status:'playing',log:[]},before=JSON.stringify(g);initializeSharedWorld(g);initializeStoryWorldPlayer(g,p);assert.equal(JSON.stringify(g),before);assert.equal(g.sharedWorld,undefined);assert.equal(p.world.story,undefined);
  const h=game(),snapshot=JSON.stringify(h);initializeSharedWorld(h);worldView(h.players[0],h);worldChoices(h.players[0],h);assert.equal(JSON.stringify(h),snapshot);
 }
 // Shared geography is canonical, personal knowledge and relationships stay private.
@@ -51,15 +50,15 @@ const advance=(g,round)=>{g.round=round;for(const p of g.players){p.hours=6;p.en
  const other=structuredClone(g);choose(g,'local_help:alder_tess');choose(other,'talk:alder_tess');advance(g,2);advance(other,2);assert.notEqual(choose(g,'talk:alder_tess').text,choose(other,'talk:alder_tess').text);
  const bills=monthlyBills(p).total;choose(g,'travel:saffron');assert.equal(monthlyBills(p).total,bills);assert.equal(p.world.story.homeRegion,'alder');assert.equal(pick(g,'relocate:saffron').cost,600);choose(g,'relocate:saffron');assert.equal(p.world.story.homeRegion,'saffron');assert.equal(monthlyBills(p).total,1700);
 }
-// Modern regional salary and ordinary paid work share the 200-hour cap; exact previews and duplicates.
+// Paid regional shifts are exclusively accepted career contracts.
 {
- const g=game(),p=g.players[0];const c=pick(g,'regional_work');assert.equal(c.preview.cash,3272);p.place='WORK';const legal=pick(g,'regional_work'),cash=p.cash;const entry=resolveWorldChoice(g,p,legal.id);assert.deepEqual(entry.effects,legal.preview);assert.equal(p.cash-cash,3272);assert.equal(economyPaidHours(p,g),160);const done=JSON.stringify(g);resolveWorldChoice(g,p,legal.id);assert.equal(JSON.stringify(g),done);choose(g,'region_shift');assert.equal(economyPaidHours(p,g),200);assert.equal(pick(g,'region_shift').available,false);assert.match(pick(g,'region_shift').reason,/0 paid hours/);
+ const g=game(),p=g.players[0];assert.ok(!worldChoices(p,g).some(c=>['regional_work','region_shift'].includes(c.key)));const before=JSON.stringify(g);assert.throws(()=>resolveWorldChoice(g,p,'1:0:0:regional_work'),/stale or unknown/);assert.equal(JSON.stringify(g),before);
 }
 // All five regions retain safe essentials, distinct paid work, complete actor locations and pure views.
 let previews=0;
 for(const region of Object.keys(regionDefinitions))for(const energy of [0,70])for(const money of [0,6000]){
  const g=game(),p=g.players[0];advance(g,6);p.world.region=region;p.world.discoveredRegions=Object.keys(regionDefinitions);p.world.discoveredPlacesByRegion[region]=[...worldPlaceIds];p.energy=energy;p.cash=money;
- const snapshot=JSON.stringify(g);const view=worldView(p,g),choices=worldChoices(p,g);assert.equal(JSON.stringify(g),snapshot);assert.equal(view.regionalOpportunity.workTitle,pick(g,'regional_work').title);for(const spot of ['WORK','APARTMENTS','THE PARK'])assert.ok(visiblePlaces(p,g).includes(spot));
- for(const c of choices){const h=structuredClone(g),q=h.players[0];if(c.actorId&&c.spot)q.place=c.spot;const current=pick(h,c.key,q),before=structuredClone(q),saved=JSON.stringify(h);if(!current.available){assert.throws(()=>resolveWorldChoice(h,q,current.id));assert.equal(JSON.stringify(h),saved);continue;}const entry=resolveWorldChoice(h,q,current.id);assert.deepEqual(entry.effects,current.preview);for(const key of ['cash','hours','energy','joy','social'])assert.equal(q[key]-before[key],current.preview[key],`${region}/${c.key}/${key}`);const done=JSON.stringify(h);resolveWorldChoice(h,q,current.id);assert.equal(JSON.stringify(h),done);previews++;}
+ const snapshot=JSON.stringify(g);const view=worldView(p,g),choices=worldChoices(p,g);assert.equal(JSON.stringify(g),snapshot);assert.ok(view.regionalOpportunity.workTitle.length>5);for(const spot of ['WORK','APARTMENTS','THE PARK'])assert.ok(visiblePlaces(p,g).includes(spot));
+ for(const c of choices.filter(c=>!c.key.startsWith('shared:'))){const h=structuredClone(g),q=h.players[0];if(c.actorId&&c.spot)q.place=c.spot;const current=pick(h,c.key,q),before=structuredClone(q),saved=JSON.stringify(h);if(!current.available){assert.throws(()=>resolveWorldChoice(h,q,current.id));assert.equal(JSON.stringify(h),saved);continue;}const entry=resolveWorldChoice(h,q,current.id);assert.deepEqual(entry.effects,current.preview);for(const key of ['cash','hours','energy','joy','social'])assert.equal(q[key]-before[key],current.preview[key],`${region}/${c.key}/${key}`);const done=JSON.stringify(h);resolveWorldChoice(h,q,current.id);assert.equal(JSON.stringify(h),done);previews++;}
 }
-console.log(`PASS: opt-in preservation, canonical shared geography, immediate/long returns, staying growth, contribution schedule, five-month Neri story, respectful decline, local choice causality, relocation bills, shared pay cap, ${previews} exact legal preview/idempotency checks.`);
+console.log(`PASS: canonical shared geography, immediate/long returns, staying growth, contribution schedule, five-month Neri story, respectful decline, local choice causality, relocation bills, career-only shifts, ${previews} exact legal preview/idempotency checks.`);

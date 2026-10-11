@@ -1,4 +1,4 @@
-import {parseSupportedRules,requiredRules,rulesSupportError,type SupportedRule} from '../_shared/engine/rule-compatibility.ts';
+import {CURRENT_GAME_PROTOCOL,CURRENT_GAME_SCHEMA,REFRESH_GAME_MESSAGE,NEW_LIFE_MESSAGE,isCurrentGameState} from '../_shared/engine/current-game.ts';
 import {initializeActionIncidents,actionIncidentMemberPlayers} from '../_shared/engine/action-incidents.ts';
 import {initializeCareerPlayer,careerMemberPlayers} from '../_shared/engine/careers.ts';
 import {initializeFinancialRecovery,financeMemberPlayers} from '../_shared/engine/financial-recovery.ts';
@@ -8,7 +8,7 @@ import {initializeMotivesPlayer} from '../_shared/engine/character-motives.ts';
 import { initializeCast, initializeCastPlayer, castMemberFields } from '../_shared/engine/character-cast.ts';
 import { initializeEconomyPlayer } from '../_shared/engine/economy.ts';
 import { initializeStory, initializeStoryPlayer } from '../_shared/engine/story-arcs.ts';
-import { player, move, createEnvironment, currentBalanceVersion } from '../_shared/engine/game.ts';
+import { player, move, createEnvironment } from '../_shared/engine/game.ts';
 import type { Game } from '../_shared/engine/game.ts';
 import { initializeWorldPlayer, initializeSharedWorld, initializeStoryWorldPlayer } from '../_shared/engine/world-life.ts';
 import { initializeLife, initializeLifePlayer } from '../_shared/engine/life-events.ts';
@@ -16,9 +16,9 @@ import { initializeLife, initializeLifePlayer } from '../_shared/engine/life-eve
 export type SavedGame = Game & { creationRequestId?: string };
 export type RoomRow = { code: string; state: SavedGame; version: number; updated_at: number };
 export type Mutation = {
-  op: 'create' | 'join' | 'start' | 'move'; requestId: string; ownerSession: string;
+  op: 'create' | 'join' | 'start' | 'move'; requestId: string; ownerSession: string; protocolVersion: typeof CURRENT_GAME_PROTOCOL;
   code?: string; version?: number; mode?: 'online' | 'hotseat'; names?: string[];
-  name?: string; action?: string; destination?: string; careerMode?: 'venue'; actionIncidents?: boolean; supportedRules?: SupportedRule[];
+  name?: string; action?: string; destination?: string;
 };
 export type Commit = {
   actor: string; requestId: string; fingerprint: string; op: Mutation['op'];
@@ -41,7 +41,8 @@ export class GameError extends Error {
   readonly status: number;
   readonly identityChanged: boolean;
   readonly refreshRequired: boolean;
-  constructor(status: number, message: string, identityChanged = false, refreshRequired = false) { super(message); this.status = status; this.identityChanged = identityChanged; this.refreshRequired = refreshRequired; }
+  readonly newLifeRequired: boolean;
+  constructor(status: number, message: string, identityChanged = false, refreshRequired = false, newLifeRequired = false) { super(message); this.status = status; this.identityChanged = identityChanged; this.refreshRequired = refreshRequired; this.newLifeRequired = newLifeRequired; }
 }
 export const validActor = (s: unknown): s is string => typeof s === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s);
 export const validCode = (s: unknown): s is string => typeof s === 'string' && /^[A-Z0-9]{6}$/.test(s);
@@ -52,21 +53,18 @@ const cleanName = (s: unknown) => typeof s === 'string' ? s.trim().slice(0, 20) 
 export function parseMutation(value: unknown, actor: string): Mutation {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new GameError(400, 'Invalid request');
   const b = value as Record<string, unknown>;
+  requireCurrentProtocol(b.protocolVersion);
   if (!['create', 'join', 'start', 'move'].includes(String(b.op))) throw new GameError(400, 'Unknown request');
   if (!validActor(b.ownerSession) || b.ownerSession !== actor) {
     throw new GameError(403, 'Your saved-seat identity changed. Keep this pending action and reopen the account or browser that created it. A room code cannot recover another seat.', true);
   }
   if (!validRequestId(b.requestId)) throw new GameError(400, 'A stable request ID is required');
-  const command: Mutation = { op: b.op as Mutation['op'], ownerSession: actor, requestId: b.requestId };
-  try { command.supportedRules = parseSupportedRules(b.supportedRules); } catch (error) { throw new GameError(400, error instanceof Error ? error.message : 'Refresh Crosswalk', false, true); }
+  const command: Mutation = { op: b.op as Mutation['op'], ownerSession: actor, requestId: b.requestId, protocolVersion: CURRENT_GAME_PROTOCOL };
   if (b.op === 'create') {
-    if (b.actionIncidents !== undefined) { if (typeof b.actionIncidents !== 'boolean') throw new GameError(400, 'Choose whether to include small action surprises'); command.actionIncidents = b.actionIncidents; }
     if (b.mode !== 'online' && b.mode !== 'hotseat') throw new GameError(400, 'Choose a game mode');
     const names = b.mode === 'hotseat' ? b.names : [b.name];
     if (!Array.isArray(names) || names.length < 1 || names.length > 4 || names.some(n => !cleanName(n))) throw new GameError(400, 'Add a name for every player');
     command.mode = b.mode;
-    if (b.careerMode !== undefined && b.careerMode !== 'venue') throw new GameError(400, 'Choose the venue careers mode or omit it for original careers');
-    if (b.careerMode === 'venue') command.careerMode = 'venue';
     if (b.mode === 'hotseat') command.names = names.map(cleanName); else command.name = cleanName(b.name);
   } else {
     if (!validCode(b.code)) throw new GameError(400, 'Enter a six-character room code');
@@ -91,57 +89,60 @@ export async function digest(value: string): Promise<string> {
   return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))), n => n.toString(16).padStart(2, '0')).join('');
 }
 /** Includes the intended version and normalized command, not attacker-supplied extra fields. */
-export const fingerprint = (command: Mutation) => {const {supportedRules,...semantic}=command;void supportedRules;return digest(JSON.stringify(semantic));};
+export const fingerprint = (command: Mutation) => digest(JSON.stringify(command));
+export function requireCurrentProtocol(value: unknown): void {
+  if (value !== CURRENT_GAME_PROTOCOL) throw new GameError(409, REFRESH_GAME_MESSAGE, false, true);
+}
+export function requireCurrentGame(value: unknown): void {
+  if (!isCurrentGameState(value)) throw new GameError(409, NEW_LIFE_MESSAGE, false, false, true);
+}
 export function memberView(room: RoomRow, actor: string) {
-  const { members, host, seen, lifeSeed, lifeSchedule, actionIncidentRng, creationRequestId, ...safe } = room.state;
+  requireCurrentGame(room.state);
+  const { members, host, lifeSeed, lifeSchedule, actionIncidentRng, creationRequestId, ...safe } = room.state;
   if (!members[actor]?.length) throw new GameError(403, 'This identity does not own a seat in this room');
   const castSafe=castMemberFields(room.state,members[actor]);
-  return { ...safe, ...castSafe, requiredRules:requiredRules(room.state), players:financeMemberPlayers(careerMemberPlayers(actionIncidentMemberPlayers(familiarityMemberPlayers(sharedMemberPlayers(room.state,members[actor],(castSafe as {players?:Game['players']}).players??safe.players),members[actor]),members[actor]),members[actor]),members[actor]), mine: members[actor], isHost: host === actor, version: room.version };
+  return { ...safe, ...castSafe, players:financeMemberPlayers(careerMemberPlayers(actionIncidentMemberPlayers(familiarityMemberPlayers(sharedMemberPlayers(room.state,members[actor],(castSafe as {players?:Game['players']}).players??safe.players),members[actor]),members[actor]),members[actor]),members[actor]), mine: members[actor], isHost: host === actor, version: room.version };
 }
-export function roomView(room: RoomRow, actor: string, supported:readonly string[]=[]) {
-  const unsupported=rulesSupportError(room.state,supported);if(unsupported)throw new GameError(409,unsupported,false,true);
+export function roomView(room: RoomRow, actor: string) {
+  requireCurrentGame(room.state);
   if (room.state.members[actor]?.length) return memberView(room, actor);
   const g = room.state;
-  return { code: g.code, status: g.status, requiredRules:requiredRules(g), players: g.players.map(p => ({ name: p.name })), joinable: g.status === 'lobby' && g.mode === 'online' && g.players.length < 4 };
+  return { code: g.code, schemaVersion: CURRENT_GAME_SCHEMA, status: g.status, players: g.players.map(p => ({ name: p.name })), joinable: g.status === 'lobby' && g.mode === 'online' && g.players.length < 4 };
 }
 export function createGame(command: Mutation, code: string): SavedGame {
-  if (command.actionIncidents !== undefined && typeof command.actionIncidents !== 'boolean') throw new GameError(400, 'Choose whether to include small action surprises');
   const actor = command.ownerSession;
-  if (command.careerMode !== undefined && command.careerMode !== 'venue') throw new GameError(400, 'Invalid career mode');
-  const players = (command.mode === 'hotseat' ? command.names! : [command.name!]).map(n => player(n, currentBalanceVersion));
+  const players = (command.mode === 'hotseat' ? command.names! : [command.name!]).map(n => player(n));
   const g: SavedGame = {
-    code, creationRequestId: command.requestId, mode: command.mode!, host: actor,
+    schemaVersion: CURRENT_GAME_SCHEMA, code, creationRequestId: command.requestId, mode: command.mode!, host: actor,
     members: { [actor]: players.map(p => p.id) }, players,
-    status: command.mode === 'hotseat' ? 'playing' : 'lobby', round: 1, turn: 0,
-    maxRounds: 8, log: ['Welcome to Crosswalk. Make room for a good life.'], seen: [], event: 0,
-    ...(command.careerMode === 'venue' ? {careerVersion:1,financialRecoveryVersion:1} : {}),
-    ...(command.actionIncidents === true ? { actionIncidentsVersion: 1 } : {}), sharedOpportunitiesVersion: 1, rulesVersion: 2, lifeVersion: 1, worldVersion: 1, storyVersion: 1, economyVersion: 1, castVersion: 1, historyVersion: 1, motivesVersion: 1, characterCanonVersion: 1, climateVersion: 1, regionalLifeVersion: 1,
-    balanceVersion: currentBalanceVersion, turnsTaken: 0, ...createEnvironment(),
+    status: 'lobby', round: 1, turn: 0,
+    maxRounds: 8, log: ['Welcome to Crosswalk. Make room for a good life.'],
+    turnsTaken: 0, ...createEnvironment(),
   };
-  const unsupported=rulesSupportError(g,command.supportedRules);if(unsupported)throw new GameError(409,unsupported,false,true);
-  for (const p of g.players) initializeEconomyPlayer(p, { ...g, status: 'lobby' });
+  for (const p of g.players) initializeEconomyPlayer(p, g);
   initializeLife(g, crypto.getRandomValues(new Uint32Array(1))[0]);
   for (const p of g.players) initializeWorldPlayer(p);
   initializeSharedWorld(g);
   initializeSharedOpportunities(g);
   initializeStory(g);
-  initializeCast(g);for(const p of g.players){initializeMotivesPlayer(g,p);initializeCareerPlayer({...g,status:'lobby'},p);initializeFinancialRecovery({...g,status:'lobby'},p);}
+  initializeCast(g);for(const p of g.players){initializeMotivesPlayer(g,p);initializeCareerPlayer(g,p);initializeFinancialRecovery(g,p);}
   initializeActionIncidents(g);
+  if (command.mode === 'hotseat') { g.status = 'playing'; initializeStory(g); }
+  requireCurrentGame(g);
   return g;
 }
 function applyCommand(room: RoomRow, command: Mutation): SavedGame {
-  const unsupported=rulesSupportError(room.state,command.supportedRules);if(unsupported)throw new GameError(409,unsupported,false,true);
+  requireCurrentGame(room.state);
   const g = structuredClone(room.state), actor = command.ownerSession;
   if (command.op === 'join') {
     if (g.members[actor]?.length) return g;
     if (g.status !== 'lobby' || g.mode !== 'online' || g.players.length >= 4) throw new GameError(400, 'This room is no longer accepting players');
-    const p = player(command.name!, g.rulesVersion === 2 ? g.balanceVersion : undefined);
-    if (g.rulesVersion !== 2) { delete p.rulesVersion; delete p.craft; delete p.legacy; delete p.stories; delete p.storyWeeks; }
-    if (g.lifeVersion === 1) { initializeLifePlayer(p); if (g.worldVersion === 1) initializeWorldPlayer(p); }
-    if (g.storyVersion === 1) { initializeEconomyPlayer(p, g); initializeStoryPlayer(p); }
+    const p = player(command.name!);
+    initializeLifePlayer(p); initializeWorldPlayer(p);
+    initializeEconomyPlayer(p, g); initializeStoryPlayer(p);
     initializeCastPlayer(g,p);initializeMotivesPlayer(g,p);initializeCareerPlayer(g,p);initializeFinancialRecovery(g,p);
     g.players.push(p);initializeSharedOpportunityPlayer(g,p);initializeActionIncidents(g);
-    if (g.storyVersion === 1) initializeStoryWorldPlayer(g, p);
+    initializeStoryWorldPlayer(g, p);
     g.members[actor] = [p.id];
   } else {
     if (!g.members[actor]?.length) throw new GameError(403, 'Reopen the account or browser where you entered this game');
@@ -154,13 +155,11 @@ function applyCommand(room: RoomRow, command: Mutation): SavedGame {
       try { move(g, command.action!, command.destination); }
       catch (error) { throw new GameError(400, error instanceof Error ? error.message : 'That action is unavailable'); }
     }
-    // Kept for the legacy engine/view shape. Durable receipt history is in Postgres.
-    g.seen = [...g.seen, command.requestId].slice(-100);
   }
   return g;
 }
-function resultView(result: StoreResult, actor: string, supported:readonly string[]=[]) {
-  if (result.kind === 'ok') return roomView(result.room, actor, supported);
+function resultView(result: StoreResult, actor: string) {
+  if (result.kind === 'ok') return roomView(result.room, actor);
   if (result.kind === 'request_mismatch') throw new GameError(409, 'That request ID was already used for a different action. Check your saved game before continuing.');
   if (result.kind === 'forbidden') throw new GameError(403, 'This identity does not own this saved action');
   if (result.kind === 'missing') throw new GameError(404, 'Room not found');
@@ -171,12 +170,12 @@ export async function mutate(store: GameStore, actor: string, input: unknown) {
   const saved = await store.receipt(actor, command.requestId, hash);
   // Replay must precede changed turn/version/lobby predicates; mutation will still
   // validate authentication and exact UID before this lookup.
-  if (saved.kind !== 'missing') return resultView(saved, actor, command.supportedRules);
+  if (saved.kind !== 'missing') return resultView(saved, actor);
   if (command.op === 'create') {
     const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     const creationHash = await digest(`${actor}:create:${command.requestId}`);
     const code = Array.from({ length: 6 }, (_, i) => alphabet[parseInt(creationHash.slice(i * 2, i * 2 + 2), 16) % alphabet.length]).join('');
-    return resultView(await store.commit({ actor, requestId: command.requestId, fingerprint: hash, op: command.op, code, expectedVersion: null, state: createGame(command, code) }), actor, command.supportedRules);
+    return resultView(await store.commit({ actor, requestId: command.requestId, fingerprint: hash, op: command.op, code, expectedVersion: null, state: createGame(command, code) }), actor);
   }
   const room = await store.read(actor, command.code!);
   if (!room) throw new GameError(404, 'Room not found. Check the code.');
@@ -186,8 +185,8 @@ export async function mutate(store: GameStore, actor: string, input: unknown) {
     // A duplicate may have committed after our first receipt lookup but before
     // the room read. Recheck before returning a now-stale validation error.
     const raced = await store.receipt(actor, command.requestId, hash);
-    if (raced.kind !== 'missing') return resultView(raced, actor, command.supportedRules);
+    if (raced.kind !== 'missing') return resultView(raced, actor);
     throw error;
   }
-  return resultView(await store.commit({ actor, requestId: command.requestId, fingerprint: hash, op: command.op, code: room.code, expectedVersion: room.version, state }), actor, command.supportedRules);
+  return resultView(await store.commit({ actor, requestId: command.requestId, fingerprint: hash, op: command.op, code: room.code, expectedVersion: room.version, state }), actor);
 }

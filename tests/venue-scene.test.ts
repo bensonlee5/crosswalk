@@ -1,22 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {actions,player,type Game} from '../lib/game.ts';
-import {initializeLife} from '../lib/life-events.ts';
-import {initializeWorldPlayer,initializeSharedWorld,regionDefinitions} from '../lib/world-life.ts';
-import {initializeEconomyPlayer} from '../lib/economy.ts';
-import {initializeStory} from '../lib/story-arcs.ts';
-import {initializeCast} from '../lib/character-cast.ts';
+import {actions} from '../lib/game.ts';
+import {regionDefinitions} from '../lib/world-life.ts';
+import {currentGame} from './current-fixture.mjs';
 import {venuePeople,venueChoices,afterVenueActivity,type VenuePerson} from '../lib/venue-scene.ts';
 
 function room(){
- const p=player('Visitor'),g={code:'VENUE1',mode:'hotseat',host:'owner',members:{owner:[p.id]},players:[p],status:'lobby',round:1,turn:0,maxRounds:8,log:[],seen:[],event:0,rulesVersion:2,lifeVersion:1,worldVersion:1,storyVersion:1,economyVersion:1,castVersion:1} as Game;
- initializeLife(g,15);initializeWorldPlayer(p);initializeEconomyPlayer(p,g);initializeSharedWorld(g);initializeCast(g);g.status='playing';initializeStory(g);p.place='CORNER CAFÉ';return {g,p};
+ const g=currentGame({names:['Visitor'],seed:15}),p=g.players[0];p.place='CORNER CAFÉ';return {g,p};
 }
 
 test('one venue grid interleaves present people and activities without changing activity order',()=>{
- const activities=actions.filter(a=>a.place==='CORNER CAFÉ'&&!a.story),people:VenuePerson[]=[{id:'one',name:'One',role:'Neighbor',status:'Here',canTalk:true},{id:'away',name:'Away',role:'Neighbor',status:'Away',canTalk:true,remote:true},{id:'two',name:'Two',role:'Neighbor',status:'Here',canTalk:true}];
+ const activities=actions.filter(a=>a.place==='CORNER CAFÉ'),people:VenuePerson[]=[{id:'one',name:'One',role:'Neighbor',status:'Here',canTalk:true},{id:'away',name:'Away',role:'Neighbor',status:'Away',canTalk:true,remote:true},{id:'two',name:'Two',role:'Neighbor',status:'Here',canTalk:true}];
  const before=JSON.stringify({activities,people}),choices=venueChoices(activities,people);
- assert.deepEqual(choices.map(c=>c.kind),['activity','person','activity','person','activity','activity']);
+ assert.deepEqual(choices.map(c=>c.kind),['activity','person','activity','person','activity']);
  assert.deepEqual(choices.filter(c=>c.kind==='activity').map(c=>c.activity.id),activities.map(a=>a.id));
  assert.deepEqual(choices.filter(c=>c.kind==='person').map(c=>c.person.id),['one','two']);assert.equal(JSON.stringify({activities,people}),before);
  assert.deepEqual(venueChoices([],people).map(c=>c.kind),['person','person']);assert.equal(venueChoices(activities,[]).length,activities.length);
@@ -44,5 +40,4 @@ test('current region, discoverability, and remote contacts remain authoritative'
 
 test('presence labels contain no biographies, scene outcomes or hidden scheduling fields',()=>{
  const {g,p}=room();for(const person of venuePeople(g,p,p.place))assert.ok(Object.keys(person).every(key=>['id','name','role','status','remote','canTalk'].includes(key)));
- const classic={...g,worldVersion:undefined,storyVersion:undefined,castVersion:undefined,cast:undefined};const old={...p,world:undefined,cast:undefined};assert.equal(afterVenueActivity(classic,old,'cafe_break','CORNER CAFÉ'),null);
 });

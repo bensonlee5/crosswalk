@@ -1,5 +1,5 @@
-import {parseSupportedRulesQuery} from '../_shared/engine/rule-compatibility.ts';
-import { GameError, mutate, roomView, validActor, validCode } from './game-service.ts';
+import {CURRENT_GAME_PROTOCOL} from '../_shared/engine/current-game.ts';
+import { GameError, mutate, roomView, validActor, validCode, requireCurrentProtocol } from './game-service.ts';
 import type { GameStore } from './game-service.ts';
 export type Identity = { id: string; role: string; is_anonymous: boolean };
 type Dependencies = {
@@ -33,6 +33,8 @@ export function createHandler(deps: Dependencies) {
       if (!user || !validActor(user.id) || user.role !== 'authenticated' || typeof user.is_anonymous !== 'boolean') return reply({ error: 'Your saved-seat session expired. Reconnect without discarding pending actions.', sessionRequired: true }, 401);
       if (request.method === 'GET') {
         const url = new URL(request.url);
+        const protocol = url.searchParams.getAll('protocolVersion');
+        requireCurrentProtocol(protocol.length === 1 && protocol[0] === String(CURRENT_GAME_PROTOCOL) ? CURRENT_GAME_PROTOCOL : undefined);
         if (url.searchParams.get('session') === '1') return reply({ session: user.id });
         if (url.searchParams.get('history') === '1') {
           const rawCursor = url.searchParams.get('cursor');
@@ -46,8 +48,7 @@ export function createHandler(deps: Dependencies) {
         if (!validCode(code)) throw new GameError(400, 'Enter a six-character room code');
         const row = await deps.store.read(user.id, code);
         if (!row) throw new GameError(404, 'Room not found. Check the code.');
-        let supported;try{supported=parseSupportedRulesQuery(url.searchParams.getAll('supportedRules'));}catch(error){throw new GameError(400,error instanceof Error?error.message:'Refresh Crosswalk',false,true);}
-        return reply(roomView(row, user.id, supported));
+        return reply(roomView(row, user.id));
       }
       if (!request.headers.get('content-type')?.toLowerCase().startsWith('application/json')) throw new GameError(415, 'Use application/json');
       if (Number(request.headers.get('content-length') ?? '0') > 4096) throw new GameError(413, 'Request too large');
@@ -67,7 +68,7 @@ export function createHandler(deps: Dependencies) {
       try { input = JSON.parse(new TextDecoder().decode(bytes)); } catch { throw new GameError(400, 'Invalid request'); }
       return reply(await mutate(deps.store, user.id, input));
     } catch (error) {
-      if (error instanceof GameError) return reply({ error: error.message, ...(error.identityChanged ? { identityMismatch: true } : {}), ...(error.refreshRequired ? { refreshRequired: true } : {}) }, error.status);
+      if (error instanceof GameError) return reply({ error: error.message, ...(error.identityChanged ? { identityMismatch: true } : {}), ...(error.refreshRequired ? { refreshRequired: true } : {}), ...(error.newLifeRequired ? { newLifeRequired: true } : {}) }, error.status);
       deps.reportError?.(error);
       return reply({ error: 'The connection to saved games was interrupted. Keep this action and check the last confirmed save before trying a different move.' }, 503);
     }

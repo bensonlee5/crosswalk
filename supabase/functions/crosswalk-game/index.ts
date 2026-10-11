@@ -8,7 +8,7 @@ const required = (name: string) => {
   return value;
 };
 const url = required('SUPABASE_URL');
-// Supabase supplies the two legacy server environment values below. They stay
+// Supabase supplies the two server-only environment values below. They stay
 // inside Edge Functions; the site bundle gets ONLY its publishable key.
 const options = { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } };
 const authClient = createClient(url, required('SUPABASE_ANON_KEY'), options);

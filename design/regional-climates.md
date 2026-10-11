@@ -26,6 +26,6 @@ The existing shared neighborhood opportunity changes setting to match the local 
 
 ## Compatibility and validation
 
-`climateVersion: 1` is written only at new-room creation. Missing, old or unknown markers retain the earlier regional table and exact legacy effects. No initializer upgrades existing rooms. The additive `weatherUsage.exposure` counter resets only when the month changes.
+Every current life uses regional climates. The additive `weatherUsage.exposure` counter resets only when the month changes.
 
-Client and server share byte-identical weather, game and world modules, verified by the engine manifest. Tests cover all five regions, all eight months, multiple room codes, 1–4 seats, sanitized snapshots, normal activity outcomes, regional journeys, explicit-player authority, departure/arrival ownership, failed energy gates, indoor recovery at zero resources, duplicate receipts, reloads, cap consumption, opportunity resource clamping and legacy journeys.
+Client and server share byte-identical weather, game and world modules, verified by the engine manifest. Tests cover all five regions, all eight months, multiple room codes, 1–4 seats, sanitized snapshots, normal activity outcomes, regional journeys, explicit-player authority, departure/arrival ownership, failed energy gates, indoor recovery at zero resources, duplicate receipts, reloads, cap consumption, opportunity resource clamping and interrupted journeys.

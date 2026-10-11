@@ -1,8 +1,8 @@
 /** Presentation only: never changes a price, eligibility check, receipt or effect. */
-import type {Activity} from './game';
-import {qualitativeText} from './point-presentation.ts';
-import {ACTION_ILLUSTRATIONS,type ActionIllustration} from './action-art.ts';
-import {locationFor} from './locations.ts';
+import { ACTION_ILLUSTRATIONS,DECISION_ILLUSTRATIONS,type ActionIllustration } from './action-art.ts';
+import type { Activity } from './game';
+import { locationFor } from './locations.ts';
+import { qualitativeText } from './point-presentation.ts';
 
 /** Only standalone numeric resource effects are quieted. Commitments, money,
  * deadlines, unlocks and permanent changes always remain before confirmation. */
@@ -11,8 +11,6 @@ export function isQuietEffect(text:string){
 }
 export function narrativeExpectation(text:string){return qualitativeText(text);}
 export function activityIntent(a:Activity){
- if(a.story)return 'Make time for a neighbor’s story';
- if(a.promote)return 'Take the next step in your working life';
  if(a.housing!==undefined)return 'Make a place of your own';
  if(a.special==='project')return 'Build something the neighborhood can share';
  if(a.special==='opportunity')return 'Be part of this month’s local opening';
@@ -23,6 +21,7 @@ export function activityIntent(a:Activity){
  if(/meal|cook|taste/.test(a.id))return 'Slow down over something good to eat';
  return 'A little room to breathe and enjoy the day';
 }
+const choicePaintings={...ACTION_ILLUSTRATIONS,...DECISION_ILLUSTRATIONS};
 const scene=(file:string,alt:string):ActionIllustration=>({src:`/paintings/${file}.webp`,thumb:`/paintings/${file}.webp`,alt});
 type ChoiceArtInput={id:string;actionId:string;title:string;body:string};
 /** Authored actions get their existing paintings; travel gets its destination.
@@ -37,11 +36,11 @@ export function decisionIllustration(c:ChoiceArtInput,place='COMMUNITY'):ActionI
  if(relational[key])return {...scene('decisions/'+relational[key],c.title),fallback:'/paintings/locations/'+locationFor(place).art+'.webp'};
  if(key==='help'||key==='keep'){
   const helpByPlace:Record<string,string>={'COMMUNITY':'community_setup','GARDEN':'garden_tend','MAKERSPACE':'maker_repair','CORNER CAFÉ':'cafe_barista','WORK':'work_mentor','LIBRARY':'library_digitize','MARKET':'market_shift','TRANSIT':'transit_repair','CAMPUS':'campus_group','THE PARK':'rest'};
-  if(helpByPlace[place])return ACTION_ILLUSTRATIONS[helpByPlace[place]];
+  if(helpByPlace[place])return choicePaintings[helpByPlace[place]];
  }
  const authored:Record<string,string>={workshop:'story_jo_2',demo:'story_mina_2',mina_first:'story_mina_3',repair_first:'maker_repair',share_evening:'home_host',protect_set:'cafe_openmic',coordinate:'community_organize',be_here:'story_mina_3',take_shift:'community_setup',setup:'community_setup',keep_setup:'community_setup',pantry:'community_setup',release_cinema:'maker_intro',keep_cinema:'cinema_matinee',food:'market_taste',learn:'library_learn',region_rest:'rest',region_shift:'work_short',regional_work:'work',explore:'transit_scenic'};
  const id=authored[key];
- if(id&&ACTION_ILLUSTRATIONS[id])return ACTION_ILLUSTRATIONS[id];
+ if(id&&choicePaintings[id])return choicePaintings[id];
  if(key==='garden')return scene('actions/opportunity_supper','A painted garden supper');
  if(key==='shared_credit')return scene('actions/opportunity_poster','Neighbors making a poster');
  // Unmapped regional conversations retain their actual setting. The label

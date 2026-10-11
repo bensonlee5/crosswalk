@@ -1,30 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
-import {player,move} from '../lib/game.ts';
-import {initializeLife} from '../lib/life-events.ts';
-import {initializeEconomyPlayer} from '../lib/economy.ts';
-import {initializeWorldPlayer,initializeSharedWorld,regionDefinitions,worldPlaceIds,worldView} from '../lib/world-life.ts';
-import {initializeStory,getStoryView} from '../lib/story-arcs.ts';
-import {initializeCast,castPeople,castMemberFields} from '../lib/character-cast.ts';
-import {characterAges,characterFamilies,publicCharacterIdentity} from '../lib/character-identities.ts';
+import {move} from '../lib/game.ts';
+import {regionDefinitions,worldPlaceIds,worldView} from '../lib/world-life.ts';
+import {getStoryView} from '../lib/story-arcs.ts';
+import {castPeople,castMemberFields} from '../lib/character-cast.ts';
+import {canonicalCharacterById,canonicalIdentity} from '../lib/character-canon.ts';
 import {motivePortrait} from '../lib/motive-portraits.ts';
-import {motiveLegacyCampaign} from './support/motive-legacy-campaign.mjs';
-import {historicalVenueLabels} from './support/venue-name-snapshot.mjs';
-import {historicalDescriptiveCopy} from './support/descriptive-copy-snapshot.mjs';
 import {characterHistories} from '../lib/character-histories.ts';
 import {characterMotiveProfiles,motiveIntroductions} from '../lib/character-motive-profiles.ts';
-import {initializeMotivesPlayer,motiveScene,resolveMotiveChoice,recordMotiveEvidence} from '../lib/character-motives.ts';
+import {motiveScene,resolveMotiveChoice,recordMotiveEvidence} from '../lib/character-motives.ts';
 import {move as serverMove} from '../supabase/functions/_shared/engine/game.ts';
 import {memberView,roomView} from '../supabase/functions/crosswalk-game/game-service.ts';
 
-function room(opt=true,seed=15){
- const p=player('Ari',1);p.id='fixed-player';
- const g={code:'MOTIVE',mode:'hotseat',host:'owner',members:{owner:[p.id]},players:[p],status:'lobby',round:1,turn:0,maxRounds:8,log:[],seen:[],event:0,rulesVersion:2,lifeVersion:1,worldVersion:1,storyVersion:1,economyVersion:1,castVersion:1,historyVersion:1,balanceVersion:1,turnsTaken:0,...(opt?{motivesVersion:1}:{})};
- initializeEconomyPlayer(p,g);initializeLife(g,seed);initializeWorldPlayer(p);initializeSharedWorld(g);initializeStory(g);initializeCast(g);initializeMotivesPlayer(g,p);g.status='playing';initializeStory(g);
- return{g,p};
-}
+import {currentGame} from './current-fixture.mjs';
+function room(seed=15,names=['Ari']){const g=currentGame({names,seed}),p=g.players[0];return{g,p};}
 function locate(g,p,id){
  for(const region of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[region]=[...worldPlaceIds];
  const region=Object.values(regionDefinitions).find(r=>r.residents.some(c=>c.id===id));
@@ -59,7 +49,7 @@ test('every character has real help, support, refusal and repair consequences, w
   assert.equal(motiveScene(g,p,c.id).choices.length,0);const saved=JSON.stringify(g);move(g,help.id);assert.equal(JSON.stringify(g),saved);
 
   const full=room();full.g.round=2;locate(full.g,full.p,c.id);bond(full.p,c.id);
-  const support=act(full.g,full.p,c.id,'ask');assert.equal(support.response,'support',c.id);assert.equal(support.energy,8);assert.equal(support.joy,5);
+  const support=act(full.g,full.p,c.id,'ask');assert.equal(support.response,c.id==='oren'?'smaller-offer':'support',c.id);assert.equal(support.energy,c.id==='oren'?3:8);assert.equal(support.joy,c.id==='oren'?2:5);
 
   const pressured=room();pressured.g.round=2;locate(pressured.g,pressured.p,c.id);bond(pressured.p,c.id);
   act(pressured.g,pressured.p,c.id,'press');assert.equal(pressured.p.motives.bonds[c.id].trust,2);assert.equal(pressured.p.motives.bonds[c.id].strained,true);
@@ -151,8 +141,8 @@ test('authored cases span sadness, envy, love, anger, shame, pride, fear and rel
 });
 
 test('private motive state and outcomes never leave another seat’s member or anonymous snapshot',()=>{
- const {g,p}=room();g.round=2;locate(g,p,'bram');act(g,p,'bram','press');
- g.mode='online';const guest=player('Other');guest.id='guest';g.players.push(guest);g.members.other=[guest.id];initializeMotivesPlayer(g,guest);
+ const {g,p}=room(15,['Ari','Other']);g.round=2;locate(g,p,'bram');act(g,p,'bram','press');
+ g.mode='online';const guest=g.players[1];g.members.owner=[p.id];g.members.other=[guest.id];
  const own=memberView({state:g,version:3},'owner'),other=memberView({state:g,version:3},'other'),anonymous=roomView({state:g,version:3},'stranger');
  assert.ok(own.players[0].motives);assert.equal(other.players[0].motives,undefined);assert.equal(other.players[0].castRedacted,true);assert.equal(anonymous.players[0].motives,undefined);
  for(const view of [other,anonymous]){assert.ok(!JSON.stringify(view).includes(p.motives.receipts[0].outcome));assert.ok(!JSON.stringify(view).includes('earnedWeeks'));}
@@ -160,16 +150,10 @@ test('private motive state and outcomes never leave another seat’s member or a
  assert.equal(castMemberFields(g,[]).players[0].motives,undefined);
 });
 
-test('old saves remain byte-equivalent through reads, joins, rejected exchanges and campaign settlement',()=>{
- const {g,p}=room(false);const before=JSON.stringify(g);initializeMotivesPlayer(g,p);recordMotiveEvidence(g,p);for(const c of characterMotiveProfiles)assert.equal(motiveScene(g,p,c.id),null);assert.equal(JSON.stringify(g),before);
- assert.throws(()=>resolveMotiveChoice(g,p,'motive:1:bram:fake:help'),/not part/);assert.equal(JSON.stringify(g),before);
- const joined=player('Joined');initializeMotivesPlayer(g,joined);assert.equal(joined.motives,undefined);
- for(let i=0;i<8;i++)move(g,'end');assert.equal(g.status,'finished');assert.equal(p.motives,undefined);assert.equal(g.motivesVersion,undefined);
-});
 
 test('client/server and serialized new-save continuations remain deterministic, including schedules',()=>{
  for(const seed of [0,1,15,42,4294967295]){
-  const {g,p}=room(true,seed);g.round=2;locate(g,p,'bram');const schedule=JSON.stringify(g.cast.schedule),copy=JSON.parse(JSON.stringify(g));
+  const {g,p}=room(seed);g.round=2;locate(g,p,'bram');const schedule=JSON.stringify(g.cast.schedule),copy=JSON.parse(JSON.stringify(g));
   const id=choice(g,p,'bram','help').id;move(g,id);serverMove(copy,id);assert.deepEqual(copy,g);
   assert.equal(JSON.stringify(g.cast.schedule),schedule);
   const resumed=JSON.parse(JSON.stringify(g));move(g,'end');serverMove(resumed,'end');assert.deepEqual(resumed,g);assert.equal(JSON.stringify(g.cast.schedule),schedule);
@@ -178,21 +162,14 @@ test('client/server and serialized new-save continuations remain deterministic, 
 });
 
 
-test('81 frozen-baseline states retain mechanics and receipts apart from reviewed labels, prose and prospective familiarity',async()=>{
- const fixtures=JSON.parse(readFileSync(new URL('./support/motive-legacy-hashes.json',import.meta.url),'utf8'));
- assert.equal(fixtures.sourceCommit,'4216605a69c95ce18048e6fc1fc7d105fc174a60');
- for(const {seed,edition,sha256}of fixtures.campaigns){
-  const states=await motiveLegacyCampaign(new URL('../lib/',import.meta.url),seed,edition);
-  assert.deepEqual(states.map(s=>{const state=JSON.parse(s);for(const p of state.players)delete p.familiarity;return createHash('sha256').update(historicalVenueLabels(historicalDescriptiveCopy(JSON.stringify(state)))).digest('hex');}),sha256,`${edition} seed ${seed}`);
- }
-});
 
-test('public ages and reciprocal families preserve canon and span adult generations',()=>{
+test('public ages and reciprocal families use the canonical identities and span adult generations',()=>{
+ const characterAges=Object.fromEntries(characterMotiveProfiles.map(c=>[c.id,canonicalCharacterById[c.id].age]));
  assert.deepEqual(Object.keys(characterAges).sort(),characterHistories.map(c=>c.id).sort());
  assert.equal(Math.min(...Object.values(characterAges)),24);assert.equal(Math.max(...Object.values(characterAges)),72);
  assert.deepEqual(Object.fromEntries(['bram','oren','hugo','priya','sami','miro','sefu','kit','neri'].map(id=>[id,characterAges[id]])),{bram:43,oren:57,hugo:36,priya:68,sami:31,miro:62,sefu:49,kit:28,neri:29});
- for(const family of characterFamilies)for(const id of family.ids){const a=publicCharacterIdentity(id).family.find(f=>family.ids.includes(f.otherId));const b=publicCharacterIdentity(a.otherId).family.find(f=>f.otherId===id);assert.equal(a.relationship,b.otherRelationship);assert.equal(a.fact,b.fact);}
- const {g,p}=room();g.round=2;locate(g,p,'jo');const family=act(g,p,'jo','family');assert.equal(family.emotion,'love');assert.match(family.outcome,/adult|Kit/);assert.match(family.outcome,/no acceptance, delivery/);assert.equal(p.motives.bonds.jo.trust,1);
+ for(const {id} of characterMotiveProfiles)for(const a of canonicalIdentity(id).family){const b=canonicalIdentity(a.otherId).family.find(f=>f.otherId===id);assert.ok(b);assert.equal(a.relationship,b.otherRelationship);assert.equal(a.otherRelationship,b.relationship);assert.ok(a.fact.includes(canonicalCharacterById[id].name));assert.ok(a.fact.includes(canonicalCharacterById[a.otherId].name));}
+ const {g,p}=room();g.round=2;locate(g,p,'jo');const family=act(g,p,'jo','family');assert.equal(family.emotion,'love');assert.match(family.outcome,/adult|Kit/);assert.match(family.outcome,/no acceptance, delivery/i);assert.equal(p.motives.bonds.jo.trust,1);
 });
 
 test('only an actual supported Mina outcome selects its exact art; other feelings and people remain neutral',()=>{
@@ -204,7 +181,7 @@ test('only an actual supported Mina outcome selects its exact art; other feeling
 
 test('early motive feelings do not bypass deeper private-history gates',()=>{
  for(const [id,key,privateWords]of [['hugo','help',/bowl away from his learner/],['miro','repair',/grand backdrop/],['oren','ask',/short recordings he and Miro/]]){
-  const {g,p}=room();g.round=2;locate(g,p,id);bond(p,id,{strained:key==='repair'});
+  const {g,p}=room();g.round=id==='oren'?3:2;locate(g,p,id);bond(p,id,{strained:key==='repair'});
   const early=choice(g,p,id,key);assert.doesNotMatch(early.outcome,privateWords);
   p.cast.bonds[id].phase='shared';const later=choice(g,p,id,key);assert.match(later.outcome,privateWords);
  }

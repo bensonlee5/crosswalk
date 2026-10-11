@@ -6,11 +6,11 @@ export type TurnClockProps = {
   /** Game action-time blocks, not elapsed real-world hours. */
   hours: number;
   max?: number;
-  /** Room code + week + player ID. Changing this resets without a rewind. */
+  /** Room code + month + player ID. Changing this resets without a rewind. */
   turnKey: string;
   previewCost?: number;
   announce?: boolean;
-  period?: 'week' | 'month';
+  period?: 'month';
 };
 
 const SEGMENTS = 6;
@@ -61,7 +61,7 @@ const segmentPaths = Array.from({length: SEGMENTS}, (_, index) => arc(index * 60
 
 /**
  * Import turn-clock.css once in the app's global stylesheet / layout.
- * The keyed face is intentional: a fresh player's/week's dial must never
+ * The keyed face is intentional: a fresh player's/month's dial must never
  * interpolate backwards through the previous player's spent time.
  */
 export default function TurnClock(props: TurnClockProps) {
@@ -69,7 +69,7 @@ export default function TurnClock(props: TurnClockProps) {
   return <TurnClockFace key={`${props.turnKey}:${capacity}`} {...props} max={capacity}/>;
 }
 
-function TurnClockFace({hours, max = 6, previewCost = 0, announce = true, period = 'week'}: TurnClockProps) {
+function TurnClockFace({hours, max = 6, previewCost = 0, announce = true, period = 'month'}: TurnClockProps) {
   const state = getTurnClockState(hours, max, previewCost);
   const uid = useId().replace(/:/g, '');
   const previous = useRef(state.remaining);
@@ -83,13 +83,13 @@ function TurnClockFace({hours, max = 6, previewCost = 0, announce = true, period
     const difference = before - state.remaining;
     if (difference > 0) {
       setSpendSequence(sequence => sequence + 1);
-      setAnnouncement(`${display(difference)} time ${difference === 1 ? 'block' : 'blocks'} spent. ${state.remaining === 0 ? `No time left this ${period}.` : `${display(state.remaining)} left this ${period}.`}`);
+      setAnnouncement(`${display(difference)} priority ${difference === 1 ? 'block' : 'blocks'} spent. ${state.remaining === 0 ? `No time left this ${period}.` : `${display(state.remaining)} left this ${period}.`}`);
     } else {
-      setAnnouncement(`${display(state.remaining)} time ${state.remaining === 1 ? 'block' : 'blocks'} left this ${period}.`);
+      setAnnouncement(`${display(state.remaining)} priority ${state.remaining === 1 ? 'block' : 'blocks'} left this ${period}.`);
     }
   }, [state.remaining]);
 
-  const label = `${display(state.remaining)} of ${display(state.capacity)} time blocks left this ${period}.${state.requestedCost > 0 ? ` Selected action uses ${display(state.requestedCost)}.${state.requestedCost > state.remaining ? ' Not enough time remains.' : ''}` : ''}`;
+  const label = `${display(state.remaining)} of ${display(state.capacity)} priority blocks left this ${period}.${state.requestedCost > 0 ? ` Selected action uses ${display(state.requestedCost)}.${state.requestedCost > state.remaining ? ' Not enough time remains.' : ''}` : ''}`;
 
   return <div className="cw-turn-clock" data-phase={state.phase} data-turn-clock="" title={label}>
     <div className="cw-turn-clock__meter" role="meter" aria-label={"Time left this "+period} aria-valuemin={0} aria-valuemax={state.capacity} aria-valuenow={state.remaining} aria-valuetext={label}>

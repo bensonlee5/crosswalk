@@ -2,14 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {characterHistories} from '../lib/character-histories.ts';
-import {initializeWorldPlayer,initializeSharedWorld,worldChoices,resolveWorldChoice,beginWorldWeek} from '../lib/world-life.ts';
+import {worldChoices,resolveWorldChoice,beginWorldWeek} from '../lib/world-life.ts';
 
-function fixture(){
- const p={id:'p',name:'Player',cash:6000,skill:0,job:0,joy:40,energy:70,hours:6,social:0,housing:0,place:'CORNER CAFÉ',rulesVersion:2,storyVersion:1,economyVersion:1,life:{version:1,flags:[],relationships:{eli:{trust:0,support:false,rivalry:false}}}};
- initializeWorldPlayer(p);
- const g={players:[p],turn:0,round:1,maxRounds:8,lifeVersion:1,storyVersion:1,economyVersion:1,status:'playing',log:[]};
- initializeSharedWorld(g);return {g,p};
-}
+import {currentGame} from './current-fixture.mjs';
+function fixture(){const g=currentGame(),p=g.players[0];p.place='CORNER CAFÉ';return{g,p};}
 function choose(g,p,key){let choice=worldChoices(p,g).find(c=>c.key===key);assert.ok(choice,key);p.place=choice.spot;choice=worldChoices(p,g).find(c=>c.key===key);assert.equal(choice.available,true,choice.reason);resolveWorldChoice(g,p,choice.id);}
 const hiddenSchedule=/next conversation is in (?:week|month)|live the plan first|come back next|catch up next|opens.*(?:chapter|month|week) \d|next chapter-month/i;
 
@@ -49,7 +45,7 @@ test('visible copy cannot restore leaked unlock dates or hidden narrative reward
 test('explicit promises, event dates and actionable costs stay visible',()=>{
  const cast=readFileSync(new URL('../lib/character-cast.ts',import.meta.url),'utf8');
  assert.ok(cast.includes('is expecting you in month ${b.promise.due}'));
- assert.ok(cast.includes('A promise for month ${g.round+1}; one block then.'));
+ assert.ok(cast.includes('A promise for month ${g.round + 1}; one block then.'));
  const story=readFileSync(new URL('../lib/story-arcs.ts',import.meta.url),'utf8');
  assert.ok(story.includes('Offer one paid preparation block in month 5'));
  assert.ok(story.includes('The first set is planned for month 6'));

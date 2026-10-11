@@ -1,13 +1,11 @@
-# Asset provenance
+# Current art and audio
 
-The town geometry in `app/town-models.ts` and `app/game-engine.ts` is original code-authored game geometry: buildings, roofs, doors, windows, trees, pavement, benches, fountain, sculpture and destination props. No third-party game model pack was used.
+The active town view is an original SVG navigation layer over five generated isometric paintings in `public/paintings/isometric/`. Authored door positions, route graphs, occlusion masks and labels are in the isometric renderer modules. No third-party game model pack is used. See `ISOMETRIC-ART-MANIFEST.json` and `ISOMETRIC-RENDERER.md` for provenance and runtime integrity.
 
-All 17 raster assets were generated for Crosswalk with OpenAI image generation on September 30, 2026:
+`public/paintings/character-portraits/` contains the 68 approved default portraits and their exact manifest. Mina, Jo and Eli also have aligned situational expression sheets; do not claim every character has an animated expression pack. `public/paintings/world/`, current garden/news/decision paintings and eight selected item paintings support the game and Travel Guide. Preserve per-asset manifests and source/license records when changing files.
 
-- 15 destination illustrations in `public/locations/`, each 960×640 WebP
-- `public/neighborhood.webp`, the original seven-location illustrated map
-- `public/westside.webp`, the eight-location expansion map
+`public/neighborhood.webp` is the original generated Home/news illustration, still used outside the interactive town. An asset’s early creation date does not make it unused. Remove files only after checking current source, generated guides, manifests and CSS references.
 
-The visual brief used elevated three-quarter views, grounded small-town architecture, brick/timber, foliage, warm light and no people, text, logos or UI. The location illustrations appear in activity overlays; old maps remain project assets but are not the active 3D backdrop. Final WebPs are included. Original generation PNGs are no longer available in the recovered workspace.
+Semantic audio uses the current recordings and license/provenance manifest described in `SEMANTIC-AUDIO.md`. Keep required CC0 attribution/source records with the recordings. Test audible output separately from a code-level playback assertion.
 
-No third-party game art or character assets were copied. Dependency notices are separate and retained. This provenance record is not a license grant.
+Generated Crosswalk artwork was created for this project with OpenAI image generation. No third-party game character/art pack was copied. Dependency notices are distinct from asset provenance; these records do not make new license grants.

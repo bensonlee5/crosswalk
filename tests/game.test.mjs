@@ -1,40 +1,36 @@
+import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import ts from 'typescript';
-import {player as modernPlayer,actions as allActions,move,reason,score} from '../lib/game.ts';
-const source=readFileSync(new URL('../lib/game-view.ts',import.meta.url),'utf8').replaceAll(/'\.\/([^']+\.ts)'/g,(_,name)=>JSON.stringify(new URL('../lib/'+name,import.meta.url).href));
-const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText;
-const {actionPreview,weekPreview,snapshotIsCurrent}=await import('data:text/javascript;base64,'+Buffer.from(code).toString('base64'));
-const actions=allActions.filter(a=>!a.modernOnly);
-const player=name=>{const p=modernPlayer(name);delete p.rulesVersion;return p;};
-let tested=0;
-for(const a of actions){const p=player('Preview test');Object.assign(p,{cash:1800,skill:4,social:10,job:1,energy:65,joy:95,place:a.place});const before=structuredClone(p),v=actionPreview(p,a.id);if(reason(p,a.id))continue;const g={players:[p,player('Other')],turn:0,round:1,maxRounds:8,status:'playing',log:[]};move(g,a.id);assert.equal(p.cash,before.cash+v.cash);assert.equal(p.hours,before.hours+v.hours);assert.equal(p.energy,before.energy+v.energy);assert.equal(p.joy,before.joy+v.joy);assert.equal(p.skill,before.skill+v.skill);assert.equal(p.social,before.social+v.social);tested++;}
-for(const cash of [-500,0,505,2000])for(const joy of [0,3,99])for(const housing of [0,1]){const p=player('Bills');Object.assign(p,{cash,joy,housing,energy:95});const v=weekPreview(p);const g={players:[p,player('Other')],turn:0,round:1,maxRounds:8,status:'playing',log:[]};move(g,'end');assert.equal(p.cash,v.cash);assert.equal(p.joy,v.joy);assert.equal(p.energy,v.energy);}
-assert.equal(snapshotIsCurrent({code:'ABC',version:7},{code:'ABC',version:6}),false);assert.equal(snapshotIsCurrent({code:'ABC',version:7},{code:'ABC',version:8}),true);assert.equal(snapshotIsCurrent({code:'ABC',version:7},{code:'ABC',version:7}),true);assert.equal(snapshotIsCurrent(null,{code:'ABC',version:0}),true);
-const p=player('Travel');let g={players:[p],turn:0,round:1,maxRounds:8,status:'playing',log:[]};assert.throws(()=>move(g,'work'),/Visit/);move(g,'visit','WORK');assert.equal(p.hours,6);move(g,'work');assert.equal(p.cash,1420);p.cash=-50;p.hours=6;move(g,'work');assert.equal(p.cash,270);for(let n=0;n<8;n++)move(g,'end');assert.equal(g.status,'finished');assert.equal(score(player('A')),score(player('B')));
-console.log('PASS: '+tested+' action previews; 24 bill previews; stale-response guard; free travel; location enforcement; overdraft recovery; 8-week finish; score ties');
+import {currentGame} from './current-fixture.mjs';
+import {actions,player,move,reason,activityForPlayer,projectGoal,projectProgress} from '../lib/game.ts';
+import {actionPreview,weekPreview,snapshotIsCurrent} from '../lib/game-view.ts';
+import {monthlyBills,initializeEconomyPlayer} from '../lib/economy.ts';
+import {worldPlaceIds} from '../lib/world-life.ts';
+import {isCurrentGameState} from '../lib/current-game.ts';
 
-assert.equal(actions.length,60);assert.equal(new Set(actions.map(a=>a.id)).size,60);
-const locations=[...new Set(actions.map(a=>a.place))];assert.equal(locations.length,15);
-for(const place of locations)assert.equal(actions.filter(a=>a.place===place).length,4);
-for(const a of actions){
- const base=()=>Object.assign(player('Gate test'),{cash:2000,skill:4,social:10,energy:100,place:a.place});
- let p=base();p.hours=a.time-1;assert.match(reason(p,a.id),/time/);
- if(a.cost){p=base();p.cash=a.cost-1;assert.match(reason(p,a.id),/cash/);}
- if(a.needSkill){p=base();p.skill=a.needSkill-1;assert.match(reason(p,a.id),/skills/);}
- if(a.needSocial){p=base();p.social=a.needSocial-1;assert.match(reason(p,a.id),/connections/);}
- if(a.energy<0){p=base();p.energy=-a.energy-1;assert.match(reason(p,a.id),/Rest/);}
- p=base();p.place='INVALID';const g={players:[p],turn:0,round:1,maxRounds:8,status:'playing',log:[]};assert.throws(()=>move(g,a.id),/Visit/);
- if(a.skill){p=base();p.skill=5;const v=actionPreview(p,a.id);assert.equal(v.skill,1);p.skill=6;assert.match(reason(p,a.id),/six skills/);}
-}
-const legacy=Object.assign(player('Legacy'),{place:'HOME'});const legacyGame={players:[legacy],turn:0,round:1,maxRounds:8,status:'playing',log:[]};move(legacyGame,'visit','LIBRARY');move(legacyGame,'library_learn');assert.equal(legacy.skill,1);assert.equal(legacy.cash,1100);assert.equal(legacy.hours,3);
-console.log('PASS: 15 locations × 4 actions; all costs/time/energy/skill/social gates; skill cap; old HOME save migration');
-for(const [id,initial,expected] of [
- ['campus_bootcamp',{cash:1100,skill:0,energy:70},{cash:680,skill:2,energy:48,hours:3}],
- ['work_short',{cash:1100,job:2,energy:70},{cash:1401,energy:62,hours:5}],
- ['maker_commission',{cash:100,skill:3,social:2,energy:70},{cash:430,energy:52,hours:4}],
- ['career_contract',{cash:100,skill:2,social:4,energy:70},{cash:400,energy:54,hours:4}],
- ['gym_sauna',{cash:1100,energy:80,joy:95},{cash:1055,energy:100,joy:100,hours:4}],
- ['work_overtime',{cash:1100,energy:70,joy:2},{cash:1600,energy:44,joy:0,hours:3}]
-]){const p=Object.assign(player('Outcome'),initial,{place:actions.find(a=>a.id===id).place});const g={players:[p],turn:0,round:1,maxRounds:8,status:'playing',log:[]};move(g,id);for(const[k,v]of Object.entries(expected))assert.equal(p[k],v,id+' '+k);}
-console.log('PASS: explicit bootcamp, wage-scaled short shift, commission, referral, capped recovery and overtime outcomes');
+test('every fresh player and room have exactly one complete current ruleset',()=>{
+ for(const names of [['A'],['A','B','C','D']]){const g=currentGame({names});assert.ok(isCurrentGameState(g));assert.equal(g.schemaVersion,1);for(const p of g.players){assert.equal(p.cash,6000);assert.equal(p.job,undefined);assert.equal(p.stories,undefined);assert.deepEqual(Object.keys(p).filter(k=>k.endsWith('Version')),['schemaVersion']);assert.ok(p.career&&p.finance&&p.actionIncidents&&p.familiarity&&p.world&&p.cast&&p.motives);}assert.deepEqual(Object.keys(g).filter(k=>k.endsWith('Version')),['schemaVersion']);}
+});
+test('unsupported ordinary commands cannot invoke discarded jobs, promotions or chapter engines',()=>{
+ const g=currentGame(),p=g.players[0];for(const id of ['work','work_short','apply','study','story_mina_1']){const before=structuredClone(g);assert.equal(reason(p,id,g),'Unknown action');assert.throws(()=>move(g,id),/Unknown/);assert.deepEqual(g,before);}assert.equal(actions.length,38);
+});
+test('current initialization does not reset a changed current player balance or work record',()=>{
+ const p=player('A');p.cash=125;p.economyWork.paidHours=40;initializeEconomyPlayer(p,{round:1,status:'lobby'});assert.equal(p.cash,125);assert.equal(p.economyWork.paidHours,40);
+});
+test('local map travel costs nothing, including venues whose menus consist of named careers',()=>{
+ const g=currentGame(),p=g.players[0];p.world.discoveredPlacesByRegion.alder=[...worldPlaceIds];for(const place of worldPlaceIds){const resources=[p.cash,p.hours,p.energy];move(g,'visit',place);assert.equal(p.place,place);assert.deepEqual([p.cash,p.hours,p.energy],resources);}
+});
+test('every current ordinary action uses its exact preview plus its separately recorded incident',()=>{
+ for(const raw of actions){const g=currentGame(),p=g.players[0];p.world.discoveredPlacesByRegion.alder=[...worldPlaceIds];p.cash=100000;p.skill=6;p.social=24;p.craft=5;p.energy=50;p.joy=30;p.place=raw.place;const a=activityForPlayer(p,raw,g);if(reason(p,a.id,g))continue;const preview=actionPreview(p,a.id,g),before=structuredClone(p);move(g,a.id);const incident=p.actionIncidents.receipts.at(-1);for(const key of ['cash','joy','energy'])assert.equal(p[key]-before[key],preview[key]+(incident?.effects[key]??0),a.id+' '+key);assert.equal(p.hours-before.hours,preview.hours);}
+});
+test('shared garden contributions remain bounded, rewarding real contributors and lasting legacy',()=>{
+ const g=currentGame({names:['A','B']}),[a,b]=g.players;for(const p of g.players){p.world.discoveredPlacesByRegion.alder.push('GARDEN');p.place='GARDEN';}assert.equal(projectGoal(g),4);for(let round=1;round<=2;round++){g.round=round;for(let turn=0;turn<2;turn++){g.turn=turn;const p=g.players[turn];p.hours=6;move(g,'garden_project');const after=structuredClone(g);assert.throws(()=>move(g,'garden_project'));assert.deepEqual(g,after);}}assert.equal(projectProgress(g),4);assert.ok(g.project.completed);for(const p of [a,b]){assert.equal(p.cash,6600);assert.equal(p.legacy,4);}
+});
+test('month settlement and turn rotation preserve current recovery rather than negative cash',()=>{
+ const g=currentGame({names:['A','B']}),a=g.players[0];g.lifeSchedule=[];a.cash=25;const preview=weekPreview(a,g);assert.equal(preview.cash,0);move(g,'end');assert.equal(a.cash,0);assert.equal(a.finance.arrears,monthlyBills(a).total-25);assert.equal(g.turn,1);move(g,'end');assert.equal(g.round,2);assert.equal(g.turn,1);assert.equal(a.finance.settlements.length,1);
+});
+test('finished rooms reject more moves',()=>{
+ const g=currentGame();g.lifeSchedule=[];for(let i=0;i<8;i++)move(g,'end');assert.equal(g.status,'finished');assert.equal(g.round,8);assert.throws(()=>move(g,'end'),/not running/);
+});
+test('snapshot versions retain current stale-response protection',()=>{
+ assert.equal(snapshotIsCurrent({code:'ABCDEF',version:3},{code:'ABCDEF',version:2}),false);assert.equal(snapshotIsCurrent({code:'ABCDEF',version:3},{code:'ABCDEF',version:3}),true);assert.equal(snapshotIsCurrent({code:'ABCDEF',version:3},{code:'NEWNEW',version:0}),true);
+});

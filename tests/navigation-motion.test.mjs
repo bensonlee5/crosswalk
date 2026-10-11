@@ -7,9 +7,9 @@ test('venue arrival motion is short, reduced-motion safe, and loaded after prese
  assert.match(css,/venue-arrive 240ms/);assert.match(css,/venue-depart 140ms/);
  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);assert.match(css,/animation:none!important/);
  const entry=readFileSync(new URL('../src/main.tsx',import.meta.url),'utf8');assert.ok(entry.indexOf('navigation-motion.css')>entry.indexOf('image-choices.css'));
- const screen=readFileSync(new URL('../app/game-screen.tsx',import.meta.url),'utf8');assert.equal((screen.match(/behavior:window\.matchMedia\?\.\('\(prefers-reduced-motion: reduce\)'\)\.matches\?'instant':'smooth'/g)||[]).length,2);
+ const screen=readFileSync(new URL('../app/game-screen.tsx',import.meta.url),'utf8');assert.equal((screen.match(/behavior:\s*window\.matchMedia\?\.\('\(prefers-reduced-motion: reduce\)'\)\.matches\s*\?\s*'instant'\s*:\s*'smooth'/g)||[]).length,2);
 });
 test('neighborhood preview keeps payment and energy requirement clear without foregrounding gains',()=>{
  const source=readFileSync(new URL('../app/game-screen.tsx',import.meta.url),'utf8');
- assert.match(source,/economyTimeLabel\(g,-boardOpportunity.hours\)/);assert.match(source,/money\(boardOpportunity.cash\)/);assert.match(source,/Pay details are private/);assert.match(source,/Takes some effort/);
+ assert.match(source,/economyTimeLabel\(g,\s*-boardOpportunity.hours\)/);assert.match(source,/money\(boardOpportunity.cash\)/);assert.match(source,/Pay details are private/);assert.match(source,/Takes some effort/);
 });

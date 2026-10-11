@@ -25,12 +25,8 @@ A considered contribution costs one existing priority block; stating a boundary 
 
 ## Compatibility
 
-Both creation services author `historyVersion: 1` for new rooms. Pre-cast saves and saved cast editions without this marker retain their previous behavior. There is no database migration or live-save rewrite. One bounded optional `historyScene` field sits within each already-private cast bond. New history modules are copied and SHA-256 checked against the Edge Function engine.
+Current lives initialize private character-history state. One bounded optional historyScene sits within each private cast bond. Canonical modules are mirrored and hash-checked for the Edge service.
 
 ## Verified coverage and remaining limits
 
-The final complete suite passes 243 tests. Checks cover 26 identities, graph integrity, retained ties, reciprocal facts, earned perspectives, pure reads, legacy behavior, all four continuations in local and remote contexts, exact previews, no score rewards, persisted consequences, no invented consent, forged requests, retries and privacy. A legal-action eight-month life meets Tess, develops Bram’s friendship, revisits its map decision, and retains the consequence in its ending. Render tests cover every profile and private/legacy states.
-
-Frontend and backend TypeScript, cached Deno Edge checking, engine parity, production build, focused lint and QA-harness build pass. Whole-repository lint has 136 errors and 12 warnings, exactly matching the release checkout by file/rule counts; no new findings were introduced. The build retains large-chunk warnings.
-
-The earlier 320-life simulation establishes ordinary cast promises, losses and repair, not emotional quality. Four differentiated later scenes do not make all 26 people infinitely evolving agents. Browser review was attempted in separate cloud-browser tabs but the executor loopback listener is unreachable from that browser (ERR_CONNECTION_REFUSED). The alternate listener also failed at the platform’s network-interface lookup. No network/security settings or hosting were changed. Browser discoverability, mobile/WebGL behavior, felt pacing and enjoyment remain unverified.
+Current checks cover identity and graph integrity, retained ties, reciprocal facts, earned perspectives, pure reads, local/remote continuations, exact previews, persisted consequences, no invented consent, forged requests, retries and privacy. Test against the final complete current schema; earlier release counts are not current verification evidence.

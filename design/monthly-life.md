@@ -2,7 +2,7 @@
 
 [Design and development index](README.md) · [Player-facing README](../README.md)
 
-Contains story spoilers and detailed rules. This is the monthly-life foundation; the additive cast and character-history work is documented in [cast relationships](../docs/CAST-RELATIONSHIPS.md), [character histories](../docs/CHARACTER-HISTORIES.md), and [cast integration](../docs/CAST-INTEGRATION.md). Saved rooms remain on their versioned rules.
+Contains story spoilers and detailed rules. This is the monthly-life foundation; the additive cast and character-history work is documented in [cast relationships](../docs/CAST-RELATIONSHIPS.md), [character histories](../docs/CHARACTER-HISTORIES.md).
 
 ## Monthly life stories edition
 
@@ -16,10 +16,8 @@ The modern economy uses recognizable dollar amounts and compressed attention. En
 
 Some lifestyle choices represent a month of habits: 20 weekday coffees cost $140; eight café meetups cost $144; home-cooking ingredient upgrades cost $100; market lunches add $260 after crediting displaced groceries. Each habit can be selected once per month and never renews automatically. One-off events remain one-off, and free walks, reading and community activities remain available. Housing, habits, study, travel and relationships compete for the same money and priority blocks.
 
-Named achievements and present foundations replace the points contest in new rooms. Earned milestones survive setbacks, while the ending distinguishes a past achievement from what is secure now. Start a new room for this edition; unmarked saves are never rebased to new prices or story rules.
+Named achievements and present foundations replace the points contest in current lives. Earned milestones survive setbacks, while the ending distinguishes a past achievement from what is secure now. Unsupported stored lives are not rebased to new prices or story rules.
 
 ### Verification
 
-Run `node --test tests/*.test.mjs tests/*.test.ts` and `npx tsc --noEmit --incremental false`. Coverage includes legacy parity, exact previews and bills, payroll and habit limits, shared-world consistency, request retries, focused encounters, honest endings and complete campaign simulations. Automated engine/API playthroughs and rendered-interface checks do not establish human enjoyment. Browser/mobile gestures, WebGL performance and audio listening remain unverified in this environment.
-
-The earlier [life-story research notes](../docs/LIFE-STORIES-DESIGN.md) describe the previous edition. The [historical edition notes](historical-editions.md) and [presentation notes](presentation-and-interaction.md) apply to their versioned saves where later rules differ.
+Run `node --test tests/*.test.mjs tests/*.test.ts` and `npx tsc --noEmit --incremental false`. Coverage includes exact previews and bills, payroll and habit limits, shared-world consistency, request retries, focused encounters, honest endings and complete campaign simulations. Automated engine/API playthroughs and rendered-interface checks do not establish human enjoyment. Browser/mobile gestures, map performance and audio listening remain unverified in this environment.

@@ -16,7 +16,7 @@ for(const [width,height]of [[320,360],[390,470],[1000,620]])test(`${width}px: ev
   const names={...regionDefinitions[region].placeNames},h=harness({reduced:true,width,height,placeName:place=>names[place]}),g=room(region);
   h.engine.sync(g.players,0,true,undefined,g);
   for(const venue of contract.venues.filter(v=>v.regionId===region))for(const name of [venue.name,...venue.evolvedNames]){
-   names[venue.placeId]=name;g.players[0].place=venue.placeId;g.players[0].world.revision=(g.players[0].world.revision||0)+1;
+   names[venue.placeId]=name;g.players[0].place=venue.placeId;g.sharedWorld.regions[region].revision++;
    h.engine.sync(g.players,0,true,undefined,g);h.engine.focus();
    const label=h.parent.querySelectorAll('.iso-place-label').find(el=>el.dataset.place===venue.placeId),copy=label.querySelector('.iso-label-copy'),text=copy.querySelector('text'),rect=copy.querySelector('rect');
    assert.equal(copy.querySelector('title').textContent,name,'the full name remains available');
@@ -40,5 +40,5 @@ test('phone Places list can wrap proper names and the truncated HUD exposes the 
  assert.match(css,/\.game-place-list span\{[^}]*min-width:0/);
  assert.match(css,/\.game-place-list strong\{[^}]*overflow-wrap:anywhere/);
  assert.match(css,/\.game-current-place span\{[^}]*text-overflow:ellipsis/);
- assert.ok(screen.includes('<span title={worldPlaceName(p,p.place,g)}>{worldPlaceName(p,p.place,g)}</span>'));
+ assert.ok(screen.replace(/\s+/g,'').includes('<spantitle={worldPlaceName(p,p.place,g)}>{worldPlaceName(p,p.place,g)}</span>'));
 });

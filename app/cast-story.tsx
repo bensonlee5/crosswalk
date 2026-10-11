@@ -1,17 +1,17 @@
 'use client';
-import {capturePersonReceipt} from '@/lib/person-response';
-import {useState} from 'react';
-import {PersonResponseStage,PersonSceneDetails,PersonReturn} from './person-response';
-import {canonicalCharacterById} from '@/lib/character-canon';
-import {qualitativeText} from '@/lib/point-presentation';
-import {CharacterMotives,MotiveJournal} from './character-motives';
+import { canonicalCharacterById } from '@/lib/character-canon';
+import { castPeople,type CastPersonView } from '@/lib/character-cast';
+import { economyMonthLabel } from '@/lib/economy';
+import type { Game,Player } from '@/lib/game';
+import { capturePersonReceipt } from '@/lib/person-response';
+import { qualitativeText } from '@/lib/point-presentation';
+import { worldPlaceName } from '@/lib/world-life';
+import { useState } from 'react';
+import { CharacterHistory } from './character-history';
+import { CharacterMotives,MotiveJournal } from './character-motives';
 import CharacterPortrait from './character-portrait';
-import {CharacterHistory} from './character-history';
-import type {Game,Player} from '@/lib/game';
-import {castPeople,type CastPersonView} from '@/lib/character-cast';
-import {economyMonthLabel,hasModernEconomy} from '@/lib/economy';
-import {worldPlaceName} from '@/lib/world-life';
-import {StoryChoiceDeck,EncounterOutcome,useEncounterCommit,type EncounterChoice} from './story-choices';
+import { PersonResponseStage,PersonReturn,PersonSceneDetails } from './person-response';
+import { EncounterOutcome,StoryChoiceDeck,useEncounterCommit,type EncounterChoice } from './story-choices';
 
 type EncounterProps={g:Game;p:Player;person:CastPersonView;spot:string;disabled:boolean;onAction:(id:string)=>Promise<unknown>;onClose:()=>void};
 
@@ -32,7 +32,7 @@ export function CastEncounterPanel({g,p,person,spot,disabled,onAction,onClose}:E
   <EncounterOutcome g={g} receipt={commit.receipt||(!choices.some(choice=>choice.available)?person.lastReceipt||null:null)} error={commit.error} compact/>
   {!commit.receipt&&<StoryChoiceDeck g={g} place={spot} choices={choices} disabled={disabled} busy={commit.busy} onSelect={choice=>setPreview({context,choice})} conversational onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText={p.castRedacted?'This player’s conversations and relationship history are private.':person.spot!==spot?`You can reach ${person.name} through ${worldPlaceName(p,person.spot,g)}.`:'No new commitment. You can leave whenever you like.'}/>}
   <PersonSceneDetails>
-  <section className="encounter-scene"><h3>{person.remote?'Keeping in touch':'A life of their own'}</h3>{person.remote&&<p className="encounter-callback">{person.name} is not at a public meetup here this {hasModernEconomy(g)?'month':'week'}. The community room gives you a way to stay in touch.</p>}<p>{person.bio}</p>{person.body.map((text,i)=><p key={i}>{qualitativeText(text)}</p>)}</section>
+  <section className="encounter-scene"><h3>{person.remote?'Keeping in touch':'A life of their own'}</h3>{person.remote&&<p className="encounter-callback">{person.name} is not at a public meetup here this {'month'}. The community room gives you a way to stay in touch.</p>}<p>{person.bio}</p>{person.body.map((text,i)=><p key={i}>{qualitativeText(text)}</p>)}</section>
   <CharacterHistory g={g} p={p} actorId={person.id}/>
   {person.goal&&<p className="encounter-promise"><strong>{person.interactionKind==='family'?'What fits today':person.interactionKind==='local'?`What matters to ${person.name}`:`What ${person.name} is working toward`}</strong>{person.goal}</p>}
   {person.tie&&<p className="encounter-tie"><strong>A connection between lives</strong>{person.tie}</p>}
@@ -47,29 +47,29 @@ export function CastEncounterPanel({g,p,person,spot,disabled,onAction,onClose}:E
 /** A few timely openings, never a collection checklist or an undiscovered-person directory. */
 export function CastMeetups({g,p,disabled,onEncounter}:{g:Game;p:Player;disabled:boolean;onEncounter:(actorId:string,spot:string)=>void}){
  const people=castPeople(g,p);
- if(g.castVersion!==1||!people.length)return null;
+ if(!people.length)return null;
  const openings=people.filter(person=>person.choices.length>0).sort((a,b)=>Number(!!b.invitation)-Number(!!a.invitation)||Number(a.remote)-Number(b.remote)||Number(b.memories.length===0)-Number(a.memories.length===0)||a.name.localeCompare(b.name)).slice(0,3);
  if(!openings.length)return null;
  return <section className="cast-meetups" aria-label="People to make time for">
-  <div className="cast-meetups-heading"><small className="encounter-eyebrow">THIS {hasModernEconomy(g)?'MONTH':'WEEK'}, A LITTLE TIME TOGETHER</small><h3>Paths that cross yours</h3><p>Follow a conversation that matters to you. People have routines and plans of their own.</p></div>
+  <div className="cast-meetups-heading"><small className="encounter-eyebrow">THIS {'MONTH'}, A LITTLE TIME TOGETHER</small><h3>Paths that cross yours</h3><p>Follow a conversation that matters to you. People have routines and plans of their own.</p></div>
   <div className="cast-meetup-list">{openings.map(person=><button type="button" key={person.id} disabled={disabled} onClick={()=>onEncounter(person.id,person.spot)}><CharacterPortrait id={person.id} name={person.name} className="cast-meetup-token"/><span><strong>{person.remote?'Keep in touch with ':'Meet '}{person.name}</strong><small>{person.remote?'Contact through ':'At '}{worldPlaceName(p,person.spot,g)} · {person.role}</small><span>{person.invitation||person.goal}</span></span><span aria-hidden="true">→</span></button>)}</div>
-  <p className="cast-contact-note">{g.characterCanonVersion===1?<>Established adult friendships can continue through {worldPlaceName(p,'COMMUNITY',g)} when your paths are apart. Family moments and local drop-ins take place when people are here.</>:<>Look for familiar names at the places below. Once you have met, you can also keep in touch through {worldPlaceName(p,'COMMUNITY',g)} when your paths are apart.</>}</p>
+  <p className="cast-contact-note"><>Established adult friendships can continue through {worldPlaceName(p,'COMMUNITY',g)} when your paths are apart. Family moments and local drop-ins take place when people are here.</></p>
  </section>;
 }
 
 /** Only actual receipts are journal entries. No unearned relationships or speculative endings. */
 export function CastJournal({g,p}:{g:Game;p:Player}){
  const receipts=[...(p.cast?.receipts||[])].sort((a,b)=>b.week-a.week);
- if(g.castVersion!==1)return null;if(!receipts.length)return <MotiveJournal g={g} p={p}/>;
+ if(!receipts.length)return <MotiveJournal g={g} p={p}/>;
  return <section className="cast-journal"><small className="encounter-eyebrow">PEOPLE & THE MOMENTS BETWEEN</small><h2>The things you remember</h2><p>Small choices become a shared history.</p><details className="story-timeline" open={receipts.length<=3}><summary>Your conversations and commitments <span>{receipts.length} remembered moment{receipts.length===1?'':'s'}</span></summary><ol>{receipts.map(receipt=><li key={receipt.id}><small>{economyMonthLabel(g,receipt.week).toUpperCase()}</small><strong>{receipt.title}</strong><p>{qualitativeText(receipt.outcome||receipt.body)}</p>{receipt.outcome&&receipt.body&&receipt.body!==receipt.outcome&&<p className="encounter-callback">{qualitativeText(receipt.body)}</p>}</li>)}</ol></details><MotiveJournal g={g} p={p}/></section>;
 }
 
 export function CastPromiseNotice({g,p}:{g:Game;p:Player}){
- if(g.castVersion!==1)return null;
+
  const names=castPeople(g,p).filter(person=>{
   const promise=p.cast?.bonds[person.id]?.promise;
   return promise?.status==='open'&&promise.due<=g.round;
  }).map(person=>person.name);
  if(!names.length)return null;
- return <p className="overdraft-warning cast-promise-notice" role="note">You promised time to {names.join(', ')} this {hasModernEconomy(g)?'month':'week'}. Ending now records {names.length===1?'that promise':'those promises'} as missed. You can still find them through Places or contact them through the community room before you finish. {g.round>=g.maxRounds?'The unfinished promise stays part of your ending.':'An honest repair remains possible in a later chapter.'}</p>;
+ return <p className="overdraft-warning cast-promise-notice" role="note">You promised time to {names.join(', ')} this {'month'}. Ending now records {names.length===1?'that promise':'those promises'} as missed. You can still find them through Places or contact them through the community room before you finish. {g.round>=g.maxRounds?'The unfinished promise stays part of your ending.':'An honest repair remains possible in a later chapter.'}</p>;
 }

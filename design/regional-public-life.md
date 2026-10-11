@@ -32,6 +32,6 @@ The Places menu shows one legal local invitation alongside the existing story sp
 
 ## Implementation and checks
 
-The automatic new-room marker is `regionalLifeVersion: 1`; missing and unknown markers are inert. Participation uses additive `Player.regionalLifeUsage`, keyed to the current month. Client/server modules and the generated engine manifest include `regional-life.ts`.
+Regional public life is part of the current ruleset. Participation uses additive `Player.regionalLifeUsage`, keyed to the current month. Client/server modules and the generated engine manifest include `regional-life.ts`.
 
 Regression tests cover all five regions, mild/hot/cold periods, zero/near-full/full energy, efficient and partial discoveries, shared closures, mapped-out routes, authoritative preview parity, duplicate receipts, ordinary navigation, essential alternatives, money invariants, visible activity gates, per-player ownership, serialized member snapshots, reload/travel caps, partial/full happiness and legal distinct invitations.

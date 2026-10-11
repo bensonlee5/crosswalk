@@ -28,7 +28,7 @@ export function capturePersonReceipt<T extends ResponseReceipt>(receipt:T,p:Play
 /** Only the notice frozen with this confirmed speaker/action may continue the reply. */
 export function personCareerNotices(input:PersonSceneInput){
  const {g,p,actorId,receipt,pending,error}=input;
- if(!receipt||g.careerVersion!==1||pending||error||!careerNoticeAllowed(p,actorId,receipt))return [];
+ if(!receipt||pending||error||!careerNoticeAllowed(p,actorId,receipt))return [];
  return (receipt.careerNotices??[]).filter(notice=>notice.playerId===p.id&&notice.actorId===actorId&&notice.round===g.round&&notice.round===receipt.week&&notice.actionId===receiptActionId(receipt));
 }
 export function personFamiliarityLine(actorId:string,history:FamiliarityView){
@@ -87,11 +87,6 @@ const storyReplies:Record<string,Record<string,string>>={
  be_here:{mina:'Thank you for hearing the whole song.',eli:'It’s good to sit here together.',jo:'A room being used. That’s what I wanted to see.'},
  shared_keys:{mina:'A room that can keep going without asking for all of us, every time.',eli:'Someone else can open. I can take a night off.',jo:'Keys and a readable rota. Both need passing on.'},
 };
-const legacyReplies:Record<string,[string,string,string]>={
- mina:['That was the first verse. Thank you for staying to hear it.','The chorus needed another try. I could hear the difference that time.','You were there. I want you to have this little sunrise pin.'],
- eli:['The soil needs another look. Thank you for looking with me.','That gives the new shoots a better chance through the cold night.','A whole crate for the pantry. This leaf charm is for you.'],
- jo:['That is the missing piece. Now the rest of the sign makes sense.','The edges fit. I like leaving the old marks where they belong.','There. It glows. Take the first photo; this offcut is yours.'],
-};
 const cameoReplies:Record<string,[string,string]>={
  asha:['This path turns into a leaf. Just this page, though.','One question about the path. I’m keeping the drawing this way.'],
  nico:['Look at this edge!','This one. The other leaves can stay.'],
@@ -106,8 +101,6 @@ function receiptReply(input:PersonSceneInput,profile:PersonSceneProfile):PersonR
  let emotion:PersonEmotion=motiveEmotion[r.emotion??'']??(['rush','press'].includes(key)||r.response==='boundary'||r.response==='refusal'?'firm':['repair','honest'].includes(key)?'relieved':'warm');
  let gesture:PersonGesture=emotion==='firm'?'withdraw':emotion==='shy'||emotion==='sad'?'pause':['help','keep','history_share','cameo_choice'].includes(key)?'point':'offer';
  let speech=attributedSpeech(r.outcome||r.body,canonicalCharacterById[actorId]?.name??actorId);
- const legacy=id.match(/^story_(mina|eli|jo)_([123])$/);
- if(legacy){speech=legacyReplies[legacy[1]][Number(legacy[2])-1];gesture=legacy[2]==='3'?'offer':'point';}
  if(id.startsWith('story:')){
   speech=storyReplies[key]?.[actorId]||speech;
   const expression=scenePortraitExpression(actorId,{id:input.sceneId??id.split(':')[1],characters:[actorId]},{sceneId:input.sceneId??id.split(':')[1],choiceId:key});emotion=expressionEmotion[expression];

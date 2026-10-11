@@ -9,8 +9,9 @@ export function eligibleCareerConversation(g:Game,p:Player,actionId:string|undef
  if(actionId.startsWith('motive:')){const r=p.motives?.receipts.find(r=>r.id===actionId&&r.actorId===actorId&&r.week===g.round);return !!r&&['follow-through','support','smaller-offer'].includes(r.response);}
  if(actionId.startsWith('cast:')){const r=p.cast?.receipts.find(r=>r.id===actionId&&r.week===g.round),parts=actionId.split(':');return !!r&&parts[2]===actorId&&['listen','help','introduction','share','keep','honest','history_share'].includes(parts[3]);}
  if(actionId.startsWith('world:')){const r=p.world?.journal.find(r=>r.choiceId===actionId.slice(6)&&r.week===g.round);if(!r?.effects)return false;return ((actionId.endsWith(':talk:'+actorId)||actionId.endsWith(':local_help:'+actorId))&&Object.hasOwn(r.effects.localBonds,actorId)&&r.effects.localBonds[actorId]>=0)||(actorId==='neri'&&['neri_accept','neri_pelagia','neri_partner','neri_plan_coast','neri_plan_home','neri_distance','neri_visit','neri_payoff'].includes(actionId.split(':').at(-1)??'')&&r.effects.companionBond>=0);}
- if(actionId.startsWith('story:')){const [,scene,choice]=actionId.split(':'),r=p.story?.receipts.find(r=>r.sceneId===scene&&r.choiceId===choice&&r.week===g.round);return !!r&&(r.careerContactIds?r.careerContactIds.includes(actorId as 'mina'|'eli'|'jo'):(r.effects.trust[actorId as 'mina'|'eli'|'jo']??0)>0);}
- const chapter=/^story_(mina|eli|jo)_([123])$/.exec(actionId);return !!chapter&&chapter[1]===actorId&&p.life?.storyChapters[`${actorId}:${chapter[2]}`]===g.round;
+ if(actionId.startsWith('story:')){const [,scene,choice]=actionId.split(':'),r=p.story?.receipts.find(r=>r.sceneId===scene&&r.choiceId===choice&&r.week===g.round);return !!r&&(r.careerContactIds??[]).includes(actorId as 'mina'|'eli'|'jo');}
+ return false;
+
 }
 const introductions:Record<string,string>={
  'tess-ferry':'I do the evening ferry rota too. There is parcel work at the transit desk; ask there about the actual slot.',

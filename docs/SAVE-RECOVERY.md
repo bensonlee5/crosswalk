@@ -1,6 +1,6 @@
 # Save and resume contract
 
-These changes prepare the GitHub Pages / Supabase frontend. They do not deploy it or move any live Sites/D1 saves.
+The GitHub Pages client and Supabase service retain confirmed state and exact pending commands. Only the current stored schema is supported. Unsupported games remain stored and offer a new-life action; they are not automatically migrated.
 
 ## What the frontend guarantees
 
@@ -22,12 +22,10 @@ History uses `GET ?history=1&cursor=...` and returns `{ rooms, nextCursor }`. Su
 
 ## Limits
 
-Guest recovery depends on preserving the guest authentication session in the same browser. Optional verified email/password account conversion can retain that UID across devices. Clearing a guest session can remove access even when the room still exists. The old Sites origin's HttpOnly cookie cannot be inherited by GitHub Pages; migration needs a separately authorized, server-verified transfer path. Do not claim room codes or local files can establish old-seat ownership.
+Guest recovery depends on preserving the guest authentication session in the same browser. Optional verified email/password account conversion can retain that UID across devices. Clearing a guest session can remove access even when the room still exists. Room codes and local files cannot establish seat ownership.
 
 If local storage is blocked, an in-tab retry can still work with an existing authenticated session, but the pending intention may not survive a closed tab. The interface warns about this. Database backups and provider availability are separate operational requirements; source control is not a live-save backup.
 
 ## Verification
 
-- `node --test tests/save-session.test.mjs`: exact replay journal, malformed entries, multiple tabs, blocked storage, identity marker, bounded handshake retries, uncertainty and deferred checks.
-- `node tests/reliability-home.test.mjs`: actual Home handlers with real game/API mutations and SQLite CAS. Includes full 1–4-seat campaigns, lost POST before/after commit, reload, stale version, unavailable local storage, private multi-room discovery, identity mismatch, expired sessions, cross-tab identity changes, late prior-owner replies and paginated older-room recovery.
-- In that Home harness, new Supabase auth/history transport is a contract stub. Its passing result does not establish a deployed Supabase integration, real-browser rendering or provider configuration. The backend and auth suites cover their separate implementations.
+The save-session tests exercise durable current intents and malformed/blocked storage. The Home reliability harness invokes actual Home handlers and the current authoritative service with a bounded CAS storage seam. Real PostgreSQL tests separately exercise transactions, ownership, replay, conflict and privacy. Browser rendering, hosted authentication and provider availability require live checks.

@@ -35,7 +35,15 @@ test('current economy and account limitations stay explicit',()=>{
  for(const value of ['$6,000','$1,250','$380','$220','$1,850','$3,072','200-hour','80%','$140','$144','$100','$260'])assert.ok(page.includes(value),value);
  assert.match(page,/Email accounts are currently unavailable/);assert.match(page,/same device, browser profile and site address/);
  assert.match(page,/not a recovery key/);assert.match(page,/do not automatically move to GitHub Pages/);
- assert.match(page,/older saves retain their original cast/);
+ assert.match(page,/earlier game formats are unsupported/);
+ assert.match(page,/older records are not migrated or deleted/i);
+ assert.match(page,/Start a new life/);
+ assert.match(page,/Work &amp; learning/);
+ assert.match(page,/Entry roles need no earlier job or contact/);
+ assert.match(page,/One main contract can sit alongside separately chosen fixed commitments/);
+ assert.match(page,/Free Library study and paid Campus courses/);
+ assert.match(page,/then separately accept an offer before choosing paid work/);
+ assert.doesNotMatch(page,/older saves retain their original|follows your room’s edition/);
 });
 test('search and place filter handle combined, empty and repeated changes',()=>{
  const people=[{dataset:{region:'alder'},textContent:'Mina Songwriter',hidden:false},{dataset:{region:'pelagia'},textContent:'Esme Archivist',hidden:false}];

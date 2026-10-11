@@ -1,49 +1,34 @@
+import test from 'node:test';
 import assert from 'node:assert/strict';
-import {initializeWorldPlayer,beginWorldWeek,afterWorldAction,worldChoices,resolveWorldChoice,worldView,visiblePlaces,regionDefinitions,worldPlaceIds,worldPlaceName} from '../lib/world-life.ts';
-const player=()=>({id:'p',name:'Pat',cash:1100,skill:0,job:0,joy:40,energy:70,hours:6,social:0,housing:0,place:'APARTMENTS',life:{version:1,flags:[],relationships:{eli:{trust:0,support:false,rivalry:false}}}});
-const game=(init=true)=>{const p=player();if(init)initializeWorldPlayer(p);return {players:[p],turn:0,round:1,maxRounds:8,lifeVersion:1,status:'playing',log:[]};};
-const pick=(g,key)=>{const c=worldChoices(g.players[0],g).find(c=>c.key===key);assert.ok(c,`Missing ${key}`);return c;};
-let previews=0,legal=0,denied=0;
-// Legacy has complete map, no migration or mutation, even when an existing game has life state.
-{const g=game(false),p=g.players[0],before=JSON.stringify(g);beginWorldWeek(g);afterWorldAction(g,p,'rest');assert.equal(visiblePlaces(p,g).length,15);assert.equal(worldView(p,g),null);assert.deepEqual(worldChoices(p,g),[]);assert.equal(JSON.stringify(g),before);}
-{const g=game(),p=g.players[0];assert.equal(visiblePlaces(p).length,5);const before=JSON.stringify(g);initializeWorldPlayer(p);worldChoices(p,g);worldView(p,g);assert.equal(JSON.stringify(g),before);assert.ok(visiblePlaces(p).includes('WORK'));afterWorldAction(g,p,'rest');assert.ok(visiblePlaces(p).includes('LIBRARY'));}
-// Repeated reads pure; every legal resource, language, place and bond preview matches applied effects.
-for(const region of Object.keys(regionDefinitions))for(const resources of [{cash:0,hours:0,energy:0,joy:0},{cash:150,hours:1,energy:98,joy:99},{cash:5000,hours:6,energy:70,joy:40}])for(const familiarity of [0,1,3]){
- const g=game(),p=g.players[0];g.round=6;Object.assign(p,resources);p.world.region=region;p.world.languageFamiliarity[region]=familiarity;p.world.discoveredRegions=Object.keys(regionDefinitions);p.world.discoveredPlacesByRegion[region]=[...worldPlaceIds];p.world.companionStatus='companion';p.world.companionBond=3;
- const snapshot=JSON.stringify(g),choices=worldChoices(p,g);worldView(p,g);visiblePlaces(p,g);assert.equal(JSON.stringify(g),snapshot);previews+=choices.length;
- for(const c of choices){const h=structuredClone(g),q=h.players[0],before=structuredClone(q),saved=JSON.stringify(h);if(!c.available){assert.throws(()=>resolveWorldChoice(h,q,c.id));assert.equal(JSON.stringify(h),saved);denied++;continue;}
- const entry=resolveWorldChoice(h,q,c.id);assert.deepEqual(entry.effects,c.preview);for(const k of ['cash','hours','energy','joy','social'])assert.equal(q[k]-before[k],c.preview[k],`${region}/${c.key}/${k}`);assert.equal(q.world.languageFamiliarity[region]-before.world.languageFamiliarity[region],c.preview.language);assert.equal(q.world.companionBond-before.world.companionBond,c.preview.companionBond);for(const [id,n]of Object.entries(c.preview.localBonds))assert.equal((q.world.localBonds[id]??0)-(before.world.localBonds[id]??0),n);for(const x of c.preview.closePlaces)assert.ok(q.world.closedPlacesByRegion[region].includes(x));for(const x of c.preview.revealPlaces)assert.ok(visiblePlaces(q,h).includes(x));if(c.preview.region)assert.equal(q.world.region,c.preview.region);
- const done=JSON.stringify(h);resolveWorldChoice(h,q,c.id);assert.equal(JSON.stringify(h),done);assert.throws(()=>resolveWorldChoice(h,q,'fake'));assert.equal(JSON.stringify(h),done);legal++;
- }
-}
-// Timeline, explicit invitation/decline, early independent routes and no automatic travel.
-{const g=game(),p=g.players[0];g.round=2;beginWorldWeek(g);assert.equal(p.world.region,'alder');assert.ok(p.world.discoveredRegions.includes('saffron'));assert.equal(p.world.companionStatus,'invited');const before=JSON.stringify(g);beginWorldWeek(g);assert.equal(JSON.stringify(g),before);resolveWorldChoice(g,p,pick(g,'neri_decline').id);assert.equal(p.world.companionStatus,'declined');p.life.flags=['independent_work'];afterWorldAction(g,p,'event:choice');assert.ok(p.world.discoveredRegions.includes('glasssteppe'));assert.ok(p.world.discoveredRegions.includes('embermesa'));assert.equal(p.world.region,'alder');p.life.flags=['food_coop'];p.life.relationships.eli={support:true,trust:1,rivalry:false};afterWorldAction(g,p,'event:co_op');assert.ok(p.world.discoveredRegions.includes('pelagia'));}
-{const g=game(),p=g.players[0];g.round=2;beginWorldWeek(g);resolveWorldChoice(g,p,pick(g,'neri_accept').id);assert.equal(p.world.companionStatus,'companion');assert.equal(pick(g,'travel:saffron').cost,30);for(const r of regionDefinitions.alder.residents)resolveWorldChoice(g,p,pick(g,`talk:${r.id}`).id);assert.equal(p.world.companionBond,3);resolveWorldChoice(g,p,pick(g,'neri_partner').id);assert.equal(p.world.companionStatus,'partner');assert.ok(p.world.discoveredRegions.includes('pelagia'));assert.equal(p.world.region,'alder');assert.equal(pick(g,'travel:pelagia').time,1);}
-// Closing optional venue is irreversible in that region, with useful alternatives and safe essentials.
-{const g=game(),p=g.players[0];p.world.discoveredPlacesByRegion.alder=[...worldPlaceIds];p.place='CINEMA';resolveWorldChoice(g,p,pick(g,'release_cinema').id);assert.ok(!visiblePlaces(p).includes('CINEMA'));assert.equal(p.place,'APARTMENTS');assert.ok(visiblePlaces(p).includes('MAKERSPACE'));afterWorldAction(g,p,'market_taste');g.round=7;beginWorldWeek(g);assert.ok(!visiblePlaces(p).includes('CINEMA'));assert.ok(!worldChoices(p,g).some(c=>c.key==='keep_cinema'));for(const place of ['APARTMENTS','WORK','THE PARK'])assert.ok(visiblePlaces(p).includes(place));resolveWorldChoice(g,p,pick(g,'travel:saffron').id);assert.ok(!p.world.closedPlacesByRegion.saffron.includes('CINEMA'));p.cash=-100;assert.ok(pick(g,'travel:alder').available);}
-// Local residents are per-player, once/week, three-stage, serialized, and all names are regional.
-{const g=game(),p=g.players[0],r=regionDefinitions.alder.residents[0];for(let week=1;week<=3;week++){g.round=week;p.hours=6;beginWorldWeek(g);const c=pick(g,`talk:${r.id}`);assert.ok(c.outcome.includes(r.conversations[week-1]));resolveWorldChoice(g,p,c.id);assert.equal(p.world.localBonds[r.id],week);assert.equal(pick(g,`talk:${r.id}`).available,false);}assert.equal(worldView(p,g).residents[0].status,'Trusted local friend');assert.deepEqual(JSON.parse(JSON.stringify(p.world)),p.world);for(const region of Object.keys(regionDefinitions)){p.world.region=region;for(const id of worldPlaceIds)assert.ok(worldPlaceName(p,id)!==id);}}
-// Wrong turn cannot mutate; missing language familiarity is never inferred from another player.
-{const g=game(),p=g.players[0],c=pick(g,'explore');g.players.unshift(player());const before=JSON.stringify(g);assert.throws(()=>resolveWorldChoice(g,p,c.id));assert.equal(JSON.stringify(g),before);assert.equal(worldChoices(p,g).every(c=>!c.available),true);}
-console.log(`PASS: ${previews} pure previews, ${legal} exact/idempotent resolutions, ${denied} atomic blocks; five regions, 14 three-stage residents, safe essentials, optional travel/partner, early life routes, irreversible venue closure, old saves untouched.`);
-// Every physical return changes the locale, including immediate round trips and fully explored towns.
-let returns=0;
-for(const target of ['saffron','glasssteppe','pelagia','embermesa'])for(const fullyExplored of [false,true]){
- const g=game(),p=g.players[0];p.cash=100000;p.world.discoveredRegions=Object.keys(regionDefinitions);p.world.companionStatus='companion';
- if(fullyExplored)for(const id of Object.keys(regionDefinitions)){p.world.discoveredPlacesByRegion[id]=[...worldPlaceIds];p.world.closedPlacesByRegion[id]=['CINEMA'];}
- const travel=(id)=>{p.hours=6;const c=pick(g,`travel:${id}`),before=structuredClone(p),saved=JSON.stringify(g);worldChoices(p,g);worldView(p,g);assert.equal(JSON.stringify(g),saved);resolveWorldChoice(g,p,c.id);assert.equal(p.hours,before.hours-1);assert.equal(p.cash,before.cash+c.preview.cash);if(c.preview.returnChange){const view=worldView(p,g),change=c.preview.returnChange;assert.equal(view.localeRevision,change.sequence);assert.equal(view.visitCount,change.sequence+1);assert.deepEqual(view.localChanges[0],change);assert.equal(view.returnNarrative,change.narrative);assert.equal(view.region.placeNames[change.place],change.venueName);assert.equal(worldPlaceName(p,change.place),change.venueName);assert.equal(view.venueStates[change.place].use,change.venueUse);assert.ok(view.residents.some(r=>r.currentBio.includes(change.residentCircumstance)));assert.ok(view.returnOpportunity.id===change.opportunity.id);assert.ok(visiblePlaces(p,g).includes(change.place));assert.equal(p.world.localeHistory[id].changes.length,change.sequence);returns++;}else assert.equal(worldView(p,g).localeRevision,0);const once=JSON.stringify(g);resolveWorldChoice(g,p,c.id);assert.equal(JSON.stringify(g),once);return c;};
- const first=travel(target);assert.equal(first.preview.returnChange,undefined);assert.equal(visiblePlaces(p).length,fullyExplored?14:5,'First visit remains gradual');
- let previousHomeNames=null,previousTargetNames=null;
- for(let i=0;i<16;i++){
-  const home=travel('alder');assert.ok(home.preview.returnChange);const homeNames=JSON.stringify(worldView(p,g).region.placeNames);if(previousHomeNames)assert.notEqual(homeNames,previousHomeNames);previousHomeNames=homeNames;
-  const opportunity=pick(g,`local:${worldView(p,g).returnOpportunity.id}`);assert.equal(opportunity.time,1);assert.ok(opportunity.preview.cash>=55&&opportunity.preview.cash<=70);const before=structuredClone(p);resolveWorldChoice(g,p,opportunity.id);assert.equal(p.hours,before.hours-1);assert.equal(p.cash,before.cash+opportunity.preview.cash);assert.equal(worldView(p,g).returnOpportunity.completed,true);assert.equal(pick(g,opportunity.key).available,false);const done=JSON.stringify(g);resolveWorldChoice(g,p,opportunity.id);assert.equal(JSON.stringify(g),done);
-  const revisit=travel(target);assert.ok(revisit.preview.returnChange);const targetNames=JSON.stringify(worldView(p,g).region.placeNames);if(previousTargetNames)assert.notEqual(targetNames,previousTargetNames);previousTargetNames=targetNames;
-  for(const place of ['APARTMENTS','WORK','THE PARK'])assert.ok(visiblePlaces(p).includes(place));if(fullyExplored)assert.ok(!visiblePlaces(p).includes('CINEMA'));
- }
- const saved=JSON.parse(JSON.stringify(g));assert.deepEqual(saved,g);assert.deepEqual(worldView(saved.players[0],saved),worldView(p,g));
-}
-// A bonded welcome remembers past activity; old world saves infer visited destinations from journal.
-{const g=game(),p=g.players[0];p.world.discoveredRegions.push('saffron');p.world.localBonds.alder_tess=3;afterWorldAction(g,p,'work_short');resolveWorldChoice(g,p,pick(g,'travel:saffron').id);const returnHome=pick(g,'travel:alder');assert.match(returnHome.outcome,/usual seat/);assert.match(returnHome.outcome,/shifts/);resolveWorldChoice(g,p,returnHome.id);delete p.world.localeHistory;p.hours=6;const back=pick(g,'travel:saffron');assert.ok(back.preview.returnChange,'Earlier world saves detect prior travel without mutating on read');const saved=JSON.stringify(g);worldView(p,g);assert.equal(JSON.stringify(g),saved);resolveWorldChoice(g,p,back.id);assert.equal(worldView(p,g).localeRevision,1);}
-// Two travel legs plus the new paid opening always spend real time; exhausted players cannot loop.
-{const g=game(),p=g.players[0];p.world.discoveredRegions.push('saffron');p.hours=2;resolveWorldChoice(g,p,pick(g,'travel:saffron').id);resolveWorldChoice(g,p,pick(g,'travel:alder').id);assert.equal(p.hours,0);assert.equal(pick(g,`local:${worldView(p,g).returnOpportunity.id}`).available,false);assert.equal(pick(g,'travel:saffron').available,false);}
-console.log(`PASS: ${returns} guaranteed changed returns, including 128 fully explored returns; exact return previews, distinct evolved venue names, once-only 1-time jobs, persistent departures/visits, bonded welcome, save/reload and old-world compatibility.`);
+import {currentGame} from './current-fixture.mjs';
+import {worldChoices,worldView,resolveWorldChoice,visiblePlaces,beginWorldWeek,initializeWorldPlayer,initializeSharedWorld,worldPlaceIds,applySharedVenueChange} from '../lib/world-life.ts';
+
+const choice=(g,key)=>{const c=worldChoices(g.players[0],g).find(c=>c.key===key);assert.ok(c,key);return c;};
+const take=(g,key)=>{const c=choice(g,key);assert.equal(c.available,true,c.reason);return resolveWorldChoice(g,g.players[0],c.id);};
+test('new shared worlds initialize every locale once without rebuilding saved history',()=>{
+ const g=currentGame(),p=g.players[0];assert.equal(Object.keys(p.world.localeHistory).length,5);assert.equal(p.world.localeHistory.alder.arrivals,1);assert.equal(p.world.localeHistory.saffron.arrivals,0);
+ const before=JSON.stringify(g);initializeWorldPlayer(p);initializeSharedWorld(g);worldView(p,g);worldChoices(p,g);assert.equal(JSON.stringify(g),before);
+ assert.ok(!('venueDecisions' in p.world));assert.ok(!('closedPlacesByRegion' in p.world));
+});
+test('exploration uses current exact previews, rejects stale IDs and replays successful IDs without spending',()=>{
+ const g=currentGame(),p=g.players[0],c=choice(g,'explore'),before=structuredClone(p);const receipt=take(g,'explore');assert.deepEqual(receipt.effects,c.preview);
+ for(const k of ['cash','hours','energy','joy','social'])assert.equal(p[k]-before[k],c.preview[k]);for(const place of c.preview.revealPlaces)assert.ok(visiblePlaces(p,g).includes(place));
+ const saved=JSON.stringify(g);assert.deepEqual(resolveWorldChoice(g,p,c.id),receipt);assert.equal(JSON.stringify(g),saved);assert.throws(()=>resolveWorldChoice(g,p,'1:999:999:explore'),/stale or unknown/);assert.equal(JSON.stringify(g),saved);
+});
+test('visits track departures and arrivals without manufacturing a regional development',()=>{
+ const g=currentGame(),p=g.players[0];g.round=2;beginWorldWeek(g);p.hours=6;const shared=JSON.stringify(g.sharedWorld),home=p.world.story.homeRegion;
+ take(g,'travel:saffron');assert.equal(p.world.region,'saffron');assert.equal(p.world.story.homeRegion,home);assert.equal(p.world.localeHistory.alder.departures.length,1);assert.equal(p.world.localeHistory.saffron.arrivals,1);
+ take(g,'travel:alder');assert.equal(p.world.localeHistory.alder.arrivals,2);assert.match(worldView(p,g).returnNarrative,/only been away briefly/);assert.equal(JSON.stringify(g.sharedWorld),shared);
+});
+test('regional development follows time even without travel and survives serialization',()=>{
+ const g=currentGame(),p=g.players[0];g.round=7;beginWorldWeek(g);assert.equal(worldView(p,g).localChanges.length,3);const saved=JSON.stringify(g);beginWorldWeek(g);assert.equal(JSON.stringify(g),saved);const copy=JSON.parse(saved);assert.deepEqual(worldView(copy.players[0],copy),worldView(p,g));
+});
+test('shared closures affect every player and keep essentials safe',()=>{
+ const g=currentGame({names:['A','B']});for(const p of g.players){p.world.discoveredPlacesByRegion.alder=[...worldPlaceIds];p.place='CINEMA';}
+ const close={id:'cinema-safety',region:'alder',place:'CINEMA',status:'closed',description:'Repairs are needed.',reason:'Closed for safe repairs.',source:'story'};
+ applySharedVenueChange(g,close);for(const p of g.players){assert.equal(p.place,'APARTMENTS');assert.ok(!visiblePlaces(p,g).includes('CINEMA'));assert.ok(visiblePlaces(p,g).includes('WORK'));}
+ const saved=JSON.stringify(g);assert.equal(applySharedVenueChange(g,close),false);assert.throws(()=>applySharedVenueChange(g,{...close,id:'unsafe',place:'WORK'}),/must remain/);assert.equal(JSON.stringify(g),saved);
+});
+test('unknown or unaffordable world choices are atomic and no generic paid shift is offered',()=>{
+ const g=currentGame(),p=g.players[0];p.cash=0;p.hours=0;const c=choice(g,'food'),saved=JSON.stringify(g);assert.equal(c.available,false);assert.throws(()=>resolveWorldChoice(g,p,c.id));assert.equal(JSON.stringify(g),saved);assert.ok(!worldChoices(p,g).some(c=>['regional_work','region_shift','release_cinema','keep_cinema'].includes(c.key)));
+});

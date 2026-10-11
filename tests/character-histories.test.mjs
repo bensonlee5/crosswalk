@@ -1,18 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {player,move,neighbors} from '../lib/game.ts';
-import {initializeEconomyPlayer} from '../lib/economy.ts';
-import {initializeLife} from '../lib/life-events.ts';
-import {initializeWorldPlayer,initializeSharedWorld,regionDefinitions,worldChoices} from '../lib/world-life.ts';
-import {initializeStory} from '../lib/story-arcs.ts';
+import {move} from '../lib/game.ts';
+import {canonicalCharacterById} from '../lib/character-canon.ts';
+const neighbors=['mina','eli','jo'].map(id=>canonicalCharacterById[id]);
+import {regionDefinitions,worldChoices} from '../lib/world-life.ts';
 import {castCharacters} from '../lib/cast-characters.ts';
-import {initializeCast,castPeople,castMemberFields,castEnding} from '../lib/character-cast.ts';
+import {castPeople,castMemberFields,castEnding} from '../lib/character-cast.ts';
 import {characterHistories,characterConnections,characterHistoryView,historyFamiliarity} from '../lib/character-histories.ts';
 import {historyScenes,availableHistoryScene} from '../lib/character-history-scenes.ts';
-function fixture(){const p=player('History reader',1);const g={code:'HIST01',mode:'hotseat',host:'host',members:{host:[p.id]},players:[p],status:'lobby',round:1,turn:0,maxRounds:8,log:[],seen:[],event:0,rulesVersion:2,lifeVersion:1,worldVersion:1,storyVersion:1,economyVersion:1,balanceVersion:1,castVersion:1,historyVersion:1};initializeEconomyPlayer(p,g);g.status='playing';initializeLife(g,0);initializeWorldPlayer(p);initializeSharedWorld(g);initializeStory(g);initializeCast(g);return g;}
+import {currentGame} from './current-fixture.mjs';
+import {careerChoices} from '../lib/careers.ts';
+function fixture(){return currentGame({names:['History reader'],seed:0});}
 function close(g,id){g.players[0].cast.bonds[id]={phase:'close',approach:'listen',lastWeek:5,conflict:false,repaired:false,memories:[{week:5,text:'An actual earlier shared moment.'}]};}
 function act(g,id,key){const p=g.players[0],npc=castPeople(g,p).find(c=>c.id===id);assert.ok(npc,id);move(g,'visit',npc.spot);const choice=castPeople(g,p).find(c=>c.id===id).choices.find(c=>c.key===key);assert.ok(choice?.available,key);move(g,choice.id);return choice;}
-function advance(g){const p=g.players[0];move(g,'visit','WORK');if(p.hours)move(g,'work');move(g,'end');}
+function advance(g){const p=g.players[0];move(g,'visit','WORK');const use=(verb,target)=>{const c=careerChoices(g,p).find(c=>c.verb===verb&&(!target||c.target===target));assert.ok(c?.available,c?.reason);move(g,c.id);};if(!p.career.contracts.some(c=>c.active&&c.kind==='main')){use('apply','t.technical.assistant');use('accept');}const shift=careerChoices(g,p).find(c=>c.verb==='work'&&c.target.endsWith('.regular'));if(shift?.available)move(g,shift.id);move(g,'end');}
 
 test('all 26 retained identities have distinct layered histories and reciprocal concrete connections',()=>{
  const ids=[...neighbors.map(c=>c.id),'neri',...Object.values(regionDefinitions).flatMap(r=>r.residents.map(c=>c.id)),...castCharacters.map(c=>c.id)];
@@ -32,19 +33,16 @@ test('disclosures are pure, perspective-specific and require actual personal fam
  assert.equal(characterHistoryView(g,p,'unknown'),null);
 });
 
-test('both pre-cast and already-saved cast editions remain inert without the new history marker',()=>{
- for(const withCast of [true,false]){const g=fixture(),p=g.players[0];g.round=6;close(g,'bram');p.world.localBonds.alder_tess=2;delete g.historyVersion;if(!withCast){delete g.castVersion;delete g.cast;delete p.cast;}const before=JSON.stringify(g);assert.equal(characterHistoryView(g,p,'bram'),null);assert.equal(availableHistoryScene(g,p,'bram'),null);assert.ok(castPeople(g,p).every(v=>v.choices.every(c=>!c.key.startsWith('history_'))));assert.equal(JSON.stringify(g),before);}
-});
 
 test('later events need a developed friendship, a known other person and a later month',()=>{
- for(const scene of historyScenes){const g=fixture(),p=g.players[0];g.round=6;assert.equal(availableHistoryScene(g,p,scene.person),null);close(g,scene.person);assert.equal(availableHistoryScene(g,p,scene.person),null);if(['mina','eli','jo'].includes(scene.other))p.life.relationships[scene.other].history.push('A conversation we actually had.');else p.world.localBonds[scene.other]=1;assert.equal(availableHistoryScene(g,p,scene.person)?.id,scene.id);
+ for(const scene of historyScenes){const g=fixture(),p=g.players[0];g.round=6;assert.equal(availableHistoryScene(g,p,scene.person),null);close(g,scene.person);assert.equal(availableHistoryScene(g,p,scene.person),null);if(['mina','eli','jo'].includes(scene.other))p.life.relationships[scene.other].history.push('A conversation we actually had.');else {p.world.localBonds[scene.other]=1;p.world.story.localTalks[scene.other]=1;}assert.equal(availableHistoryScene(g,p,scene.person)?.id,scene.id);
   p.cast.bonds[scene.person].lastWeek=6;assert.equal(availableHistoryScene(g,p,scene.person),null);p.cast.bonds[scene.person].lastWeek=4;g.round=5;assert.equal(availableHistoryScene(g,p,scene.person),null);g.round=6;p.cast.bonds[scene.person].conflict=true;assert.equal(availableHistoryScene(g,p,scene.person),null);
  }
 });
 
 test('all four later conversations have real persisted consequences without inventing consent or broadcasting private news',()=>{
  for(const scene of historyScenes)for(const key of ['history_share','history_boundary'])for(const remote of [false,true]){
-  const g=fixture(),p=g.players[0];g.round=6;close(g,scene.person);if(scene.other==='jo')p.life.relationships.jo.history.push('PRIVATE JO MEMORY');else p.world.localBonds[scene.other]=1;
+  const g=fixture(),p=g.players[0];g.round=6;close(g,scene.person);if(scene.other==='jo')p.life.relationships.jo.history.push('PRIVATE JO MEMORY');else {p.world.localBonds[scene.other]=1;p.world.story.localTalks[scene.other]=1;}
   const c=castCharacters.find(c=>c.id===scene.person);p.world.region=c.region;g.cast.schedule[6]=remote?[]:[{id:c.id,region:c.region,spot:'COMMUNITY',kind:'local'}];
   p.hours=key==='history_boundary'?0:1;const old={cash:p.cash,energy:p.energy,joy:p.joy,world:structuredClone(p.world),life:structuredClone(p.life)};
   const choice=act(g,c.id,key);assert.equal(choice.cost.time,key==='history_share'?1:0);assert.equal(p.hours,0);assert.equal(p.cash,old.cash);assert.equal(p.energy,old.energy);assert.equal(p.joy,old.joy);assert.deepEqual(p.world,old.world);assert.deepEqual(p.life,old.life);

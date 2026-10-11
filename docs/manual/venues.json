@@ -67,43 +67,13 @@
       "placeId": "WORK",
       "name": "Clockhouse Workrooms",
       "function": "Career and regional work",
-      "activities": [
-        {
-          "id": "work",
-          "title": "Work your regular month",
-          "description": "Commit 160 paid work hours across the month to your current career. Your wage follows your home contract. Uses 2 priority blocks."
-        },
-        {
-          "id": "work_short",
-          "title": "Pick up a week of short shifts",
-          "description": "Fit 40 paid work hours into your month; this can sit alongside a 160-hour regular commitment. Uses 1 priority block."
-        },
-        {
-          "id": "work_overtime",
-          "title": "Take a demanding work month",
-          "description": "Commit 200 paid hours across the month, using the entire shared monthly work allowance and more energy. Uses 3 priority blocks."
-        },
-        {
-          "id": "work_mentor",
-          "title": "Shadow a senior colleague",
-          "description": "Attend four guided sessions with a senior colleague, building practical knowledge from an existing foundation. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "world:region_shift",
-          "title": "Take a safe short shift in Alder Quay",
-          "description": "A supervised 40-paid-hour regional commitment, costing 1 priority block and some energy. It is available to visitors and residents, subject to the shared monthly work allowance."
-        },
-        {
-          "id": "world:regional_work",
-          "title": "Coordinate the ferry lunch round",
-          "description": "Keep pre-orders, café shifts and the ferry timetable in step. A 160-paid-hour commitment costing 2 priority blocks, once per month in this region. A home-region rota bonus and your remaining work allowance are reflected in the current quote."
-        }
-      ],
+      "activities": [],
       "accessNotes": [
         "Available on arrival as an essential place for home, work, rest, food or community life."
       ],
       "gameplayNotes": [
-        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month."
+        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
+        "Use Work & learning to review technical roles and the local regional-work contract. Apply, accept an offer and choose a shift separately at this workplace."
       ],
       "image": {
         "src": "world/alder.webp",
@@ -129,32 +99,13 @@
       "placeId": "CAMPUS",
       "name": "Bellweather College",
       "function": "Courses and peer learning",
-      "activities": [
-        {
-          "id": "study",
-          "title": "Take a short course",
-          "description": "Take a month-long practical evening course and develop a career skill. Uses 2 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_bootcamp",
-          "title": "Join an intensive bootcamp",
-          "description": "Undertake a focused training program for broader career learning, with a larger cost and energy commitment. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_group",
-          "title": "Study with a small group",
-          "description": "Share materials and a month of peer study, gaining a skill and a connection. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_tutor",
-          "title": "Tutor another learner",
-          "description": "Use your existing skills in paid tutoring across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
-        }
-      ],
+      "activities": [],
       "accessNotes": [
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner."
       ],
-      "gameplayNotes": [],
+      "gameplayNotes": [
+        "Open Work & learning for paid foundation and advanced preparation in the service, technical, practical and civic fields. The current preview shows prerequisites, tuition and priority blocks."
+      ],
       "image": {
         "src": "world/alder.webp",
         "alt": "Regional setting painting of Alder Quay; not a building-specific illustration of Bellweather College."
@@ -176,30 +127,17 @@
       "function": "Career progression and referrals",
       "activities": [
         {
-          "id": "apply",
-          "title": "Make a career move",
-          "description": "Apply for the next role on the shared career ladder as your skills develop. The current preview shows what you need and whether another promotion is available. Uses 1 priority block."
-        },
-        {
           "id": "career_network",
           "title": "Go to a networking meetup",
           "description": "Attend a networking meetup to build connections and happiness. Uses 1 priority block."
-        },
-        {
-          "id": "career_portfolio",
-          "title": "Build a portfolio project",
-          "description": "Complete a tangible portfolio project using materials and tools; it adds a career skill. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "career_contract",
-          "title": "Take a referral contract",
-          "description": "Take a paid referral contract supported by established connections. Check the current preview for the required network and the work commitment. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner."
       ],
-      "gameplayNotes": [],
+      "gameplayNotes": [
+        "Use Work & learning to compare named workplaces, preparation and leads. Each employer handles its own application and offer; visiting this hub does not grant a promotion."
+      ],
       "image": {
         "src": "world/alder.webp",
         "alt": "Regional setting painting of Alder Quay; not a building-specific illustration of The Next Landing."
@@ -236,11 +174,6 @@
           "description": "Perform at an open mic when the current story allows it, trading some energy for enjoyment and company. If the stage is unavailable, follow the active conversation’s marked venue. Uses 2 priority blocks."
         },
         {
-          "id": "cafe_barista",
-          "title": "Cover the espresso bar",
-          "description": "Take a paid espresso-bar commitment across the month, with a small happiness boost under current balance rules. Uses 1 priority block."
-        },
-        {
           "id": "world:learn",
           "title": "Practice Quayside common",
           "description": "Spend 1 priority block on local phrases, while your language familiarity has room to grow. Language fluency is not a gate on safe work or rest."
@@ -259,7 +192,8 @@
         "Neri’s introduction and later conversations use café or transit meeting points according to their story stage. Later contact may be a remote call rather than physical presence; the game labels that distinction.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
         "Nico’s scheduled family visit takes place with Tess nearby at the café; children do not take paid work or obligation tracks.",
-        "Evening performance availability follows the current shared story. If a stage is unavailable, ordinary café activities remain separate options; follow the marked venue for the active conversation."
+        "Evening performance availability follows the current shared story. If a stage is unavailable, ordinary café activities remain separate options; follow the marked venue for the active conversation.",
+        "Use Work & learning to review café-service roles and available independent commitments. A separate accepted employer offer is required before employee shifts."
       ],
       "image": {
         "src": "world/alder.webp",
@@ -314,16 +248,6 @@
           "description": "Lead a neighborhood event using your existing network. Uses 2 priority blocks. Requires established connections; check the current preview."
         },
         {
-          "id": "community_skill",
-          "title": "Join a community workshop",
-          "description": "Join an affordable, longer community workshop series and gain a skill. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "community_organize",
-          "title": "Coordinate a paid community day",
-          "description": "Coordinate funded community work across the month. The first funded day has the fuller benefit; repeat days use the lighter setup terms shown in your quote. Uses 2 priority blocks. Requires established connections; check the current preview."
-        },
-        {
           "id": "weekly_opportunity",
           "title": "Take the monthly project opening",
           "description": "Claim the monthly paid project opening shown on the neighborhood board. Only one player at the table may claim that month’s opening. Uses 2 priority blocks."
@@ -335,7 +259,8 @@
       "gameplayNotes": [
         "Mina, Eli and Jo’s shared monthly scenes appear at their marked current venue. The earlier three fixed personal-chapter actions are replaced in shared-story games; follow the active scene rather than assuming a character is always here.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "The community room can carry remote conversations with already-known cast characters who are currently away. A remote contact does not mean the person is physically in this town."
+        "The community room can carry remote conversations with already-known cast characters who are currently away. A remote contact does not mean the person is physically in this town.",
+        "Use Work & learning to review civic roles and local commitments. Shared supper preparation is separately listed when a real order is open."
       ],
       "image": {
         "src": "world/alder.webp",
@@ -440,11 +365,6 @@
       "function": "Reading, learning and archives",
       "activities": [
         {
-          "id": "library_learn",
-          "title": "Learn from free resources",
-          "description": "Build a career skill through free, self-directed resources; the tradeoff is more time and energy. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
           "id": "library_read",
           "title": "Get lost in a good book",
           "description": "Read for pleasure and regain some energy and happiness. Uses 1 priority block."
@@ -453,11 +373,6 @@
           "id": "library_club",
           "title": "Join the book club",
           "description": "Join a free book discussion and make connections. Uses 2 priority blocks."
-        },
-        {
-          "id": "library_digitize",
-          "title": "Help digitize the archive",
-          "description": "Contribute to a paid archive-digitization project across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
         },
         {
           "id": "world:local:alder-chapter-2",
@@ -470,7 +385,8 @@
       ],
       "gameplayNotes": [
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "This place can develop a neighborhood program over time. Local participation can help that work along; the current venue notice explains what is open and whether there is a one-time task to join."
+        "This place can develop a neighborhood program over time. Local participation can help that work along; the current venue notice explains what is open and whether there is a one-time task to join.",
+        "Open Work & learning for free foundation and advanced preparation. These alternatives cost more priority blocks than Campus classes."
       ],
       "image": {
         "src": "world/alder.webp",
@@ -502,11 +418,6 @@
       "function": "Food, stalls and casual work",
       "activities": [
         {
-          "id": "market_shift",
-          "title": "Cover a market stall",
-          "description": "Cover a stall as paid casual work across the month, meeting people along the way. Uses 2 priority blocks."
-        },
-        {
           "id": "market_cook",
           "title": "Take a cooking class",
           "description": "Take a cooking class that improves happiness and restores some energy. Uses 2 priority blocks."
@@ -515,11 +426,6 @@
           "id": "market_taste",
           "title": "Make market lunches part of your month",
           "description": "Choose twenty weekday market lunches for this month. The displayed extra cost already deducts the groceries those lunches replace; the habit is once per month and does not renew. Uses 1 priority block."
-        },
-        {
-          "id": "market_resell",
-          "title": "Run a secondhand pop-up",
-          "description": "Run a paid secondhand pop-up, paying the stall cost upfront and using your connections. Uses 2 priority blocks. Requires established connections; check the current preview."
         },
         {
           "id": "world:local:alder-chapter-1",
@@ -577,11 +483,6 @@
           "id": "gym_sauna",
           "title": "Take a recovery session",
           "description": "Take a longer recovery session with a substantial energy benefit. Uses 2 priority blocks."
-        },
-        {
-          "id": "gym_desk",
-          "title": "Cover the front desk",
-          "description": "Cover a paid front-desk commitment across the month. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
@@ -609,16 +510,6 @@
       "function": "Repair, making and craft",
       "activities": [
         {
-          "id": "maker_intro",
-          "title": "Learn to repair",
-          "description": "Take a hands-on repair course that builds on existing practical skills. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "maker_commission",
-          "title": "Finish a custom commission",
-          "description": "Complete a paid custom commission with an upfront materials cost, using practical skill and contacts. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Requires established connections; check the current preview."
-        },
-        {
           "id": "maker_hobby",
           "title": "Make something just for fun",
           "description": "Make a small project for enjoyment, with no commission or deadline. Uses 1 priority block."
@@ -632,11 +523,6 @@
           "id": "creative_practice",
           "title": "Practice your craft",
           "description": "Develop your craft through a month of regular practice, while there is room for further progress. Uses 2 priority blocks."
-        },
-        {
-          "id": "creative_commission",
-          "title": "Deliver a creative commission",
-          "description": "Deliver a paid creative commission with materials paid upfront. The quote grows with craft level. Uses 2 priority blocks. Requires developed craft experience; check the current preview."
         }
       ],
       "accessNotes": [
@@ -645,7 +531,8 @@
       "gameplayNotes": [
         "Mina, Eli and Jo’s shared monthly scenes appear at their marked current venue. The earlier three fixed personal-chapter actions are replaced in shared-story games; follow the active scene rather than assuming a character is always here.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "An evolving local program may add a qualifier to this place’s name. It remains the same venue and stable destination, with ordinary repair or growing uses alongside its current program."
+        "An evolving local program may add a qualifier to this place’s name. It remains the same venue and stable destination, with ordinary repair or growing uses alongside its current program.",
+        "Use Work & learning to review practical roles and creative commitments at this venue. The current preview shows relevant preparation, experience, materials and pay."
       ],
       "image": {
         "src": "world/alder.webp",
@@ -687,11 +574,6 @@
           "description": "Make a movie night of it, with greater happiness, company and a ticket-and-outing cost. Uses 2 priority blocks."
         },
         {
-          "id": "cinema_usher",
-          "title": "Work an usher shift",
-          "description": "Take paid usher work across the month and enjoy the cinema atmosphere. Uses 2 priority blocks."
-        },
-        {
           "id": "cinema_club",
           "title": "Stay for the film discussion",
           "description": "Stay for the film discussion and meet other viewers. Uses 2 priority blocks."
@@ -723,16 +605,6 @@
       "name": "Alder Ferry & Rail",
       "function": "Transport, travel and bicycle work",
       "activities": [
-        {
-          "id": "transit_courier",
-          "title": "Take a bicycle courier route",
-          "description": "Take paid bicycle-courier work across the month; it is energy-intensive. Uses 1 priority block."
-        },
-        {
-          "id": "transit_repair",
-          "title": "Repair bikes at the hub",
-          "description": "Use practical skill in paid bicycle repair across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
-        },
         {
           "id": "transit_scenic",
           "title": "Ride somewhere new",
@@ -816,11 +688,6 @@
           "description": "Care for a shared plot, using a little energy and gaining happiness and a connection. Uses 1 priority block."
         },
         {
-          "id": "garden_harvest",
-          "title": "Help with the harvest",
-          "description": "Help with paid harvest work across the month when the current story allows it. Check the venue notice and pay preview before committing. Uses 2 priority blocks."
-        },
-        {
           "id": "garden_workshop",
           "title": "Learn urban growing",
           "description": "Learn growing methods in a practical workshop and gain a skill. The action keeps its in-game title “Learn urban growing” even in rural regions. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
@@ -888,11 +755,6 @@
           "id": "arcade_host",
           "title": "Host a game meetup",
           "description": "Use your existing network to host a game meetup. Uses 2 priority blocks. Requires established connections; check the current preview."
-        },
-        {
-          "id": "arcade_shift",
-          "title": "Cover the evening desk",
-          "description": "Take paid evening-desk work across the month and meet regulars. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
@@ -969,44 +831,14 @@
       "placeId": "WORK",
       "name": "Towpath Workrooms",
       "function": "Career and regional work",
-      "activities": [
-        {
-          "id": "work",
-          "title": "Work your regular month",
-          "description": "Commit 160 paid work hours across the month to your current career. Your wage follows your home contract. Uses 2 priority blocks."
-        },
-        {
-          "id": "work_short",
-          "title": "Pick up a week of short shifts",
-          "description": "Fit 40 paid work hours into your month; this can sit alongside a 160-hour regular commitment. Uses 1 priority block."
-        },
-        {
-          "id": "work_overtime",
-          "title": "Take a demanding work month",
-          "description": "Commit 200 paid hours across the month, using the entire shared monthly work allowance and more energy. Uses 3 priority blocks."
-        },
-        {
-          "id": "work_mentor",
-          "title": "Shadow a senior colleague",
-          "description": "Attend four guided sessions with a senior colleague, building practical knowledge from an existing foundation. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "world:region_shift",
-          "title": "Take a safe short shift in Saffron Reach",
-          "description": "A supervised 40-paid-hour regional commitment, costing 1 priority block and some energy. It is available to visitors and residents, subject to the shared monthly work allowance."
-        },
-        {
-          "id": "world:regional_work",
-          "title": "Run a shared-oven market morning",
-          "description": "Leila trusts you with the oven rota; sharing capacity matters more than rushing orders. A 160-paid-hour commitment costing 2 priority blocks, once per month in this region. A home-region rota bonus and your remaining work allowance are reflected in the current quote."
-        }
-      ],
+      "activities": [],
       "accessNotes": [
         "Available on arrival as an essential place for home, work, rest, food or community life.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
       "gameplayNotes": [
-        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month."
+        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
+        "Use Work & learning to review technical roles and the local regional-work contract. Apply, accept an offer and choose a shift separately at this workplace."
       ],
       "image": {
         "src": "world/saffron.webp",
@@ -1032,33 +864,14 @@
       "placeId": "CAMPUS",
       "name": "Azulejo College",
       "function": "Courses and peer learning",
-      "activities": [
-        {
-          "id": "study",
-          "title": "Take a short course",
-          "description": "Take a month-long practical evening course and develop a career skill. Uses 2 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_bootcamp",
-          "title": "Join an intensive bootcamp",
-          "description": "Undertake a focused training program for broader career learning, with a larger cost and energy commitment. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_group",
-          "title": "Study with a small group",
-          "description": "Share materials and a month of peer study, gaining a skill and a connection. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_tutor",
-          "title": "Tutor another learner",
-          "description": "Use your existing skills in paid tutoring across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
-        }
-      ],
+      "activities": [],
       "accessNotes": [
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
-      "gameplayNotes": [],
+      "gameplayNotes": [
+        "Open Work & learning for paid foundation and advanced preparation in the service, technical, practical and civic fields. The current preview shows prerequisites, tuition and priority blocks."
+      ],
       "image": {
         "src": "world/saffron.webp",
         "alt": "Regional setting painting of Saffron Reach; not a building-specific illustration of Azulejo College."
@@ -1080,31 +893,18 @@
       "function": "Career progression and referrals",
       "activities": [
         {
-          "id": "apply",
-          "title": "Make a career move",
-          "description": "Apply for the next role on the shared career ladder as your skills develop. The current preview shows what you need and whether another promotion is available. Uses 1 priority block."
-        },
-        {
           "id": "career_network",
           "title": "Go to a networking meetup",
           "description": "Attend a networking meetup to build connections and happiness. Uses 1 priority block."
-        },
-        {
-          "id": "career_portfolio",
-          "title": "Build a portfolio project",
-          "description": "Complete a tangible portfolio project using materials and tools; it adds a career skill. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "career_contract",
-          "title": "Take a referral contract",
-          "description": "Take a paid referral contract supported by established connections. Check the current preview for the required network and the work commitment. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
-      "gameplayNotes": [],
+      "gameplayNotes": [
+        "Use Work & learning to compare named workplaces, preparation and leads. Each employer handles its own application and offer; visiting this hub does not grant a promotion."
+      ],
       "image": {
         "src": "world/saffron.webp",
         "alt": "Regional setting painting of Saffron Reach; not a building-specific illustration of Next Crossing Careers."
@@ -1141,11 +941,6 @@
           "description": "Perform at an open mic when the current story allows it, trading some energy for enjoyment and company. If the stage is unavailable, follow the active conversation’s marked venue. Uses 2 priority blocks."
         },
         {
-          "id": "cafe_barista",
-          "title": "Cover the espresso bar",
-          "description": "Take a paid espresso-bar commitment across the month, with a small happiness boost under current balance rules. Uses 1 priority block."
-        },
-        {
           "id": "world:learn",
           "title": "Practice Soleni",
           "description": "Spend 1 priority block on local phrases, while your language familiarity has room to grow. Language fluency is not a gate on safe work or rest."
@@ -1163,7 +958,8 @@
       "gameplayNotes": [
         "Neri’s introduction and later conversations use café or transit meeting points according to their story stage. Later contact may be a remote call rather than physical presence; the game labels that distinction.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "Evening performance availability follows the current shared story. If a stage is unavailable, ordinary café activities remain separate options; follow the marked venue for the active conversation."
+        "Evening performance availability follows the current shared story. If a stage is unavailable, ordinary café activities remain separate options; follow the marked venue for the active conversation.",
+        "Use Work & learning to review café-service roles and available independent commitments. A separate accepted employer offer is required before employee shifts."
       ],
       "image": {
         "src": "world/saffron.webp",
@@ -1214,16 +1010,6 @@
           "description": "Lead a neighborhood event using your existing network. Uses 2 priority blocks. Requires established connections; check the current preview."
         },
         {
-          "id": "community_skill",
-          "title": "Join a community workshop",
-          "description": "Join an affordable, longer community workshop series and gain a skill. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "community_organize",
-          "title": "Coordinate a paid community day",
-          "description": "Coordinate funded community work across the month. The first funded day has the fuller benefit; repeat days use the lighter setup terms shown in your quote. Uses 2 priority blocks. Requires established connections; check the current preview."
-        },
-        {
           "id": "weekly_opportunity",
           "title": "Take the monthly project opening",
           "description": "Claim the monthly paid project opening shown on the neighborhood board. Only one player at the table may claim that month’s opening. Uses 2 priority blocks."
@@ -1235,7 +1021,8 @@
       ],
       "gameplayNotes": [
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "The community room can carry remote conversations with already-known cast characters who are currently away. A remote contact does not mean the person is physically in this town."
+        "The community room can carry remote conversations with already-known cast characters who are currently away. A remote contact does not mean the person is physically in this town.",
+        "Use Work & learning to review civic roles and local commitments. Shared supper preparation is separately listed when a real order is open."
       ],
       "image": {
         "src": "world/saffron.webp",
@@ -1318,11 +1105,6 @@
       "function": "Reading, learning and archives",
       "activities": [
         {
-          "id": "library_learn",
-          "title": "Learn from free resources",
-          "description": "Build a career skill through free, self-directed resources; the tradeoff is more time and energy. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
           "id": "library_read",
           "title": "Get lost in a good book",
           "description": "Read for pleasure and regain some energy and happiness. Uses 1 priority block."
@@ -1331,11 +1113,6 @@
           "id": "library_club",
           "title": "Join the book club",
           "description": "Join a free book discussion and make connections. Uses 2 priority blocks."
-        },
-        {
-          "id": "library_digitize",
-          "title": "Help digitize the archive",
-          "description": "Contribute to a paid archive-digitization project across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
         },
         {
           "id": "world:local:saffron-chapter-3",
@@ -1348,7 +1125,8 @@
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
       "gameplayNotes": [
-        "This place can develop a neighborhood program over time. Local participation can help that work along; the current venue notice explains what is open and whether there is a one-time task to join."
+        "This place can develop a neighborhood program over time. Local participation can help that work along; the current venue notice explains what is open and whether there is a one-time task to join.",
+        "Open Work & learning for free foundation and advanced preparation. These alternatives cost more priority blocks than Campus classes."
       ],
       "image": {
         "src": "world/saffron.webp",
@@ -1371,11 +1149,6 @@
       "function": "Food, stalls and casual work",
       "activities": [
         {
-          "id": "market_shift",
-          "title": "Cover a market stall",
-          "description": "Cover a stall as paid casual work across the month, meeting people along the way. Uses 2 priority blocks."
-        },
-        {
           "id": "market_cook",
           "title": "Take a cooking class",
           "description": "Take a cooking class that improves happiness and restores some energy. Uses 2 priority blocks."
@@ -1384,11 +1157,6 @@
           "id": "market_taste",
           "title": "Make market lunches part of your month",
           "description": "Choose twenty weekday market lunches for this month. The displayed extra cost already deducts the groceries those lunches replace; the habit is once per month and does not renew. Uses 1 priority block."
-        },
-        {
-          "id": "market_resell",
-          "title": "Run a secondhand pop-up",
-          "description": "Run a paid secondhand pop-up, paying the stall cost upfront and using your connections. Uses 2 priority blocks. Requires established connections; check the current preview."
         },
         {
           "id": "world:local:saffron-chapter-1",
@@ -1443,11 +1211,6 @@
           "id": "gym_sauna",
           "title": "Take a recovery session",
           "description": "Take a longer recovery session with a substantial energy benefit. Uses 2 priority blocks."
-        },
-        {
-          "id": "gym_desk",
-          "title": "Cover the front desk",
-          "description": "Cover a paid front-desk commitment across the month. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
@@ -1476,16 +1239,6 @@
       "function": "Repair, making and craft",
       "activities": [
         {
-          "id": "maker_intro",
-          "title": "Learn to repair",
-          "description": "Take a hands-on repair course that builds on existing practical skills. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "maker_commission",
-          "title": "Finish a custom commission",
-          "description": "Complete a paid custom commission with an upfront materials cost, using practical skill and contacts. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Requires established connections; check the current preview."
-        },
-        {
           "id": "maker_hobby",
           "title": "Make something just for fun",
           "description": "Make a small project for enjoyment, with no commission or deadline. Uses 1 priority block."
@@ -1499,11 +1252,6 @@
           "id": "creative_practice",
           "title": "Practice your craft",
           "description": "Develop your craft through a month of regular practice, while there is room for further progress. Uses 2 priority blocks."
-        },
-        {
-          "id": "creative_commission",
-          "title": "Deliver a creative commission",
-          "description": "Deliver a paid creative commission with materials paid upfront. The quote grows with craft level. Uses 2 priority blocks. Requires developed craft experience; check the current preview."
         }
       ],
       "accessNotes": [
@@ -1511,7 +1259,8 @@
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
       "gameplayNotes": [
-        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month."
+        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
+        "Use Work & learning to review practical roles and creative commitments at this venue. The current preview shows relevant preparation, experience, materials and pay."
       ],
       "image": {
         "src": "world/saffron.webp",
@@ -1551,11 +1300,6 @@
           "id": "cinema_friends",
           "title": "Make it a movie night",
           "description": "Make a movie night of it, with greater happiness, company and a ticket-and-outing cost. Uses 2 priority blocks."
-        },
-        {
-          "id": "cinema_usher",
-          "title": "Work an usher shift",
-          "description": "Take paid usher work across the month and enjoy the cinema atmosphere. Uses 2 priority blocks."
         },
         {
           "id": "cinema_club",
@@ -1600,16 +1344,6 @@
       "name": "Water Tower Landing",
       "function": "Transport, travel and bicycle work",
       "activities": [
-        {
-          "id": "transit_courier",
-          "title": "Take a bicycle courier route",
-          "description": "Take paid bicycle-courier work across the month; it is energy-intensive. Uses 1 priority block."
-        },
-        {
-          "id": "transit_repair",
-          "title": "Repair bikes at the hub",
-          "description": "Use practical skill in paid bicycle repair across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
-        },
         {
           "id": "transit_scenic",
           "title": "Ride somewhere new",
@@ -1686,11 +1420,6 @@
           "description": "Care for a shared plot, using a little energy and gaining happiness and a connection. Uses 1 priority block."
         },
         {
-          "id": "garden_harvest",
-          "title": "Help with the harvest",
-          "description": "Help with paid harvest work across the month when the current story allows it. Check the venue notice and pay preview before committing. Uses 2 priority blocks."
-        },
-        {
           "id": "garden_workshop",
           "title": "Learn urban growing",
           "description": "Learn growing methods in a practical workshop and gain a skill. The action keeps its in-game title “Learn urban growing” even in rural regions. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
@@ -1747,11 +1476,6 @@
           "id": "arcade_host",
           "title": "Host a game meetup",
           "description": "Use your existing network to host a game meetup. Uses 2 priority blocks. Requires established connections; check the current preview."
-        },
-        {
-          "id": "arcade_shift",
-          "title": "Cover the evening desk",
-          "description": "Take paid evening-desk work across the month and meet regulars. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
@@ -1829,44 +1553,14 @@
       "placeId": "WORK",
       "name": "Rail Hall Workrooms",
       "function": "Career and regional work",
-      "activities": [
-        {
-          "id": "work",
-          "title": "Work your regular month",
-          "description": "Commit 160 paid work hours across the month to your current career. Your wage follows your home contract. Uses 2 priority blocks."
-        },
-        {
-          "id": "work_short",
-          "title": "Pick up a week of short shifts",
-          "description": "Fit 40 paid work hours into your month; this can sit alongside a 160-hour regular commitment. Uses 1 priority block."
-        },
-        {
-          "id": "work_overtime",
-          "title": "Take a demanding work month",
-          "description": "Commit 200 paid hours across the month, using the entire shared monthly work allowance and more energy. Uses 3 priority blocks."
-        },
-        {
-          "id": "work_mentor",
-          "title": "Shadow a senior colleague",
-          "description": "Attend four guided sessions with a senior colleague, building practical knowledge from an existing foundation. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "world:region_shift",
-          "title": "Take a safe short shift in Glasssteppe",
-          "description": "A supervised 40-paid-hour regional commitment, costing 1 priority block and some energy. It is available to visitors and residents, subject to the shared monthly work allowance."
-        },
-        {
-          "id": "world:regional_work",
-          "title": "Test repaired railway goods",
-          "description": "Sora needs careful checks and honest labels, not speed or heroic lifting. A 160-paid-hour commitment costing 2 priority blocks, once per month in this region. A home-region rota bonus and your remaining work allowance are reflected in the current quote."
-        }
-      ],
+      "activities": [],
       "accessNotes": [
         "Available on arrival as an essential place for home, work, rest, food or community life.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
       "gameplayNotes": [
-        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month."
+        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
+        "Use Work & learning to review technical roles and the local regional-work contract. Apply, accept an offer and choose a shift separately at this workplace."
       ],
       "image": {
         "src": "world/glasssteppe.webp",
@@ -1892,33 +1586,14 @@
       "placeId": "CAMPUS",
       "name": "Switchback Institute",
       "function": "Courses and peer learning",
-      "activities": [
-        {
-          "id": "study",
-          "title": "Take a short course",
-          "description": "Take a month-long practical evening course and develop a career skill. Uses 2 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_bootcamp",
-          "title": "Join an intensive bootcamp",
-          "description": "Undertake a focused training program for broader career learning, with a larger cost and energy commitment. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_group",
-          "title": "Study with a small group",
-          "description": "Share materials and a month of peer study, gaining a skill and a connection. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_tutor",
-          "title": "Tutor another learner",
-          "description": "Use your existing skills in paid tutoring across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
-        }
-      ],
+      "activities": [],
       "accessNotes": [
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
-      "gameplayNotes": [],
+      "gameplayNotes": [
+        "Open Work & learning for paid foundation and advanced preparation in the service, technical, practical and civic fields. The current preview shows prerequisites, tuition and priority blocks."
+      ],
       "image": {
         "src": "world/glasssteppe.webp",
         "alt": "Regional setting painting of Glasssteppe; not a building-specific illustration of Switchback Institute."
@@ -1940,31 +1615,18 @@
       "function": "Career progression and referrals",
       "activities": [
         {
-          "id": "apply",
-          "title": "Make a career move",
-          "description": "Apply for the next role on the shared career ladder as your skills develop. The current preview shows what you need and whether another promotion is available. Uses 1 priority block."
-        },
-        {
           "id": "career_network",
           "title": "Go to a networking meetup",
           "description": "Attend a networking meetup to build connections and happiness. Uses 1 priority block."
-        },
-        {
-          "id": "career_portfolio",
-          "title": "Build a portfolio project",
-          "description": "Complete a tangible portfolio project using materials and tools; it adds a career skill. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "career_contract",
-          "title": "Take a referral contract",
-          "description": "Take a paid referral contract supported by established connections. Check the current preview for the required network and the work commitment. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
-      "gameplayNotes": [],
+      "gameplayNotes": [
+        "Use Work & learning to compare named workplaces, preparation and leads. Each employer handles its own application and offer; visiting this hub does not grant a promotion."
+      ],
       "image": {
         "src": "world/glasssteppe.webp",
         "alt": "Regional setting painting of Glasssteppe; not a building-specific illustration of The Next Platform."
@@ -2001,11 +1663,6 @@
           "description": "Perform at an open mic when the current story allows it, trading some energy for enjoyment and company. If the stage is unavailable, follow the active conversation’s marked venue. Uses 2 priority blocks."
         },
         {
-          "id": "cafe_barista",
-          "title": "Cover the espresso bar",
-          "description": "Take a paid espresso-bar commitment across the month, with a small happiness boost under current balance rules. Uses 1 priority block."
-        },
-        {
           "id": "world:learn",
           "title": "Practice Veyri",
           "description": "Spend 1 priority block on local phrases, while your language familiarity has room to grow. Language fluency is not a gate on safe work or rest."
@@ -2023,7 +1680,8 @@
       "gameplayNotes": [
         "Neri’s introduction and later conversations use café or transit meeting points according to their story stage. Later contact may be a remote call rather than physical presence; the game labels that distinction.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "Evening performance availability follows the current shared story. If a stage is unavailable, ordinary café activities remain separate options; follow the marked venue for the active conversation."
+        "Evening performance availability follows the current shared story. If a stage is unavailable, ordinary café activities remain separate options; follow the marked venue for the active conversation.",
+        "Use Work & learning to review café-service roles and available independent commitments. A separate accepted employer offer is required before employee shifts."
       ],
       "image": {
         "src": "world/glasssteppe.webp",
@@ -2070,16 +1728,6 @@
           "description": "Lead a neighborhood event using your existing network. Uses 2 priority blocks. Requires established connections; check the current preview."
         },
         {
-          "id": "community_skill",
-          "title": "Join a community workshop",
-          "description": "Join an affordable, longer community workshop series and gain a skill. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "community_organize",
-          "title": "Coordinate a paid community day",
-          "description": "Coordinate funded community work across the month. The first funded day has the fuller benefit; repeat days use the lighter setup terms shown in your quote. Uses 2 priority blocks. Requires established connections; check the current preview."
-        },
-        {
           "id": "weekly_opportunity",
           "title": "Take the monthly project opening",
           "description": "Claim the monthly paid project opening shown on the neighborhood board. Only one player at the table may claim that month’s opening. Uses 2 priority blocks."
@@ -2091,7 +1739,8 @@
       ],
       "gameplayNotes": [
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "The community room can carry remote conversations with already-known cast characters who are currently away. A remote contact does not mean the person is physically in this town."
+        "The community room can carry remote conversations with already-known cast characters who are currently away. A remote contact does not mean the person is physically in this town.",
+        "Use Work & learning to review civic roles and local commitments. Shared supper preparation is separately listed when a real order is open."
       ],
       "image": {
         "src": "world/glasssteppe.webp",
@@ -2189,11 +1838,6 @@
       "function": "Reading, learning and archives",
       "activities": [
         {
-          "id": "library_learn",
-          "title": "Learn from free resources",
-          "description": "Build a career skill through free, self-directed resources; the tradeoff is more time and energy. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
           "id": "library_read",
           "title": "Get lost in a good book",
           "description": "Read for pleasure and regain some energy and happiness. Uses 1 priority block."
@@ -2202,11 +1846,6 @@
           "id": "library_club",
           "title": "Join the book club",
           "description": "Join a free book discussion and make connections. Uses 2 priority blocks."
-        },
-        {
-          "id": "library_digitize",
-          "title": "Help digitize the archive",
-          "description": "Contribute to a paid archive-digitization project across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
         },
         {
           "id": "world:local:glasssteppe-chapter-2",
@@ -2220,7 +1859,8 @@
       ],
       "gameplayNotes": [
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "This place can develop a neighborhood program over time. Local participation can help that work along; the current venue notice explains what is open and whether there is a one-time task to join."
+        "This place can develop a neighborhood program over time. Local participation can help that work along; the current venue notice explains what is open and whether there is a one-time task to join.",
+        "Open Work & learning for free foundation and advanced preparation. These alternatives cost more priority blocks than Campus classes."
       ],
       "image": {
         "src": "world/glasssteppe.webp",
@@ -2252,11 +1892,6 @@
       "function": "Food, stalls and casual work",
       "activities": [
         {
-          "id": "market_shift",
-          "title": "Cover a market stall",
-          "description": "Cover a stall as paid casual work across the month, meeting people along the way. Uses 2 priority blocks."
-        },
-        {
           "id": "market_cook",
           "title": "Take a cooking class",
           "description": "Take a cooking class that improves happiness and restores some energy. Uses 2 priority blocks."
@@ -2265,11 +1900,6 @@
           "id": "market_taste",
           "title": "Make market lunches part of your month",
           "description": "Choose twenty weekday market lunches for this month. The displayed extra cost already deducts the groceries those lunches replace; the habit is once per month and does not renew. Uses 1 priority block."
-        },
-        {
-          "id": "market_resell",
-          "title": "Run a secondhand pop-up",
-          "description": "Run a paid secondhand pop-up, paying the stall cost upfront and using your connections. Uses 2 priority blocks. Requires established connections; check the current preview."
         },
         {
           "id": "world:local:glasssteppe-chapter-3",
@@ -2318,11 +1948,6 @@
           "id": "gym_sauna",
           "title": "Take a recovery session",
           "description": "Take a longer recovery session with a substantial energy benefit. Uses 2 priority blocks."
-        },
-        {
-          "id": "gym_desk",
-          "title": "Cover the front desk",
-          "description": "Cover a paid front-desk commitment across the month. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
@@ -2351,16 +1976,6 @@
       "function": "Repair, making and craft",
       "activities": [
         {
-          "id": "maker_intro",
-          "title": "Learn to repair",
-          "description": "Take a hands-on repair course that builds on existing practical skills. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "maker_commission",
-          "title": "Finish a custom commission",
-          "description": "Complete a paid custom commission with an upfront materials cost, using practical skill and contacts. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Requires established connections; check the current preview."
-        },
-        {
           "id": "maker_hobby",
           "title": "Make something just for fun",
           "description": "Make a small project for enjoyment, with no commission or deadline. Uses 1 priority block."
@@ -2374,11 +1989,6 @@
           "id": "creative_practice",
           "title": "Practice your craft",
           "description": "Develop your craft through a month of regular practice, while there is room for further progress. Uses 2 priority blocks."
-        },
-        {
-          "id": "creative_commission",
-          "title": "Deliver a creative commission",
-          "description": "Deliver a paid creative commission with materials paid upfront. The quote grows with craft level. Uses 2 priority blocks. Requires developed craft experience; check the current preview."
         }
       ],
       "accessNotes": [
@@ -2386,7 +1996,8 @@
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
       "gameplayNotes": [
-        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month."
+        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
+        "Use Work & learning to review practical roles and creative commitments at this venue. The current preview shows relevant preparation, experience, materials and pay."
       ],
       "image": {
         "src": "world/glasssteppe.webp",
@@ -2422,11 +2033,6 @@
           "id": "cinema_friends",
           "title": "Make it a movie night",
           "description": "Make a movie night of it, with greater happiness, company and a ticket-and-outing cost. Uses 2 priority blocks."
-        },
-        {
-          "id": "cinema_usher",
-          "title": "Work an usher shift",
-          "description": "Take paid usher work across the month and enjoy the cinema atmosphere. Uses 2 priority blocks."
         },
         {
           "id": "cinema_club",
@@ -2467,16 +2073,6 @@
       "name": "Glasssteppe Rail Station",
       "function": "Transport, travel and bicycle work",
       "activities": [
-        {
-          "id": "transit_courier",
-          "title": "Take a bicycle courier route",
-          "description": "Take paid bicycle-courier work across the month; it is energy-intensive. Uses 1 priority block."
-        },
-        {
-          "id": "transit_repair",
-          "title": "Repair bikes at the hub",
-          "description": "Use practical skill in paid bicycle repair across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
-        },
         {
           "id": "transit_scenic",
           "title": "Ride somewhere new",
@@ -2553,11 +2149,6 @@
           "description": "Care for a shared plot, using a little energy and gaining happiness and a connection. Uses 1 priority block."
         },
         {
-          "id": "garden_harvest",
-          "title": "Help with the harvest",
-          "description": "Help with paid harvest work across the month when the current story allows it. Check the venue notice and pay preview before committing. Uses 2 priority blocks."
-        },
-        {
           "id": "garden_workshop",
           "title": "Learn urban growing",
           "description": "Learn growing methods in a practical workshop and gain a skill. The action keeps its in-game title “Learn urban growing” even in rural regions. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
@@ -2620,11 +2211,6 @@
           "id": "arcade_host",
           "title": "Host a game meetup",
           "description": "Use your existing network to host a game meetup. Uses 2 priority blocks. Requires established connections; check the current preview."
-        },
-        {
-          "id": "arcade_shift",
-          "title": "Cover the evening desk",
-          "description": "Take paid evening-desk work across the month and meet regulars. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
@@ -2702,44 +2288,14 @@
       "placeId": "WORK",
       "name": "Tide Ledger Workrooms",
       "function": "Career and regional work",
-      "activities": [
-        {
-          "id": "work",
-          "title": "Work your regular month",
-          "description": "Commit 160 paid work hours across the month to your current career. Your wage follows your home contract. Uses 2 priority blocks."
-        },
-        {
-          "id": "work_short",
-          "title": "Pick up a week of short shifts",
-          "description": "Fit 40 paid work hours into your month; this can sit alongside a 160-hour regular commitment. Uses 1 priority block."
-        },
-        {
-          "id": "work_overtime",
-          "title": "Take a demanding work month",
-          "description": "Commit 200 paid hours across the month, using the entire shared monthly work allowance and more energy. Uses 3 priority blocks."
-        },
-        {
-          "id": "work_mentor",
-          "title": "Shadow a senior colleague",
-          "description": "Attend four guided sessions with a senior colleague, building practical knowledge from an existing foundation. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "world:region_shift",
-          "title": "Take a safe short shift in Pelagia",
-          "description": "A supervised 40-paid-hour regional commitment, costing 1 priority block and some energy. It is available to visitors and residents, subject to the shared monthly work allowance."
-        },
-        {
-          "id": "world:regional_work",
-          "title": "Prepare the tide-safe crossing board",
-          "description": "Work beside Mara from a safe public desk; technical inspection remains with trained engineers. A 160-paid-hour commitment costing 2 priority blocks, once per month in this region. A home-region rota bonus and your remaining work allowance are reflected in the current quote."
-        }
-      ],
+      "activities": [],
       "accessNotes": [
         "Available on arrival as an essential place for home, work, rest, food or community life.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
       "gameplayNotes": [
-        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month."
+        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
+        "Use Work & learning to review technical roles and the local regional-work contract. Apply, accept an offer and choose a shift separately at this workplace."
       ],
       "image": {
         "src": "world/pelagia.webp",
@@ -2765,33 +2321,14 @@
       "placeId": "CAMPUS",
       "name": "Tideworks College",
       "function": "Courses and peer learning",
-      "activities": [
-        {
-          "id": "study",
-          "title": "Take a short course",
-          "description": "Take a month-long practical evening course and develop a career skill. Uses 2 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_bootcamp",
-          "title": "Join an intensive bootcamp",
-          "description": "Undertake a focused training program for broader career learning, with a larger cost and energy commitment. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_group",
-          "title": "Study with a small group",
-          "description": "Share materials and a month of peer study, gaining a skill and a connection. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_tutor",
-          "title": "Tutor another learner",
-          "description": "Use your existing skills in paid tutoring across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
-        }
-      ],
+      "activities": [],
       "accessNotes": [
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
-      "gameplayNotes": [],
+      "gameplayNotes": [
+        "Open Work & learning for paid foundation and advanced preparation in the service, technical, practical and civic fields. The current preview shows prerequisites, tuition and priority blocks."
+      ],
       "image": {
         "src": "world/pelagia.webp",
         "alt": "Regional setting painting of Pelagia; not a building-specific illustration of Tideworks College."
@@ -2813,31 +2350,18 @@
       "function": "Career progression and referrals",
       "activities": [
         {
-          "id": "apply",
-          "title": "Make a career move",
-          "description": "Apply for the next role on the shared career ladder as your skills develop. The current preview shows what you need and whether another promotion is available. Uses 1 priority block."
-        },
-        {
           "id": "career_network",
           "title": "Go to a networking meetup",
           "description": "Attend a networking meetup to build connections and happiness. Uses 1 priority block."
-        },
-        {
-          "id": "career_portfolio",
-          "title": "Build a portfolio project",
-          "description": "Complete a tangible portfolio project using materials and tools; it adds a career skill. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "career_contract",
-          "title": "Take a referral contract",
-          "description": "Take a paid referral contract supported by established connections. Check the current preview for the required network and the work commitment. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
-      "gameplayNotes": [],
+      "gameplayNotes": [
+        "Use Work & learning to compare named workplaces, preparation and leads. Each employer handles its own application and offer; visiting this hub does not grant a promotion."
+      ],
       "image": {
         "src": "world/pelagia.webp",
         "alt": "Regional setting painting of Pelagia; not a building-specific illustration of Farther Shore Careers."
@@ -2874,11 +2398,6 @@
           "description": "Perform at an open mic when the current story allows it, trading some energy for enjoyment and company. If the stage is unavailable, follow the active conversation’s marked venue. Uses 2 priority blocks."
         },
         {
-          "id": "cafe_barista",
-          "title": "Cover the espresso bar",
-          "description": "Take a paid espresso-bar commitment across the month, with a small happiness boost under current balance rules. Uses 1 priority block."
-        },
-        {
           "id": "world:learn",
           "title": "Practice Nacren",
           "description": "Spend 1 priority block on local phrases, while your language familiarity has room to grow. Language fluency is not a gate on safe work or rest."
@@ -2896,7 +2415,8 @@
       "gameplayNotes": [
         "Neri’s introduction and later conversations use café or transit meeting points according to their story stage. Later contact may be a remote call rather than physical presence; the game labels that distinction.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "Evening performance availability follows the current shared story. If a stage is unavailable, ordinary café activities remain separate options; follow the marked venue for the active conversation."
+        "Evening performance availability follows the current shared story. If a stage is unavailable, ordinary café activities remain separate options; follow the marked venue for the active conversation.",
+        "Use Work & learning to review café-service roles and available independent commitments. A separate accepted employer offer is required before employee shifts."
       ],
       "image": {
         "src": "world/pelagia.webp",
@@ -2943,16 +2463,6 @@
           "description": "Lead a neighborhood event using your existing network. Uses 2 priority blocks. Requires established connections; check the current preview."
         },
         {
-          "id": "community_skill",
-          "title": "Join a community workshop",
-          "description": "Join an affordable, longer community workshop series and gain a skill. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "community_organize",
-          "title": "Coordinate a paid community day",
-          "description": "Coordinate funded community work across the month. The first funded day has the fuller benefit; repeat days use the lighter setup terms shown in your quote. Uses 2 priority blocks. Requires established connections; check the current preview."
-        },
-        {
           "id": "weekly_opportunity",
           "title": "Take the monthly project opening",
           "description": "Claim the monthly paid project opening shown on the neighborhood board. Only one player at the table may claim that month’s opening. Uses 2 priority blocks."
@@ -2965,7 +2475,8 @@
       "gameplayNotes": [
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
         "The community room can carry remote conversations with already-known cast characters who are currently away. A remote contact does not mean the person is physically in this town.",
-        "Lin’s family scene is at the dry community table with Mara nearby on the applicable family months, away from working water and machinery."
+        "Lin’s family scene is at the dry community table with Mara nearby on the applicable family months, away from working water and machinery.",
+        "Use Work & learning to review civic roles and local commitments. Shared supper preparation is separately listed when a real order is open."
       ],
       "image": {
         "src": "world/pelagia.webp",
@@ -3071,11 +2582,6 @@
       "function": "Reading, learning and archives",
       "activities": [
         {
-          "id": "library_learn",
-          "title": "Learn from free resources",
-          "description": "Build a career skill through free, self-directed resources; the tradeoff is more time and energy. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
           "id": "library_read",
           "title": "Get lost in a good book",
           "description": "Read for pleasure and regain some energy and happiness. Uses 1 priority block."
@@ -3084,11 +2590,6 @@
           "id": "library_club",
           "title": "Join the book club",
           "description": "Join a free book discussion and make connections. Uses 2 priority blocks."
-        },
-        {
-          "id": "library_digitize",
-          "title": "Help digitize the archive",
-          "description": "Contribute to a paid archive-digitization project across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
         },
         {
           "id": "world:local:pelagia-chapter-2",
@@ -3102,7 +2603,8 @@
       ],
       "gameplayNotes": [
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "This place can develop a neighborhood program over time. Local participation can help that work along; the current venue notice explains what is open and whether there is a one-time task to join."
+        "This place can develop a neighborhood program over time. Local participation can help that work along; the current venue notice explains what is open and whether there is a one-time task to join.",
+        "Open Work & learning for free foundation and advanced preparation. These alternatives cost more priority blocks than Campus classes."
       ],
       "image": {
         "src": "world/pelagia.webp",
@@ -3130,11 +2632,6 @@
       "function": "Food, stalls and casual work",
       "activities": [
         {
-          "id": "market_shift",
-          "title": "Cover a market stall",
-          "description": "Cover a stall as paid casual work across the month, meeting people along the way. Uses 2 priority blocks."
-        },
-        {
           "id": "market_cook",
           "title": "Take a cooking class",
           "description": "Take a cooking class that improves happiness and restores some energy. Uses 2 priority blocks."
@@ -3143,11 +2640,6 @@
           "id": "market_taste",
           "title": "Make market lunches part of your month",
           "description": "Choose twenty weekday market lunches for this month. The displayed extra cost already deducts the groceries those lunches replace; the habit is once per month and does not renew. Uses 1 priority block."
-        },
-        {
-          "id": "market_resell",
-          "title": "Run a secondhand pop-up",
-          "description": "Run a paid secondhand pop-up, paying the stall cost upfront and using your connections. Uses 2 priority blocks. Requires established connections; check the current preview."
         },
         {
           "id": "world:local:pelagia-chapter-3",
@@ -3206,11 +2698,6 @@
           "id": "gym_sauna",
           "title": "Take a recovery session",
           "description": "Take a longer recovery session with a substantial energy benefit. Uses 2 priority blocks."
-        },
-        {
-          "id": "gym_desk",
-          "title": "Cover the front desk",
-          "description": "Cover a paid front-desk commitment across the month. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
@@ -3239,16 +2726,6 @@
       "function": "Repair, making and craft",
       "activities": [
         {
-          "id": "maker_intro",
-          "title": "Learn to repair",
-          "description": "Take a hands-on repair course that builds on existing practical skills. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "maker_commission",
-          "title": "Finish a custom commission",
-          "description": "Complete a paid custom commission with an upfront materials cost, using practical skill and contacts. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Requires established connections; check the current preview."
-        },
-        {
           "id": "maker_hobby",
           "title": "Make something just for fun",
           "description": "Make a small project for enjoyment, with no commission or deadline. Uses 1 priority block."
@@ -3262,11 +2739,6 @@
           "id": "creative_practice",
           "title": "Practice your craft",
           "description": "Develop your craft through a month of regular practice, while there is room for further progress. Uses 2 priority blocks."
-        },
-        {
-          "id": "creative_commission",
-          "title": "Deliver a creative commission",
-          "description": "Deliver a paid creative commission with materials paid upfront. The quote grows with craft level. Uses 2 priority blocks. Requires developed craft experience; check the current preview."
         }
       ],
       "accessNotes": [
@@ -3274,7 +2746,8 @@
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
       "gameplayNotes": [
-        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month."
+        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
+        "Use Work & learning to review practical roles and creative commitments at this venue. The current preview shows relevant preparation, experience, materials and pay."
       ],
       "image": {
         "src": "world/pelagia.webp",
@@ -3312,11 +2785,6 @@
           "description": "Make a movie night of it, with greater happiness, company and a ticket-and-outing cost. Uses 2 priority blocks."
         },
         {
-          "id": "cinema_usher",
-          "title": "Work an usher shift",
-          "description": "Take paid usher work across the month and enjoy the cinema atmosphere. Uses 2 priority blocks."
-        },
-        {
           "id": "cinema_club",
           "title": "Stay for the film discussion",
           "description": "Stay for the film discussion and meet other viewers. Uses 2 priority blocks."
@@ -3349,16 +2817,6 @@
       "name": "Gatehouse Landing",
       "function": "Transport, travel and bicycle work",
       "activities": [
-        {
-          "id": "transit_courier",
-          "title": "Take a bicycle courier route",
-          "description": "Take paid bicycle-courier work across the month; it is energy-intensive. Uses 1 priority block."
-        },
-        {
-          "id": "transit_repair",
-          "title": "Repair bikes at the hub",
-          "description": "Use practical skill in paid bicycle repair across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
-        },
         {
           "id": "transit_scenic",
           "title": "Ride somewhere new",
@@ -3443,11 +2901,6 @@
           "description": "Care for a shared plot, using a little energy and gaining happiness and a connection. Uses 1 priority block."
         },
         {
-          "id": "garden_harvest",
-          "title": "Help with the harvest",
-          "description": "Help with paid harvest work across the month when the current story allows it. Check the venue notice and pay preview before committing. Uses 2 priority blocks."
-        },
-        {
           "id": "garden_workshop",
           "title": "Learn urban growing",
           "description": "Learn growing methods in a practical workshop and gain a skill. The action keeps its in-game title “Learn urban growing” even in rural regions. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
@@ -3510,11 +2963,6 @@
           "id": "arcade_host",
           "title": "Host a game meetup",
           "description": "Use your existing network to host a game meetup. Uses 2 priority blocks. Requires established connections; check the current preview."
-        },
-        {
-          "id": "arcade_shift",
-          "title": "Cover the evening desk",
-          "description": "Take paid evening-desk work across the month and meet regulars. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
@@ -3592,44 +3040,14 @@
       "placeId": "WORK",
       "name": "Roster House",
       "function": "Career and regional work",
-      "activities": [
-        {
-          "id": "work",
-          "title": "Work your regular month",
-          "description": "Commit 160 paid work hours across the month to your current career. Your wage follows your home contract. Uses 2 priority blocks."
-        },
-        {
-          "id": "work_short",
-          "title": "Pick up a week of short shifts",
-          "description": "Fit 40 paid work hours into your month; this can sit alongside a 160-hour regular commitment. Uses 1 priority block."
-        },
-        {
-          "id": "work_overtime",
-          "title": "Take a demanding work month",
-          "description": "Commit 200 paid hours across the month, using the entire shared monthly work allowance and more energy. Uses 3 priority blocks."
-        },
-        {
-          "id": "work_mentor",
-          "title": "Shadow a senior colleague",
-          "description": "Attend four guided sessions with a senior colleague, building practical knowledge from an existing foundation. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "world:region_shift",
-          "title": "Take a safe short shift in Ember Mesa",
-          "description": "A supervised 40-paid-hour regional commitment, costing 1 priority block and some energy. It is available to visitors and residents, subject to the shared monthly work allowance."
-        },
-        {
-          "id": "world:regional_work",
-          "title": "Cover the diner and repair roster",
-          "description": "June teaches you the safe desk tasks while trained repairers handle the brakes and wiring. A 160-paid-hour commitment costing 2 priority blocks, once per month in this region. A home-region rota bonus and your remaining work allowance are reflected in the current quote."
-        }
-      ],
+      "activities": [],
       "accessNotes": [
         "Available on arrival as an essential place for home, work, rest, food or community life.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
       "gameplayNotes": [
-        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month."
+        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
+        "Use Work & learning to review technical roles and the local regional-work contract. Apply, accept an offer and choose a shift separately at this workplace."
       ],
       "image": {
         "src": "world/embermesa.webp",
@@ -3655,33 +3073,14 @@
       "placeId": "CAMPUS",
       "name": "Open Sky College",
       "function": "Courses and peer learning",
-      "activities": [
-        {
-          "id": "study",
-          "title": "Take a short course",
-          "description": "Take a month-long practical evening course and develop a career skill. Uses 2 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_bootcamp",
-          "title": "Join an intensive bootcamp",
-          "description": "Undertake a focused training program for broader career learning, with a larger cost and energy commitment. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_group",
-          "title": "Study with a small group",
-          "description": "Share materials and a month of peer study, gaining a skill and a connection. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "campus_tutor",
-          "title": "Tutor another learner",
-          "description": "Use your existing skills in paid tutoring across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
-        }
-      ],
+      "activities": [],
       "accessNotes": [
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
-      "gameplayNotes": [],
+      "gameplayNotes": [
+        "Open Work & learning for paid foundation and advanced preparation in the service, technical, practical and civic fields. The current preview shows prerequisites, tuition and priority blocks."
+      ],
       "image": {
         "src": "world/embermesa.webp",
         "alt": "Regional setting painting of Ember Mesa; not a building-specific illustration of Open Sky College."
@@ -3703,31 +3102,18 @@
       "function": "Career progression and referrals",
       "activities": [
         {
-          "id": "apply",
-          "title": "Make a career move",
-          "description": "Apply for the next role on the shared career ladder as your skills develop. The current preview shows what you need and whether another promotion is available. Uses 1 priority block."
-        },
-        {
           "id": "career_network",
           "title": "Go to a networking meetup",
           "description": "Attend a networking meetup to build connections and happiness. Uses 1 priority block."
-        },
-        {
-          "id": "career_portfolio",
-          "title": "Build a portfolio project",
-          "description": "Complete a tangible portfolio project using materials and tools; it adds a career skill. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "career_contract",
-          "title": "Take a referral contract",
-          "description": "Take a paid referral contract supported by established connections. Check the current preview for the required network and the work commitment. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
         "Discover this place by exploring the town. Local activities, introductions and the town’s development may bring it onto your map sooner.",
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
-      "gameplayNotes": [],
+      "gameplayNotes": [
+        "Use Work & learning to compare named workplaces, preparation and leads. Each employer handles its own application and offer; visiting this hub does not grant a promotion."
+      ],
       "image": {
         "src": "world/embermesa.webp",
         "alt": "Regional setting painting of Ember Mesa; not a building-specific illustration of Next Mile Careers."
@@ -3764,11 +3150,6 @@
           "description": "Perform at an open mic when the current story allows it, trading some energy for enjoyment and company. If the stage is unavailable, follow the active conversation’s marked venue. Uses 2 priority blocks."
         },
         {
-          "id": "cafe_barista",
-          "title": "Cover the espresso bar",
-          "description": "Take a paid espresso-bar commitment across the month, with a small happiness boost under current balance rules. Uses 1 priority block."
-        },
-        {
           "id": "world:learn",
           "title": "Practice Mesa expressions",
           "description": "Spend 1 priority block on local phrases, while your language familiarity has room to grow. Language fluency is not a gate on safe work or rest."
@@ -3786,7 +3167,8 @@
       "gameplayNotes": [
         "Neri’s introduction and later conversations use café or transit meeting points according to their story stage. Later contact may be a remote call rather than physical presence; the game labels that distinction.",
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "Evening performance availability follows the current shared story. If a stage is unavailable, ordinary café activities remain separate options; follow the marked venue for the active conversation."
+        "Evening performance availability follows the current shared story. If a stage is unavailable, ordinary café activities remain separate options; follow the marked venue for the active conversation.",
+        "Use Work & learning to review café-service roles and available independent commitments. A separate accepted employer offer is required before employee shifts."
       ],
       "image": {
         "src": "world/embermesa.webp",
@@ -3837,16 +3219,6 @@
           "description": "Lead a neighborhood event using your existing network. Uses 2 priority blocks. Requires established connections; check the current preview."
         },
         {
-          "id": "community_skill",
-          "title": "Join a community workshop",
-          "description": "Join an affordable, longer community workshop series and gain a skill. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "community_organize",
-          "title": "Coordinate a paid community day",
-          "description": "Coordinate funded community work across the month. The first funded day has the fuller benefit; repeat days use the lighter setup terms shown in your quote. Uses 2 priority blocks. Requires established connections; check the current preview."
-        },
-        {
           "id": "weekly_opportunity",
           "title": "Take the monthly project opening",
           "description": "Claim the monthly paid project opening shown on the neighborhood board. Only one player at the table may claim that month’s opening. Uses 2 priority blocks."
@@ -3859,7 +3231,8 @@
       "gameplayNotes": [
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
         "The community room can carry remote conversations with already-known cast characters who are currently away. A remote contact does not mean the person is physically in this town.",
-        "Bea’s family moment requires Kit’s scheduled presence at a suitable community-room or café setting; it is not an unsupervised encounter or a work task."
+        "Bea’s family moment requires Kit’s scheduled presence at a suitable community-room or café setting; it is not an unsupervised encounter or a work task.",
+        "Use Work & learning to review civic roles and local commitments. Shared supper preparation is separately listed when a real order is open."
       ],
       "image": {
         "src": "world/embermesa.webp",
@@ -3953,11 +3326,6 @@
       "function": "Reading, learning and archives",
       "activities": [
         {
-          "id": "library_learn",
-          "title": "Learn from free resources",
-          "description": "Build a career skill through free, self-directed resources; the tradeoff is more time and energy. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
           "id": "library_read",
           "title": "Get lost in a good book",
           "description": "Read for pleasure and regain some energy and happiness. Uses 1 priority block."
@@ -3966,11 +3334,6 @@
           "id": "library_club",
           "title": "Join the book club",
           "description": "Join a free book discussion and make connections. Uses 2 priority blocks."
-        },
-        {
-          "id": "library_digitize",
-          "title": "Help digitize the archive",
-          "description": "Contribute to a paid archive-digitization project across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
         },
         {
           "id": "world:local:embermesa-chapter-2",
@@ -3984,7 +3347,8 @@
       ],
       "gameplayNotes": [
         "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
-        "This place can develop a neighborhood program over time. Local participation can help that work along; the current venue notice explains what is open and whether there is a one-time task to join."
+        "This place can develop a neighborhood program over time. Local participation can help that work along; the current venue notice explains what is open and whether there is a one-time task to join.",
+        "Open Work & learning for free foundation and advanced preparation. These alternatives cost more priority blocks than Campus classes."
       ],
       "image": {
         "src": "world/embermesa.webp",
@@ -4012,11 +3376,6 @@
       "function": "Food, stalls and casual work",
       "activities": [
         {
-          "id": "market_shift",
-          "title": "Cover a market stall",
-          "description": "Cover a stall as paid casual work across the month, meeting people along the way. Uses 2 priority blocks."
-        },
-        {
           "id": "market_cook",
           "title": "Take a cooking class",
           "description": "Take a cooking class that improves happiness and restores some energy. Uses 2 priority blocks."
@@ -4025,11 +3384,6 @@
           "id": "market_taste",
           "title": "Make market lunches part of your month",
           "description": "Choose twenty weekday market lunches for this month. The displayed extra cost already deducts the groceries those lunches replace; the habit is once per month and does not renew. Uses 1 priority block."
-        },
-        {
-          "id": "market_resell",
-          "title": "Run a secondhand pop-up",
-          "description": "Run a paid secondhand pop-up, paying the stall cost upfront and using your connections. Uses 2 priority blocks. Requires established connections; check the current preview."
         },
         {
           "id": "world:local:embermesa-chapter-3",
@@ -4084,11 +3438,6 @@
           "id": "gym_sauna",
           "title": "Take a recovery session",
           "description": "Take a longer recovery session with a substantial energy benefit. Uses 2 priority blocks."
-        },
-        {
-          "id": "gym_desk",
-          "title": "Cover the front desk",
-          "description": "Cover a paid front-desk commitment across the month. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [
@@ -4117,16 +3466,6 @@
       "function": "Repair, making and craft",
       "activities": [
         {
-          "id": "maker_intro",
-          "title": "Learn to repair",
-          "description": "Take a hands-on repair course that builds on existing practical skills. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Skill-gaining actions remain available while your learning has room to develop."
-        },
-        {
-          "id": "maker_commission",
-          "title": "Finish a custom commission",
-          "description": "Complete a paid custom commission with an upfront materials cost, using practical skill and contacts. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview. Requires established connections; check the current preview."
-        },
-        {
           "id": "maker_hobby",
           "title": "Make something just for fun",
           "description": "Make a small project for enjoyment, with no commission or deadline. Uses 1 priority block."
@@ -4140,11 +3479,6 @@
           "id": "creative_practice",
           "title": "Practice your craft",
           "description": "Develop your craft through a month of regular practice, while there is room for further progress. Uses 2 priority blocks."
-        },
-        {
-          "id": "creative_commission",
-          "title": "Deliver a creative commission",
-          "description": "Deliver a paid creative commission with materials paid upfront. The quote grows with craft level. Uses 2 priority blocks. Requires developed craft experience; check the current preview."
         }
       ],
       "accessNotes": [
@@ -4152,7 +3486,8 @@
         "Routes to this town become available as your journey develops. Check the current travel preview for the fare, time and any weather conditions before setting out."
       ],
       "gameplayNotes": [
-        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month."
+        "The people links distinguish work, history and place associations from current presence. Check the live character labels for who is here or available to contact this month.",
+        "Use Work & learning to review practical roles and creative commitments at this venue. The current preview shows relevant preparation, experience, materials and pay."
       ],
       "image": {
         "src": "world/embermesa.webp",
@@ -4190,11 +3525,6 @@
           "description": "Make a movie night of it, with greater happiness, company and a ticket-and-outing cost. Uses 2 priority blocks."
         },
         {
-          "id": "cinema_usher",
-          "title": "Work an usher shift",
-          "description": "Take paid usher work across the month and enjoy the cinema atmosphere. Uses 2 priority blocks."
-        },
-        {
           "id": "cinema_club",
           "title": "Stay for the film discussion",
           "description": "Stay for the film discussion and meet other viewers. Uses 2 priority blocks."
@@ -4227,16 +3557,6 @@
       "name": "Mesa Rail Station",
       "function": "Transport, travel and bicycle work",
       "activities": [
-        {
-          "id": "transit_courier",
-          "title": "Take a bicycle courier route",
-          "description": "Take paid bicycle-courier work across the month; it is energy-intensive. Uses 1 priority block."
-        },
-        {
-          "id": "transit_repair",
-          "title": "Repair bikes at the hub",
-          "description": "Use practical skill in paid bicycle repair across the month. Uses 2 priority blocks. Requires an appropriate level of practical skill; check the current preview."
-        },
         {
           "id": "transit_scenic",
           "title": "Ride somewhere new",
@@ -4317,11 +3637,6 @@
           "description": "Care for a shared plot, using a little energy and gaining happiness and a connection. Uses 1 priority block."
         },
         {
-          "id": "garden_harvest",
-          "title": "Help with the harvest",
-          "description": "Help with paid harvest work across the month when the current story allows it. Check the venue notice and pay preview before committing. Uses 2 priority blocks."
-        },
-        {
           "id": "garden_workshop",
           "title": "Learn urban growing",
           "description": "Learn growing methods in a practical workshop and gain a skill. The action keeps its in-game title “Learn urban growing” even in rural regions. Uses 3 priority blocks. Skill-gaining actions remain available while your learning has room to develop."
@@ -4384,11 +3699,6 @@
           "id": "arcade_host",
           "title": "Host a game meetup",
           "description": "Use your existing network to host a game meetup. Uses 2 priority blocks. Requires established connections; check the current preview."
-        },
-        {
-          "id": "arcade_shift",
-          "title": "Cover the evening desk",
-          "description": "Take paid evening-desk work across the month and meet regulars. Uses 2 priority blocks."
         }
       ],
       "accessNotes": [

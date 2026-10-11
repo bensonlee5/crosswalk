@@ -1,17 +1,17 @@
 'use client';
-import {qualitativeText} from '@/lib/point-presentation';
-import {canonicalCharacterById} from '@/lib/character-canon';
-import {capturePersonReceipt,type ResponseReceipt} from '@/lib/person-response';
-import {PersonResponseStage} from './person-response';
-import {actionReaction} from '@/lib/action-reactions';
-import {actionFamiliarityKey,familiarityView} from '@/lib/action-familiarity';
-import {sharedOpportunityView} from '@/lib/shared-opportunities';
-import type {Game,Player} from '@/lib/game';
-import {economyMonthLabel,hasModernEconomy} from '@/lib/economy';
-import {worldView,worldPlaceName} from '@/lib/world-life';
+import { actionFamiliarityKey,familiarityView } from '@/lib/action-familiarity';
+import { actionReaction } from '@/lib/action-reactions';
+import { canonicalCharacterById } from '@/lib/character-canon';
+import { economyMonthLabel } from '@/lib/economy';
+import type { Game,Player } from '@/lib/game';
+import { capturePersonReceipt,type ResponseReceipt } from '@/lib/person-response';
+import { qualitativeText } from '@/lib/point-presentation';
+import { sharedOpportunityView } from '@/lib/shared-opportunities';
+import { worldPlaceName,worldView } from '@/lib/world-life';
+import { worldEncounterChoice } from './encounter-panel';
 import GamePainting from './game-painting';
-import {worldEncounterChoice} from './encounter-panel';
-import {StoryChoiceDeck,EncounterOutcome,useEncounterCommit,type EncounterReceipt} from './story-choices';
+import { PersonResponseStage } from './person-response';
+import { EncounterOutcome,StoryChoiceDeck,useEncounterCommit,type EncounterReceipt } from './story-choices';
 
 type WorldOutcome=EncounterReceipt&{reaction?:string;sharedPerson?:{actorId:string;name:string;spot:string;receipt:ResponseReceipt}};
 
@@ -40,8 +40,8 @@ export default function WorldStory({g,p,disabled,onAction,onEncounter,focusChoic
   {practical.length>0&&<details className="world-disclosure"><summary>Work and put down roots <span>A life in this place</span></summary>{view.regionalOpportunity&&<p>{qualitativeText(view.regionalOpportunity.description)}</p>}{deck(practical)}</details>}
   {exploration.length>0&&<details className="world-disclosure"><summary>Find your way around <span>Food, language and new streets</span></summary><p className="world-context-note">{view.language.description}. The local table serves {view.region.food}.</p>{deck(exploration)}</details>}
   {tradeoffs.length>0&&<details className="world-disclosure"><summary>A decision for the neighborhood <span>Some changes will last</span></summary>{deck(tradeoffs)}</details>}
-  <details className="world-disclosure world-travel-disclosure"><summary>Beyond {view.region.name} <span>{destinations.length} known route{destinations.length===1?'':'s'}</span></summary><p className="world-context-note">A visit and a move are different decisions. Check what you keep, what you leave, and the exact fare before you go.</p>{destinations.length>0?deck(destinations):<p>No other routes are on your map yet.</p>}{view.destinations.some(d=>!d.discovered)&&<p className="world-route-hint">A route not yet known may open through a conversation or a later {hasModernEconomy(g)?'month':'week'}.</p>}</details>
-  {view.closedPlaces.length>0&&<details className="world-disclosure"><summary>Doors you chose to close</summary><p>{view.closedPlaces.map(place=>worldPlaceName(p,place,g)).join(', ')}. Your memories remain; these doors have a different future.</p></details>}
+  <details className="world-disclosure world-travel-disclosure"><summary>Beyond {view.region.name} <span>{destinations.length} known route{destinations.length===1?'':'s'}</span></summary><p className="world-context-note">A visit and a move are different decisions. Check what you keep, what you leave, and the exact fare before you go.</p>{destinations.length>0?deck(destinations):<p>No other routes are on your map yet.</p>}{view.destinations.some(d=>!d.discovered)&&<p className="world-route-hint">A route not yet known may open through a conversation or a later {'month'}.</p>}</details>
+  {view.closedPlaces.length>0&&<details className="world-disclosure"><summary>Places with a new purpose</summary><p>{view.closedPlaces.map(place=>worldPlaceName(p,place,g)).join(', ')}. Your memories remain as the neighborhood changes.</p></details>}
   <details className="world-disclosure world-journal"><summary>Your travel journal <span>{view.journal.length} memories</span></summary>{view.journal.map((entry,i)=><article key={entry.choiceId||i}><small>{economyMonthLabel(g,entry.week).toUpperCase()}</small><strong>{entry.title}</strong><p>{qualitativeText(entry.text)}</p></article>)}</details>
   </>}
  </section>;

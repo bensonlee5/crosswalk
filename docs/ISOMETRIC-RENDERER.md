@@ -1,6 +1,5 @@
 # Illustrated isometric renderer
 
-The selected game renderer is now SVG with authored 2D coordinates. It does not create a Three.js scene, perspective camera, orbit controller or WebGL context. The historical model-building modules remain available to older tests but are not imported by `app/game-engine.ts`.
 
 ## Art and navigation
 

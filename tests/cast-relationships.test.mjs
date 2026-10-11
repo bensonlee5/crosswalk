@@ -1,26 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {player,move,neighbors} from '../lib/game.ts';
-import {initializeEconomyPlayer} from '../lib/economy.ts';
-import {initializeLife} from '../lib/life-events.ts';
-import {initializeWorldPlayer,initializeSharedWorld,regionDefinitions,visiblePlaces} from '../lib/world-life.ts';
-import {initializeStory} from '../lib/story-arcs.ts';
+import {move} from '../lib/game.ts';
+import {canonicalCharacterById} from '../lib/character-canon.ts';
+const neighbors=['mina','eli','jo'].map(id=>canonicalCharacterById[id]);
+import {regionDefinitions,visiblePlaces} from '../lib/world-life.ts';
 import {castCharacters} from '../lib/cast-characters.ts';
-import {initializeCast,initializeCastPlayer,castPeople,resolveCastChoice,endCastMonth,castEnding} from '../lib/character-cast.ts';
+import {characterCameos} from '../lib/character-cameos.ts';
+import {currentCastCharacter} from '../lib/character-cast-canon.ts';
+import {currentGame} from './current-fixture.mjs';
+import {initializeCast,castPeople,resolveCastChoice,endCastMonth,castEnding} from '../lib/character-cast.ts';
 import {runCastSimulation} from './cast-simulation.mjs';
 
 const regions=Object.keys(regionDefinitions);
 const priorIds=new Set([...neighbors.map(c=>c.id),'neri',...Object.values(regionDefinitions).flatMap(r=>r.residents.map(c=>c.id))]);
 const person=(g,id,p=g.players[g.turn])=>castPeople(g,p).find(c=>c.id===id);
-function fixture({seed=42,cast=true,players=1,maxRounds=8}={}){
- const ps=Array.from({length:players},(_,i)=>({...player(`Cast ${i}`,1),id:`p${i}`}));
- const g={code:'CAST01',mode:'hotseat',host:'host',members:{host:ps.map(p=>p.id)},players:ps,status:'lobby',round:1,turn:0,maxRounds,log:[],seen:[],event:0,rulesVersion:2,lifeVersion:1,worldVersion:1,storyVersion:1,economyVersion:1,balanceVersion:1,turnsTaken:0,...(cast?{castVersion:1}:{})};
- for(const p of ps)initializeEconomyPlayer(p,g);
- g.status='playing';initializeLife(g,seed);
- for(const p of ps)initializeWorldPlayer(p);
- initializeSharedWorld(g);initializeStory(g);initializeCast(g);
- return g;
-}
+function fixture({seed=42,players=1}={}){const g=currentGame({names:Array.from({length:players},(_,i)=>`Cast ${i}`),seed});return g;}
 function round(g,n){g.round=n;for(const p of g.players)p.hours=6;return g.players[g.turn];}
 function choose(g,id,key,{engine=false}={}){
  const p=g.players[g.turn],view=person(g,id);assert.ok(view,`${id}: contact must remain reachable`);
@@ -30,7 +24,7 @@ function choose(g,id,key,{engine=false}={}){
  assert.equal(p.cash,before.cash-c.cost.cash,`${id}/${key}: cash preview`);
  assert.equal(p.energy-before.energy,c.energy,`${id}/${key}: energy preview`);
  assert.equal(p.joy-before.joy,c.joy,`${id}/${key}: joy preview`);
- for(const field of ['economyWork','economyHabits','social','skill','craft','job','housing','legacy'])assert.deepEqual(p[field],before[field],`${id}/${key}: no hidden ${field} change`);
+ for(const field of ['economyWork','economyHabits','social','skill','craft','housing','legacy'])assert.deepEqual(p[field],before[field],`${id}/${key}: no hidden ${field} change`);
  return c;
 }
 function bond(phase='met',extras={}){return {phase,approach:'listen',lastWeek:1,conflict:false,repaired:false,memories:[{week:1,text:'An earlier conversation.'}],...extras};}
@@ -50,17 +44,6 @@ test('eight authored newcomers join 18 retained identities for a 26-person world
  for(const field of ['goal','friction','kept','support','keepsake'])assert.equal(new Set(castCharacters.map(c=>c[field])).size,8,`Distinct ${field}`);
 });
 
-test('unmarked saves and uninitialized opted-in views remain byte-identical',()=>{
- const g=fixture({cast:false}),p=g.players[0],before=JSON.stringify(g);
- initializeCast(g);initializeCastPlayer(g,p);endCastMonth(g,p);
- assert.deepEqual(castPeople(g,p),[]);assert.deepEqual(castEnding(g,p),[]);
- assert.throws(()=>resolveCastChoice(g,p,'cast:1:mina:listen'),/not part/);
- assert.equal(JSON.stringify(g),before);assert.equal(p.cast,undefined);assert.equal(g.cast,undefined);
- const h=structuredClone(g);h.castVersion=1;const hBefore=JSON.stringify(h);
- assert.deepEqual(castPeople(h,h.players[0]),[]);assert.deepEqual(castEnding(h,h.players[0]),[]);assert.equal(JSON.stringify(h),hBefore);
- // Cast hooks do not alter ordinary settlement in a pre-cast, modern save.
- const a=structuredClone(g),b=structuredClone(g);initializeCast(a);endCastMonth(a,a.players[0]);move(a,'end');move(b,'end');assert.deepEqual(a,b);
-});
 
 test('encounters are saved once, deterministic, diverse and recover from an absent month',()=>{
  const seen=new Set();
@@ -70,7 +53,7 @@ test('encounters are saved once, deterministic, diverse and recover from an abse
   for(let n=1;n<=8;n++)for(const region of regions){
    const appearances=g.cast.schedule[n].filter(a=>a.region===region);assert.ok(appearances.length>0,`${seed}/${n}/${region}: a reachable local`);
    assert.equal(new Set(appearances.map(a=>a.id)).size,appearances.length);
-   for(const a of appearances){assert.ok(castCharacters.some(c=>c.id===a.id));assert.ok(['CORNER CAFÉ','COMMUNITY','THE PARK'].includes(a.spot));}
+   for(const a of appearances){assert.ok([...castCharacters,...characterCameos].some(c=>c.id===a.id));assert.ok(['CORNER CAFÉ','COMMUNITY','THE PARK'].includes(a.spot));}
    for(const c of castCharacters.filter(c=>c.region===region))if(!appearances.some(a=>a.id===c.id)&&n<8)assert.ok(g.cast.schedule[n+1].some(a=>a.id===c.id&&a.region===region),`${c.id}: never disappears for two consecutive months`);
   }
   const saved=JSON.stringify(g.cast);g.lifeSeed=seed+999;initializeCast(g);assert.equal(JSON.stringify(g.cast),saved);
@@ -137,7 +120,7 @@ test('missed promises remain truthful and repair is reachable at COMMUNITY from 
 
 test('notice and honest limits are zero-time options; they never invent completed work or repaired conflict',()=>{
  const g=fixture(),p=g.players[0],c=castCharacters[0];meet(g,c);round(g,2);p.hours=0;p.cash=-500;choose(g,c.id,'promise');
- round(g,3);p.hours=0;const view=person(g,c.id);p.place=view.spot;assert.equal(person(g,c.id).choices.find(c=>c.key==='keep').available,false);const notice=choose(g,c.id,'renegotiate');assert.ok(!notice.outcome.includes(c.missed),'Timely notice cannot narrate a no-show that did not happen');assert.equal(notice.outcome,c.renegotiated);
+ round(g,3);p.hours=0;const view=person(g,c.id);p.place=view.spot;assert.equal(person(g,c.id).choices.find(c=>c.key==='keep').available,false);const notice=choose(g,c.id,'renegotiate');assert.ok(!notice.outcome.includes(c.missed),'Timely notice cannot narrate a no-show that did not happen');assert.ok(notice.outcome.startsWith(currentCastCharacter(g,c).renegotiated));
  assert.equal(p.cast.bonds[c.id].promise.status,'released');assert.equal(p.cast.bonds[c.id].keepsake,undefined);endCastMonth(g,p);assert.equal(p.cast.bonds[c.id].conflict,false);
  assert.doesNotMatch(castEnding(g,p).join(' '),/You kept the promise|missed promise remains/);
  round(g,4);choose(g,c.id,'rush');assert.equal(p.cast.bonds[c.id].conflict,true);round(g,5);p.hours=0;choose(g,c.id,'release');
@@ -168,10 +151,10 @@ test('repairing disagreement does not invent a missed invitation or claim unperf
 test('every remote kept promise, repair and offer of support uses distance-aware authored prose',()=>{
  for(const c of castCharacters){
   const g=fixture(),p=round(g,4);p.world.region=regions.find(r=>r!==c.region);g.cast.schedule[4]=[];p.cast.bonds[c.id]=bond('met',{promise:{due:4,status:'open'}});
-  assert.equal(person(g,c.id).remote,true);assert.equal(person(g,c.id).spot,'COMMUNITY');assert.equal(choose(g,c.id,'keep').outcome,c.remoteKept);
-  round(g,5);g.cast.schedule[5]=[];p.cast.bonds[c.id].phase='tested';const support=choose(g,c.id,'accept');assert.ok(support.outcome.startsWith(c.remoteSupport));assert.ok(!support.outcome.startsWith(c.support));
+  assert.equal(person(g,c.id).remote,true);assert.equal(person(g,c.id).spot,'COMMUNITY');assert.ok(choose(g,c.id,'keep').outcome.startsWith(currentCastCharacter(g,c).remoteKept));
+  round(g,5);g.cast.schedule[5]=[];p.cast.bonds[c.id].phase='tested';const support=choose(g,c.id,'accept');assert.ok(support.outcome.startsWith(currentCastCharacter(g,c).remoteSupport));assert.ok(!support.outcome.startsWith(currentCastCharacter(g,c).support));
   const h=fixture(),q=round(h,4);q.world.region=regions.find(r=>r!==c.region);h.cast.schedule[4]=[];q.cast.bonds[c.id]=bond('met',{promise:{due:3,status:'missed'},conflict:true});
-  assert.equal(choose(h,c.id,'repair').outcome,c.remoteRepair);
+  assert.ok(choose(h,c.id,'repair').outcome.startsWith(currentCastCharacter(h,c).remoteRepair));
  }
 });
 
@@ -199,10 +182,10 @@ test('the final month cannot create impossible invitations and expires real comm
  assert.equal(h.status,'finished');assert.equal(q.cast.bonds[c.id].promise.status,'missed');assert.equal(q.cast.bonds[c.id].conflict,true);assert.match(castEnding(h,q).join(' '),/missed promise remains/);assert.doesNotMatch(castEnding(h,q).join(' '),/You kept the promise/);
 });
 
-test('long imported timelines keep history, receipts and logs bounded without erasing a current conflict',()=>{
- const g=fixture({maxRounds:90}),p=g.players[0],c=castCharacters[0];p.cast.bonds[c.id]=bond('shared',{conflict:true});
- for(let n=2;n<=90;n++){round(g,n);p.cash=-1;p.hours=0;choose(g,c.id,'release');assert.ok(p.cast.receipts.length<=64);assert.ok(p.cast.bonds[c.id].memories.length<=8);assert.ok(g.log.length<=32);}
- assert.equal(p.cast.receipts.length,64);assert.equal(p.cast.bonds[c.id].memories.length,8);assert.equal(p.cast.bonds[c.id].conflict,true);assert.match(castEnding(g,p).join(' '),/unfinished conversation/);
+test('current eight-month timelines bound memories and preserve unresolved conflict',()=>{
+ const g=fixture(),p=g.players[0];for(const c of castCharacters)p.cast.bonds[c.id]=bond('shared',{lastWeek:0,conflict:true});
+ for(let n=1;n<=8;n++){round(g,n);p.cash=-1;p.hours=0;for(const c of castCharacters)choose(g,c.id,'release');assert.ok(p.cast.receipts.length<=64);assert.ok(g.log.length<=32);}
+ assert.equal(p.cast.receipts.length,64);for(const c of castCharacters){assert.equal(p.cast.bonds[c.id].memories.length,8);assert.equal(p.cast.bonds[c.id].conflict,true);}assert.match(castEnding(g,p).join(' '),/unfinished conversation/);
 });
 
 test('320 complete eight-month lives distinguish earned depth, travel, repaired regret and shallow contacts',()=>{

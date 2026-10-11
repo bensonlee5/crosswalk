@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import {startTutorial, restoreTutorial, advanceTutorial, tutorialSteps, TUTORIAL_STORAGE_KEY} from '../lib/tutorial.ts';
-import {player, move, createEnvironment} from '../lib/game.ts';
+import {move} from '../lib/game.ts';
+import {careerChoices} from '../lib/careers.ts';
+import {currentGame} from './current-fixture.mjs';
 const next = s => advanceTutorial(s, 'next');
 let s = startTutorial('NEW');
 assert.equal(TUTORIAL_STORAGE_KEY, 'cw_tutorial_v1');
@@ -18,7 +20,7 @@ assert.equal(restoreTutorial(JSON.stringify(s),'NEW',false).step,'travel','reloa
 s=advanceTutorial(s,'acted'); assert.equal(s.step,'paths');
 assert.equal(advanceTutorial(s,'acted'),s,'duplicate success does not skip a lesson');
 s=next(s); assert.equal(s.step,'neighbors'); s=next(s); assert.equal(s.step,'weather');
-s=advanceTutorial(s,'forecast-read'); assert.equal(s.step,'week');
+s=advanceTutorial(s,'forecast-read'); assert.equal(s.step,'month');
 s=advanceTutorial(s,'bills-reviewed'); assert.equal(s.step,'finish');
 s=next(s); assert.equal(s.status,'completed');
 assert.equal(advanceTutorial(s,'next'),s); assert.equal(restoreTutorial(JSON.stringify(s),'ANOTHER').status,'completed');
@@ -28,10 +30,12 @@ assert.equal(restoreTutorial(JSON.stringify(advanceTutorial(replay,'skip')),'ANO
 assert.equal(restoreTutorial(JSON.stringify(replay),'OLD',false).status,'skipped');
 assert.equal(restoreTutorial(JSON.stringify(replay),'FRESH',true).step,'welcome');
 for(const step of tutorialSteps){const state={...startTutorial('A'),step};assert.equal(advanceTutorial(state,'skip').status,'skipped');assert.equal(state.status,'active','transitions are immutable');}
-// Suggested first activity is affordable, repeatable and never spends on housing or a shared opportunity.
-const p=player('Learner');const g={code:'A',mode:'hotseat',host:'host',members:{host:[p.id]},players:[p],status:'playing',round:1,turn:0,maxRounds:8,log:[],seen:[],event:0,rulesVersion:2,...createEnvironment()};
-const original=structuredClone(g);let guide=startTutorial(g.code);for(let i=0;i<10;i++)guide=next(guide);
+// Guidance alone never acts; the first job requires a separate application, acceptance and shift.
+const g=currentGame({names:['Learner']}),p=g.players[0],original=structuredClone(g);
+let guide=startTutorial(g.code);for(let i=0;i<10;i++)guide=next(guide);
 assert.deepEqual(g,original,'finishing guidance alone leaves the game untouched');
-move(g,'visit','WORK'); assert.equal(p.hours,6);assert.equal(p.cash,1100);assert.equal(p.housing,0);
-move(g,'work');assert.equal(p.hours,4);assert.equal(p.cash,1420);assert.equal(p.energy,58);assert.equal(p.housing,0);
-console.log('PASS: tutorial versioning, malformed/blocked storage input, existing-save opt-in, every skip point, replay, interruption recovery, event guards, duplicate confirmations and non-mutating walkthrough; safe first shift');
+move(g,'visit','WORK');assert.equal(p.hours,6);assert.equal(p.cash,6000);assert.equal(p.housing,0);
+const apply=careerChoices(g,p).find(c=>c.verb==='apply'&&c.target==='t.technical.assistant');assert.equal(apply.available,true);move(g,apply.id);assert.equal(p.hours,5);
+const accept=careerChoices(g,p).find(c=>c.verb==='accept');move(g,accept.id);assert.equal(p.hours,5);
+const work=careerChoices(g,p).find(c=>c.verb==='work'&&c.paidHours===160),cash=p.cash;move(g,work.id);assert.equal(p.hours,3);assert.equal(p.cash,cash+work.cash);assert.equal(p.housing,0);
+console.log('PASS: tutorial storage, skip/replay, interruptions, duplicate events, non-mutating guidance and separate current application/acceptance/shift');

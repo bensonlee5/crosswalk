@@ -1,22 +1,19 @@
 /** Seeded engine-driven life runs. No browser, network, database or production state. */
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
-import {player,move,reason} from '../lib/game.ts';
-import {initializeEconomyPlayer,economyPaidHours} from '../lib/economy.ts';
-import {initializeLife} from '../lib/life-events.ts';
-import {initializeWorldPlayer,initializeSharedWorld,worldChoices,regionDefinitions} from '../lib/world-life.ts';
-import {initializeStory} from '../lib/story-arcs.ts';
+import {move,reason} from '../lib/game.ts';
+import {economyPaidHours} from '../lib/economy.ts';
+import {worldChoices,regionDefinitions} from '../lib/world-life.ts';
 import {castCharacters} from '../lib/cast-characters.ts';
-import {initializeCast,castPeople,castEnding} from '../lib/character-cast.ts';
+import {castPeople,castEnding} from '../lib/character-cast.ts';
 
+import {currentGame} from './current-fixture.mjs';
+import {careerChoices} from '../lib/careers.ts';
 const strategyNames=['purposeful','nomad','unlucky','shallow','exhausted'];
 const route=['alder','alder','saffron','embermesa','glasssteppe','pelagia','saffron','alder'];
 const targets=castCharacters.filter(c=>c.region==='alder'&&['bram','oren'].includes(c.id)).map(c=>c.id);
-function fresh(seed){
- const p={...player('Simulated life',1),id:'sim-player'};
- const g={code:'SIMCAST',mode:'hotseat',host:'simulation',members:{simulation:[p.id]},players:[p],status:'lobby',round:1,turn:0,maxRounds:8,log:[],seen:[],event:0,rulesVersion:2,lifeVersion:1,worldVersion:1,storyVersion:1,economyVersion:1,balanceVersion:1,castVersion:1,turnsTaken:0};
- initializeEconomyPlayer(p,g);g.status='playing';initializeLife(g,seed);initializeWorldPlayer(p);initializeSharedWorld(g);initializeStory(g);initializeCast(g);return g;
-}
+function fresh(seed){return currentGame({names:['Simulated life'],seed});}
+function paidCommitment(g){const p=g.players[0];move(g,'visit','WORK');const use=(verb,target)=>{const c=careerChoices(g,p).find(c=>c.verb===verb&&(!target||c.target===target));assert.ok(c?.available,c?.reason??`${verb} missing`);move(g,c.id);};if(!p.career.contracts.some(c=>c.active&&c.kind==='main'&&c.region===p.world.region)){use('apply','t.technical.assistant');use('accept');}const c=careerChoices(g,p).find(c=>c.verb==='work'&&c.region===p.world.region&&c.target.endsWith('.regular'));assert.ok(c?.available,c?.reason);move(g,c.id);return true;}
 function serializeAndCheck(g){
  const before=JSON.stringify(g),client=JSON.parse(before);delete client.lifeSeed;
  assert.deepEqual(castPeople(g,g.players[0]),castPeople(client,client.players[0]),'The client view uses saved encounters without a secret seed');
@@ -54,9 +51,9 @@ function life(seed,strategy){
    // Adversarial resource state, deliberately re-applied each month. This is
    // an availability stress fixture, not a claim about a sustainable budget.
    p.cash=0;p.hours=0;p.energy=0;
-   for(const v of castPeople(g,p))for(const c of v.choices)assert.equal(c.available,false,'No-time player cannot acquire a free introduction');
+   for(const v of castPeople(g,p).filter(v=>castCharacters.some(c=>c.id===v.id)))for(const c of v.choices)assert.equal(c.available,false,'No-time player cannot acquire a free introduction');
   }else{
-   assert.ok(ordinary(g,'work','WORK'),`${strategy}/${seed}/${month}: normal work remains affordable`);
+   assert.ok(paidCommitment(g),`${strategy}/${seed}/${month}: accepted work remains affordable`);
    if(strategy==='nomad'&&p.world.region!==route[month-1]){
     const travel=worldChoices(p,g).find(c=>c.key===`travel:${route[month-1]}`);assert.ok(travel?.available,travel?.reason??'Travel choice is missing');
     move(g,`world:${travel.id}`);visited.add(p.world.region);

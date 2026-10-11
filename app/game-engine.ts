@@ -65,7 +65,7 @@ export function createTown(parent:HTMLElement,onPick:(place:string,actorId?:stri
  function sync(next:Player[],nextTurn:number,enabled:boolean,project?:Game['project'],nextGame?:Game,actors:TownActor[]=[]){
   if(disposed||!next[nextTurn])return;const current=next[nextTurn],nextRegion=sceneRegion(current.world?.region),nextContext=[nextGame?.code,current.id,nextGame?.round,nextRegion].join('|'),changedContext=!!context&&context!==nextContext,regionChanged=nextRegion!==region;
   if(changedContext||(!enabled&&active))cancelGestures();if(changedContext)settleMotion();context=nextContext;players=next;turn=nextTurn;active=enabled;game=nextGame;region=nextRegion;
-  const evolution=nextGame?worldView(current,nextGame):null;shown=visiblePlaces(current,nextGame);closed=evolution?.closedPlaces||current.world?.closedPlacesByRegion?.[region]||[];
+  const evolution=nextGame?worldView(current,nextGame):null;shown=visiblePlaces(current,nextGame);closed=evolution?.closedPlaces||[];
   const nextKey=[region,shown.join(','),closed.join(','),evolution?.localeRevision,actors.map(a=>a.id+'@'+a.spot).join('|'),!!project?.completed].join(':');
   const rebuilt=nextKey!==key,oldFigures=new Map(figures);if(rebuilt){key=nextKey;rebuild(actors,project);}
   for(const [i,p]of players.entries()){
@@ -91,7 +91,7 @@ export function createTown(parent:HTMLElement,onPick:(place:string,actorId?:stri
    if(visible){occupied.push(bounds);labelHits.set(place,bounds);}
   }
  }
- function weather(value:Weather|null){currentWeather=value;parent.dataset.season=value?.season||'classic';parent.dataset.weather=value?.type||'none';parent.dataset.atmosphere=value?.atmosphere||'clear';renderWeather();}
+ function weather(value:Weather|null){currentWeather=value;parent.dataset.season=value?.season||'';parent.dataset.weather=value?.type||'none';parent.dataset.atmosphere=value?.atmosphere||'clear';renderWeather();}
  function renderWeather(){weatherLayer.replaceChildren();const type=currentWeather?.type,atmosphere=currentWeather?.atmosphere;const tint=atmosphere==='fog'?'#dce4df':atmosphere==='dust'?'#c79768':type==='rain'?'#4d7184':type==='snow'?'#d6e7ed':type==='heat'?'#e6b772':null;if(tint)weatherLayer.append(svgNode('rect',{width:'100%',height:'100%',fill:tint,opacity:atmosphere==='fog'?'.16':'.08'}));const enabled=!reduced&&!low&&(type==='rain'||type==='snow');parent.dataset.weatherParticles=enabled?'32':'0';if(enabled)for(let i=0;i<32;i++){const x=((i*137.3)%Math.max(width,1)),y=((i*91.7)%Math.max(height,1));const el=type==='rain'?svgNode('path',{d:`M${x} ${y}l-4 16`,stroke:'#dce9e9','stroke-width':1.2,opacity:'.4',class:'iso-rain'}):svgNode('circle',{cx:x,cy:y,r:2,fill:'#f7fcff',opacity:'.7',class:'iso-snow'});el.style.animationDelay=(-i*.31)+'s';weatherLayer.append(el);}}
  function resize(){const oldWidth=width,oldHeight=height;width=parent.clientWidth||1;height=parent.clientHeight||1;root.setAttribute('viewBox',`0 0 ${width} ${height}`);if(framed){view.x+=(width-oldWidth)/2;view.y+=(height-oldHeight)/2;applyView();}renderWeather();dirty=true;}
  const observer=new ResizeObserver(resize);observer.observe(parent);resize();

@@ -38,11 +38,6 @@
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "app/api",
-    "app/layout.tsx",
-    "app/chatgpt-auth.ts",
-    "lib/db.ts",
-    "lib/usage-counts.ts"
+    "dist"
   ]
 }

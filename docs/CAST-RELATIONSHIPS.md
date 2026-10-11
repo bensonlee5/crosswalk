@@ -1,10 +1,10 @@
 # A few people who become part of a life
 
-## Scope and compatibility
+## Current scope
 
 This edition has 26 named characters: the existing 14 regional residents, Mina/Eli/Jo and Neri, plus eight authored recurring people. Four new people begin in Alder and one belongs to each other region. Existing story arcs retain their own choices and endings; they are not restarted or replaced.
 
-Only newly created rooms get `castVersion: 1`. Both the Supabase authoritative create service and the original API initialize the same engine. Existing unmarked saves, including completed v34 lives, are inert to all cast hooks. There is no live-data migration and no database schema change. Cast state remains additive JSON within the existing room row.
+Current lives initialize the authored cast through the authoritative Supabase service. Cast state is private structured room data; ownership and redaction remain mandatory.
 
 ## Chance, persistence, and availability
 

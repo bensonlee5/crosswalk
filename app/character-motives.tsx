@@ -34,6 +34,6 @@ export function CharacterMotives({g,p,actorId,spot,disabled,onAction}:{g:Game;p:
  </details>;
 }
 export function MotiveJournal({g,p}:{g:Game;p:Player}){
- if(g.motivesVersion!==1||p.castRedacted||!p.motives?.receipts.length)return null;
+ if(p.castRedacted||!p.motives?.receipts.length)return null;
  return <details className="story-timeline motive-journal"><summary>What you made room for together</summary><ol>{[...p.motives.receipts].reverse().map(r=><li key={r.id}><small>{economyMonthLabel(g,r.week).toUpperCase()}</small><strong>{r.title}</strong><p>{qualitativeText(r.outcome)}</p></li>)}</ol></details>;
 }

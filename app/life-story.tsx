@@ -1,23 +1,23 @@
 'use client';
-import {qualitativeText} from '@/lib/point-presentation';
-import {useEffect,useRef,useState} from 'react';
-import type {Game,Player} from '@/lib/game';
-import {lifeChoices,relationshipViews,getLifeEvent,repairChoice,repairHomeChoice,lifeEffectText} from '@/lib/life-events';
-import {worldView,regionDefinitions} from '@/lib/world-life';
-import {aspirations,getLifeProgress} from '@/lib/life-progress';
+import { actionFamiliarityKey,familiarityView } from '@/lib/action-familiarity';
+import { actionReaction } from '@/lib/action-reactions';
+import { canonicalCharacterById } from '@/lib/character-canon';
+import { castEnding } from '@/lib/character-cast';
+import { economyMonthLabel } from '@/lib/economy';
+import type { Game,Player } from '@/lib/game';
+import { getLifeEvent,lifeChoices,lifeEffectText,relationshipViews,repairChoice,repairHomeChoice } from '@/lib/life-events';
+import { aspirations,getLifeProgress } from '@/lib/life-progress';
+import { lifeEventPersonResponse } from '@/lib/person-event-responses';
+import { capturePersonReceipt } from '@/lib/person-response';
+import { qualitativeText } from '@/lib/point-presentation';
+import { storyEnding } from '@/lib/story-arcs';
+import { regionDefinitions,worldView } from '@/lib/world-life';
+import { useEffect,useRef,useState } from 'react';
+import { CastJournal } from './cast-story';
+import { portraitPainting } from './game-art';
 import GamePainting from './game-painting';
-import {portraitPainting} from './game-art';
-import {StoryTimeline} from './story-timeline';
-import {storyEnding} from '@/lib/story-arcs';
-import {economyMonthLabel,hasModernEconomy} from '@/lib/economy';
-import {castEnding} from '@/lib/character-cast';
-import {CastJournal} from './cast-story';
-import {PersonResponseStage} from './person-response';
-import {capturePersonReceipt} from '@/lib/person-response';
-import {lifeEventPersonResponse} from '@/lib/person-event-responses';
-import {canonicalCharacterById} from '@/lib/character-canon';
-import {actionReaction} from '@/lib/action-reactions';
-import {actionFamiliarityKey,familiarityView} from '@/lib/action-familiarity';
+import { PersonResponseStage } from './person-response';
+import { StoryTimeline } from './story-timeline';
 
 // Display-only labels for the already-public earned IDs. Never evaluate current
 // qualifications against an observer's deliberately incomplete player view.
@@ -25,7 +25,7 @@ const publicMilestoneTitles:Record<string,string>={career_apprentice:'Apprentice
 
 export function PublicLifeSummary({g,p}:{g:Game;p:Player}){
  const earned=[...new Set(p.milestones||[])].filter(id=>publicMilestoneTitles[id]);
- return <section className="life-story life-public-summary"><small>{p.name.toUpperCase()} · SHARED HISTORY</small><h2>Personal life is private</h2><p>Personal relationships and the life summary are visible only to {p.name}.</p>{earned.length>0&&<section><h3>Earned chapters</h3><p>These achievements remain part of the shared record.</p><ul>{earned.map(id=><li key={id}>{publicMilestoneTitles[id]}</li>)}</ul></section>}{g.storyVersion===1&&<StoryTimeline g={g} p={p}/>}</section>;
+ return <section className="life-story life-public-summary"><small>{p.name.toUpperCase()} · SHARED HISTORY</small><h2>Personal life is private</h2><p>Personal relationships and the life summary are visible only to {p.name}.</p>{earned.length>0&&<section><h3>Earned chapters</h3><p>These achievements remain part of the shared record.</p><ul>{earned.map(id=><li key={id}>{publicMilestoneTitles[id]}</li>)}</ul></section>}<StoryTimeline g={g} p={p}/></section>;
 }
 
 export function LifeHeadingLabel({g,p}:{g:Game;p:Player}){
@@ -38,7 +38,7 @@ export function LifeJournal(props:LifeJournalProps){
 }
 
 function PersonalLifeJournal({g,p,disabled,onAction}:LifeJournalProps){
- const progress=getLifeProgress(p,g),event=getLifeEvent(p,g),choices=lifeChoices(p,g),period=hasModernEconomy(g)?'month':'week';
+ const progress=getLifeProgress(p,g),event=getLifeEvent(p,g),choices=lifeChoices(p,g),period='month';
  const mounted=useRef(true);useEffect(()=>{mounted.current=true;return()=>{mounted.current=false}},[]);
  const [personResponse,setPersonResponse]=useState<{g:Game;p:Player;actorId:string;name:string;remote:boolean;receipt:{actionId:string;title:string;body:string;outcome:string}}|null>(null);
  const currentContext=[g.code,p.id,g.round,p.world?.region||'alder'].join('|'),latestContext=useRef(currentContext);latestContext.current=currentContext;
@@ -46,7 +46,7 @@ function PersonalLifeJournal({g,p,disabled,onAction}:LifeJournalProps){
  const lock=useRef(false),[pending,setPending]=useState(false),[message,setMessage]=useState('');
  async function choose(id:string){
   if(disabled||lock.current)return;
-  const before=structuredClone(p),context=currentContext,key=actionFamiliarityKey(id,p,g),prior=familiarityView(p,{actionKey:key}).count;
+  const context=currentContext,key=actionFamiliarityKey(id,p,g),prior=familiarityView(p,{actionKey:key}).count;
   const actorId=id.startsWith('repair:')?id.slice(7):null;
   const repair=actorId&&['mina','eli','jo'].includes(actorId)?repairChoice(p,g,actorId as 'mina'|'eli'|'jo'):null;
   lock.current=true;setPending(true);setMessage('');setPersonResponse(null);
@@ -60,7 +60,7 @@ function PersonalLifeJournal({g,p,disabled,onAction}:LifeJournalProps){
     setPersonResponse({g:result,p:updated,actorId,name:canonicalCharacterById[actorId].name,remote,receipt:capturePersonReceipt({actionId:id,title:repair.title,body:repair.outcome,outcome:repair.outcome,week:result.round},updated,actorId)});
    }else{
     const eventReceipt=id.startsWith('event:')?updated.life?.receipts.find(r=>r.resolved?.choiceId===id.slice(6)):undefined;
-    const response=eventReceipt?lifeEventPersonResponse(eventReceipt,before):null;
+    const response=eventReceipt?lifeEventPersonResponse(eventReceipt):null;
     if(response&&canonicalCharacterById[response.speakerId]&&eventReceipt?.resolved){const actorId=response.speakerId;setPersonResponse({g:result,p:updated,actorId,name:canonicalCharacterById[actorId].name,remote:true,receipt:capturePersonReceipt({actionId:id,title:eventReceipt.resolved.title,body:eventReceipt.body,outcome:eventReceipt.resolved.outcome,response,week:eventReceipt.week},updated,actorId)});}
     else setMessage(actionReaction({actionId:id,count,lastVariant:familiar?.lastVariant})||'You pause over your decision before moving on.');
    }
@@ -72,7 +72,7 @@ function PersonalLifeJournal({g,p,disabled,onAction}:LifeJournalProps){
  <section className="life-ambition"><small>THE LIFE YOU ARE BUILDING</small><h2>{progress.title}</h2><p className="life-caption">Current footing: {progress.currentTier}</p><p>{qualitativeText(progress.nextStep)}</p><div className="aspiration-grid">{aspirations.map(a=><button key={a.id} aria-pressed={progress.aspiration?.id===a.id} disabled={disabled||pending||!progress.canSelectAspiration} onClick={()=>void choose('aspire:'+a.id)}><strong>{a.title}</strong><span>{a.description}</span></button>)}</div><p className="life-caption">Choose a direction, not a guarantee. You can change direction once each {period}. {progress.selectionReason}</p></section>
  {message&&<p role="status" className="life-response">{message}</p>}{personResponse&&<div className="encounter-panel"><PersonResponseStage {...personResponse} spot={personResponse.p.place} known/></div>}
  {event&&<section className="life-incident"><small>{economyMonthLabel(g).toUpperCase()} · A TURN IN YOUR STORY</small><h2>{event.title}</h2><p>{qualitativeText(event.body)}</p><div className="life-impact">{qualitativeText(event.impact)}<small>{qualitativeText(lifeEffectText(event.effects).join(" · "))}</small></div>{event.pending&&choices.length>0?<><h3>What will you do?</h3><div className="life-options">{choices.map(c=><button key={c.id} disabled={disabled||pending||!c.available} onClick={()=>void choose('event:'+c.id)}><strong>{c.title}</strong><p>{qualitativeText(c.body)}</p><span>{qualitativeText(c.previewText.join(' · '))}</span>{!c.available&&<em>{qualitativeText(c.reason)}</em>}</button>)}</div><p className="life-caption">You can act elsewhere first. Ending the {period} without choosing uses the free, cautious response.</p></>:<p className="life-response">{qualitativeText(event.resolved?.outcome||'You have responded to this turn of events.')}</p>}</section>}
- {g.storyVersion===1&&<StoryTimeline g={g} p={p}/>}
+ <StoryTimeline g={g} p={p}/>
  <CastJournal g={g} p={p}/>
  <section><small>PEOPLE WHO REMEMBER</small><h2>A life has witnesses.</h2><div className="life-relationships">{relationshipViews(p).map(r=>{const repair=repairChoice(p,g,r.id);return <article key={r.id}><GamePainting src={portraitPainting(r.id)} alt={r.name}/><div><h3>{r.name}</h3><strong>{r.status}</strong><p>{qualitativeText(r.history[r.history.length-1]||r.role)}</p><button disabled={disabled||pending||!repair.available} onClick={()=>void choose('repair:'+r.id)}>{repair.title||'Make time for this friendship'}</button><small>{qualitativeText(repair.available?repair.previewText.join(' · '):repair.reason)}</small></div></article>})}</div></section>
  <section><small>CHAPTERS OF ACHIEVEMENT</small><h2>What you leave behind</h2><div className="life-ladders">{progress.ladders.map(l=><article key={l.id}><h3>{l.title}</h3><ol>{l.tiers.map(t=><li key={t.id} className={t.earned?'earned':t.current?'next':''}><i aria-hidden="true">{t.earned?'✦':'○'}</i><div><strong>{t.title}</strong><p>{qualitativeText(t.description)}</p><small>{t.earned?'Part of your legacy':t.current?'Your current chapter':'Still possible'}</small></div></li>)}</ol></article>)}</div></section>
@@ -111,7 +111,7 @@ export function LifeEnding({g,onAgain}:{g:Game;onAgain:()=>void}){
      {world.companion.status==='partner'&&<p>You and Neri chose a partnership. {world.companion.posting} Your homes, work and next direction remain decisions to make honestly.</p>}
      {world.companion.commitment==='friendship'&&<p>You and Neri chose friendship. {world.companion.posting} Keeping that connection does not require sharing an address.</p>}
      {world.companion.status==='declined'&&<p>You chose an independent route when Neri invited you along. The places you discovered still became your own.</p>}
-     {world.closedPlaces.length>0&&<p>{g.storyVersion===1?'Some doors closed while the neighborhood made room for new uses. The town carries those changes into its next chapter.':'Some old doors closed because you made room for something else. Those choices remain visible in the towns you leave behind.'}</p>}
+     {world.closedPlaces.length>0&&<p>{'Some doors closed while the neighborhood made room for new uses. The town carries those changes into its next chapter.'}</p>}
     </>}
     <h3>What remains</h3><ul>{view.milestones.length?view.milestones.map(m=><li key={m.id}><strong>{m.title}</strong><span>{qualitativeText(m.description)}</span></li>):<li>You kept making choices. The next chapter can start from here.</li>}</ul>
    </article>;

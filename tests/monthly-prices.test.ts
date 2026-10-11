@@ -4,14 +4,13 @@ import {monthlyPriceBreakdown,perEventPrice} from '../lib/monthly-prices.ts';
 import {economyQuote} from '../lib/economy.ts';
 import {actions,player,activityForPlayer} from '../lib/game.ts';
 
-const p={...player('Price reader',1),storyVersion:1,economyVersion:1};
+const p=player('Price reader');
 const g={round:1};
 const expected:Record<string,string>={
  cafe_break:'20 weekday coffees this month · $7 per coffee',
  friends:'8 café meetups this month · $18 per meetup',
  home_meal:'20 dinners this month · $5 extra per dinner',
  market_taste:'20 weekday lunches this month · $18 per lunch · $13 extra per lunch after grocery credit',
- work_mentor:'4 guided sessions this month · $45 per session',
 };
 test('all counted monthly routines show frequency and unit price from the resolved quote',()=>{
  for(const region of ['alder','saffron','glasssteppe','pelagia','embermesa']){
@@ -34,12 +33,6 @@ test('display does not change any total, state, or repeated-month availability',
   assert.equal(monthlyPriceBreakdown(chosen,a,{round:2}),expected[id]);
  }
  assert.deepEqual(p,snapshot);
-});
-test('legacy and uncounted activities gain no invented unit price',()=>{
- for(const a of actions){
-  assert.equal(monthlyPriceBreakdown({...p,economyVersion:undefined},a,g),'');
-  if(!expected[a.id])assert.equal(monthlyPriceBreakdown(p,a,g),'');
- }
 });
 test('fractional prices retain cents and uneven divisions are labeled as rounded averages',()=>{
  assert.equal(perEventPrice(141,20),'$7.05');

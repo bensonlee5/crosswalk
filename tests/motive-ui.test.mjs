@@ -27,7 +27,7 @@ test('motives render only current context, never counters or facial emotion fore
  const reloaded=JSON.parse(JSON.stringify(g));assert.equal(render(UI.CharacterMotives,{...base,g:reloaded,p:reloaded.players[0]}),html);
  const journal=render(UI.MotiveJournal,{g,p});assert.match(journal,/Mina/);assert.match(journal,/envying people/);
  assert.equal(render(UI.CharacterMotives,{...base,p:{...p,castRedacted:true}}),'');assert.equal(render(UI.MotiveJournal,{g,p:{...p,castRedacted:true}}),'');
- assert.equal(render(UI.CharacterMotives,{...base,g:{...g,motivesVersion:undefined}}),'');assert.equal(render(UI.CharacterMotives,{...base,spot:'APARTMENTS'}),'');
+assert.equal(render(UI.CharacterMotives,{...base,spot:'APARTMENTS'}),'');
  const ages=render(History,{g,p,actorId:'jo'});assert.match(ages,/Age 54/);assert.match(ages,/Kit’s parent/);assert.doesNotMatch(ages,/thank-you notice omitted/,'The public family fact does not disclose gated incidents');
 });
 

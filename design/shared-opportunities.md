@@ -11,7 +11,7 @@ Only the owner may collect/cancel an order or use/release a booking. Unprepared 
 
 ## Authority and compatibility
 
-The new `sharedOpportunitiesVersion: 1` marker is server-authored only on new Supabase rooms. Existing unmarked rooms remain unchanged. The module uses clone/validate/commit for its mutation, within the production service’s existing command authentication, durable request receipts and compare-and-swap transaction. Replayed action receipts never pay again; stale choice IDs fail before spending anything. Partial state is never committed.
+Shared opportunities are initialized for every current life. The module uses clone/validate/commit for its mutation, within the production service’s existing command authentication, durable request receipts and compare-and-swap transaction. Replayed action receipts never pay again; stale choice IDs fail before spending anything. Partial state is never committed.
 
 Shared order ownership, stock provenance, booking commitments and public cause/effect events are visible. Personal receipts and direct-response metadata are seat-private. The view functions are pure and do not silently initialize or upgrade saves. The larger Whaleskin, Dalloway and Bracken stories are not implemented by this pilot.
 
@@ -24,5 +24,3 @@ Existing world choices include IDs `shared:<round>:<revision>:<region>:<key>`; t
 ## Response-window check
 
 The customer order pays for an eight-hour consolidated batch; the existing NPC batch is four hours. This makes new demand an economically different option. Other players receive their next actual turn to respond, so ordering late in the rotating turn order does not silently remove the job before they can see it. `helperTurns` records that public window; timely player completion keeps one-block pickup. NPC fulfillment after helpers pass is explicitly marked delayed, with busy-service collection taking two blocks or a full-refund choice. Solo host fulfillment is immediate. Orders/stock/receipts are still finite and repeated request IDs cannot create another payment.
-
-Validation: 440-test serial aggregate passed before the final direct-host presentation/event-speaker addition; a final 46-test targeted run covered familiarity, real PostgreSQL mutation/ownership/privacy/retry behavior, and all regional WorldStory rendering after that addition. Frontend/backend types, engine-copy check, focused lint and production build passed. Sixteen deterministic solo-to-four-player eight-month campaigns and before/after-helper turn placements pass. The original 81 legacy state hashes pass with only the new familiarity metadata excluded. Whole-repository lint remains non-clean due to broader existing hook/ref/unused-code findings; this change does not claim to resolve that unrelated baseline. Integration owns final combined validation and publication.

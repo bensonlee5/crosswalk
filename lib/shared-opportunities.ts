@@ -1,140 +1,398 @@
-import {financialPayQuote,recordFinancialPay} from './financial-recovery.ts';
-import type {Game,Player} from './game.ts';
-import {economyProfile,economyWorkReason,recordEconomyPaidHours} from './economy.ts';
-import {regionDefinitions,visiblePlaces,type RegionId,type WorldChoiceView} from './world-life.ts';
-
-/** Two bounded, opt-in crossings. Public orders/room commitments are shared;
+import { financialPayQuote, recordFinancialPay } from './financial-recovery.ts';
+import type { Game, Player } from './game.ts';
+import { economyProfile, economyWorkReason, recordEconomyPaidHours } from './economy.ts';
+import { regionDefinitions, visiblePlaces, type RegionId, type WorldChoiceView } from './world-life.ts';
+/** Two bounded everyday crossings. Public orders/room commitments are shared;
  * motives, decisions still being considered, and personal receipts are not. */
-export type SharedPersonResponse={speakerId:string;speech:string;activity:string;emotion:'attentive'|'warm'|'concerned'|'hurt'|'relieved'|'firm'|'sad'|'proud'|'tired';gesture:'listen'|'offer'|'pause'|'point'|'withdraw'|'wave'};
-export type SharedReceipt={id:string;actionId:string;round:number;week:number;title:string;body:string;outcome:string;response:SharedPersonResponse};
-export type SharedPersonalState={version:1;receipts:SharedReceipt[];orderRounds:number[];preparationRounds:number[];bookingRounds:number[];portionRounds:number[];outdoorRounds:number[]};
-export type SharedActor={kind:'player'|'npc';id:string;name:string};
-export type SharedConsequenceEvent={id:string;actionId:string;actor:SharedActor;personId:string;region:RegionId;place:string;publicCause:string;effect:string;receiptId?:string;timing:{round:number;respondByRound?:number}};
-export type SharedOrder={id:string;region:RegionId;round:number;owner:SharedActor;status:'pending'|'ready'|'collected'|'cancelled';price:number;preparedBy?:SharedActor;preparedRound?:number;delayed?:boolean;helperTurns?:string[];source:'advance-order'|'npc-standing-order'};
-export type SharedBooking={id:string;region:RegionId;round:number;owner:SharedActor;slot:'main'|'annex';purpose:'supper'|'rehearsal';status:'reserved'|'used'|'released'|'expired';deposit:number};
-export type SharedTownMonth={annexReady:boolean;annexPreparedBy?:SharedActor;sparePortions:{orderId:string;buyerId?:string;donated?:boolean}[];npcPlan:'main'|'courtyard'|'annex'};
-export type SharedOpportunitiesState={version:1;revision:number;lastRound:number;finalized?:boolean;orders:SharedOrder[];bookings:SharedBooking[];months:Record<string,SharedTownMonth>;events:SharedConsequenceEvent[]};
-export type SharedFact={id:string;title:string;body:string;region:RegionId;place:string;cause:string};
-type Host={meal:{id:string;name:string;dish:string;activity:string;order:string;ready:string};room:{id:string;name:string;activity:string;plan:string;reserve:string;setup:string}};
-const hosts:Record<RegionId,Host>={
- alder:{meal:{id:'alder_tess',name:'Tess',dish:'leek pie',activity:'Tess clips an order ticket beside the ferry timetable.',order:'One pie saved. That gives me a reason to call in another pair of hands before the ferry rush.',ready:'That is the last pie cooling. Someone can take the spare slice without paying for a whole supper.'},room:{id:'alder_rowan',name:'Rowan',activity:'Rowan slides the seed trays away from the room diary.',plan:'seed-sorting circle',reserve:'I can move the seed trays. The quiet room is yours; please do use it.',setup:'The annex is dry, and those chairs will do. We can keep the seed circle inside after all.'}},
- saffron:{meal:{id:'saffron_leila',name:'Leila',dish:'chickpea flatbread',activity:'Leila tucks a ticket under the blue bread bands.',order:'A real order. Good. I can pay someone to help with this batch instead of promising a second oven.',ready:'The filling is ready. Keep one bread warm for the order; the spare can go at the counter price.'},room:{id:'saffron_ada',name:'Ada',activity:'Ada moves a stack of film-discussion chairs beside the booking sheet.',plan:'film discussion',reserve:'Take the room. We can argue about the film in the courtyard, provided the neighbors get a turn.',setup:'Two rooms, two conversations. Nobody has to pretend they liked the same film.'}},
- glasssteppe:{meal:{id:'glass_ren',name:'Ren',dish:'mushroom dumplings',activity:'Ren sets a canteen ticket beside the platform roster.',order:'The canteen has your order. There is a short packing shift now, if someone has room for it.',ready:'Lids on, labels checked. The extra portion is at the canteen counter, not on the departing train.'},room:{id:'glass_pavel',name:'Pavel',activity:'Pavel closes their book to check the room diary.',plan:'reading circle',reserve:'The room is yours. I will find the readers a sheltered corner outside unless the annex is ready.',setup:'A whole room with chairs, and no watering required. I am going to sit in one.'}},
- pelagia:{meal:{id:'pelagia_lio',name:'Lio',dish:'ginger broth and rice cakes',activity:'Lio writes the order under today’s greens on the chalkboard.',order:'Today’s greens, tomorrow’s plan. This order makes a small paid packing job worth offering.',ready:'The broth is portioned. Your customer has a bowl, and the spare need not wait for another boat.'},room:{id:'pelagia_esme',name:'Esme',activity:'Esme sets the recording slips beside the room calendar.',plan:'archive listening circle',reserve:'You have the room. I will ask the listeners to meet outside; none of their recordings are part of your booking.',setup:'The annex gives us somewhere quiet. The people on the recordings still choose what we play.'}},
- embermesa:{meal:{id:'mesa_june',name:'June',dish:'squash cornbread supper',activity:'June pins the ticket beside the griddle at Last Light Diner.',order:'That is an order, then. Not a campaign to save me. There is paid prep work if somebody wants it.',ready:'Plates ready. Ring once, let the food do the announcing, and leave that spare for the counter.'},room:{id:'mesa_inez',name:'Inez',activity:'Inez folds the irrigation checklist over the room calendar.',plan:'seed-library evening',reserve:'A booking means chairs and a roof, not my entire evening. We can sort seeds outside if we must.',setup:'The door closes and the roof holds. That is plenty of ceremony for a second room.'}}
+export type SharedPersonResponse = {
+    speakerId: string;
+    speech: string;
+    activity: string;
+    emotion: 'attentive' | 'warm' | 'concerned' | 'hurt' | 'relieved' | 'firm' | 'sad' | 'proud' | 'tired';
+    gesture: 'listen' | 'offer' | 'pause' | 'point' | 'withdraw' | 'wave';
 };
-const regions=Object.keys(hosts) as RegionId[];
-const monthKey=(round:number,region:RegionId)=>`${round}:${region}`;
-const enabled=(g:Game)=>g.sharedOpportunitiesVersion===1&&g.sharedOpportunities?.version===1;
-const actor=(p:Player):SharedActor=>({kind:'player',id:p.id,name:p.name});
-const hostActor=(region:RegionId,kind:'meal'|'room'):SharedActor=>({kind:'npc',id:hosts[region][kind].id,name:hosts[region][kind].name});
-const personal=():SharedPersonalState=>({version:1,receipts:[],orderRounds:[],preparationRounds:[],bookingRounds:[],portionRounds:[],outdoorRounds:[]});
-const month=(g:Game,region:RegionId)=>g.sharedOpportunities!.months[monthKey(g.round,region)];
-function seedMonth(g:Game){
- const s=g.sharedOpportunities!;
- for(const region of regions){const key=monthKey(g.round,region);if(s.months[key])continue;
-  s.months[key]={annexReady:false,sparePortions:[],npcPlan:'main'};
-  s.orders.push({id:`standing:${g.round}:${region}`,region,round:g.round,owner:hostActor(region,'meal'),status:'pending',price:0,source:'npc-standing-order'});
- }
+export type SharedReceipt = {
+    id: string;
+    actionId: string;
+    round: number;
+    week: number;
+    title: string;
+    body: string;
+    outcome: string;
+    response: SharedPersonResponse;
+};
+export type SharedPersonalState = {
+    version: 1;
+    receipts: SharedReceipt[];
+    orderRounds: number[];
+    preparationRounds: number[];
+    bookingRounds: number[];
+    portionRounds: number[];
+    outdoorRounds: number[];
+};
+export type SharedActor = {
+    kind: 'player' | 'npc';
+    id: string;
+    name: string;
+};
+export type SharedConsequenceEvent = {
+    id: string;
+    actionId: string;
+    actor: SharedActor;
+    personId: string;
+    region: RegionId;
+    place: string;
+    publicCause: string;
+    effect: string;
+    receiptId?: string;
+    timing: {
+        round: number;
+        respondByRound?: number;
+    };
+};
+export type SharedOrder = {
+    id: string;
+    region: RegionId;
+    round: number;
+    owner: SharedActor;
+    status: 'pending' | 'ready' | 'collected' | 'cancelled';
+    price: number;
+    preparedBy?: SharedActor;
+    preparedRound?: number;
+    delayed?: boolean;
+    helperTurns?: string[];
+    source: 'advance-order' | 'npc-standing-order';
+};
+export type SharedBooking = {
+    id: string;
+    region: RegionId;
+    round: number;
+    owner: SharedActor;
+    slot: 'main' | 'annex';
+    purpose: 'supper' | 'rehearsal';
+    status: 'reserved' | 'used' | 'released' | 'expired';
+    deposit: number;
+};
+export type SharedTownMonth = {
+    annexReady: boolean;
+    annexPreparedBy?: SharedActor;
+    sparePortions: {
+        orderId: string;
+        buyerId?: string;
+        donated?: boolean;
+    }[];
+    npcPlan: 'main' | 'courtyard' | 'annex';
+};
+export type SharedOpportunitiesState = {
+    version: 1;
+    revision: number;
+    lastRound: number;
+    finalized?: boolean;
+    orders: SharedOrder[];
+    bookings: SharedBooking[];
+    months: Record<string, SharedTownMonth>;
+    events: SharedConsequenceEvent[];
+};
+export type SharedFact = {
+    id: string;
+    title: string;
+    body: string;
+    region: RegionId;
+    place: string;
+    cause: string;
+};
+type Host = {
+    meal: {
+        id: string;
+        name: string;
+        dish: string;
+        activity: string;
+        order: string;
+        ready: string;
+    };
+    room: {
+        id: string;
+        name: string;
+        activity: string;
+        plan: string;
+        reserve: string;
+        setup: string;
+    };
+};
+const hosts: Record<RegionId, Host> = {
+    alder: { meal: { id: 'alder_tess', name: 'Tess', dish: 'leek pie', activity: 'Tess clips an order ticket beside the ferry timetable.', order: 'One pie saved. That gives me a reason to call in another pair of hands before the ferry rush.', ready: 'That is the last pie cooling. Someone can take the spare slice without paying for a whole supper.' }, room: { id: 'alder_rowan', name: 'Rowan', activity: 'Rowan slides the seed trays away from the room diary.', plan: 'seed-sorting circle', reserve: 'I can move the seed trays. The quiet room is yours; please do use it.', setup: 'The annex is dry, and those chairs will do. We can keep the seed circle inside after all.' } },
+    saffron: { meal: { id: 'saffron_leila', name: 'Leila', dish: 'chickpea flatbread', activity: 'Leila tucks a ticket under the blue bread bands.', order: 'A real order. Good. I can pay someone to help with this batch instead of promising a second oven.', ready: 'The filling is ready. Keep one bread warm for the order; the spare can go at the counter price.' }, room: { id: 'saffron_ada', name: 'Ada', activity: 'Ada moves a stack of film-discussion chairs beside the booking sheet.', plan: 'film discussion', reserve: 'Take the room. We can argue about the film in the courtyard, provided the neighbors get a turn.', setup: 'Two rooms, two conversations. Nobody has to pretend they liked the same film.' } },
+    glasssteppe: { meal: { id: 'glass_ren', name: 'Ren', dish: 'mushroom dumplings', activity: 'Ren sets a canteen ticket beside the platform roster.', order: 'The canteen has your order. There is a short packing shift now, if someone has room for it.', ready: 'Lids on, labels checked. The extra portion is at the canteen counter, not on the departing train.' }, room: { id: 'glass_pavel', name: 'Pavel', activity: 'Pavel closes their book to check the room diary.', plan: 'reading circle', reserve: 'The room is yours. I will find the readers a sheltered corner outside unless the annex is ready.', setup: 'A whole room with chairs, and no watering required. I am going to sit in one.' } },
+    pelagia: { meal: { id: 'pelagia_lio', name: 'Lio', dish: 'ginger broth and rice cakes', activity: 'Lio writes the order under today’s greens on the chalkboard.', order: 'Today’s greens, tomorrow’s plan. This order makes a small paid packing job worth offering.', ready: 'The broth is portioned. Your customer has a bowl, and the spare need not wait for another boat.' }, room: { id: 'pelagia_esme', name: 'Esme', activity: 'Esme sets the recording slips beside the room calendar.', plan: 'archive listening circle', reserve: 'You have the room. I will ask the listeners to meet outside; none of their recordings are part of your booking.', setup: 'The annex gives us somewhere quiet. The people on the recordings still choose what we play.' } },
+    embermesa: { meal: { id: 'mesa_june', name: 'June', dish: 'squash cornbread supper', activity: 'June pins the ticket beside the griddle at Last Light Diner.', order: 'That is an order, then. Not a campaign to save me. There is paid prep work if somebody wants it.', ready: 'Plates ready. Ring once, let the food do the announcing, and leave that spare for the counter.' }, room: { id: 'mesa_inez', name: 'Inez', activity: 'Inez folds the irrigation checklist over the room calendar.', plan: 'seed-library evening', reserve: 'A booking means chairs and a roof, not my entire evening. We can sort seeds outside if we must.', setup: 'The door closes and the roof holds. That is plenty of ceremony for a second room.' } }
+};
+const regions = Object.keys(hosts) as RegionId[];
+const monthKey = (round: number, region: RegionId) => `${round}:${region}`;
+const enabled = (g: Game) => g.sharedOpportunities?.version === 1;
+const actor = (p: Player): SharedActor => ({ kind: 'player', id: p.id, name: p.name });
+const hostActor = (region: RegionId, kind: 'meal' | 'room'): SharedActor => ({ kind: 'npc', id: hosts[region][kind].id, name: hosts[region][kind].name });
+const personal = (): SharedPersonalState => ({ version: 1, receipts: [], orderRounds: [], preparationRounds: [], bookingRounds: [], portionRounds: [], outdoorRounds: [] });
+const month = (g: Game, region: RegionId) => g.sharedOpportunities!.months[monthKey(g.round, region)];
+function seedMonth(g: Game) {
+    const s = g.sharedOpportunities!;
+    for (const region of regions) {
+        const key = monthKey(g.round, region);
+        if (s.months[key])
+            continue;
+        s.months[key] = { annexReady: false, sparePortions: [], npcPlan: 'main' };
+        s.orders.push({ id: `standing:${g.round}:${region}`, region, round: g.round, owner: hostActor(region, 'meal'), status: 'pending', price: 0, source: 'npc-standing-order' });
+    }
 }
-/** Explicit creation/join only. Reading an older save never upgrades it. */
-export function initializeSharedOpportunities(g:Game){if(g.sharedOpportunitiesVersion!==1)return;g.sharedOpportunities??={version:1,revision:0,lastRound:g.round,orders:[],bookings:[],months:{},events:[]};seedMonth(g);for(const p of g.players)initializeSharedOpportunityPlayer(g,p);}
-export function initializeSharedOpportunityPlayer(g:Game,p:Player){if(enabled(g))p.sharedPersonal??=personal();}
-function event(g:Game,e:Omit<SharedConsequenceEvent,'id'>){const s=g.sharedOpportunities!;s.events.push({id:`crossing:${s.events.length+1}`, ...e});}
-function remaining(g:Game,r:RegionId){const m=month(g,r),used=g.sharedOpportunities!.bookings.filter(b=>b.round===g.round&&b.region===r&&(b.status==='reserved'||b.status==='used'));return (['main',...(m.annexReady?['annex']:[])] as ('main'|'annex')[]).filter(slot=>!used.some(b=>b.slot===slot));}
-function npcPlan(g:Game,r:RegionId){const m=month(g,r),free=remaining(g,r);m.npcPlan=free.includes('main')?'main':free.includes('annex')?'annex':'courtyard';}
-const preview=(cash=0,hours=0,energy=0,joy=0,social=0)=>({cash,hours,energy,joy,social,language:0,companionBond:0,localBonds:{},revealPlaces:[],closePlaces:[],discoverRegions:[]});
-type Proposal={key:string;title:string;body:string;place:string;actorId:string;time:number;cost:number;energy?:number;earn?:number;joy?:number;social?:number;craft?:number;paidHours?:number;paidTakeHome?:number;repayment?:number;blocked?:string;orderId?:string;bookingId?:string;slot?:'main'|'annex';purpose?:'supper'|'rehearsal';kind:'order'|'prepare'|'collect'|'cancel-order'|'portion'|'reserve'|'release-room'|'use-room'|'annex'|'outdoor'};
-export type SharedChoice=Proposal&{id:string;actionId:string;available:boolean;reason:string;previewText:string[]};
-function proposals(g:Game,p:Player):Proposal[]{
- if(!enabled(g)||!p.sharedPersonal||p.castRedacted)return[];const s=g.sharedOpportunities!,r=p.world?.region??'alder',m=month(g,r);if(!m)return[];
- const h=hosts[r],ps=p.sharedPersonal,orders=s.orders.filter(o=>o.region===r),bookings=s.bookings.filter(b=>b.region===r&&b.round===g.round),free=remaining(g,r);
- const rows:Proposal[]=[];const meal={place:'CORNER CAFÉ',actorId:h.meal.id},room={place:'COMMUNITY',actorId:h.room.id};
- rows.push({...meal,key:'order',kind:'order',title:`Order ${h.meal.dish} in advance`,body:`Pay $45 now, 0 priority blocks. Your order opens one paid preparation job for someone else. Collect for 1 block after timely preparation; gain a filling meal and an enjoyable evening. Cancel before preparation for a full $45 refund; a delayed NPC-filled order also keeps a full-refund option. ${g.players.length===1?`${h.meal.name} will prepare it now while you finish your order.`:`Every other player gets their next turn to take the job. If they pass, ${h.meal.name} prepares it around the next busy service; collecting then needs 2 blocks, or you can take a full refund.`} One order per player per month, including cancelled orders. Uncollected meals are refunded at this chapter’s end. Ordinary food remains available.`,time:0,cost:45,blocked:ps.orderRounds.includes(g.round)?'You already placed an advance order this month. Cancelling does not create another order slot.':''});
- for(const o of orders.filter(o=>o.status==='pending'&&o.owner.id!==p.id)){
-  const paidHours=o.owner.kind==='npc'?4:8,paidTakeHome=Math.round(paidHours*economyProfile(p,r).entryRate*.8),pay=financialPayQuote(g,p,paidTakeHome),earn=pay.cash;
-  rows.push({...meal,key:`prepare:${o.id}`,kind:'prepare',orderId:o.id,title:`Prepare ${o.owner.kind==='npc'?`${h.meal.name}’s standing orders`:o.owner.name+'’s supper'}`,body:`1 priority block, ${paidHours} paid hours, $${paidTakeHome} take-home${pay.repayment?`; $${pay.repayment} repays arrears; $${earn} reaches cash`:""}, with some physical effort. ${o.owner.kind==='npc'?'The existing customer batch':o.owner.name+'’s prepaid meal'} becomes ready immediately, and one $12 spare portion opens at the counter. A customer’s advance order completes a larger batch alongside standing orders; that batch funds the longer paid shift. One preparation shift per player per month. The order cannot then be cancelled.`,time:1,cost:0,energy:-6,earn,paidHours,paidTakeHome,repayment:pay.repayment,blocked:ps.preparationRounds.includes(g.round)?'You have already taken one preparation shift this month. Other paid work stays available.':economyWorkReason(p,g,paidHours)});
- }
- for(const o of orders.filter(o=>o.owner.id===p.id&&(o.status==='pending'||o.status==='ready'))){
-  const delayed=o.status==='ready'&&o.delayed===true,pickupTime=delayed?2:1;
-  rows.push({...meal,key:`collect:${o.id}`,kind:'collect',orderId:o.id,title:`Collect your ${h.meal.dish}`,body:`${pickupTime} priority block${pickupTime===1?'':'s'}, $0 further payment. ${delayed?'The café has to fit this pickup around its busy service; you may instead request a full refund. ':''}${o.status==='ready'?`${o.preparedBy?.name??h.meal.name} has prepared your paid order.`:'Your paid order is waiting for preparation.'} A filling supper restores energy and gives you an unhurried evening. Only you can collect it.`,time:pickupTime,cost:0,energy:24,joy:12,blocked:o.status==='pending'?`${h.meal.name} has your order. Another player can prepare it now; otherwise the café prepares it after the other players have had their next turns.`:''});
-  if(o.status==='pending'||delayed)rows.push({...meal,key:`cancel:${o.id}`,kind:'cancel-order',orderId:o.id,title:delayed?'Refund your delayed order':'Cancel your unprepared order',body:delayed?'0 priority blocks. Get the full $45 back instead of spending two blocks on the delayed pickup. The café sends the prepared meal to the pantry.':'0 priority blocks. Receive your $45 back. This removes only your unclaimed preparation job; it does not open another order slot for you this month.',time:0,cost:0,earn:o.price});
- }
- const portion=m.sparePortions.find(q=>!q.buyerId&&!q.donated);
- rows.push({...meal,key:portion?`portion:${portion.orderId}`:'portion',kind:'portion',orderId:portion?.orderId,title:'Buy the spare counter portion',body:`$12 and 1 priority block. Prepared orders create actual spare portions; each can be bought once. A smaller meal restores energy. One discounted portion per player per month. Unsold portions go to the pantry at month’s end.`,time:1,cost:12,energy:16,joy:6,blocked:ps.portionRounds.includes(g.round)?'You already bought the discounted portion this month.':!portion?'No spare portions yet. A completed preparation shift creates one.':''});
- for(const purpose of ['rehearsal','supper'] as const)rows.push({...room,key:`reserve:${purpose}`,kind:'reserve',purpose,slot:free[0],title:`Reserve a room for ${purpose==='rehearsal'?'a rehearsal':'a supper'}`,body:`$30 room fee now, 0 priority blocks; using your booking takes 1 block. ${free.length?`${free[0]==='main'?'The main room':'The prepared annex'} is currently free.`:'The available room space is committed.'} One room per player per month, even if released. Another player cannot cancel your booking. ${h.room.name} has offered the main room for bookings; their ${h.room.plan} ${free.length>1?'can use the other free room':'will move to the courtyard if you take the last free room'}. Prepare the annex first to keep it inside while another room remains free. Release before use for a full $30 refund; unused bookings are refunded at month’s end.`,time:0,cost:30,blocked:ps.bookingRounds.includes(g.round)?'You already reserved a room this month. Releasing it does not restore your booking allowance.':!free.length?`The rooms are committed to ${bookings.filter(b=>b.status==='reserved'||b.status==='used').map(b=>b.owner.name+'’s '+b.purpose).join(' and ')}. ${m.annexReady?'Use the outdoor alternative; ordinary community activities remain open.':'Prepare the annex to create a second room, or use the outdoor alternative.'}`:''});
- rows.push({...room,key:'annex',kind:'annex',title:'Prepare a second room',body:`1 priority block, $0, with some physical effort. Put out chairs and clear the annex with ${h.room.name}. This creates one more bookable room for anyone, and keeps the ${h.room.plan} indoors while a room remains unbooked. You gain a local connection; preparing it does not reserve it. Do this before anyone books to prevent the move outside. Once per town per month.`,time:1,cost:0,energy:-8,social:1,blocked:m.annexReady?`${m.annexPreparedBy?.name??h.room.name} has already prepared the annex. There are at most two bookable rooms.`:''});
- for(const b of bookings.filter(b=>b.owner.id===p.id&&b.status==='reserved')){
-  rows.push({...room,key:`use:${b.id}`,kind:'use-room',bookingId:b.id,purpose:b.purpose,title:`Use your ${b.purpose} booking`,body:`1 priority block, $0 further payment. ${b.purpose==='rehearsal'?'Work on your own craft in a quiet indoor room.':'Host your own supper in the indoor room and make time for your guests.'} The $30 room fee is then spent and cannot be refunded. This does not commit another player to attend.`,time:1,cost:0,...(b.purpose==='rehearsal'?{craft:1,joy:6}:{joy:16,social:2})});
-  rows.push({...room,key:`release:${b.id}`,kind:'release-room',bookingId:b.id,title:'Release your room booking',body:'0 priority blocks. Get your $30 back and reopen this room for someone else. Your one booking allowance stays used this month.',time:0,cost:0,earn:b.deposit});
- }
- rows.push({...room,key:'outdoor',kind:'outdoor',title:'Take the covered courtyard instead',body:'2 priority blocks, $10. Arrange your own small rehearsal or gathering under the awning. You still develop your craft and meet people, with more setup time and less quiet. Nobody needs to surrender a room. One outdoor gathering per player per month.',time:2,cost:10,craft:1,joy:6,social:1,blocked:ps.outdoorRounds.includes(g.round)?'You already made time for a courtyard gathering this month.':''});
- return rows;
+/** Initialize shared commitments only when creating or joining a room. */
+export function initializeSharedOpportunities(g: Game) { g.sharedOpportunities ??= { version: 1, revision: 0, lastRound: g.round, orders: [], bookings: [], months: {}, events: [] }; seedMonth(g); for (const p of g.players)
+    initializeSharedOpportunityPlayer(g, p); }
+export function initializeSharedOpportunityPlayer(g: Game, p: Player) { if (enabled(g))
+    p.sharedPersonal ??= personal(); }
+function event(g: Game, e: Omit<SharedConsequenceEvent, 'id'>) { const s = g.sharedOpportunities!; s.events.push({ id: `crossing:${s.events.length + 1}`, ...e }); }
+function remaining(g: Game, r: RegionId) { const m = month(g, r), used = g.sharedOpportunities!.bookings.filter(b => b.round === g.round && b.region === r && (b.status === 'reserved' || b.status === 'used')); return (['main', ...(m.annexReady ? ['annex'] : [])] as ('main' | 'annex')[]).filter(slot => !used.some(b => b.slot === slot)); }
+function npcPlan(g: Game, r: RegionId) { const m = month(g, r), free = remaining(g, r); m.npcPlan = free.includes('main') ? 'main' : free.includes('annex') ? 'annex' : 'courtyard'; }
+const preview = (cash = 0, hours = 0, energy = 0, joy = 0, social = 0) => ({ cash, hours, energy, joy, social, language: 0, companionBond: 0, localBonds: {}, revealPlaces: [], closePlaces: [], discoverRegions: [] });
+type Proposal = {
+    key: string;
+    title: string;
+    body: string;
+    place: string;
+    actorId: string;
+    time: number;
+    cost: number;
+    energy?: number;
+    earn?: number;
+    joy?: number;
+    social?: number;
+    craft?: number;
+    paidHours?: number;
+    paidTakeHome?: number;
+    repayment?: number;
+    blocked?: string;
+    orderId?: string;
+    bookingId?: string;
+    slot?: 'main' | 'annex';
+    purpose?: 'supper' | 'rehearsal';
+    kind: 'order' | 'prepare' | 'collect' | 'cancel-order' | 'portion' | 'reserve' | 'release-room' | 'use-room' | 'annex' | 'outdoor';
+};
+export type SharedChoice = Proposal & {
+    id: string;
+    actionId: string;
+    available: boolean;
+    reason: string;
+    previewText: string[];
+};
+function proposals(g: Game, p: Player): Proposal[] {
+    if (!enabled(g) || !p.sharedPersonal || p.castRedacted)
+        return [];
+    const s = g.sharedOpportunities!, r = p.world?.region ?? 'alder', m = month(g, r);
+    if (!m)
+        return [];
+    const h = hosts[r], ps = p.sharedPersonal, orders = s.orders.filter(o => o.region === r), bookings = s.bookings.filter(b => b.region === r && b.round === g.round), free = remaining(g, r);
+    const rows: Proposal[] = [];
+    const meal = { place: 'CORNER CAFÉ', actorId: h.meal.id }, room = { place: 'COMMUNITY', actorId: h.room.id };
+    rows.push({ ...meal, key: 'order', kind: 'order', title: `Order ${h.meal.dish} in advance`, body: `Pay $45 now, 0 priority blocks. Your order opens one paid preparation job for someone else. Collect for 1 block after timely preparation; gain a filling meal and an enjoyable evening. Cancel before preparation for a full $45 refund; a delayed NPC-filled order also keeps a full-refund option. ${g.players.length === 1 ? `${h.meal.name} will prepare it now while you finish your order.` : `Every other player gets their next turn to take the job. If they pass, ${h.meal.name} prepares it around the next busy service; collecting then needs 2 blocks, or you can take a full refund.`} One order per player per month, including cancelled orders. Uncollected meals are refunded at this chapter’s end. Ordinary food remains available.`, time: 0, cost: 45, blocked: ps.orderRounds.includes(g.round) ? 'You already placed an advance order this month. Cancelling does not create another order slot.' : '' });
+    for (const o of orders.filter(o => o.status === 'pending' && o.owner.id !== p.id)) {
+        const paidHours = o.owner.kind === 'npc' ? 4 : 8, paidTakeHome = Math.round(paidHours * economyProfile(p, r).entryRate * .8), pay = financialPayQuote(g, p, paidTakeHome), earn = pay.cash;
+        rows.push({ ...meal, key: `prepare:${o.id}`, kind: 'prepare', orderId: o.id, title: `Prepare ${o.owner.kind === 'npc' ? `${h.meal.name}’s standing orders` : o.owner.name + '’s supper'}`, body: `1 priority block, ${paidHours} paid hours, $${paidTakeHome} take-home${pay.repayment ? `; $${pay.repayment} repays arrears; $${earn} reaches cash` : ""}, with some physical effort. ${o.owner.kind === 'npc' ? 'The existing customer batch' : o.owner.name + '’s prepaid meal'} becomes ready immediately, and one $12 spare portion opens at the counter. A customer’s advance order completes a larger batch alongside standing orders; that batch funds the longer paid shift. One preparation shift per player per month. The order cannot then be cancelled.`, time: 1, cost: 0, energy: -6, earn, paidHours, paidTakeHome, repayment: pay.repayment, blocked: ps.preparationRounds.includes(g.round) ? 'You have already taken one preparation shift this month. Other paid work stays available.' : economyWorkReason(p, g, paidHours) });
+    }
+    for (const o of orders.filter(o => o.owner.id === p.id && (o.status === 'pending' || o.status === 'ready'))) {
+        const delayed = o.status === 'ready' && o.delayed === true, pickupTime = delayed ? 2 : 1;
+        rows.push({ ...meal, key: `collect:${o.id}`, kind: 'collect', orderId: o.id, title: `Collect your ${h.meal.dish}`, body: `${pickupTime} priority block${pickupTime === 1 ? '' : 's'}, $0 further payment. ${delayed ? 'The café has to fit this pickup around its busy service; you may instead request a full refund. ' : ''}${o.status === 'ready' ? `${o.preparedBy?.name ?? h.meal.name} has prepared your paid order.` : 'Your paid order is waiting for preparation.'} A filling supper restores energy and gives you an unhurried evening. Only you can collect it.`, time: pickupTime, cost: 0, energy: 24, joy: 12, blocked: o.status === 'pending' ? `${h.meal.name} has your order. Another player can prepare it now; otherwise the café prepares it after the other players have had their next turns.` : '' });
+        if (o.status === 'pending' || delayed)
+            rows.push({ ...meal, key: `cancel:${o.id}`, kind: 'cancel-order', orderId: o.id, title: delayed ? 'Refund your delayed order' : 'Cancel your unprepared order', body: delayed ? '0 priority blocks. Get the full $45 back instead of spending two blocks on the delayed pickup. The café sends the prepared meal to the pantry.' : '0 priority blocks. Receive your $45 back. This removes only your unclaimed preparation job; it does not open another order slot for you this month.', time: 0, cost: 0, earn: o.price });
+    }
+    const portion = m.sparePortions.find(q => !q.buyerId && !q.donated);
+    rows.push({ ...meal, key: portion ? `portion:${portion.orderId}` : 'portion', kind: 'portion', orderId: portion?.orderId, title: 'Buy the spare counter portion', body: `$12 and 1 priority block. Prepared orders create actual spare portions; each can be bought once. A smaller meal restores energy. One discounted portion per player per month. Unsold portions go to the pantry at month’s end.`, time: 1, cost: 12, energy: 16, joy: 6, blocked: ps.portionRounds.includes(g.round) ? 'You already bought the discounted portion this month.' : !portion ? 'No spare portions yet. A completed preparation shift creates one.' : '' });
+    for (const purpose of ['rehearsal', 'supper'] as const)
+        rows.push({ ...room, key: `reserve:${purpose}`, kind: 'reserve', purpose, slot: free[0], title: `Reserve a room for ${purpose === 'rehearsal' ? 'a rehearsal' : 'a supper'}`, body: `$30 room fee now, 0 priority blocks; using your booking takes 1 block. ${free.length ? `${free[0] === 'main' ? 'The main room' : 'The prepared annex'} is currently free.` : 'The available room space is committed.'} One room per player per month, even if released. Another player cannot cancel your booking. ${h.room.name} has offered the main room for bookings; their ${h.room.plan} ${free.length > 1 ? 'can use the other free room' : 'will move to the courtyard if you take the last free room'}. Prepare the annex first to keep it inside while another room remains free. Release before use for a full $30 refund; unused bookings are refunded at month’s end.`, time: 0, cost: 30, blocked: ps.bookingRounds.includes(g.round) ? 'You already reserved a room this month. Releasing it does not restore your booking allowance.' : !free.length ? `The rooms are committed to ${bookings.filter(b => b.status === 'reserved' || b.status === 'used').map(b => b.owner.name + '’s ' + b.purpose).join(' and ')}. ${m.annexReady ? 'Use the outdoor alternative; ordinary community activities remain open.' : 'Prepare the annex to create a second room, or use the outdoor alternative.'}` : '' });
+    rows.push({ ...room, key: 'annex', kind: 'annex', title: 'Prepare a second room', body: `1 priority block, $0, with some physical effort. Put out chairs and clear the annex with ${h.room.name}. This creates one more bookable room for anyone, and keeps the ${h.room.plan} indoors while a room remains unbooked. You gain a local connection; preparing it does not reserve it. Do this before anyone books to prevent the move outside. Once per town per month.`, time: 1, cost: 0, energy: -8, social: 1, blocked: m.annexReady ? `${m.annexPreparedBy?.name ?? h.room.name} has already prepared the annex. There are at most two bookable rooms.` : '' });
+    for (const b of bookings.filter(b => b.owner.id === p.id && b.status === 'reserved')) {
+        rows.push({ ...room, key: `use:${b.id}`, kind: 'use-room', bookingId: b.id, purpose: b.purpose, title: `Use your ${b.purpose} booking`, body: `1 priority block, $0 further payment. ${b.purpose === 'rehearsal' ? 'Work on your own craft in a quiet indoor room.' : 'Host your own supper in the indoor room and make time for your guests.'} The $30 room fee is then spent and cannot be refunded. This does not commit another player to attend.`, time: 1, cost: 0, ...(b.purpose === 'rehearsal' ? { craft: 1, joy: 6 } : { joy: 16, social: 2 }) });
+        rows.push({ ...room, key: `release:${b.id}`, kind: 'release-room', bookingId: b.id, title: 'Release your room booking', body: '0 priority blocks. Get your $30 back and reopen this room for someone else. Your one booking allowance stays used this month.', time: 0, cost: 0, earn: b.deposit });
+    }
+    rows.push({ ...room, key: 'outdoor', kind: 'outdoor', title: 'Take the covered courtyard instead', body: '2 priority blocks, $10. Arrange your own small rehearsal or gathering under the awning. You still develop your craft and meet people, with more setup time and less quiet. Nobody needs to surrender a room. One outdoor gathering per player per month.', time: 2, cost: 10, craft: 1, joy: 6, social: 1, blocked: ps.outdoorRounds.includes(g.round) ? 'You already made time for a courtyard gathering this month.' : '' });
+    return rows;
 }
-export function sharedChoices(g:Game,p:Player):SharedChoice[]{return proposals(g,p).map(c=>{const reason=g.status!=='playing'?'This life is complete':c.blocked||(!visiblePlaces(p,g).includes(c.place)?'This place is not on your current map':p.place!==c.place?`Visit ${regionDefinitions[p.world?.region??'alder'].placeNames[c.place]} first`:p.hours<c.time?'Not enough priority blocks this month':p.cash<c.cost?'Not enough cash for the upfront cost':p.energy<Math.max(0,-(c.energy??0))?'Rest before this activity':'');const id=`shared:${g.round}:${g.sharedOpportunities!.revision}:${p.world?.region??'alder'}:${c.key}`;return{...c,id,actionId:`world:${id}`,available:!reason,reason,previewText:[`${c.time} priority block${c.time===1?'':'s'} · $${c.cost}${c.earn?` · receive $${c.earn}`:''}`,c.body]};});}
-export function sharedWorldChoices(p:Player,g:Game):WorldChoiceView[]{return sharedChoices(g,p).map(c=>({id:c.id,key:`shared:${c.key}`,kind:c.kind==='prepare'?'work':c.kind==='collect'||c.kind==='portion'?'food':'tradeoff',title:c.title,body:c.body,description:c.body,available:c.available,reason:c.reason,preview:preview((c.earn??0)-c.cost,-c.time,Math.max(-p.energy,Math.min(c.energy??0,100-p.energy)),Math.min(c.joy??0,100-p.joy),c.social??0),previewText:c.previewText,outcome:'',time:c.time,cost:c.cost,actorId:c.actorId,spot:c.place,stage:'Lives crossing here'}));}
-function reaction(r:RegionId,c:Proposal):SharedPersonResponse{
- const h=hosts[r],meal=c.place==='CORNER CAFÉ',speaker=meal?h.meal:h.room;
- const speech=c.kind==='order'?h.meal.order:c.kind==='prepare'?h.meal.ready:c.kind==='collect'?`Here is your ${h.meal.dish}. You paid already; sit down while it is warm.`:c.kind==='cancel-order'?'I have not started it. I can return the payment and take that job off the board.':c.kind==='portion'?`The spare ${h.meal.dish} is yours. I will cross it off before somebody else asks.`:c.kind==='reserve'?h.room.reserve:c.kind==='annex'?h.room.setup:c.kind==='release-room'?'I have returned the fee and opened the space again. Thank you for saying before we set it out.':c.kind==='use-room'?(c.purpose==='rehearsal'?'The room is ready. Try the whole piece once before deciding what to mend.':'The chairs are out. Your guests can choose their own evening; the room is yours.'):'The awning is sound. It takes a little more setting up, but you can make your own evening here.';
- return{speakerId:speaker.id,speech,activity:speaker.activity,emotion:c.kind==='cancel-order'||c.kind==='release-room'?'attentive':c.kind==='annex'?'relieved':c.kind==='prepare'?'proud':'warm',gesture:c.kind==='reserve'||c.kind==='portion'?'point':c.kind==='cancel-order'?'listen':'offer'};
+export function sharedChoices(g: Game, p: Player): SharedChoice[] { return proposals(g, p).map(c => { const reason = g.status !== 'playing' ? 'This life is complete' : c.blocked || (!visiblePlaces(p, g).includes(c.place) ? 'This place is not on your current map' : p.place !== c.place ? `Visit ${regionDefinitions[p.world?.region ?? 'alder'].placeNames[c.place]} first` : p.hours < c.time ? 'Not enough priority blocks this month' : p.cash < c.cost ? 'Not enough cash for the upfront cost' : p.energy < Math.max(0, -(c.energy ?? 0)) ? 'Rest before this activity' : ''); const id = `shared:${g.round}:${g.sharedOpportunities!.revision}:${p.world?.region ?? 'alder'}:${c.key}`; return { ...c, id, actionId: `world:${id}`, available: !reason, reason, previewText: [`${c.time} priority block${c.time === 1 ? '' : 's'} · $${c.cost}${c.earn ? ` · receive $${c.earn}` : ''}`, c.body] }; }); }
+export function sharedWorldChoices(p: Player, g: Game): WorldChoiceView[] { return sharedChoices(g, p).map(c => ({ id: c.id, key: `shared:${c.key}`, kind: c.kind === 'prepare' ? 'work' : c.kind === 'collect' || c.kind === 'portion' ? 'food' : 'tradeoff', title: c.title, body: c.body, description: c.body, available: c.available, reason: c.reason, preview: preview((c.earn ?? 0) - c.cost, -c.time, Math.max(-p.energy, Math.min(c.energy ?? 0, 100 - p.energy)), Math.min(c.joy ?? 0, 100 - p.joy), c.social ?? 0), previewText: c.previewText, outcome: '', time: c.time, cost: c.cost, actorId: c.actorId, spot: c.place, stage: 'Lives crossing here' })); }
+function reaction(r: RegionId, c: Proposal): SharedPersonResponse {
+    const h = hosts[r], meal = c.place === 'CORNER CAFÉ', speaker = meal ? h.meal : h.room;
+    const speech = c.kind === 'order' ? h.meal.order : c.kind === 'prepare' ? h.meal.ready : c.kind === 'collect' ? `Here is your ${h.meal.dish}. You paid already; sit down while it is warm.` : c.kind === 'cancel-order' ? 'I have not started it. I can return the payment and take that job off the board.' : c.kind === 'portion' ? `The spare ${h.meal.dish} is yours. I will cross it off before somebody else asks.` : c.kind === 'reserve' ? h.room.reserve : c.kind === 'annex' ? h.room.setup : c.kind === 'release-room' ? 'I have returned the fee and opened the space again. Thank you for saying before we set it out.' : c.kind === 'use-room' ? (c.purpose === 'rehearsal' ? 'The room is ready. Try the whole piece once before deciding what to mend.' : 'The chairs are out. Your guests can choose their own evening; the room is yours.') : 'The awning is sound. It takes a little more setting up, but you can make your own evening here.';
+    return { speakerId: speaker.id, speech, activity: speaker.activity, emotion: c.kind === 'cancel-order' || c.kind === 'release-room' ? 'attentive' : c.kind === 'annex' ? 'relieved' : c.kind === 'prepare' ? 'proud' : 'warm', gesture: c.kind === 'reserve' || c.kind === 'portion' ? 'point' : c.kind === 'cancel-order' ? 'listen' : 'offer' };
 }
-function fulfill(g:Game,o:SharedOrder,by:SharedActor,spare:boolean,delayed=false){o.status='ready';o.preparedBy=by;o.preparedRound=g.round;o.delayed=delayed;const m=g.sharedOpportunities!.months[monthKey(g.round,o.region)];if(spare&&m)m.sparePortions.push({orderId:o.id});if(o.owner.kind==='npc')o.status='collected';}
-function applyChoice(g:Game,p:Player,c:SharedChoice){
- const s=g.sharedOpportunities!,r=p.world?.region??'alder',m=month(g,r),ps=p.sharedPersonal!,a=actor(p);
- if(c.paidHours){recordEconomyPaidHours(p,g,c.paidHours);recordFinancialPay(g,p,c.actionId,c.paidTakeHome??c.earn??0,c.cost);}
- p.cash+=(c.earn??0)-c.cost;p.hours-=c.time;p.energy=Math.max(0,Math.min(100,p.energy+(c.energy??0)));p.joy=Math.min(100,p.joy+(c.joy??0));p.social+=c.social??0;if(c.craft)p.craft=Math.min(8,(p.craft??0)+c.craft);
- let effect='';
- if(c.kind==='order'){const o:SharedOrder={id:`order:${g.round}:${p.id}`,region:r,round:g.round,owner:a,status:'pending',price:c.cost,source:'advance-order',helperTurns:[]};s.orders.push(o);ps.orderRounds.push(g.round);effect=`${p.name} paid for a ${hosts[r].meal.dish} supper. A preparation job is now available to another player.`;if(g.players.length===1){fulfill(g,o,hostActor(r,'meal'),true);effect=`${hosts[r].meal.name} prepared ${p.name}’s paid supper. Pickup and one $12 spare portion are now available; the standing-order shift remains a separate paid job.`;}}
- if(c.kind==='prepare'){const o=s.orders.find(o=>o.id===c.orderId)!;fulfill(g,o,a,true);ps.preparationRounds.push(g.round);effect=`${p.name} completed the paid preparation for ${o.owner.name}’s order. ${o.owner.kind==='npc'?'The standing customers have their meals':o.owner.name+' can collect their prepaid supper'}, and one $12 spare portion is on the counter.`;}
- if(c.kind==='collect'){s.orders.find(o=>o.id===c.orderId)!.status='collected';effect=`${p.name} collected their prepaid supper.`;}
- if(c.kind==='cancel-order'){const o=s.orders.find(o=>o.id===c.orderId)!,delayed=o.status==='ready';o.status='cancelled';effect=delayed?`${p.name} chose a $45 refund instead of the longer delayed pickup. The café sent that prepared meal to the pantry.`:`${p.name} cancelled their unprepared order. Its unclaimed preparation job has closed and the $45 has been returned.`;}
- if(c.kind==='portion'){m.sparePortions.find(q=>q.orderId===c.orderId)!.buyerId=p.id;ps.portionRounds.push(g.round);effect=`${p.name} bought the spare portion. It is no longer available at the counter.`;}
- if(c.kind==='reserve'){s.bookings.push({id:`room:${g.round}:${p.id}`,region:r,round:g.round,owner:a,slot:c.slot!,purpose:c.purpose!,status:'reserved',deposit:c.cost});ps.bookingRounds.push(g.round);npcPlan(g,r);effect=`${p.name} reserved the ${c.slot} room for a ${c.purpose}. ${hosts[r].room.name}’s ${hosts[r].room.plan} will use the ${m.npcPlan}. ${remaining(g,r).length?'The other room remains available.':m.annexReady?'Others can use the covered courtyard.':'Others can prepare the annex or use the covered courtyard.'}`;}
- if(c.kind==='annex'){m.annexReady=true;m.annexPreparedBy=a;npcPlan(g,r);effect=`${p.name} prepared the annex. A second room is available for booking; ${hosts[r].room.name}’s ${hosts[r].room.plan} can remain indoors.`;}
- if(c.kind==='release-room'){s.bookings.find(b=>b.id===c.bookingId)!.status='released';npcPlan(g,r);effect=`${p.name} released their unused room and received the $30 fee back. The ${s.bookings.find(b=>b.id===c.bookingId)!.slot} room is available again.`;}
- if(c.kind==='use-room'){s.bookings.find(b=>b.id===c.bookingId)!.status='used';effect=`${p.name} used the ${c.purpose} room they paid for. That room’s evening is no longer available.`;}
- if(c.kind==='outdoor'){ps.outdoorRounds.push(g.round);effect=`${p.name} arranged their own covered-courtyard gathering without changing anyone’s room booking.`;}
- const response=reaction(r,c);if(c.kind==='cancel-order'&&c.title.startsWith('Refund'))response.speech='That collection run takes longer than the one you ordered. Here is the full payment back; the pantry can use the meal.';if(c.kind==='order'&&g.players.length===1)response.speech=`${hosts[r].meal.ready} Your paid supper is ready to collect too.`;
- const receipt:SharedReceipt={id:`receipt:${p.id}:${c.id}`,actionId:c.actionId,round:g.round,week:g.round,title:c.title,body:effect+(c.repayment?` $${c.repayment} repaid arrears; $${c.earn} reached your cash balance.`:""),outcome:`${response.activity} “${response.speech}”`,response};ps.receipts.push(receipt);
- event(g,{actionId:c.actionId,actor:a,personId:c.actorId,region:r,place:c.place,publicCause:c.title,effect,receiptId:receipt.id,timing:{round:g.round,...(c.kind==='order'||c.kind==='reserve'?{respondByRound:c.kind==='order'?g.round+1:g.round}:{})}});
- s.revision++;if(p.world)p.world.revision++;
- g.log.unshift(`${p.name}: ${effect}`);g.log=g.log.slice(0,32);
+function fulfill(g: Game, o: SharedOrder, by: SharedActor, spare: boolean, delayed = false) { o.status = 'ready'; o.preparedBy = by; o.preparedRound = g.round; o.delayed = delayed; const m = g.sharedOpportunities!.months[monthKey(g.round, o.region)]; if (spare && m)
+    m.sparePortions.push({ orderId: o.id }); if (o.owner.kind === 'npc')
+    o.status = 'collected'; }
+function applyChoice(g: Game, p: Player, c: SharedChoice) {
+    const s = g.sharedOpportunities!, r = p.world?.region ?? 'alder', m = month(g, r), ps = p.sharedPersonal!, a = actor(p);
+    if (c.paidHours) {
+        recordEconomyPaidHours(p, g, c.paidHours);
+        recordFinancialPay(g, p, c.actionId, c.paidTakeHome ?? c.earn ?? 0, c.cost);
+    }
+    p.cash += (c.earn ?? 0) - c.cost;
+    p.hours -= c.time;
+    p.energy = Math.max(0, Math.min(100, p.energy + (c.energy ?? 0)));
+    p.joy = Math.min(100, p.joy + (c.joy ?? 0));
+    p.social += c.social ?? 0;
+    if (c.craft)
+        p.craft = Math.min(8, (p.craft ?? 0) + c.craft);
+    let effect = '';
+    if (c.kind === 'order') {
+        const o: SharedOrder = { id: `order:${g.round}:${p.id}`, region: r, round: g.round, owner: a, status: 'pending', price: c.cost, source: 'advance-order', helperTurns: [] };
+        s.orders.push(o);
+        ps.orderRounds.push(g.round);
+        effect = `${p.name} paid for a ${hosts[r].meal.dish} supper. A preparation job is now available to another player.`;
+        if (g.players.length === 1) {
+            fulfill(g, o, hostActor(r, 'meal'), true);
+            effect = `${hosts[r].meal.name} prepared ${p.name}’s paid supper. Pickup and one $12 spare portion are now available; the standing-order shift remains a separate paid job.`;
+        }
+    }
+    if (c.kind === 'prepare') {
+        const o = s.orders.find(o => o.id === c.orderId)!;
+        fulfill(g, o, a, true);
+        ps.preparationRounds.push(g.round);
+        effect = `${p.name} completed the paid preparation for ${o.owner.name}’s order. ${o.owner.kind === 'npc' ? 'The standing customers have their meals' : o.owner.name + ' can collect their prepaid supper'}, and one $12 spare portion is on the counter.`;
+    }
+    if (c.kind === 'collect') {
+        s.orders.find(o => o.id === c.orderId)!.status = 'collected';
+        effect = `${p.name} collected their prepaid supper.`;
+    }
+    if (c.kind === 'cancel-order') {
+        const o = s.orders.find(o => o.id === c.orderId)!, delayed = o.status === 'ready';
+        o.status = 'cancelled';
+        effect = delayed ? `${p.name} chose a $45 refund instead of the longer delayed pickup. The café sent that prepared meal to the pantry.` : `${p.name} cancelled their unprepared order. Its unclaimed preparation job has closed and the $45 has been returned.`;
+    }
+    if (c.kind === 'portion') {
+        m.sparePortions.find(q => q.orderId === c.orderId)!.buyerId = p.id;
+        ps.portionRounds.push(g.round);
+        effect = `${p.name} bought the spare portion. It is no longer available at the counter.`;
+    }
+    if (c.kind === 'reserve') {
+        s.bookings.push({ id: `room:${g.round}:${p.id}`, region: r, round: g.round, owner: a, slot: c.slot!, purpose: c.purpose!, status: 'reserved', deposit: c.cost });
+        ps.bookingRounds.push(g.round);
+        npcPlan(g, r);
+        effect = `${p.name} reserved the ${c.slot} room for a ${c.purpose}. ${hosts[r].room.name}’s ${hosts[r].room.plan} will use the ${m.npcPlan}. ${remaining(g, r).length ? 'The other room remains available.' : m.annexReady ? 'Others can use the covered courtyard.' : 'Others can prepare the annex or use the covered courtyard.'}`;
+    }
+    if (c.kind === 'annex') {
+        m.annexReady = true;
+        m.annexPreparedBy = a;
+        npcPlan(g, r);
+        effect = `${p.name} prepared the annex. A second room is available for booking; ${hosts[r].room.name}’s ${hosts[r].room.plan} can remain indoors.`;
+    }
+    if (c.kind === 'release-room') {
+        s.bookings.find(b => b.id === c.bookingId)!.status = 'released';
+        npcPlan(g, r);
+        effect = `${p.name} released their unused room and received the $30 fee back. The ${s.bookings.find(b => b.id === c.bookingId)!.slot} room is available again.`;
+    }
+    if (c.kind === 'use-room') {
+        s.bookings.find(b => b.id === c.bookingId)!.status = 'used';
+        effect = `${p.name} used the ${c.purpose} room they paid for. That room’s evening is no longer available.`;
+    }
+    if (c.kind === 'outdoor') {
+        ps.outdoorRounds.push(g.round);
+        effect = `${p.name} arranged their own covered-courtyard gathering without changing anyone’s room booking.`;
+    }
+    const response = reaction(r, c);
+    if (c.kind === 'cancel-order' && c.title.startsWith('Refund'))
+        response.speech = 'That collection run takes longer than the one you ordered. Here is the full payment back; the pantry can use the meal.';
+    if (c.kind === 'order' && g.players.length === 1)
+        response.speech = `${hosts[r].meal.ready} Your paid supper is ready to collect too.`;
+    const receipt: SharedReceipt = { id: `receipt:${p.id}:${c.id}`, actionId: c.actionId, round: g.round, week: g.round, title: c.title, body: effect + (c.repayment ? ` $${c.repayment} repaid arrears; $${c.earn} reached your cash balance.` : ""), outcome: `${response.activity} “${response.speech}”`, response };
+    ps.receipts.push(receipt);
+    event(g, { actionId: c.actionId, actor: a, personId: c.actorId, region: r, place: c.place, publicCause: c.title, effect, receiptId: receipt.id, timing: { round: g.round, ...(c.kind === 'order' || c.kind === 'reserve' ? { respondByRound: c.kind === 'order' ? g.round + 1 : g.round } : {}) } });
+    s.revision++;
+    if (p.world)
+        p.world.revision++;
+    g.log.unshift(`${p.name}: ${effect}`);
+    g.log = g.log.slice(0, 32);
 }
 /** Validate against a clone and commit only a complete successful transition. */
-export function resolveSharedChoice(g:Game,p:Player,id:string){
- if(!enabled(g)||!p.sharedPersonal)throw Error('These shared opportunities are not part of this saved life');
- if(g.status!=='playing'||g.players[g.turn]?.id!==p.id)throw Error('It is another player’s turn');
- if(p.sharedPersonal.receipts.some(r=>r.actionId===`world:${id}`))return;
- const draft=structuredClone(g),q=draft.players.find(q=>q.id===p.id)!,choice=sharedChoices(draft,q).find(c=>c.id===id);
- if(!choice)throw Error('That opportunity changed. Read the current booking or order before choosing again.');if(!choice.available)throw Error(choice.reason);
- applyChoice(draft,q,choice);const players=g.players;for(let i=0;i<players.length;i++)Object.assign(players[i],draft.players[i]);Object.assign(g,draft,{players});
+export function resolveSharedChoice(g: Game, p: Player, id: string) {
+    if (!enabled(g) || !p.sharedPersonal)
+        throw Error('Your private shared commitments are unavailable');
+    if (g.status !== 'playing' || g.players[g.turn]?.id !== p.id)
+        throw Error('It is another player’s turn');
+    if (p.sharedPersonal.receipts.some(r => r.actionId === `world:${id}`))
+        return;
+    const draft = structuredClone(g), q = draft.players.find(q => q.id === p.id)!, choice = sharedChoices(draft, q).find(c => c.id === id);
+    if (!choice)
+        throw Error('That opportunity changed. Read the current booking or order before choosing again.');
+    if (!choice.available)
+        throw Error(choice.reason);
+    applyChoice(draft, q, choice);
+    const players = g.players;
+    for (let i = 0; i < players.length; i++)
+        Object.assign(players[i], draft.players[i]);
+    Object.assign(g, draft, { players });
 }
 /** Every other player gets one actual response turn, even if an order is made
  * by the last seat. NPC service follows their passing; no one accepts their job. */
-export function endSharedOpportunityTurn(g:Game,p:Player){
- if(!enabled(g))return;const s=g.sharedOpportunities!;
- for(const o of s.orders.filter(o=>o.status==='pending'&&o.owner.kind==='player'&&o.owner.id!==p.id)){
-  o.helperTurns??=[];if(!o.helperTurns.includes(p.id))o.helperTurns.push(p.id);
-  if(g.players.filter(q=>q.id!==o.owner.id).every(q=>o.helperTurns!.includes(q.id))){
-   fulfill(g,o,hostActor(o.region,'meal'),false,true);s.revision++;
-   event(g,{actionId:`npc:prepare:${o.id}`,actor:hostActor(o.region,'meal'),personId:hosts[o.region].meal.id,region:o.region,place:'CORNER CAFÉ',publicCause:'The other players had their response turns',effect:`${hosts[o.region].meal.name} prepared ${o.owner.name}’s order around busy service. Pickup now takes two blocks, or its owner may choose a full $${o.price} refund.`,timing:{round:g.round}});
-  }
- }
+export function endSharedOpportunityTurn(g: Game, p: Player) {
+    if (!enabled(g))
+        return;
+    const s = g.sharedOpportunities!;
+    for (const o of s.orders.filter(o => o.status === 'pending' && o.owner.kind === 'player' && o.owner.id !== p.id)) {
+        o.helperTurns ??= [];
+        if (!o.helperTurns.includes(p.id))
+            o.helperTurns.push(p.id);
+        if (g.players.filter(q => q.id !== o.owner.id).every(q => o.helperTurns!.includes(q.id))) {
+            fulfill(g, o, hostActor(o.region, 'meal'), false, true);
+            s.revision++;
+            event(g, { actionId: `npc:prepare:${o.id}`, actor: hostActor(o.region, 'meal'), personId: hosts[o.region].meal.id, region: o.region, place: 'CORNER CAFÉ', publicCause: 'The other players had their response turns', effect: `${hosts[o.region].meal.name} prepared ${o.owner.name}’s order around busy service. Pickup now takes two blocks, or its owner may choose a full $${o.price} refund.`, timing: { round: g.round } });
+        }
+    }
 }
 /** NPCs settle unclaimed work; absent players retain paid pickup and receive unused-room refunds. */
-export function beginSharedOpportunityRound(g:Game,finished=false){
- if(!enabled(g))return;const s=g.sharedOpportunities!;if(s.finalized||!finished&&s.lastRound>=g.round)return;const cutoff=finished?g.round:g.round-1;
- for(const o of s.orders.filter(o=>o.status==='pending'&&o.round<=cutoff&&(o.owner.kind==='npc'||finished||g.round>o.round+1))){fulfill(g,o,hostActor(o.region,'meal'),false,true);event(g,{actionId:`npc:prepare:${o.id}`,actor:hostActor(o.region,'meal'),personId:hosts[o.region].meal.id,region:o.region,place:'CORNER CAFÉ',publicCause:'The advertised preparation window ended',effect:`${hosts[o.region].meal.name} prepared ${o.owner.name}’s order. ${o.owner.kind==='player'?'Their prepaid pickup remains available for two blocks, or they may choose a full refund.':'The standing customers have their meals.'}`,timing:{round:g.round}});}
- for(const b of s.bookings.filter(b=>b.status==='reserved'&&b.round<=cutoff)){b.status='expired';const owner=g.players.find(p=>p.id===b.owner.id);if(owner)owner.cash+=b.deposit;event(g,{actionId:`npc:refund:${b.id}`,actor:hostActor(b.region,'room'),personId:hosts[b.region].room.id,region:b.region,place:'COMMUNITY',publicCause:'The unused room’s advertised booking window ended',effect:`${b.owner.name}’s unused booking expired. The $${b.deposit} room fee was returned to its owner.`,timing:{round:g.round}});}
- // On the last month there is no later pickup turn: return uncollected prepaid meals.
- if(finished)for(const o of s.orders.filter(o=>o.status==='ready'&&o.owner.kind==='player')){o.status='cancelled';const owner=g.players.find(p=>p.id===o.owner.id);if(owner)owner.cash+=o.price;event(g,{actionId:`npc:final-refund:${o.id}`,actor:hostActor(o.region,'meal'),personId:hosts[o.region].meal.id,region:o.region,place:'CORNER CAFÉ',publicCause:'This chapter ended before pickup',effect:`${o.owner.name}’s uncollected supper was refunded for $${o.price}; the café offered it to the pantry.`,timing:{round:g.round}});}
- for(const [key,m] of Object.entries(s.months))if(Number(key.split(':')[0])<=cutoff)for(const q of m.sparePortions)if(!q.buyerId)q.donated=true;
- s.lastRound=g.round;s.revision++;if(finished)s.finalized=true;else seedMonth(g);
+export function beginSharedOpportunityRound(g: Game, finished = false) {
+    if (!enabled(g))
+        return;
+    const s = g.sharedOpportunities!;
+    if (s.finalized || !finished && s.lastRound >= g.round)
+        return;
+    const cutoff = finished ? g.round : g.round - 1;
+    for (const o of s.orders.filter(o => o.status === 'pending' && o.round <= cutoff && (o.owner.kind === 'npc' || finished || g.round > o.round + 1))) {
+        fulfill(g, o, hostActor(o.region, 'meal'), false, true);
+        event(g, { actionId: `npc:prepare:${o.id}`, actor: hostActor(o.region, 'meal'), personId: hosts[o.region].meal.id, region: o.region, place: 'CORNER CAFÉ', publicCause: 'The advertised preparation window ended', effect: `${hosts[o.region].meal.name} prepared ${o.owner.name}’s order. ${o.owner.kind === 'player' ? 'Their prepaid pickup remains available for two blocks, or they may choose a full refund.' : 'The standing customers have their meals.'}`, timing: { round: g.round } });
+    }
+    for (const b of s.bookings.filter(b => b.status === 'reserved' && b.round <= cutoff)) {
+        b.status = 'expired';
+        const owner = g.players.find(p => p.id === b.owner.id);
+        if (owner)
+            owner.cash += b.deposit;
+        event(g, { actionId: `npc:refund:${b.id}`, actor: hostActor(b.region, 'room'), personId: hosts[b.region].room.id, region: b.region, place: 'COMMUNITY', publicCause: 'The unused room’s advertised booking window ended', effect: `${b.owner.name}’s unused booking expired. The $${b.deposit} room fee was returned to its owner.`, timing: { round: g.round } });
+    }
+    // On the last month there is no later pickup turn: return uncollected prepaid meals.
+    if (finished)
+        for (const o of s.orders.filter(o => o.status === 'ready' && o.owner.kind === 'player')) {
+            o.status = 'cancelled';
+            const owner = g.players.find(p => p.id === o.owner.id);
+            if (owner)
+                owner.cash += o.price;
+            event(g, { actionId: `npc:final-refund:${o.id}`, actor: hostActor(o.region, 'meal'), personId: hosts[o.region].meal.id, region: o.region, place: 'CORNER CAFÉ', publicCause: 'This chapter ended before pickup', effect: `${o.owner.name}’s uncollected supper was refunded for $${o.price}; the café offered it to the pantry.`, timing: { round: g.round } });
+        }
+    for (const [key, m] of Object.entries(s.months))
+        if (Number(key.split(':')[0]) <= cutoff)
+            for (const q of m.sparePortions)
+                if (!q.buyerId)
+                    q.donated = true;
+    s.lastRound = g.round;
+    s.revision++;
+    if (finished)
+        s.finalized = true;
+    else
+        seedMonth(g);
 }
-export function sharedOpportunityView(g:Game,p:Player){
- if(!enabled(g))return null;const r=p.world?.region??'alder',m=month(g,r),s=g.sharedOpportunities!,h=hosts[r];if(!m)return null;
- const facts:SharedFact[]=[{id:`counter:${g.round}:${r}`,title:`${h.meal.name}’s supper counter`,region:r,place:'CORNER CAFÉ',body:`${m.sparePortions.filter(q=>!q.buyerId&&!q.donated).length} spare portions available. ${s.orders.filter(o=>o.region===r&&o.status==='pending').length} unclaimed preparation jobs.`,cause:'Paid orders and completed preparation create the actual stock; each portion has one buyer.'},{id:`rooms:${g.round}:${r}`,title:`${regionDefinitions[r].placeNames.COMMUNITY} room diary`,region:r,place:'COMMUNITY',body:`${remaining(g,r).length} bookable room${remaining(g,r).length===1?'':'s'} free. ${h.room.name}’s ${h.room.plan}: ${m.npcPlan}.`,cause:m.annexReady?`${m.annexPreparedBy?.name??h.room.name} prepared the annex.`:'There is one main room; preparing the annex creates a second.'},...s.events.filter(e=>e.region===r).slice(-8).map(e=>({id:e.id,title:e.publicCause,body:e.effect,region:e.region,place:e.place,cause:e.actor.name}))];
- return{facts,choices:sharedChoices(g,p),receipts:(p.castRedacted?[]:p.sharedPersonal?.receipts??[]).map(r=>({...r,response:{...r.response}})),events:s.events.filter(e=>e.region===r).map(e=>structuredClone(e))};
+export function sharedOpportunityView(g: Game, p: Player) {
+    if (!enabled(g))
+        return null;
+    const r = p.world?.region ?? 'alder', m = month(g, r), s = g.sharedOpportunities!, h = hosts[r];
+    if (!m)
+        return null;
+    const facts: SharedFact[] = [{ id: `counter:${g.round}:${r}`, title: `${h.meal.name}’s supper counter`, region: r, place: 'CORNER CAFÉ', body: `${m.sparePortions.filter(q => !q.buyerId && !q.donated).length} spare portions available. ${s.orders.filter(o => o.region === r && o.status === 'pending').length} unclaimed preparation jobs.`, cause: 'Paid orders and completed preparation create the actual stock; each portion has one buyer.' }, { id: `rooms:${g.round}:${r}`, title: `${regionDefinitions[r].placeNames.COMMUNITY} room diary`, region: r, place: 'COMMUNITY', body: `${remaining(g, r).length} bookable room${remaining(g, r).length === 1 ? '' : 's'} free. ${h.room.name}’s ${h.room.plan}: ${m.npcPlan}.`, cause: m.annexReady ? `${m.annexPreparedBy?.name ?? h.room.name} prepared the annex.` : 'There is one main room; preparing the annex creates a second.' }, ...s.events.filter(e => e.region === r).slice(-8).map(e => ({ id: e.id, title: e.publicCause, body: e.effect, region: e.region, place: e.place, cause: e.actor.name }))];
+    return { facts, choices: sharedChoices(g, p), receipts: (p.castRedacted ? [] : p.sharedPersonal?.receipts ?? []).map(r => ({ ...r, response: { ...r.response } })), events: s.events.filter(e => e.region === r).map(e => structuredClone(e)) };
 }
 /** Run after the existing cast mask, preserving its protection of other private fields. */
-export function sharedMemberPlayers(g:Game,ownedIds:string[],players:Player[]){if(!enabled(g))return players;return players.map(p=>{if(ownedIds.includes(p.id))return p;const {sharedPersonal,...safe}=p;void sharedPersonal;return safe;});}
+export function sharedMemberPlayers(g: Game, ownedIds: string[], players: Player[]) { if (!enabled(g))
+    return players; return players.map(p => { if (ownedIds.includes(p.id))
+    return p; const { sharedPersonal, ...safe } = p; void sharedPersonal; return safe; }); }
