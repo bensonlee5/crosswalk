@@ -42,14 +42,16 @@ export function StoryChoiceDeck({g,choices,disabled,busy,onCommit,place='COMMUNI
  const choice=choices.find(c=>c.id===selected)??choices.find(c=>c.available&&c.primary)??choices.find(c=>c.available)??choices[0];
  if(!choice)return <p className="encounter-quiet">{emptyText}</p>;
  const blocked=disabled||busy||!choice.available||isSubmitted(choice.actionId);
+ // The body is already shown as the response or its terms; do not repeat it as an effect.
+ const effects=choice.previewText.filter(text=>text.trim()!==choice.body.trim());
  return <section className={`story-choice-deck${conversational?' person-choices':''}`} aria-label="Choose your response" aria-busy={busy}>
   <div className="encounter-options image-choice-options" role="group" aria-label="Possible responses">{choices.map(c=>{const art=decisionIllustration(c,place);return <button type="button" key={c.id} className="encounter-option" aria-pressed={c.id===choice.id} disabled={busy||disabled} onClick={()=>{if(busy||disabled)return;setSelected(c.id);onSelect?.(c);}}>{!conversational&&<GamePainting src={art.thumb} fallback={art.fallback} alt=""/>}<span className="encounter-option-copy">{!conversational&&<small className="choice-selection">{c.id===choice.id?'Selected response':'Explore response'}</small>}<strong>{c.title}</strong><small>{economyTimeLabel(g??{},c.cost.time)} · {dollars(c.cost.cash)}{!c.available?' · Not yet available':''}</small></span></button>})}</div>
   <div className="encounter-choice-preview" data-choice-id={choice.id} aria-live="polite">
    {!conversational&&<><small className="encounter-eyebrow">YOUR RESPONSE</small><h3>{choice.title}</h3><p>{narrativeExpectation(choice.body)}</p></>}
    <div className="encounter-costs" aria-label="Exact cost"><span>{economyTimeLabel(g??{},choice.cost.time)}</span><span>{dollars(choice.cost.cash)} upfront</span>{choice.cost.energy>0&&<span>{effortLabel(choice.cost.energy)}</span>}</div>
-   {choice.previewText.some(text=>!isQuietEffect(text))&&<ul className="encounter-effects" aria-label="Commitments and consequences">{choice.previewText.filter(text=>!isQuietEffect(text)).map((text,i)=><li key={i}>{qualitativeText(text)}</li>)}</ul>}
+   {effects.some(text=>!isQuietEffect(text))&&<ul className="encounter-effects" aria-label="Commitments and consequences">{effects.filter(text=>!isQuietEffect(text)).map((text,i)=><li key={i}>{qualitativeText(text)}</li>)}</ul>}
    {conversational&&(choice.actionId.startsWith('story:')||/(?:promise|keep|renegotiate|release|rush|press|shared:)/.test(choice.actionId))?<p className="person-choice-terms">{narrativeExpectation(choice.body)}</p>:conversational&&<details className="person-choice-context" key={'context:'+choice.id}><summary>What this involves</summary><p>{narrativeExpectation(choice.body)}</p></details>}
-   {choice.previewText.some(isQuietEffect)&&<details className="choice-effect-details" key={choice.id}><summary>How this may feel</summary><ul>{choice.previewText.filter(isQuietEffect).map((text,i)=><li key={i}>{qualitativeText(text)}</li>)}</ul></details>}
+   {effects.some(isQuietEffect)&&<details className="choice-effect-details" key={choice.id}><summary>How this may feel</summary><ul>{effects.filter(isQuietEffect).map((text,i)=><li key={i}>{qualitativeText(text)}</li>)}</ul></details>}
    {!choice.available&&<p className="encounter-lock" role="note">{qualitativeText(choice.reason)||'This response is not available yet.'}</p>}
    <button type="button" className="encounter-commit" disabled={blocked} onClick={()=>{if(!blocked)onCommit(choice);}}>{busy?'Saving your response…':isSubmitted(choice.actionId)?'Response recorded':`Choose: ${choice.title}`}<span aria-hidden="true">→</span></button>
   </div>

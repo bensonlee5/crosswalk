@@ -40,3 +40,11 @@ const elements=node=>!node||typeof node!=='object'?[]:Array.isArray(node)?node.f
 let nodes=elements(tree());nodes.find(n=>n.type==='button'&&n.key==='two').props.onClick();assert.deepEqual(committed,[],'Selecting a picture never submits');
 nodes=elements(tree());assert.equal(nodes.find(n=>n.props?.['data-choice-id']).props['data-choice-id'],'two');assert.equal(nodes.find(n=>n.props?.className==='choice-effect-details').key,'two','Switching intent resets effect disclosure');nodes.find(n=>n.props?.className==='encounter-commit').props.onClick();assert.deepEqual(committed,['two'],'Only the separate confirmation submits the selected intent');
 console.log('PASS: controlled-hook selection switches pictured intent, resets disclosure, and submits only through the separate confirmation.');
+
+const sharedBody='Pay $45 now. Collect the supper after preparation, or cancel before preparation for a full refund.';
+for(const conversational of [false,true]){
+ const shared={...choice,id:'shared:1:0:alder:order',actionId:'world:shared:1:0:alder:order',body:sharedBody,previewText:['$45 upfront',sharedBody,'The host keeps your order.']};
+ const markup=render({choices:[shared],conversational});
+ assert.equal(markup.split(sharedBody).length-1,1,'Shared terms appear once in both the Places and person view');
+ assert.ok(markup.includes('$45 upfront'));assert.ok(markup.includes('The host keeps your order.'));
+}

@@ -88,3 +88,10 @@ test('ordering after the helper’s turn preserves their next turn to respond, w
 test('passing the response window produces a concrete longer collection or full refund without profit',()=>{
  const g=room();move(g,'end');const a=p(g);visit(g,'CORNER CAFÉ');choose(g,'order');const id=orderOf(g,a).id;move(g,'end');move(g,'end');move(g,'end');const o=g.sharedOpportunities.orders.find(o=>o.id===id);assert.equal(o.status,'ready');assert.equal(o.delayed,true);while(p(g).id!==a.id)move(g,'end');visit(g,'CORNER CAFÉ');const pickup=sharedChoices(g,a).find(c=>c.key==='collect:'+id);assert.equal(pickup.time,2);assert.match(pickup.body,/busy service/);const cash=a.cash;const refund=choose(g,'cancel:'+id);assert.equal(a.cash,cash+45);const saved=bytes(g);move(g,refund.actionId);assert.equal(bytes(g),saved);assert.equal(g.sharedOpportunities.orders.find(o=>o.id===id).status,'cancelled');
 });
+
+test('booking copy does not imply an unprepared annex already exists',()=>{
+ const g=room(2);visit(g,'COMMUNITY');choose(g,'reserve:rehearsal');move(g,'end');visit(g,'COMMUNITY');
+ const choice=sharedChoices(g,p(g)).find(c=>c.key==='reserve:supper');
+ assert.match(choice.body,/The available room space is committed/);assert.doesNotMatch(choice.body,/Both available rooms/);
+ assert.match(choice.reason,/Prepare the annex/);
+});
