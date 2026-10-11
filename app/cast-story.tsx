@@ -27,12 +27,14 @@ export function CastEncounterPanel({g,p,person,spot,disabled,onAction,onClose}:E
  const preview=previewState?.context===context?choices.find(c=>c.actionId===previewState.choice.actionId)??null:null;
  const memories=[...person.memories].sort((a,b)=>b.week-a.week);
  return <div className="encounter-panel cast-encounter" data-actor={person.id}>
-  <header className="encounter-heading person-heading"><div><small className="encounter-eyebrow">{economyMonthLabel(g,g.round).toUpperCase()} · {person.status}</small><h2 id="encounter-title">{person.name}</h2><p>{person.role}</p></div></header>
-  <PersonResponseStage g={g} p={p} actorId={person.id} name={person.name} spot={spot} remote={person.remote} known={person.memories.length>0} settled={!choices.length} available={choices.some(c=>c.available)} preview={preview} pending={commit.busy} error={commit.error} receipt={commit.receipt} companionName={person.companionId?canonicalCharacterById[person.companionId]?.name:undefined}/>
-  <EncounterOutcome g={g} receipt={commit.receipt||(!choices.some(choice=>choice.available)?person.lastReceipt||null:null)} error={commit.error} compact/>
-  {!commit.receipt&&<StoryChoiceDeck g={g} place={spot} choices={choices} disabled={disabled} busy={commit.busy} onSelect={choice=>setPreview({context,choice})} conversational onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText={p.castRedacted?'This player’s conversations and relationship history are private.':person.spot!==spot?`You can reach ${person.name} through ${worldPlaceName(p,person.spot,g)}.`:'No new commitment. You can leave whenever you like.'}/>}
+  <PersonResponseStage g={g} p={p} actorId={person.id} name={person.name} role={person.role} titleId="encounter-title" spot={spot} remote={person.remote} known={person.memories.length>0} settled={!choices.length} available={choices.some(c=>c.available)} preview={preview} pending={commit.busy} error={commit.error} receipt={commit.receipt} companionName={person.companionId?canonicalCharacterById[person.companionId]?.name:undefined}
+    narrative={<>{person.remote&&<p>{person.name} is not at a public meetup here this month. You are keeping in touch through the community room.</p>}{person.body.map((text,i)=><p key={i}>{qualitativeText(text)}</p>)}</>}
+    onContinue={commit.receipt&&choices.some(c=>c.available&&!commit.isSubmitted(c.actionId))?()=>{setPreview(null);commit.continueConversation();}:undefined}>
+   {!commit.receipt&&<StoryChoiceDeck g={g} place={spot} choices={choices} disabled={disabled} busy={commit.busy} onSelect={choice=>setPreview({context,choice})} conversational onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText={p.castRedacted?'This player’s conversations and relationship history are private.':person.spot!==spot?`You can reach ${person.name} through ${worldPlaceName(p,person.spot,g)}.`:'No new commitment. You can leave whenever you like.'}/>}
+  </PersonResponseStage>
   <PersonSceneDetails>
-  <section className="encounter-scene"><h3>{person.remote?'Keeping in touch':'A life of their own'}</h3>{person.remote&&<p className="encounter-callback">{person.name} is not at a public meetup here this {'month'}. The community room gives you a way to stay in touch.</p>}<p>{person.bio}</p>{person.body.map((text,i)=><p key={i}>{qualitativeText(text)}</p>)}</section>
+  <p>{person.bio}</p>
+  {!commit.receipt&&<EncounterOutcome g={g} receipt={!choices.some(choice=>choice.available)?person.lastReceipt||null:null} error="" compact/>}
   <CharacterHistory g={g} p={p} actorId={person.id}/>
   {person.goal&&<p className="encounter-promise"><strong>{person.interactionKind==='family'?'What fits today':person.interactionKind==='local'?`What matters to ${person.name}`:`What ${person.name} is working toward`}</strong>{person.goal}</p>}
   {person.tie&&<p className="encounter-tie"><strong>A connection between lives</strong>{person.tie}</p>}

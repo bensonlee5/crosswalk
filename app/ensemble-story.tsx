@@ -5,8 +5,9 @@ import type { GameView, Player } from '@/lib/game';
 import { getEnsembleView } from '@/lib/ensemble-story';
 import type { EnsembleSceneView } from '@/lib/ensemble-story-types';
 import { capturePersonReceipt } from '@/lib/person-response';
+import { canonicalCharacterById } from '@/lib/character-canon';
 import { guideItemFactsById } from '@/lib/guide-item-facts';
-import { StoryChoiceDeck, EncounterOutcome, useEncounterCommit } from './story-choices';
+import { StoryChoiceDeck, useEncounterCommit } from './story-choices';
 import { PersonResponseStage } from './person-response';
 import CharacterPortrait from './character-portrait';
 import GamePainting from './game-painting';
@@ -26,8 +27,8 @@ export function EnsembleStories({ g, p, disabled, onAction, onVisit, selectedVen
   const view = getEnsembleView(g, p, selected, selectedVenue);
   const scene = view.scenes.find(s => s.id === selected);
   if (!view.scenes.length) return null;
-  return <section className="cast-meetups ensemble-stories" aria-label="Stories crossing your day">
-    <div className="cast-meetups-heading">
+  return <section className={"cast-meetups ensemble-stories"+(scene?" ensemble-is-open":"")} aria-label="Stories crossing your day">
+    {!scene&&<><div className="cast-meetups-heading">
       <small className="encounter-eyebrow">HERE IN THE NEIGHBORHOOD</small>
       <h3>Other people have plans, too</h3>
       <p>A borrowed bit of space, an actual order, the wrong picture. Choose a part that matters to you.</p>
@@ -38,14 +39,15 @@ export function EnsembleStories({ g, p, disabled, onAction, onVisit, selectedVen
       <CharacterPortrait id={s.people[0].id} name={s.people[0].name} className="cast-meetup-token" />
       <span><strong>{s.title}</strong><small>{s.placeName}</small><span>{s.heading}</span></span>
       <span aria-hidden="true">{s.id === selected ? '−' : '→'}</span>
-    </button>)}</div>
+    </button>)}</div></>}
+    {scene&&<button type="button" className="ensemble-back" onClick={()=>setSelection({playerId:p.id,storyId:undefined,requestedId:storyId})}>← Other conversations</button>}
     {scene && <EnsembleScene key={[g.code, p.id, scene.id].join(':')} {...{ g, p, disabled, onAction, onVisit, scene }} />}
   </section>;
 }
 
 function EnsembleScene({ g, p, disabled, onAction, onVisit, scene }: Props & { scene: EnsembleSceneView }) {
-  const actor = scene.speaker, atPlace = p.place === scene.place && p.world?.region === scene.region;
-  const context = [g.code, p.id, g.round, scene.id].join('|');
+  const atPlace = p.place === scene.place && p.world?.region === scene.region;
+  const context = [g.code, p.id, g.round, p.world?.region, p.place, scene.id].join('|');
   const commit = useEncounterCommit({ g, p, disabled, context, choices: scene.choices, onAction,
     findReceipt: (_result, updated, choice) => {
       const receipt = updated.ensemble?.receipts.find(r => r.actionId === choice.actionId);
@@ -57,25 +59,27 @@ function EnsembleScene({ g, p, disabled, onAction, onVisit, scene }: Props & { s
   const selectedChoice = previewChoice ?? scene.choices.find(c => c.available && c.primary) ?? scene.choices.find(c => c.available);
   const cause = selectedChoice?.cause;
   const item = guideItemFactsById[scene.objectId];
+  const responseActor=typeof commit.receipt?.response==='object'?commit.receipt.response.speakerId:scene.speaker.id;
+  const actor=scene.people.find(person=>person.id===responseActor)??canonicalCharacterById[responseActor]??scene.speaker;
   return <div className="encounter-panel ensemble-scene">
-    <header className="encounter-heading"><small className="encounter-eyebrow">{scene.people.map(person => person.name).join(' · ')}</small>
-      <h3>{scene.heading}</h3><p>{scene.body}</p>
-    </header>
-    {!atPlace ? <button type="button" className="encounter-return" disabled={disabled} onClick={() => onVisit(scene.place, scene.id)}>
+    {!atPlace ? <><h3>{scene.heading}</h3><p>{scene.body}</p><button type="button" className="encounter-return" disabled={disabled} onClick={() => onVisit(scene.place, scene.id)}>
       Visit {scene.placeName} <span aria-hidden="true">→</span>
-    </button> : <>
-      <PersonResponseStage g={g} p={p} actorId={actor.id} name={actor.name} spot={scene.place}
+    </button></> : <PersonResponseStage g={g} p={p} actorId={actor.id} name={actor.name} spot={scene.place} sceneId={scene.id}
+        sceneTitle={scene.heading} narrative={<p>{scene.body}</p>} opening={scene.opening} clarification={scene.clarification} narrativeLead={!scene.opening}
         known={!!p.ensemble?.receipts.some(r => r.storyId === scene.id)}
         settled={scene.status === 'settled'} available={scene.choices.some(c => c.available)}
-        preview={previewChoice ?? null} pending={commit.busy} error={commit.error} receipt={commit.receipt} />
-      <EncounterOutcome g={g} receipt={commit.receipt} error={commit.error} compact />
-      {cause && <div className="encounter-callback"><small>{cause.remote ? 'A message from ' + cause.regionName : 'Earlier here'} · {cause.actor} · month {cause.month}</small><p>{cause.text}</p></div>}
-      <StoryChoiceDeck g={g} place={scene.place} choices={scene.choices}
+        preview={previewChoice ?? null} pending={commit.busy} error={commit.error} receipt={commit.receipt}
+        onContinue={commit.receipt&&scene.choices.some(c=>!commit.isSubmitted(c.actionId))?()=>{setPreview(null);commit.continueConversation();}:undefined}>
+      {!commit.receipt&&<>
+       {cause && <p className="encounter-callback"><small>{cause.remote ? 'A message from ' + cause.regionName : 'Earlier here'} · {cause.actor} · month {cause.month}</small><br/>{cause.text}</p>}
+       <StoryChoiceDeck g={g} place={scene.place} choices={scene.choices}
         disabled={disabled} busy={commit.busy} conversational onSelect={choice => setPreview({ context, id: choice.id })}
         onCommit={choice => void commit.commit(choice)} isSubmitted={commit.isSubmitted}
         emptyText={scene.next} />
-    </>}
-    {(!atPlace || scene.choices.length > 0) && <p className="cast-contact-note">{scene.next}</p>}
+      </>}
+      {commit.receipt&&scene.choices.length===0&&<p className="cast-contact-note">{scene.next}</p>}
+    </PersonResponseStage>}
+
     <details className="encounter-memory">
       <summary>{item?.name ?? 'The object'} &amp; what happened</summary>
       {item?.image && <GamePainting src={'/paintings/' + item.image.src} alt={item.image.alt} />}

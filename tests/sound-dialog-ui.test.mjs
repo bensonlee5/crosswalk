@@ -23,12 +23,12 @@ const React = await import('react');
 const {createRoot} = await import('react-dom/client');
 const {act, createElement: h, useState} = React;
 const compiled = buildSync({
-  stdin: {contents: "export {Dialog,DialogContent,DialogDescription,DialogTitle,DialogTrigger} from './components/ui/dialog.tsx'; export {SoundSettings} from './app/sound-controls.tsx';", resolveDir: fileURLToPath(new URL('../', import.meta.url)), sourcefile: 'sound-dialog-entry.ts'},
+  stdin: {contents: "export {restoreDialogFocus} from './lib/dialog-focus.ts'; export {Dialog,DialogContent,DialogDescription,DialogTitle,DialogTrigger} from './components/ui/dialog.tsx'; export {SoundSettings} from './app/sound-controls.tsx';", resolveDir: fileURLToPath(new URL('../', import.meta.url)), sourcefile: 'sound-dialog-entry.ts'},
   bundle: true, write: false, platform: 'node', format: 'cjs', packages: 'external', logLevel: 'silent',
 }).outputFiles[0].text;
 const module = {exports: {}};
 new Function('require', 'module', 'exports', compiled)(createRequire(import.meta.url), module, module.exports);
-const {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, SoundSettings} = module.exports;
+const {restoreDialogFocus, Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, SoundSettings} = module.exports;
 
 test('sound dialog preserves real modal focus, Escape, Close and settings across repeated opens', async () => {
   const container = document.createElement('div'); document.body.append(container);
@@ -74,4 +74,63 @@ test('sound dialog preserves real modal focus, Escape, Close and settings across
     await settle(() => root.unmount());
     container.remove();
   }
+});
+
+
+test('Sound closes back to the connected Game menu when its nested menu item was removed', async () => {
+  const container = document.createElement('div'); document.body.append(container);
+  const root = createRoot(container);
+  const focusReturn = {trigger: null, fallback: null};
+  function Probe() {
+    const [menu, setMenu] = useState(false), [sound, setSound] = useState(false);
+    return h(React.Fragment, null,
+      h(Dialog, {open: menu, onOpenChange: setMenu},
+        h(DialogTrigger, {'data-game-menu-trigger': ''}, 'Game menu'),
+        h(DialogContent, null, h(DialogTitle, null, 'Game menu'), h(DialogDescription, null, 'Your life'),
+          h('button', {onClick: event => {
+            focusReturn.trigger = event.currentTarget;
+            focusReturn.fallback = container.querySelector('[data-game-menu-trigger]');
+            setMenu(false); setSound(true);
+          }}, 'Sound & music'))),
+      h(Dialog, {open: sound, onOpenChange: setSound},
+        h(DialogContent, {className: 'sound-dialog', onCloseAutoFocus: event => restoreDialogFocus(event, focusReturn.trigger, focusReturn.fallback)},
+          h(DialogTitle, null, 'Sound & music'), h(DialogDescription, null, 'Set the mood.'))));
+  }
+  const settle = async action => act(async () => {action?.(); await new Promise(resolve => setTimeout(resolve, 10));});
+  try {
+    await settle(() => root.render(h(Probe)));
+    const gameMenu = container.querySelector('[data-game-menu-trigger]');
+    await settle(() => gameMenu.click());
+    await settle(() => [...document.querySelectorAll('[role=dialog] button')].find(button => button.textContent === 'Sound & music').click());
+    assert.equal(focusReturn.trigger.isConnected, false);
+    assert.ok(document.querySelector('.sound-dialog'));
+    await settle(() => document.querySelector('.sound-dialog [data-slot=dialog-close]').click());
+    assert.equal(document.querySelector('[role=dialog]'), null);
+    assert.equal(document.activeElement, gameMenu);
+    await settle(() => gameMenu.click());
+    assert.ok(document.querySelector('[role=dialog]'), 'returned focus can reopen the menu');
+  } finally {
+    await settle(() => root.unmount()); container.remove();
+  }
+});
+
+test('dialog focus return preserves a newer focus or modal and ignores unavailable targets', () => {
+  const trigger = document.createElement('button'), fallback = document.createElement('button'), other = document.createElement('button');
+  document.body.append(trigger, fallback, other);
+  const close = () => {
+    const event = new dom.window.Event('closeAutoFocus', {cancelable: true});
+    restoreDialogFocus(event, trigger, fallback);
+    assert.equal(event.defaultPrevented, true);
+  };
+  try {
+    close(); assert.equal(document.activeElement, trigger, 'connected original trigger wins');
+    trigger.remove(); close(); assert.equal(document.activeElement, fallback, 'removed trigger uses fallback');
+    other.focus(); close(); assert.equal(document.activeElement, other, 'newer user focus is not stolen');
+    other.blur(); fallback.disabled = true; close(); assert.equal(document.activeElement, document.body);
+    fallback.disabled = false;
+    const modal = document.createElement('div'); modal.dataset.slot = 'dialog-content'; modal.dataset.state = 'open'; document.body.append(modal);
+    close(); assert.equal(document.activeElement, document.body, 'new dialog can run its own autofocus'); modal.remove();
+    fallback.hidden = true; close(); assert.equal(document.activeElement, document.body);
+    fallback.remove(); close(); assert.equal(document.activeElement, document.body);
+  } finally {trigger.remove(); fallback.remove(); other.remove();}
 });

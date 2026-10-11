@@ -60,6 +60,8 @@ export type EnsembleChoiceView = {
 };
 export type EnsembleSceneView = {
   id: string; title: string; heading: string; body: string; region: RegionId;
+  opening?: {speakerId:string;speech:string;activity:string};
+  clarification?: {question:string;answer:string};
   place: string; placeName: string; people: {id: string; name: string}[];
   speaker: { id: string; name: string; mode: 'local'; reason: string };
   objectId: string; choices: EnsembleChoiceView[]; status: 'active' | 'settled';

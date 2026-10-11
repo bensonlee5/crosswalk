@@ -30,7 +30,7 @@ function validReply(input: PersonSceneInput) {
   assert.ok(emotions.has(reply.emotion));
   assert.ok(gestures.has(reply.gesture));
   assert.ok(reply.speech.trim() || reply.gesture, 'silence retains an explicit visible gesture');
-  assert.ok(reply.speech.length <= 240, `${input.actorId}: spoken response remains brief`);
+  assert.ok(reply.speech.length <= 800, `${input.actorId}: spoken response remains readable without clipping`);
   assert.doesNotMatch(reply.speech, /\b(?:undefined|NaN|earnedWeeks|contributions|trust\s*[:+]|reward points)\b/i);
   return reply;
 }
@@ -49,7 +49,7 @@ test('all 53 presented people have pure first, repeat, paused, unavailable and p
       assert.equal(unavailable.gesture, 'pause');
       for (const preview of [true, false]) {
         const reply = validReply({...input, preview:{id:'choice', actionId:'choice', title:'A possible choice', available:preview, reason:preview?'':'Needs one priority block'}});
-        if (preview) assert.equal(reply.speech, '', 'exploring an available choice must not perform its outcome');
+        if (preview) assert.equal(reply.speech, personReply(input).speech, 'exploring an available choice retains the existing opening without performing the outcome');
       }
       assert.equal(validReply({...input, pending:true}).speech, '');
       assert.equal(validReply({...input, error:'No server confirmation'}).speech, '');
@@ -74,7 +74,7 @@ test('speech extraction requires an explicit attribution to the actual speaker',
   assert.equal(attributedSpeech('Mina says nothing. Jo says “My bench.”', 'Mina'), '', 'a sentence boundary cannot turn Jo’s speech into Mina’s');
   assert.equal(attributedSpeech('“Earlier,” Mina says. Later Mina says “Latest.”', 'Mina'), 'Latest.', 'mixed attribution styles preserve chronological order');
   assert.equal(attributedSpeech('You receive $500 and a skill bonus.', 'Mina'), '', 'third-person rewards are never dialogue');
-  assert.equal(attributedSpeech('Jo says “' + 'x'.repeat(221) + '”', 'Jo'), '', 'an entire long outcome is not a speech bubble');
+  assert.equal(attributedSpeech('Jo says “' + 'x'.repeat(801) + '”', 'Jo'), '', 'an entire long outcome is not a speech bubble');
 });
 
 test('confirmed speaker metadata survives exactly and cannot be borrowed by a different person or a private seat', () => {

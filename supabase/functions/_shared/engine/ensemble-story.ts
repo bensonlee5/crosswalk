@@ -1,3 +1,4 @@
+import {deepenEnsembleOption,ensembleDialogue,preventedWhaleskinDialogue} from './ensemble-dialogue.ts';
 import type { Game, GameView, Player } from './game.ts';
 import { canonicalCharacterById } from './character-canon.ts';
 import { economyPaidQuote, economyProfile, recordEconomyPaidHours } from './economy.ts';
@@ -69,7 +70,7 @@ function candidates(g: GameView, p: Player | null, s: EnsembleDefinition): Candi
     for (const raw of beat.choices) {
       if ((raw.unless && t.flags[raw.unless]) || (raw.when && !t.flags[raw.when])) continue;
       if (raw.id === 'refund') continue; // Each payer’s ticket is handled separately below.
-      const option = preventionCopy(s, t, raw);
+      const option = preventionCopy(s, t, deepenEnsembleOption(s.id, beat.id, raw));
       result.push({ option, kind: 'main', actionId: `ensemble:${s.id}:main:${option.id}:${t.beat}` });
     }
   }
@@ -84,7 +85,7 @@ function candidates(g: GameView, p: Player | null, s: EnsembleDefinition): Candi
   }
   if (p && s.id === 'dalloway' && t.beat >= 3) {
     for (const order of room.orders.filter(o => o.storyId === s.id && o.payerId === p.id && o.status === 'paid')) {
-      const raw = s.beats[3].choices.find(o => o.id === 'refund')!;
+      const raw = deepenEnsembleOption(s.id, s.beats[3].id, s.beats[3].choices.find(o => o.id === 'refund')!);
       const actionId = `ensemble:${s.id}:refund:${order.id.replace(':', '_')}:${t.beat}`;
       result.push({ option: { ...raw, label: `Ask for your ${money(order.amount)} unserved supper money back` }, kind: 'refund', actionId, orderId: order.id });
     }
@@ -121,7 +122,7 @@ function aftermathCandidates(g: GameView, p: Player, s: EnsembleDefinition): Can
   ).map(option => ({ option, kind: 'aftermath' as const, crossing, aftermathIndex: phase.index, actionId: `ensemble:${s.id}:aftermath:${option.id}:${phase.index}.${crossing.id}` }));
 }
 function preventionCopy(s: EnsembleDefinition, t: EnsembleThread, raw: EnsembleOption): EnsembleOption {
-  if (s.id !== 'whaleskin' || !t.flags.prevented) return raw;
+  if (s.id !== 'whaleskin' || !t.flags.prevented || ![1, 2].includes(t.beat)) return raw;
   const option = structuredClone(raw);
   if (t.beat === 1 && raw.id === 'accurate') {
     option.label = 'Read Mara’s routine road check';
@@ -132,7 +133,7 @@ function preventionCopy(s: EnsembleDefinition, t: EnsembleThread, raw: EnsembleO
     option.outcome = raw.id === 'context' ? 'Tavi files the successful clearance check. Lata points again to the beautifully fitting mirror sleeves. There is no rescue photograph to take.' : 'Mara finishes her ordinary inspection. The cover remains above the drain, exactly where it was checked.';
   }
   option.narration = { personal: option.outcome, public: option.outcome, npc: option.outcome };
-  option.response = { ...option.response, speech: 'It was useful all along. I was saying that before the rain.' };
+  option.response = { ...option.response, speech: 'It was useful all along. I was saying that before the rain. Mara can sign the routine check, Tavi can keep the successful installation note, and I can finish the deliveries without becoming the subject of a rescue photograph.' };
   return option;
 }
 function mainPacingReason(g: GameView, p: Player, storyId: string): string {
@@ -175,15 +176,16 @@ export function getEnsembleView(g: GameView, p: Player, focusId?: string, select
     const t = room.threads[s.id], beat = s.beats[t.beat], recent = t.history.slice(-3).map(id => room.events.find(e => e.id === id)!).filter(Boolean);
     const phase = aftermathStage(g, p, s), following = phase && phase.opens <= g.round && aftermathCandidates(g, p, s).length > 0;
     const waiting = t.readyMonth > g.round;
-    let body = waiting ? recent.at(-1)?.text ?? s.trigger : beat?.prompt ?? t.ending;
+    const dialogue = !waiting && !following && beat ? (s.id === 'whaleskin' && t.flags.prevented ? preventedWhaleskinDialogue[beat.id] : undefined) ?? ensembleDialogue[`${s.id}:${beat.id}`] : undefined;
+    let body = waiting ? recent.at(-1)?.text ?? s.trigger : dialogue?.body ?? beat?.prompt ?? t.ending;
     let heading = waiting ? 'The next part takes a little time' : beat?.title ?? 'The next ordinary day';
     if (s.id === 'whaleskin' && t.flags.prevented && !waiting) {
-      if (t.beat === 1) { heading = 'The working road'; body = 'The rain arrives. Water passes the checked outlet and Lata’s van keeps moving. Mara has an ordinary inspection to sign.'; }
-      if (t.beat === 2) { heading = 'The sleeve above the drain'; body = 'The silver sleeve sits above the clear outlet. Tavi has a successful installation note. Lata has a cover that is useful somewhere other than her van.'; }
+      if (t.beat === 1) { heading = 'The working road'; body = dialogue?.body ?? 'The rain arrives. Water passes the checked outlet and Lata’s van keeps moving. Mara has an ordinary inspection to sign.'; }
+      if (t.beat === 2) { heading = 'The sleeve above the drain'; body = dialogue?.body ?? 'The silver sleeve sits above the clear outlet. Tavi has a successful installation note. Lata has a cover that is useful somewhere other than her van.'; }
     }
     if (following) { heading = phase.stage.title; body = phase.stage.prompt; }
     const next = t.status === 'settled' ? following ? 'There is another part for you to decide. Your earlier choices still matter.' : phase && phase.opens > g.round ? `Your next consequence can be picked up in month ${phase.opens}; the public outcome stays in place.` : phase ? `There may be more to say after the day at ${regionDefinitions[s.region].placeNames[ensembleById[phase.definition.sourceStoryId].place]}. Your earlier choices still stand.` : 'That part of your day is settled. Other people still have their own decisions.' : mainPacingReason(g, p, s.id) || (waiting ? `The story continues in month ${t.readyMonth}. Other choices here remain yours.` : g.round === g.maxRounds ? 'This is the final month. Any remaining choices must fit before everyone finishes; the story will not restart.' : 'The next scene takes another part of this representative month. When everyone ends the month, the neighbors choose any unanswered next step.');
-    return { id: s.id, title: s.title, heading, body, region: s.region, place: s.place, placeName: regionDefinitions[s.region].placeNames[s.place], people: s.cast.map(id => ({ id, name: canonicalCharacterById[id]?.name ?? id })), speaker: { id: s.cast[0], name: canonicalCharacterById[s.cast[0]]?.name ?? s.cast[0], mode: 'local' as const, reason: s.id === 'bracken' ? 'Nell is visiting Ruth’s Alder room for this story. Other named participants may be elsewhere.' : 'The lead counterpart is at this authored local scene. The cast list is context, not a list of people present.' }, objectId: s.object, choices: candidates(g, p, s).map(c => choiceView(g, p, s, c)), status: t.status as 'active' | 'settled', next, events: recent };
+    return { id: s.id, title: s.title, heading, body, ...(dialogue ? {opening:dialogue.opening,clarification:dialogue.clarification} : {}), region: s.region, place: s.place, placeName: regionDefinitions[s.region].placeNames[s.place], people: s.cast.map(id => ({ id, name: canonicalCharacterById[id]?.name ?? id })), speaker: { id: s.cast[0], name: canonicalCharacterById[s.cast[0]]?.name ?? s.cast[0], mode: 'local' as const, reason: s.id === 'bracken' ? 'Nell is visiting Ruth’s Alder room for this story. Other named participants may be elsewhere.' : 'The lead counterpart is at this authored local scene. The cast list is context, not a list of people present.' }, objectId: s.object, choices: candidates(g, p, s).map(c => choiceView(g, p, s, c)), status: t.status as 'active' | 'settled', next, events: recent };
   }), recap: [...personal(p)!.receipts].reverse(), elsewhere: eligible.length - local.length };
 }
 

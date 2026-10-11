@@ -19,7 +19,7 @@ test('core cast and 14 additional story actors have authored profiles and canoni
   }
 });
 
-test('scene copy stays brief, distinct, and within the supported prop vocabulary', () => {
+test('scene copy gives adults full individual openings and keeps children and captions concise', () => {
   const props = new Set(['page', 'cup', 'plant', 'tools', 'map', 'food', 'drawing', 'cups', 'leaf', 'none']);
   const greetings = new Set<string>();
   for (const [id, profile] of Object.entries(personSceneProfiles)) {
@@ -30,7 +30,9 @@ test('scene copy stays brief, distinct, and within the supported prop vocabulary
     }
     for (const field of ['greeting', 'familiar', 'farewell'] as const) {
       assert.ok(profile[field].trim().length > 0, `${id}.${field} is present`);
-      assert.ok(words(profile[field]) <= 18, `${id}.${field} should fit in a speech bubble`);
+      const limit = canonicalCharacterById[id].age < 18 || field === 'farewell' ? 18 : 65;
+      assert.ok(words(profile[field]) <= limit, `${id}.${field} remains a readable exchange`);
+      if (canonicalCharacterById[id].age >= 18 && field !== 'farewell') assert.ok(words(profile[field]) >= 25, `${id}.${field} has room for a complete thought`);
     }
     assert.ok(props.has(profile.prop), `${id} uses a supported scene prop`);
     assert.ok(!greetings.has(profile.greeting), `${id} has an individual greeting`);

@@ -59,11 +59,11 @@ function PersonalLifeJournal({g,p,disabled,onAction}:LifeJournalProps){
    if(!result||!updated||count!==prior+1){setMessage('That choice wasn’t confirmed. Check your connection before trying again.');return;}
    if(actorId&&repair&&canonicalCharacterById[actorId]){
     const remote=!!p.world&&p.world.region!=='alder'||p.place!==({mina:'CORNER CAFÉ',eli:'GARDEN',jo:'MAKERSPACE'} as Record<string,string>)[actorId];
-    setPersonResponse({g:result,p:updated,actorId,name:canonicalCharacterById[actorId].name,remote,receipt:capturePersonReceipt({actionId:id,title:repair.title,body:repair.outcome,outcome:repair.outcome,week:result.round},updated,actorId)});
+    setPersonResponse({g:result,p:updated,actorId,name:canonicalCharacterById[actorId].name,remote,receipt:capturePersonReceipt({actionId:id,actionTitle:repair.title,title:repair.title,body:repair.outcome,outcome:repair.outcome,week:result.round},updated,actorId)});
    }else{
     const eventReceipt=id.startsWith('event:')?updated.life?.receipts.find(r=>r.resolved?.choiceId===id.slice(6)):undefined;
     const response=eventReceipt?lifeEventPersonResponse(eventReceipt):null;
-    if(response&&canonicalCharacterById[response.speakerId]&&eventReceipt?.resolved){const actorId=response.speakerId;setPersonResponse({g:result,p:updated,actorId,name:canonicalCharacterById[actorId].name,remote:true,receipt:capturePersonReceipt({actionId:id,title:eventReceipt.resolved.title,body:eventReceipt.body,outcome:eventReceipt.resolved.outcome,response,week:eventReceipt.week},updated,actorId)});}
+    if(response&&canonicalCharacterById[response.speakerId]&&eventReceipt?.resolved){const actorId=response.speakerId;setPersonResponse({g:result,p:updated,actorId,name:canonicalCharacterById[actorId].name,remote:true,receipt:capturePersonReceipt({actionId:id,actionTitle:eventReceipt.resolved.title,title:eventReceipt.resolved.title,body:eventReceipt.body,outcome:eventReceipt.resolved.outcome,response,week:eventReceipt.week},updated,actorId)});}
     else setMessage(actionReaction({actionId:id,count,lastVariant:familiar?.lastVariant})||'You pause over your decision before moving on.');
    }
   }catch{if(mounted.current&&latestContext.current===context&&request.current===token)setMessage('That choice wasn’t confirmed. Please reconnect before trying again.');}

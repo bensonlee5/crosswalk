@@ -60,3 +60,75 @@
 /* Ensemble headers contain text only: keep the names, heading and scene in reading order. */
 .ensemble-scene .encounter-heading{display:block}
 .ensemble-scene .encounter-heading h3{font:25px/1.2 Georgia,serif;margin:7px 0}
+
+/* One reading surface: context, speaker, response and consequence share the page.
+   Mobile has a single outer dialog scroller; no conversation sub-scroll areas. */
+.ensemble-stories.ensemble-is-open{padding:0;border:0;background:transparent;margin-top:12px}
+.ensemble-back{display:block;min-height:44px;padding:10px 0;border:0;background:transparent;color:#51654f;font-size:12px;text-align:left}
+.person-scene{border:1px solid #d7cdb6;border-radius:8px;background:#fbf7ec;margin:10px 0 16px;scroll-margin-block:12px;overflow:clip}
+.person-setting{height:auto;min-height:54px}
+.person-setting>div{padding:10px 20px}
+.person-setting strong{font-size:17px}
+.person-narrative{padding:16px 22px 0}
+.person-narrative h3{font:26px/1.2 Georgia,serif;margin:0 0 12px;text-wrap:pretty}
+.person-narrative p{font:15px/1.75 Georgia,serif;color:#40493e;margin:0 0 12px}
+.person-exchange{display:flow-root;padding:16px 22px 0}
+.person-face{float:left;width:100px;margin:0 18px 10px 0}
+.person-scene-portrait{width:100px;height:114px;border:0;border-radius:4px;box-shadow:none}
+.person-scene-portrait.character-expression{height:100px}
+.person-response{padding:0;background:transparent;border-radius:0;box-shadow:none!important}
+.person-response:before{content:none}
+.person-speaker{font:700 18px/1.3 Georgia,serif;margin:0 0 7px}
+.person-speaker small{font:400 11px/1.4 system-ui,sans-serif}
+.person-role{display:block;margin-bottom:8px;font-size:11px!important}
+.encounter-panel .person-speech,.person-scene .person-speech{font:19px/1.55 Georgia,serif;margin:7px 0 12px;color:#243e34;text-wrap:pretty}
+.person-scene .person-action-echo{font:600 13px/1.5 system-ui,sans-serif;color:#4b624d;margin:6px 0 12px}
+.person-action-echo>span{font-weight:400}
+.person-scene-floor{padding:0 22px;min-height:42px;gap:10px;clear:both}
+.person-scene-floor .person-action{width:90px;height:45px;flex-shrink:0}
+.person-scene-floor .person-acting{font-size:11px;line-height:1.5;margin:0;color:#65705d}
+.person-scene-content{padding:0 22px 20px}
+.person-scene .person-confirmed-change{font:15px/1.75 Georgia,serif;color:#3e493d;margin:12px 0 6px}
+.person-scene .person-continuation{font:16px/1.6 Georgia,serif;margin:12px 0}
+.person-career-notice>small{display:block;font:600 11px/1.5 system-ui,sans-serif;margin-bottom:5px}
+.person-choices{margin:12px 0 0;padding-top:8px;border-top:1px solid #d8cfba}
+.person-choices .image-choice-options{display:block;margin-bottom:10px}
+.person-choices .image-choice-options .encounter-option{display:block;position:relative;width:100%;min-height:52px;padding:11px 12px;border:0;border-bottom:1px solid #e1d9c7;border-radius:0;background:transparent;overflow:visible}
+.person-choices .image-choice-options .encounter-option[aria-pressed=true]{background:#e7eddd;border-color:#c1ceb5;box-shadow:inset 3px 0 #728865}
+.person-choices .image-choice-options .encounter-option .encounter-option-copy{padding:0;margin:0!important}
+.person-choices .image-choice-options .encounter-option strong{font:600 14px/1.45 system-ui,sans-serif}
+.person-choices .image-choice-options .encounter-option small{font-size:11px;line-height:1.5;margin-top:3px}
+.person-choices .encounter-choice-preview{padding:0;border:0;background:transparent;border-radius:0}
+.encounter-commit>.encounter-commit-copy{font:inherit}
+.encounter-commit-copy>small{display:block;font-size:11px;line-height:1.4;font-weight:400;margin-top:4px;color:#fff8e7}
+.person-choices .encounter-commit{font-size:13px;padding:12px 14px;border-radius:4px}
+.encounter-continue{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;min-height:48px;padding:12px 0;margin-top:18px;text-align:left;border:0;border-top:1px solid #c8cbb7;background:transparent;color:#31563e;font-weight:750;font-size:14px}
+.person-clarification{margin:8px 0 12px;border-top:1px solid #dcd5c1}
+.person-clarification>summary{min-height:44px;padding:12px 0;color:#4e6550;font-size:13px;cursor:pointer}
+.person-scene .encounter-quiet{background:transparent;padding:10px 0 0;border-radius:0}
+.person-scene .person-choice-context,.person-scene .choice-effect-details{border:0}
+.person-scene-details{margin-top:8px}
+.person-scene-details .person-transcript{border:0;border-top:1px solid #d8d1bf;border-radius:0;padding:0;background:transparent}
+@media(max-width:600px){
+ .person-setting>div{padding:9px 16px}
+ .person-narrative{padding:16px 16px 0}
+ .person-narrative h3{font-size:23px}
+ .person-narrative p{font-size:14px;line-height:1.7}
+ .person-exchange{padding:12px 16px 0}
+ .person-face{width:78px;margin:0 13px 8px 0}
+ .person-scene-portrait{width:78px;height:92px}
+ .person-scene-portrait.character-expression{height:78px}
+ .person-speaker{font-size:17px}
+ .encounter-panel .person-speech,.person-scene .person-speech{font-size:17px;line-height:1.55}
+ .person-scene-floor{padding:0 16px}
+ .person-scene-content{padding:0 16px 16px}
+ .person-scene .person-confirmed-change{font-size:14px;line-height:1.7}
+ .person-scene .person-continuation{font-size:15px}
+ .person-choices .image-choice-options .encounter-option strong{font-size:13px}
+ .person-choices .image-choice-options .encounter-option{padding:11px 10px}
+}
+@media(max-height:440px) and (orientation:landscape){
+ .person-setting{min-height:44px}.person-setting>div{padding-block:6px}
+ .person-exchange{padding-top:10px}.person-face{width:72px}.person-scene-portrait{width:72px;height:84px}.person-scene-portrait.character-expression{height:72px}
+}
+.encounter-commit:disabled .encounter-commit-copy>small{color:inherit}

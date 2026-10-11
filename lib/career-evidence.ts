@@ -14,15 +14,15 @@ export function eligibleCareerConversation(g:Game,p:Player,actionId:string|undef
 
 }
 const introductions:Record<string,string>={
- 'tess-ferry':'I do the evening ferry rota too. There is parcel work at the transit desk; ask there about the actual slot.',
- 'neri-esme-archive':'Esme and I worked together in the archive. The digitization desk in Pelagia is worth asking about once you have the preparation. Esme makes her own decision.',
- 'tomas-leila-market':'My sister Leila knows the market circle. I can point you to the stall opening, but do check the agreement with them.',
- 'leila-tomas-workshop':'Tomas, my brother, can explain the supervised assistant work at Kiln & Current. Ask him what the actual job needs.',
- 'june-inez-library':'Inez and I have put local projects together. Ask at Seed & Story about the digitization work; a familiar name does not replace the preparation.',
- 'esme-records':'The archive has digitization work. The opening asks for preparation, and any account of your work should stay beside your name.',
- 'inez-records':'There is digitization work at the library. Start with the named task and what it needs, rather than a heroic promise.',
- 'eli-pantry':'The pantry has paid roles with named handovers. Ask about the entry job; the rota is not a promise until you choose an agreement.',
- 'jo-practical':'Foundry has a supervised assistant opening. One job, a clear scope, and an end. You can ask without having done another job first.',
+ 'tess-ferry':'There’s parcel work at Alder Ferry & Rail, if you’re looking. Ask at the courier desk; they’ll give you the current terms. A route has a last delivery. I find that an attractive feature in a job.',
+ 'neri-esme-archive':'Esme and I worked together in the archive. There is digitization work in Pelagia for someone with the preparation. Ask her about the actual desk and the application. I would like you to meet as two people interested in the work, rather than as the conclusion of a conversation I had elsewhere.',
+ 'tomas-leila-market':'My sister Leila knows the market circle. There is a stall opening you could ask about. I can show you where, then they can explain the work and the agreement. I had better let them do that part; being related to Leila has never made me an expert on her kitchen.',
+ 'leila-tomas-workshop':'Tomas, my brother, can explain the supervised assistant work at Kiln & Current. Ask him about the opening and what you would do first. Tell him you are asking about a job; otherwise he may show you a diagram before remembering to answer the question.',
+ 'june-inez-library':'Inez and I have put local projects together. Seed & Story has digitization work if you have the preparation. Ask at the desk. She will want to know what you can do with the records, which is a much better question than how well you know me.',
+ 'esme-records':'The archive has digitization work for a prepared applicant. There is a great deal of careful, ordinary attention in making a record searchable. If that interests you, ask about the opening. Your work would have your name beside it; I would rather you knew that before you applied.',
+ 'inez-records':'There is digitization work at the library. Ask about the preparation and the task before promising to rescue the whole collection. We need someone who can finish a careful piece of work and leave the next person able to find it.',
+ 'eli-pantry':'The pantry has paid entry work. You could ask about the job and the handover, if it interests you. I like seeing a name beside a task because someone has chosen the work, rather than because they happened to be standing nearby when I looked tired.',
+ 'jo-practical':'Foundry has a supervised assistant opening. You begin with materials and safe bench work; there is someone there to teach you. Ask for the current terms. You don’t have to arrive knowing every tool. You do have to leave the next person able to find them.',
 };
 export function careerNoticeSpeech(lead:CareerLeadDefinition,kind:'lead'|'reference'){
  if(kind==='lead')return introductions[lead.id]??`You can ask at ${regionDefinitions[lead.region].placeNames[lead.place]} about the listed work. The employer makes its own decision.`;

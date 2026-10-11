@@ -99,7 +99,16 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         receipt: import('@/lib/person-response').ResponseReceipt;
         contextNote?: string;
     } | null>(null);
+    const activityResultRef = useRef<HTMLParagraphElement>(null);
     const [actionStatus, setActionStatus] = useState<'idle' | 'pending' | 'success' | 'unconfirmed'>('idle');
+    useEffect(() => {
+        if (actionStatus !== 'success' || typeof document === 'undefined') return;
+        const result = activityResultRef.current;
+        if (result && (document.activeElement === document.body || result.closest('.game-location-dialog')?.contains(document.activeElement))) {
+            result.focus({ preventScroll: true });
+            result.scrollIntoView?.({ block: 'start', behavior: 'auto' });
+        }
+    }, [actionStatus]);
     const [lowQuality, setLowQuality] = useState(() => typeof window !== 'undefined' && window.innerWidth < 700);
     const qualityRef = useCommittedRef(lowQuality);
     const [ready, setReady] = useState(false), [loadError, setLoadError] = useState(false), [moving, setMoving] = useState(false), [placeState, setPlaceState] = useState<{open: string | null; last: string | null}>({open: null, last: null}), [menuState, setMenuState] = useState<{
@@ -363,10 +372,10 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
             const response = actionReaction({ actionId: a.id, count, lastVariant: familiar.lastVariant }), incident = acceptedActionIncident(before, now, a.id);
             if (incident?.person) {
                 const person = incident.person;
-                setPersonResponse({ g: result, p: now, actorId: person.actorId, name: person.name, contextNote: incident.body, receipt: capturePersonReceipt({ id: incident.id, actionId: a.id, title: incident.title, body: incident.body, week: incident.round, response: { speakerId: person.actorId, speech: person.speech, activity: person.activity, emotion: person.emotion, gesture: person.gesture } }, now, person.actorId) });
+                setPersonResponse({ g: result, p: now, actorId: person.actorId, name: person.name, receipt: capturePersonReceipt({ id: incident.id, actionId: a.id, actionTitle: a.title, title: incident.title, body: incident.body, outcome: `${incident.body}${rewards.length ? ' '+rewards.join(' · ') : ''}`, week: incident.round, response: { speakerId: person.actorId, speech: person.speech, activity: person.activity, emotion: person.emotion, gesture: person.gesture } }, now, person.actorId) });
             }
             setActionStatus('success');
-            setFeedback(`${incident?.person ? '' : incident ? `${response || ''} ${incident.body}` : response || (a.title + '.')}${rewards.length ? ' ' + rewards.join(' · ') : ''}`.trim());
+            setFeedback(incident?.person ? '' : `You chose: ${a.title}. ${incident ? `${response || ''} ${incident.body}` : response || ''}${rewards.length ? ' ' + rewards.join(' · ') : ''}`.trim());
             const invitation = afterVenueActivity(result, now, a.id, spot);
             setVenueInvitation(invitation ? { ...invitation, context: actionContext, session } : null);
             engine.current?.celebrate();
@@ -721,13 +730,10 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
                 <span>What would you like to do?</span>
                 <span>{options.length} activities{hosts.some(person => !person.remote) ? ` · ${hosts.filter(person => !person.remote).length} people here` : ''}</span>
               </div>
-              {feedback && <p className="game-action-result" role="status">
+              {feedback && <p className="game-action-result" role="status" ref={activityResultRef} tabIndex={-1}>
                 {feedback}
               </p>}
               {personResponse && <div className="encounter-panel">
-                {personResponse.contextNote && <p className="encounter-player-reaction">
-                  {personResponse.contextNote}
-                </p>}
                 <PersonResponseStage {...personResponse} spot={personResponse.p.place} known/>
               </div>}
               <div className="game-interaction-columns">

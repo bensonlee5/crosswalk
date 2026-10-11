@@ -79,7 +79,7 @@ function harness(select,initialProps,globals={}) {
   return {render:renderNow,get result(){return result;},unmount(){unmounted=true;for(const cleanup of cleanups)cleanup?.();}};
 }
 
-test('all 53 portraits keep actual venue, activity, visible gesture and emotion across every month', () => {
+test('all 53 portraits keep actual venue and gesture without redundant image or emotion captions across every month', () => {
   const ids = Object.keys(personSceneProfiles);
   assert.equal(ids.length,53);
   for(let round=1;round<=8;round++) {
@@ -96,7 +96,7 @@ test('all 53 portraits keep actual venue, activity, visible gesture and emotion 
       assert.ok(html.includes(escape(worldPlaceName(p,p.place,g))));
       assert.ok(html.includes(`/paintings/world/${p.world.region}.webp`));
       assert.match(html,/class="person-acting"/);
-      assert.match(html,/class="person-emotion"/);
+      assert.doesNotMatch(html,/class="person-emotion"/);
       assert.match(html,/class="person-action"[^>]*role="img"/);
       assert.match(html,/role="status" aria-live="polite" aria-atomic="true"/);
       assert.doesNotMatch(html,/NaN|undefined/);
@@ -128,7 +128,7 @@ test('real encounter panels render all currently accessible actor routes through
         assert.equal(JSON.stringify(g),before);
         assert.match(html,/class="person-scene"/);
         assert.match(html,/class="person-acting"/);
-        assert.match(html,/class="person-emotion"/);
+        assert.doesNotMatch(html,/class="person-emotion"/);
         assert.ok(html.includes('Back to '+escape(worldPlaceName(p,route.spot,g))));
         assert.doesNotMatch(html,/NaN|undefined/);
         seen.add(route.actorId);rounds.add(round);rendered++;
@@ -143,12 +143,15 @@ test('real encounter panels render all currently accessible actor routes through
 
 test('preview, pending, failure, private and remote stages convey only the verified state', () => {
   const {g,p}=fixture(), base={g,p,actorId:'jo',name:'Jo',spot:'COMMUNITY'};
-  for(const [extra,phase] of [[{pending:true},'pending'],[{error:'Unconfirmed'},'paused'],[{preview:{id:'x',actionId:'x',title:'X',available:true,reason:''}},'considering']]) {
+  for(const [extra,phase] of [[{pending:true},'pending'],[{error:'Unconfirmed'},'paused']]) {
     const html=render(PersonResponseStage,{...base,...extra});
     assert.ok(html.includes(`data-person-phase="${phase}"`));
     assert.match(html,/person-silent/);
     assert.doesNotMatch(html,/Response recorded|Thank you|paid|reward/i);
   }
+  const preview=render(PersonResponseStage,{...base,preview:{id:'x',actionId:'x',title:'X',available:true,reason:''}});
+  assert.match(preview,/data-person-phase="considering"/);
+  assert.doesNotMatch(preview,/person-silent|person-action-echo/,'inspection keeps the opening, without inventing a response');
   const hidden=render(PersonResponseStage,{...base,p:{...p,castRedacted:true},receipt:{id:'secret',title:'Secret',body:'PRIVATE RECEIPT',response:{speakerId:'jo',speech:'PRIVATE QUOTE',activity:'PRIVATE ACTION',emotion:'hurt',gesture:'withdraw'}}});
   assert.match(hidden,/conversation is private/);
   assert.doesNotMatch(hidden,/PRIVATE RECEIPT|PRIVATE QUOTE|PRIVATE ACTION|keeping a little distance/i);

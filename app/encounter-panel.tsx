@@ -7,12 +7,11 @@ import {qualitativeText} from '@/lib/point-presentation';
 import {CharacterMotives} from './character-motives';
 import {CharacterHistory} from './character-history';
 import type {GameView as Game,Player} from '@/lib/game';
-import {economyMonthLabel} from '@/lib/economy';
 import {getStoryView} from '@/lib/story-arcs';
 import {relationshipViews} from '@/lib/life-events';
 import {worldView,type WorldChoiceView} from '@/lib/world-life';
 import {worldChoiceEffects} from '@/lib/world-choice-presentation';
-import {ArcBeatStrip,StoryTimeline} from './story-timeline';
+import {StoryTimeline} from './story-timeline';
 import {StoryChoiceDeck,EncounterOutcome,useEncounterCommit,type EncounterChoice,type EncounterReceipt} from './story-choices';
 import {castPeople} from '@/lib/character-cast';
 import {CastEncounterPanel} from './cast-story';
@@ -54,12 +53,14 @@ function OriginalEncounterPanel({g,p,actorId,spot=p.place,disabled,onAction,onCl
  const tieNames=tie?.id.split('-').map(id=>scene?.people.find(person=>person.id===id)?.name||id).join(' & ');
  const hasLiveScene=scene?.status==='available';
  return <div className="encounter-panel" data-actor={actorId}>
-  <header className="encounter-heading person-heading"><div><small className="encounter-eyebrow">{economyMonthLabel(g,g.round).toUpperCase()} · {resident?.status||relationship?.status||(isNeri?neri?.status:'Here in the neighborhood')}</small><h2 id="encounter-title">{name}</h2><p>{role}</p></div></header>
-  <PersonResponseStage g={g} p={p} actorId={actorId} name={name} spot={spot} remote={isNeri&&p.world?.story?.neri.posting==='accepted'&&p.world.region!=='pelagia'} sceneId={scene?.id} known={!!history||!!lastReceipt} settled={!choices.length} available={choices.some(c=>c.available)} preview={preview} pending={commit.busy} error={commit.error} receipt={commit.receipt}/>
-  <EncounterOutcome g={g} receipt={commit.receipt||(!hasLiveScene&&!choices.some(c=>c.available)?lastReceipt||worldReceipt:null)} error={commit.error} compact/>
-  {!commit.receipt&&<StoryChoiceDeck g={g} place={spot} choices={choices} disabled={disabled} busy={commit.busy} onSelect={choice=>setPreview({context,choice})} conversational onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText="No new commitment. You can leave whenever you like."/>}
+  <PersonResponseStage g={g} p={p} actorId={actorId} name={name} role={role} titleId="encounter-title" spot={spot} remote={isNeri&&p.world?.story?.neri.posting==='accepted'&&p.world.region!=='pelagia'} sceneId={scene?.id} known={!!history||!!lastReceipt} settled={!choices.length} available={choices.some(c=>c.available)} preview={preview} pending={commit.busy} error={commit.error} receipt={commit.receipt}
+    sceneTitle={hasLiveScene?scene?.title:undefined}
+    narrative={hasLiveScene&&scene?<>{scene.body.map((text,i)=><p key={i}>{qualitativeText(text)}</p>)}</>:<>{currentBio&&<p>{qualitativeText(currentBio)}</p>}{resident?.welcome&&<p>{qualitativeText(resident.welcome)}</p>}</>}
+    onContinue={commit.receipt&&choices.some(c=>c.available&&!commit.isSubmitted(c.actionId))?()=>{setPreview(null);commit.continueConversation();}:undefined}>
+   {!commit.receipt&&<StoryChoiceDeck g={g} place={spot} choices={choices} disabled={disabled} busy={commit.busy} onSelect={choice=>setPreview({context,choice})} conversational onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText="No new commitment. You can leave whenever you like."/>}
+  </PersonResponseStage>
   <PersonSceneDetails>
-  {hasLiveScene&&scene?<section className="encounter-scene"><ArcBeatStrip beat={scene.beat}/><small className="encounter-eyebrow">{scene.people.map(r=>r.name).join(' · ')}</small><h3>{scene.title}</h3>{scene.body.map((text,i)=><p key={i}>{qualitativeText(text)}</p>)}</section>:<section className="encounter-scene"><h3>{isNeri?neri?.dedicatedScene?.title||'A little room for each other':resident?.talkedThisWeek?'A familiar face':'Pull up a chair'}</h3>{currentBio&&<p>{qualitativeText(currentBio)}</p>}{resident?.welcome&&<p className="encounter-callback">{qualitativeText(resident.welcome)}</p>}{!resident&&!isNeri&&!lastReceipt&&<p>{story.nextBeat||'There is no new conversation here just now. You can return to the venue whenever you like.'}</p>}</section>}
+  {!commit.receipt&&<EncounterOutcome g={g} receipt={!hasLiveScene&&!choices.some(c=>c.available)?lastReceipt||worldReceipt:null} error="" compact/>}
   <CharacterHistory g={g} p={p} actorId={actorId}/>
   {tie&&<p className="encounter-tie"><strong>{tieNames}</strong>{tie.status}</p>}
   {promise&&<p className="encounter-promise"><strong>What you promised</strong>{promise}</p>}

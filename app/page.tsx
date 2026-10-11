@@ -11,6 +11,7 @@ import { actionSound, clockSound } from '@/lib/action-sounds';
 import { assetUrl } from '@/lib/asset-url';
 import { CURRENT_GAME_PROTOCOL, currentGameQuery } from '@/lib/current-game';
 import { economyMonthLabel } from '@/lib/economy';
+import { restoreDialogFocus } from '@/lib/dialog-focus';
 import { isFoleyCue } from '@/lib/foley';
 import type { Player } from '@/lib/game';
 import { gameFetch, getOwnerSession, subscribeOwnerSession } from '@/lib/game-api';
@@ -50,6 +51,14 @@ export default function Home() {
     const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]), [pending, setPending] = useState<PendingSave | null>(null), [historyError, setHistoryError] = useState(''), [storageWarning, setStorageWarning] = useState(false), [ownerMismatch, setOwnerMismatch] = useState(false), [deferredSaves, setDeferredSaves] = useState<PendingSave[]>([]), [historyCursor, setHistoryCursor] = useState<string | null>(null), [historyLoading, setHistoryLoading] = useState(false);
     const pendingRef = useRef<PendingSave | null>(null), historyRequest = useRef(0), ownerRef = useRef<string | null>(null);
     const [soundOpen, setSoundOpen] = useState(false);
+    const soundFocusReturn = useRef<{trigger: HTMLElement | null; fallback: HTMLElement | null}>({trigger: null, fallback: null});
+    function openSound(trigger?: HTMLElement) {
+        soundFocusReturn.current = {
+            trigger: trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null),
+            fallback: document.querySelector<HTMLElement>('.game-round-button'),
+        };
+        setSoundOpen(true);
+    }
     const sound = useGameSound(screen === 'game' && g?.status === 'playing');
     const [tutorialReplay, setTutorialReplay] = useState(0), [tutorialOfferRoom, setTutorialOfferRoom] = useState('');
     const current = useRef<OwnedGameSnapshot | null>(null), lock = useRef(false), session = useRef({ epoch: 0, code: '' });
@@ -403,7 +412,7 @@ export default function Home() {
       <header className="topbar">
         <button className="brand" onClick={leave} aria-label="Crosswalk home"><span className="mark">▥</span>crosswalk<span className="brand-dot">.</span></button>
         <div className="header-right">
-          <button className="text-button" onClick={() => setSoundOpen(true)}>Sound</button>
+          <button className="text-button" onClick={event => openSound(event.currentTarget)}>Sound</button>
           <span className="edition">LIFE, TOGETHER · 2026 EDITION</span>
           <button className="text-button" onClick={() => setRules(true)}>How to play</button>
         </div>
@@ -602,7 +611,7 @@ export default function Home() {
           {g.isHost ? <button className="primary" disabled={busy || offline || !!pending} onClick={() => setReviewStart(true)}>Start with {g.players.length} player{g.players.length !== 1 ? 's' : ''}</button> : <p className="waiting-note">You’re in! Waiting for {g.players[0].name} to start.</p>}
           <p className="fine-print">Confirmed turns are saved online. Guest seats stay with this browser. Keep its site data to retain access. If someone disconnects, their turn waits.</p>
         </section> : g.status === 'finished' ? <LifeEnding g={g} onAgain={leave}/> : <GameScreen
-          onSound={() => setSoundOpen(true)}
+          onSound={() => openSound()}
           key={g.code}
           tutorialReplay={tutorialReplay}
           tutorialOffer={tutorialOfferRoom === g.code}
@@ -734,7 +743,7 @@ export default function Home() {
 
       <Dialog open={soundOpen} onOpenChange={open => { if (!open)
         sound.stopEffects(); setSoundOpen(open); }}>
-        <DialogContent className="sound-dialog">
+        <DialogContent className="sound-dialog" onCloseAutoFocus={event => restoreDialogFocus(event, soundFocusReturn.current.trigger, soundFocusReturn.current.fallback)}>
           <DialogTitle>Sound & music</DialogTitle>
           <DialogDescription>Set the mood for your little life.</DialogDescription>
           <SoundSettings sound={sound}/>

@@ -27,10 +27,12 @@ export function CharacterMotives({g,p,actorId,spot,disabled,onAction}:{g:Game;p:
  const preview=previewState?.context===context?choices.find(c=>c.actionId===previewState.choice.actionId)??null:null;
  if(!scene||scene.spot!==spot)return null;
  return <details className="encounter-memory character-motives"><summary>What {scene.name} has room for</summary>
-  <PersonResponseStage g={g} p={p} actorId={actorId} name={scene.name} spot={spot} remote={scene.remote} known settled={!choices.length} available={choices.some(c=>c.available)} preview={preview} pending={commit.busy} error={commit.error} receipt={commit.receipt}/>
-  <EncounterOutcome g={g} receipt={commit.receipt??(choices.length?null:scene.lastReceipt??null)} error={commit.error} compact>{!commit.receipt&&scene.lastReceipt&&<><small>From your last exchange</small><MotiveOutcomePortrait receipt={scene.lastReceipt} name={scene.name}/></>}</EncounterOutcome>
-  {!commit.receipt&&<StoryChoiceDeck g={g} place={spot} choices={choices} disabled={disabled} busy={commit.busy} onSelect={choice=>setPreview({context,choice})} conversational onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText="Let it settle before asking for something else."/>}
-  <details className="encounter-memory"><summary>The limits of this exchange</summary><p><strong>{scene.goal}</strong></p><p>{scene.priority}</p><p>{scene.obligation}</p><p>{scene.capacity}</p>{scene.remote&&<p className="encounter-callback">This exchange uses your existing correspondence or agreed call. You are not meeting in person.</p>}</details>
+  <PersonResponseStage g={g} p={p} actorId={actorId} name={scene.name} spot={spot} remote={scene.remote} known settled={!choices.length} available={choices.some(c=>c.available)} preview={preview} pending={commit.busy} error={commit.error} receipt={commit.receipt}
+    narrative={<><p>{scene.goal}</p><p>{scene.priority} {scene.obligation} {scene.capacity}</p></>}>
+   {!commit.receipt&&<StoryChoiceDeck g={g} place={spot} choices={choices} disabled={disabled} busy={commit.busy} onSelect={choice=>setPreview({context,choice})} conversational onCommit={choice=>void commit.commit(choice)} isSubmitted={commit.isSubmitted} emptyText="Let it settle before asking for something else."/>}
+  </PersonResponseStage>
+  {!commit.receipt&&<EncounterOutcome g={g} receipt={choices.length?null:scene.lastReceipt??null} error="" compact>{scene.lastReceipt&&<><small>From your last exchange</small><MotiveOutcomePortrait receipt={scene.lastReceipt} name={scene.name}/></>}</EncounterOutcome>}
+
  </details>;
 }
 export function MotiveJournal({g,p}:{g:Game;p:Player}){

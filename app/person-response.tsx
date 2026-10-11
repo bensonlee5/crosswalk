@@ -2,41 +2,58 @@
 import {useEffect,useRef} from 'react';
 import type {GameView as Game,Player} from '@/lib/game';
 import {worldPlaceName,regionDefinitions} from '@/lib/world-life';
-import {personProfile,personReply,personCareerNotices,type PersonSceneInput,type PersonReply} from '@/lib/person-response';
+import {personReply,personCareerNotices,type PersonSceneInput,type PersonReply} from '@/lib/person-response';
 import {motivePortrait} from '@/lib/motive-portraits';
 import type {MotiveReceipt} from '@/lib/character-motives';
 import CharacterPortrait from './character-portrait';
 import GamePainting from './game-painting';
+import {qualitativeText} from '@/lib/point-presentation';
 
 /** The portrait is a portrait, not a claim that its painted background is the
  * present venue. The separate setting strip always follows the current room. */
-export function PersonResponseStage({name,spot,companionName,...input}:PersonSceneInput&{name:string;spot:string;companionName?:string}){
- const notices=personCareerNotices(input),reply=personReply(input),profile=personProfile(input.actorId),region=regionDefinitions[input.p.world?.region||'alder'];
- const currentReceipt=!input.pending&&!input.error&&!input.p.castRedacted?input.receipt:null;
- const confirmedId=currentReceipt?[input.g.code,input.p.id,currentReceipt.id??currentReceipt.actionId??currentReceipt.title,currentReceipt.week??input.g.round,currentReceipt.familiarity?.count??''].join('|'):'',animated=useRef(new Set<string>()),stage=useRef<HTMLDivElement>(null);
+export type ConversationOpening={speakerId:string;speech:string;activity:string};
+export type ConversationClarification={question:string;answer:string};
+export function PersonResponseStage({name,spot,companionName,titleId,role,sceneTitle,narrative,opening,clarification,narrativeLead=false,children,onContinue,continuationLabel='Continue conversation',...input}:PersonSceneInput&{name:string;spot:string;companionName?:string;titleId?:string;role?:string;sceneTitle?:string;narrative?:import('react').ReactNode;opening?:ConversationOpening;clarification?:ConversationClarification;narrativeLead?:boolean;children?:import('react').ReactNode;onContinue?:()=>void;continuationLabel?:string}){
+ const notices=personCareerNotices(input),region=regionDefinitions[input.p.world?.region||'alder'];
+ const currentReceipt=!input.pending&&!input.error&&!input.p.castRedacted?input.receipt??null:null;
+ const baseReply=personReply(input),reply=opening&&opening.speakerId===input.actorId&&!currentReceipt&&!input.pending&&!input.error&&!input.p.castRedacted?{...baseReply,speech:opening.speech,activity:opening.activity}:baseReply;
+ const confirmedId=currentReceipt?[input.g.code,input.p.id,currentReceipt.id??currentReceipt.actionId??currentReceipt.title,currentReceipt.week??input.g.round,currentReceipt.familiarity?.count??''].join('|'):'',animated=useRef(new Set<string>()),stage=useRef<HTMLElement>(null);
  useEffect(()=>{
   if(!confirmedId||animated.current.has(confirmedId))return;
   animated.current.add(confirmedId);
-  if(typeof document!=='undefined'&&(document.activeElement===document.body||stage.current?.closest('.encounter-panel')?.contains(document.activeElement)))stage.current?.focus();
+  // Move the accepted action and reply into view together, once. A person who
+  // deliberately moved outside this conversation keeps their reading position.
+  if(typeof document!=='undefined'&&(document.activeElement===document.body||stage.current?.closest('.encounter-panel, .career-board, .world-story-compact, .life-story')?.contains(document.activeElement))){stage.current?.focus({preventScroll:true});stage.current?.scrollIntoView?.({block:'start',behavior:'auto'});}
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const target=stage.current?.querySelector('.person-action-object');
   if(!target||!('animate' in target))return;
-  // One meaningful object/hand action per confirmed choice. Polling and unrelated
-  // rerenders cannot replay it. No visual completion before the server receipt.
+  // The same final object/hand pose is present without animation. No completion
+  // cue is allowed before the authoritative receipt arrives.
   const frames=reply.gesture==='withdraw'?[{transform:'translateX(0)'},{transform:'translateX(-14px)'}]:reply.gesture==='offer'?[{transform:'translateX(-12px)'},{transform:'translateX(0)'}]:reply.gesture==='point'?[{transform:'translateY(-6px)'},{transform:'translateY(0)'}]:[{opacity:.6},{opacity:1}];
   const animation=target.animate(frames,{duration:380,easing:'ease-out'});return()=>animation.cancel();
  },[confirmedId,reply.gesture]);
  const moodImage=currentReceipt&&typeof currentReceipt.emotion==='string'?motivePortrait({actorId:input.actorId,emotion:currentReceipt.emotion} as MotiveReceipt):null;
- return <section className="person-scene" data-person-phase={input.p.castRedacted?'private':input.pending?'pending':input.error?'paused':currentReceipt?'confirmed':input.settled?'settled':input.preview?'considering':'greeting'} data-emotion={reply.emotion} data-remote={input.remote||undefined} aria-label={input.remote?`${name} via correspondence; you are at ${worldPlaceName(input.p,spot,input.g)}`:`${name} at ${worldPlaceName(input.p,spot,input.g)}`} ref={stage} tabIndex={-1}>
-  <div className="person-setting"><GamePainting src={`/paintings/world/${region.id}.webp`} alt=""/><div><span>{input.remote?'YOUR END OF THE CONVERSATION':'HERE TOGETHER'}</span><strong>{worldPlaceName(input.p,spot,input.g)}</strong><small>{region.name}{input.remote?' · Correspondence; their location is not shown':''}</small></div></div>
+ const spokenContext=[input.g.code,input.p.id,input.g.round,spot,input.actorId,input.sceneId??'',confirmedId].join('|');
+ return <section className="person-scene" data-person-phase={input.p.castRedacted?'private':input.pending?'pending':input.error?'paused':currentReceipt?'confirmed':input.settled?'settled':input.preview?'considering':'greeting'} data-emotion={reply.emotion} data-remote={input.remote||undefined} data-speech-context={spokenContext} aria-label={input.remote?`${name} via correspondence; you are at ${worldPlaceName(input.p,spot,input.g)}`:`${name} at ${worldPlaceName(input.p,spot,input.g)}`} ref={stage} tabIndex={-1}>
+  <div className="person-setting"><GamePainting src={`/paintings/world/${region.id}.webp`} alt=""/><div><strong>{worldPlaceName(input.p,spot,input.g)}</strong><small>{region.name}{input.remote?' · Correspondence; their location is not shown':''}</small></div></div>
+  {!input.p.castRedacted&&!currentReceipt&&(sceneTitle||narrative)&&<div className="person-narrative">{sceneTitle&&<h3>{sceneTitle}</h3>}{narrative}</div>}
   <div className="person-exchange">
-   <div className="person-face">{moodImage?<GamePainting className="person-scene-portrait" src={moodImage.src} alt={moodImage.alt} fallback={`/paintings/character-portraits/${input.actorId}.webp`} priority/>:<CharacterPortrait id={input.actorId} name={name} className="person-scene-portrait" expression={reply.expression} priority/>}<span className="person-face-name">{name}</span></div>
-   <div className="person-response" role="status" aria-live="polite" aria-atomic="true"><small>{input.remote?`${name}’s message`:name}</small>{reply.speech?<p className="person-speech">“{reply.speech}”</p>:<p className="person-speech person-silent" aria-label={input.pending?'Awaiting confirmation':input.error?'Conversation paused':'Listening while you decide'}><span aria-hidden="true">···</span></p>}<p className="person-acting">{reply.activity}</p>{reply.continuation&&<p className={'person-continuation'+(notices.length?' person-career-notice':'')} data-career-notice={notices.length?notices.map(n=>n.kind).join(' '):undefined}>{notices.length>0&&<small>{notices.some(n=>n.kind==='reference')?'Workplace reference':'Work lead'} · {[...new Set(notices.map(n=>n.employer+', '+n.regionName))].join(' · ')}</small>}“{reply.continuation}”</p>}</div>
+   <div className="person-face">{moodImage?<GamePainting className="person-scene-portrait" src={moodImage.src} alt={moodImage.alt} fallback={`/paintings/character-portraits/${input.actorId}.webp`} priority/>:<CharacterPortrait id={input.actorId} name={name} className="person-scene-portrait" expression={reply.expression} priority/>}</div>
+   <div className="person-response" role="status" aria-live="polite" aria-atomic="true"><h2 id={titleId} className="person-speaker">{name}{input.remote&&<small> · by correspondence</small>}</h2>{role&&!currentReceipt&&<small className="person-role">{role}</small>}
+    {currentReceipt&&<p className="person-action-echo"><span>You chose:</span> {currentReceipt.actionTitle||currentReceipt.title}</p>}
+    {narrativeLead&&!currentReceipt&&!input.pending&&!input.error?null:reply.speech?<p className="person-speech" data-speaker-id={input.actorId} data-speech-segment="reply">“{reply.speech}”</p>:<p className="person-speech person-silent" aria-label={input.pending?'Awaiting confirmation':input.error?'Conversation paused':'Listening while you decide'}><span aria-hidden="true">···</span></p>}
+    {(!narrativeLead||currentReceipt)&&reply.continuation&&<p className={'person-continuation'+(notices.length?' person-career-notice':'')} data-speaker-id={input.actorId} data-speech-segment="continuation" data-career-notice={notices.length?notices.map(n=>n.kind).join(' '):undefined}>{notices.length>0&&<small>{notices.some(n=>n.kind==='reference')?'Workplace reference':'Work lead'} · {[...new Set(notices.map(n=>n.employer+', '+n.regionName))].join(' · ')}</small>}“{reply.continuation}”</p>}
+   </div>
   </div>
-  <div className="person-scene-floor"><PersonAction reply={reply} remote={!!input.remote}/><p><span>{profile.appearance}</span>{companionName&&<span className="person-companion">With {companionName} nearby.</span>}<span className="person-emotion">{emotionDescription[reply.emotion]}</span></p></div>
+  <div className="person-scene-floor"><PersonAction reply={reply} remote={!!input.remote}/><p className="person-acting">{reply.activity}{companionName&&<span className="person-companion"> With {companionName} nearby.</span>}</p></div>
+  {!input.p.castRedacted&&<div className="person-scene-content">
+   {currentReceipt&&<p className="person-confirmed-change">{qualitativeText(currentReceipt.outcome||currentReceipt.body)}</p>}
+   {input.error&&<p className="encounter-error" role="alert">{qualitativeText(input.error)}</p>}
+   {!currentReceipt&&clarification&&!input.pending&&<details className="person-clarification" key={spokenContext+clarification.question}><summary>{clarification.question}</summary><p className="person-speech" data-speaker-id={input.actorId} data-speech-segment="clarification">“{clarification.answer}”</p></details>}
+   {currentReceipt&&onContinue?<button type="button" className="encounter-continue" onClick={()=>{onContinue();stage.current?.focus({preventScroll:true});stage.current?.scrollIntoView?.({block:'start',behavior:'auto'});}}>{continuationLabel}<span aria-hidden="true">→</span></button>:children}
+  </div>}
  </section>;
 }
-const emotionDescription:Record<PersonReply['emotion'],string>={attentive:'Attentive, leaving room to answer.',warm:'Warmth in the response.',concerned:'Concern makes the response careful.',hurt:'Hurt, keeping a little distance.',relieved:'The tension eases a little.',firm:'Firm about the stopping point.',sad:'Quiet with disappointment.',proud:'A little pride in the small result.',tired:'A quiet, seated pace.',shy:'A hesitant, self-conscious pause.'};
 
 /** A small stage action changes the held object/hand pose, not a random portrait
  * wiggle. The same final pose remains under reduced motion and for screen readers. */
@@ -61,5 +78,5 @@ export function PersonAction({reply,remote}:{reply:PersonReply;remote:boolean}){
  </svg>;
 }
 
-export function PersonSceneDetails({children}:{children:import('react').ReactNode}){return <details className="encounter-memory person-scene-details"><summary>Scene, commitments & history</summary>{children}</details>}
+export function PersonSceneDetails({children}:{children:import('react').ReactNode}){return <details className="encounter-memory person-scene-details"><summary>Context & history</summary>{children}</details>}
 export function PersonReturn({g,p,spot,onClose}:{g:Game;p:Player;spot:string;onClose:()=>void}){return <button type="button" className="encounter-return" onClick={onClose}><span aria-hidden="true">←</span> Back to {worldPlaceName(p,spot,g)}</button>}

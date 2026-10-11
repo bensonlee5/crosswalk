@@ -6,7 +6,7 @@ import {move,type Game,type Player} from '../lib/game.ts';
 import {economyPaidHours} from '../lib/economy.ts';
 
 import {worldPlaceIds,regionDefinitions,worldChoices} from '../lib/world-life.ts';
-import {careerTracks} from '../lib/career-content.ts';
+import {careerTracks,careerLeads,careerPostings} from '../lib/career-content.ts';
 import {careerChoices,resolveCareerChoice,careerView,recordCareerEvidence,careerMemberPlayers,type CareerPlayer} from '../lib/careers.ts';
 
 function fixture(){const g=currentGame({names:['Worker']}),p=g.players[0];for(const region of Object.keys(regionDefinitions))p.world.discoveredPlacesByRegion[region]=[...worldPlaceIds];return{g,p};}
@@ -92,7 +92,13 @@ test('working with one colleague in two fields preserves both records and earns 
  month(g,p);p.place='LIBRARY';const talk=worldChoices(p,g).find(c=>c.key==='talk:pelagia_esme')!;assert.equal(talk.available,true,talk.reason);const actionId='world:'+talk.id;move(g,actionId);assert.equal(p.career!.leads['esme-records'].referenceRound,3);assert.equal(p.career!.notices!.filter(n=>n.actionId===actionId).length,2);assert.deepEqual(p.career!.colleagues.pelagia_esme.fields,{civic:[1],technical:[2]});
 });
 test('career notices are exact-action, owner-private, stable on reload and never inferred from an action label',async()=>{
- const{careerNoticesForAction}=await import('../lib/careers.ts');const{g,p}=fixture();p.place='CORNER CAFÉ';const c=worldChoices(p,g).find(c=>c.key==='talk:alder_tess')!,id='world:'+c.id;move(g,id);const notices=careerNoticesForAction(g,p,id);assert.equal(notices.length,1);assert.equal(notices[0].kind,'lead');assert.equal(notices[0].region,'alder');assert.match(notices[0].speech,/transit desk/);const reload=JSON.parse(JSON.stringify(g)) as Game;assert.deepEqual(careerNoticesForAction(reload,reload.players[0],id),notices);const prior=structuredClone(p.career);recordCareerEvidence(g,p,{actionKey:'motive:alder_tess:help',actionId:'motive:fake:alder_tess:help',actorIds:['alder_tess'],round:g.round,replay:false});assert.deepEqual(p.career,prior);assert.deepEqual(careerNoticesForAction(g,{...p,castRedacted:true},id),[]);assert.equal((careerMemberPlayers([p],[])[0] as CareerPlayer).career,undefined);assert.deepEqual(careerNoticesForAction({...g,round:g.round+1},p,id),[]);
+ const{careerNoticesForAction}=await import('../lib/careers.ts');const{g,p}=fixture();p.place='CORNER CAFÉ';const c=worldChoices(p,g).find(c=>c.key==='talk:alder_tess')!,id='world:'+c.id;move(g,id);const notices=careerNoticesForAction(g,p,id);assert.equal(notices.length,1);assert.equal(notices[0].kind,'lead');assert.equal(notices[0].region,'alder');const notice=notices[0],lead=careerLeads.find(value=>value.id===notice.leadId)!;
+ assert.equal(lead.id,'tess-ferry');assert.equal(lead.from,'alder_tess');assert.equal(lead.posting,'courier');
+ const posting=careerPostings.find(value=>value.id===lead.posting)!;
+ assert.equal(lead.place,posting.place);assert.equal(notice.place,'TRANSIT');assert.equal(notice.place,lead.place);
+ assert.equal(notice.actorId,lead.from);assert.equal(notice.employer,regionDefinitions[lead.region].placeNames[lead.place]);
+ assert.equal(notice.employer,'Alder Ferry & Rail');assert.ok(notice.speech.includes(notice.employer));assert.match(notice.speech,/courier|parcel work/);
+ const reload=JSON.parse(JSON.stringify(g)) as Game;assert.deepEqual(careerNoticesForAction(reload,reload.players[0],id),notices);const prior=structuredClone(p.career);recordCareerEvidence(g,p,{actionKey:'motive:alder_tess:help',actionId:'motive:fake:alder_tess:help',actorIds:['alder_tess'],round:g.round,replay:false});assert.deepEqual(p.career,prior);assert.deepEqual(careerNoticesForAction(g,{...p,castRedacted:true},id),[]);assert.equal((careerMemberPlayers([p],[])[0] as CareerPlayer).career,undefined);assert.deepEqual(careerNoticesForAction({...g,round:g.round+1},p,id),[]);
 });
 test('receipt-level reference eligibility excludes refused favors and negative per-person story consequences',async()=>{
  const{eligibleCareerConversation}=await import('../lib/career-evidence.ts');const{g,p}=actualFixture();const id='motive:1:eli:ask';p.motives!.receipts.push({id,actorId:'eli',week:g.round,title:'Ask',body:'Ask',outcome:'No',response:'refusal',energy:0,joy:0});assert.equal(eligibleCareerConversation(g,p,id,'eli'),false);assert.equal(eligibleCareerConversation(g,p,id+':different','eli'),false);

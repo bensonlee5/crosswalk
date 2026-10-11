@@ -8,6 +8,23 @@
 /* Let content determine the mobile HUD height instead of reserving fixed bands.
    The map takes the remaining space, including when labels wrap or phones rotate. */
 .game-header,.game-map-toolbar,.game-map-viewport{display:contents}
+/* Desktop badges can also grow: keep the toolbar below their full content.
+   Weather and the footer retain their screen anchors; the map fills the rest. */
+@media(min-width:761px){
+ .game-screen{display:flex;flex-direction:column;padding-top:max(20px,env(safe-area-inset-top));padding-bottom:114px;gap:8px}
+ .game-header{display:flex;flex-direction:column;gap:8px;flex:none;min-width:0;margin:0 24px;z-index:3}
+ .game-screen .game-top-hud{position:static;flex-wrap:wrap;min-width:0}
+ .game-screen .game-map-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:16px;min-width:0}
+ .game-screen .game-district-tabs,.game-screen .game-board-button,.game-screen .game-news-button{position:static;flex:none}
+ .game-screen .game-board-button{margin-left:auto}
+ .game-screen .game-map-viewport{display:block;position:relative;flex:1;min-height:0;min-width:0;isolation:isolate}
+ .game-screen .engine-host{inset:0}
+ .game-screen .game-camera-controls{top:13px}
+}
+@media(max-height:620px) and (min-width:761px){
+ .game-screen{padding-bottom:103px}
+ .game-screen .game-camera-controls>div{position:absolute;right:calc(100% + 6px);top:0;margin:0;grid-template-columns:repeat(4,46px)}
+}
 @media(max-width:760px){
  .game-screen{display:flex;flex-direction:column;padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));gap:7px}
  .game-header{display:flex;flex-direction:column;gap:8px;position:relative;z-index:3;flex:none;min-width:0}

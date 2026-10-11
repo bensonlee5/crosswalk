@@ -47,12 +47,44 @@ test('short narrow landscape keeps a single toolbar and reachable horizontal map
   assert.equal(mobileRule('.game-screen .game-camera-controls>div')['grid-template-columns'], 'repeat(4,44px)');
 });
 
-test('desktop remains on the existing absolute HUD layout', () => {
-  for (const selector of ['.game-header', '.game-map-toolbar', '.game-map-viewport']) {
-    assert.equal(declarations(css, selector).display, 'contents');
+test('desktop toolbar follows the full badge height and the map fills the remaining space', () => {
+  const desktopRule = selector => declarations(css, selector, '(min-width:761px)');
+  assert.equal(desktopRule('.game-screen').display, 'flex');
+  assert.equal(desktopRule('.game-screen')['flex-direction'], 'column');
+  assert.equal(desktopRule('.game-screen')['padding-top'], 'max(20px,env(safe-area-inset-top))');
+  assert.equal(desktopRule('.game-screen')['padding-bottom'], '114px');
+  assert.equal(desktopRule('.game-header').display, 'flex');
+  assert.equal(desktopRule('.game-header')['flex-direction'], 'column');
+  assert.equal(desktopRule('.game-header').gap, '8px');
+  assert.equal(desktopRule('.game-header').flex, 'none');
+  assert.equal(desktopRule('.game-screen .game-top-hud')['flex-wrap'], 'wrap');
+  assert.equal(desktopRule('.game-screen .game-map-toolbar')['flex-wrap'], 'wrap');
+  for (const selector of ['.game-screen .game-top-hud', '.game-screen .game-district-tabs', '.game-screen .game-board-button', '.game-screen .game-news-button']) {
+    assert.equal(desktopRule(selector).position, 'static', selector + ' must follow content instead of a fixed top offset');
   }
+  assert.equal(desktopRule('.game-screen .game-board-button')['margin-left'], 'auto');
+  assert.equal(desktopRule('.game-screen .game-map-viewport').position, 'relative');
+  assert.equal(desktopRule('.game-screen .game-map-viewport').flex, '1');
+  assert.equal(desktopRule('.game-screen .game-map-viewport')['min-height'], '0');
   assert.equal(declarations(css, '.game-screen .engine-host').position, 'absolute');
-  assert.equal(declarations(css, '.game-screen .engine-host').inset, '152px 0 114px');
+  assert.equal(desktopRule('.game-screen .engine-host').inset, '0');
+  assert.equal(desktopRule('.game-screen .game-camera-controls').top, '13px');
+  // The header must not become the weather plaque's containing block.
+  assert.equal(desktopRule('.game-header').position, undefined);
+  for (const selector of ['.game-screen .game-weather-plaque', '.game-screen .game-bottom-hud', '.game-screen .game-player-badge', '.game-screen .life-heading-chip']) {
+    assert.deepEqual(desktopRule(selector), {}, selector + ' retains its existing placement and readable content');
+  }
+});
+
+test('short desktops keep all four expanded map controls above the footer', () => {
+  const short = '(max-height:620px) and (min-width:761px)';
+  assert.equal(declarations(css, '.game-screen', short)['padding-bottom'], '103px');
+  const tray = declarations(css, '.game-screen .game-camera-controls>div', short);
+  assert.equal(tray.position, 'absolute');
+  assert.equal(tray.right, 'calc(100% + 6px)');
+  assert.equal(tray.top, '0');
+  assert.equal(tray.margin, '0');
+  assert.equal(tray['grid-template-columns'], 'repeat(4,46px)');
 });
 
 test('sound settings cap the dynamic viewport, scroll only the body and keep Close reachable', () => {

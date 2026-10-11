@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {createGame} from '../supabase/functions/crosswalk-game/game-service.ts';
 import {personReply,capturePersonReceipt,personFamiliarityLine} from '../lib/person-response.ts';
-import {personSceneProfiles} from '../lib/person-scene-profiles.ts';
+import {personSceneProfiles,personFamiliarityLines} from '../lib/person-scene-profiles.ts';
 import {familiarityView} from '../lib/action-familiarity.ts';
 function fixture(){const g=createGame({mode:'hotseat',names:['Reader'],ownerSession:'owner',requestId:'familiar-presentation'},'FAMILI');return{g,p:g.players[0]};}
 function history(p,actorId,count){p.familiarity={version:1,startedRound:1,actions:{},people:{[actorId]:{count,lastRound:1,lastVariant:(count-1)%12}}};}
@@ -44,4 +44,26 @@ test('saturated counts still vary using the persisted lastVariant',()=>{
 test('pending and failed exchanges suppress a retained earlier receipt',()=>{
  const {g,p}=fixture();history(p,'mina',8);const receipt=capturePersonReceipt({actionId:'motive:1:mina:old:help',title:'Old confirmed reply',body:'Earlier work.',emotion:'envy'},p,'mina');
  for(const extra of [{pending:true},{error:'The newer action was not confirmed'}]){const reply=personReply({g,p,actorId:'mina',receipt,...extra});assert.equal(reply.speech,'');assert.equal(reply.continuation,undefined);assert.equal(reply.gesture,'pause');}
+});
+
+
+test('second confirmed encounters use a short same-person callback without restarting the longer opening',()=>{
+ for(const actorId of Object.keys(personSceneProfiles)){
+  const {g,p}=fixture(),profile=personSceneProfiles[actorId],lines=personFamiliarityLines[actorId];
+  history(p,actorId,2);
+  // Cover both the ordinary fallback reply and a distinct exact saved response.
+  for(const response of [undefined,{speakerId:actorId,speech:actorId==='bea'?'Cup!':'I heard your question, and this is my answer.',activity:'Pauses before returning to the conversation.',emotion:'warm' as const,gesture:'pause' as const}]){
+   const receipt=capturePersonReceipt({actionId:`cast:1:${actorId}:listen`,title:'A real saved exchange',body:'A small conversation was recorded.',...(response?{response}:{})},p,actorId);
+   const before=JSON.stringify({g,p,receipt}),reply=personReply({g,p,actorId,receipt});
+   assert.ok(reply.continuation,actorId);assert.ok(reply.continuation.split(/\s+/).length<=18,actorId);
+   assert.ok([...lines.routine,...lines.habit].includes(reply.continuation),`${actorId}: callback stays in their own authored voice`);
+   assert.notEqual(reply.continuation,profile.greeting);assert.notEqual(reply.continuation,profile.familiar);assert.notEqual(reply.continuation,reply.speech);
+   if(response)assert.equal(reply.speech,response.speech,'the exact confirmed reply is untouched');
+   assert.equal(JSON.stringify({g,p,receipt}),before,'the repair is presentation-only');
+   const reloaded=JSON.parse(before);assert.deepEqual(personReply({...reloaded,actorId}),reply);
+   history(p,actorId,14);assert.deepEqual(personReply({g,p,actorId,receipt}),reply,'later polling cannot replace the frozen callback');
+   assert.equal(personReply({g,p:{...p,castRedacted:true},actorId,receipt}).continuation,undefined);
+   history(p,actorId,2);
+  }
+ }
 });

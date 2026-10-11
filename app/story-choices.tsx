@@ -28,14 +28,14 @@ export function useEncounterCommit({g,p,disabled,context,choices,onAction,findRe
   try{
    const result=await state.onAction(choice.actionId);
    if(!alive.current||latest.current.context!==token.context||request.current!==token)return;
-   const confirmed=result as Game|undefined,updated=confirmed?.code===state.g.code?confirmed.players?.find(q=>q.id===state.p.id):undefined;
+   const confirmed=result as Game|undefined,updated=confirmed?.code===state.g.code&&confirmed.round===state.g.round?confirmed.players?.find(q=>q.id===state.p.id&&!q.castRedacted):undefined;
    const found=updated&&confirmed?state.findReceipt(confirmed,updated,choice):null;
-   if(found){submitted.current.add(choice.actionId);setReceipt({context:token.context,receipt:{...found,actionId:choice.actionId}});}
+   if(found){submitted.current.add(choice.actionId);setReceipt({context:token.context,receipt:{...found,actionId:choice.actionId,actionTitle:current.title}});}
    else setError('This choice wasn’t confirmed. Check your connection before trying again.');
   }catch{if(alive.current&&latest.current.context===token.context&&request.current===token)setError('This choice wasn’t confirmed. Reconnect and check the latest scene before trying again.');}
   finally{if(request.current===token){request.current=null;if(alive.current&&latest.current.context===token.context)setBusy(false);}}
  }
- return{busy,receipt:receiptState?.context===context?receiptState.receipt:null,error,commit,isSubmitted:(id:string)=>submitted.current.has(id)};
+ return{busy,receipt:receiptState?.context===context?receiptState.receipt:null,error,commit,continueConversation:()=>{if(alive.current&&latest.current.context===context&&!request.current)setReceipt(null);},isSubmitted:(id:string)=>submitted.current.has(id)};
 }
 
 /** Choice cards only select a response. The single dark button is the only commit. */
@@ -50,19 +50,26 @@ export function StoryChoiceDeck({g,choices,disabled,busy,onCommit,place='COMMUNI
   <div className="encounter-options image-choice-options" role="group" aria-label="Possible responses">{choices.map(c=>{const art=decisionIllustration(c,place);return <button type="button" key={c.id} className="encounter-option" aria-pressed={c.id===choice.id} disabled={busy||disabled} onClick={()=>{if(busy||disabled)return;setSelected(c.id);onSelect?.(c);}}>{!conversational&&<GamePainting src={art.thumb} fallback={art.fallback} alt=""/>}<span className="encounter-option-copy">{!conversational&&<small className="choice-selection">{c.id===choice.id?'Selected response':'Explore response'}</small>}<strong>{c.title}</strong><small>{economyTimeLabel(g??{},c.cost.time)} · {dollars(c.cost.cash)}{!c.available?' · Not yet available':''}</small></span></button>})}</div>
   <div className="encounter-choice-preview" data-choice-id={choice.id} aria-live="polite">
    {!conversational&&<><small className="encounter-eyebrow">YOUR RESPONSE</small><h3>{choice.title}</h3><p>{narrativeExpectation(choice.body)}</p></>}
-   <div className="encounter-costs" aria-label="Exact cost"><span>{economyTimeLabel(g??{},choice.cost.time)}</span><span>{dollars(choice.cost.cash)} upfront</span>{choice.cost.energy>0&&<span>{effortLabel(choice.cost.energy)}</span>}</div>
+   {!conversational&&<div className="encounter-costs" aria-label="Exact cost"><span>{economyTimeLabel(g??{},choice.cost.time)}</span><span>{dollars(choice.cost.cash)} upfront</span>{choice.cost.energy>0&&<span>{effortLabel(choice.cost.energy)}</span>}</div>}
    {effects.some(text=>!isQuietEffect(text))&&<ul className="encounter-effects" aria-label="Commitments and consequences">{effects.filter(text=>!isQuietEffect(text)).map((text,i)=><li key={i}>{qualitativeText(text)}</li>)}</ul>}
-   {conversational&&(choice.actionId.startsWith('story:')||/(?:promise|keep|renegotiate|release|rush|press|shared:)/.test(choice.actionId))?<p className="person-choice-terms">{narrativeExpectation(choice.body)}</p>:conversational&&<details className="person-choice-context" key={'context:'+choice.id}><summary>What this involves</summary><p>{narrativeExpectation(choice.body)}</p></details>}
-   {effects.some(isQuietEffect)&&<details className="choice-effect-details" key={choice.id}><summary>How this may feel</summary><ul>{effects.filter(isQuietEffect).map((text,i)=><li key={i}>{qualitativeText(text)}</li>)}</ul></details>}
+   {conversational&&<p className="person-choice-terms">{narrativeExpectation(choice.body)}</p>}
+   {!conversational&&effects.some(isQuietEffect)&&<details className="choice-effect-details" key={choice.id}><summary>How this may feel</summary><ul>{effects.filter(isQuietEffect).map((text,i)=><li key={i}>{qualitativeText(text)}</li>)}</ul></details>}
    {!choice.available&&<p className="encounter-lock" role="note">{qualitativeText(choice.reason)||'This response is not available yet.'}</p>}
-   <button type="button" className="encounter-commit" disabled={blocked} onClick={()=>{if(!blocked)onCommit(choice);}}>{busy?'Saving your response…':isSubmitted(choice.actionId)?'Response recorded':`Choose: ${choice.title}`}<span aria-hidden="true">→</span></button>
+   <button type="button" className="encounter-commit" disabled={blocked} onClick={()=>{if(!blocked)onCommit(choice);}}><span className="encounter-commit-copy">{busy?'Saving your response…':isSubmitted(choice.actionId)?'Response recorded':`Choose: ${choice.title}`}{conversational&&<small>{economyTimeLabel(g??{},choice.cost.time)} · {dollars(choice.cost.cash)}{choice.cost.energy>0?' · '+effortLabel(choice.cost.energy):''}</small>}</span><span aria-hidden="true">→</span></button>
   </div>
  </section>;
 }
 
 export function EncounterOutcome({g,receipt,error,compact=false,reaction,children}:{g?:Game;receipt:EncounterReceipt|null;error:string;compact?:boolean;reaction?:string;children?:import('react').ReactNode}){
+ const result=useRef<HTMLElement>(null),seen=useRef(new Set<string>());
+ const key=!compact&&!error&&receipt?.actionTitle?[g?.code,receipt.id??receipt.actionId,receipt.week,receipt.actionTitle].join('|'):'';
+ useEffect(()=>{
+  if(!key||seen.current.has(key))return;
+  seen.current.add(key);
+  if(typeof document!=='undefined'&&(document.activeElement===document.body||result.current?.closest('.career-board, .world-story-compact, .encounter-panel')?.contains(document.activeElement))){result.current?.focus({preventScroll:true});result.current?.scrollIntoView?.({block:'start',behavior:'auto'});}
+ },[key]);
  if(error)return <p className="encounter-error" role="alert">{qualitativeText(error)}</p>;
  if(!receipt)return null;
  if(compact)return <details className="encounter-memory person-transcript"><summary>Remember this moment</summary>{children}<small className="encounter-eyebrow">{receipt.week?economyMonthLabel(g??{},receipt.week):'Confirmed'}</small><h3>{receipt.title}</h3><p>{qualitativeText(receipt.outcome||receipt.body)}</p>{receipt.outcome&&receipt.body&&receipt.body!==receipt.outcome&&<p>{qualitativeText(receipt.body)}</p>}</details>;
- return <section className="encounter-outcome" role="status" aria-live="polite">{reaction&&<p className="encounter-player-reaction">{reaction}</p>}<small className="encounter-eyebrow">WHAT CHANGED{receipt.week?' · '+economyMonthLabel(g??{},receipt.week).toUpperCase():''}</small><h3>{receipt.title}</h3><p>{qualitativeText(receipt.outcome||receipt.body)}</p>{receipt.outcome&&receipt.body&&receipt.body!==receipt.outcome&&<p className="encounter-callback">{qualitativeText(receipt.body)}</p>}</section>;
+ return <section className="encounter-outcome" role="status" aria-live="polite" ref={result} tabIndex={-1}>{receipt.actionTitle&&<p className="person-action-echo"><span>You chose:</span> {receipt.actionTitle}</p>}{reaction&&<p className="encounter-player-reaction">{reaction}</p>}<small className="encounter-eyebrow">WHAT CHANGED{receipt.week?' · '+economyMonthLabel(g??{},receipt.week).toUpperCase():''}</small><h3>{receipt.title}</h3><p>{qualitativeText(receipt.outcome||receipt.body)}</p>{receipt.outcome&&receipt.body&&receipt.body!==receipt.outcome&&<p className="encounter-callback">{qualitativeText(receipt.body)}</p>}</section>;
 }
