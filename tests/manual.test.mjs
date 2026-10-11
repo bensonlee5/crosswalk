@@ -15,6 +15,12 @@ const guide = json('docs/guide-content.json');
 const personalities = json('docs/character-canon/personalities.json');
 const graph = json('docs/character-canon/families.json');
 const dispersed = json('docs/manual/dispersed-families.json');
+const items = json('docs/manual/items.json').items;
+const venues = json('docs/manual/venues.json').venues;
+const brands = json('docs/manual/items.json').brands ?? [];
+const expansionArt = new Set([...items,...venues].filter(entry=>entry.image).map(entry=>entry.image.src));
+const baseArt = new Set([...guide.characters.map(p=>`character-portraits/${p.id}.webp`),...guide.locations.map(p=>`world/${p.id}.webp`)]);
+const artCount = new Set([...baseArt,...expansionArt]).size;
 const escape = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 const decode = value => value.replaceAll('&quot;', '"').replaceAll('&#39;', "'").replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&');
 const files = (base, path=base) => readdirSync(path, {withFileTypes:true}).flatMap(entry => entry.isDirectory() ? files(base, resolve(path, entry.name)) : [relative(base, resolve(path, entry.name))]).sort();
@@ -32,10 +38,10 @@ test('the full manual is reproducible from canonical sources without authoring o
   assert.equal(guide.locations.length, 5);
   const regions = [...new Set(guide.characters.map(person => person.region))];
   assert.equal(regions.length, 6);
-  const expectedPages = ['index.html', '404.html', 'characters/index.html', 'families/index.html', ...guide.characters.map(person => `characters/${person.id}/index.html`), ...guide.locations.map(place => `places/${place.id}/index.html`), ...regions.map(region => `regions/${region}/index.html`)].sort();
+  const expectedPages = ['index.html', '404.html', 'characters/index.html', 'families/index.html', 'items/index.html', 'venues/index.html', ...(brands.length ? ['brands/index.html',...brands.map(brand=>`brands/${brand.id}/index.html`)] : []), ...items.map(item=>`items/${item.id}/index.html`), ...venues.map(venue=>`venues/${venue.id}/index.html`), ...guide.characters.map(person => `characters/${person.id}/index.html`), ...guide.locations.map(place => `places/${place.id}/index.html`), ...regions.map(region => `regions/${region}/index.html`)].sort();
   assert.deepEqual(htmlFiles, expectedPages);
-  assert.deepEqual(files(manual), [...expectedPages, 'assets/favicon.svg', 'assets/site.css', 'assets/site.js'].sort());
-  assert.equal(htmlFiles.length, 83);
+  assert.deepEqual(files(manual), [...expectedPages, 'assets/favicon.svg', 'assets/site.css', 'assets/site.js', 'assets/catalog.css', 'assets/catalog.js'].sort());
+  assert.equal(htmlFiles.length, 85+items.length+venues.length+brands.length+(brands.length ? 1 : 0));
   for (const path of htmlFiles) assert.doesNotMatch(html(path), /(?:chatgpt\.site|chatgpt\.com|supabase\.(?:co|com)|\/authoring\/|private[-_ ]review|service.role|sb_secret_|sb_publishable_|\.openai\/|source_repository|BEGIN PRIVATE KEY)/i, path);
   assert.doesNotMatch(html('index.html'), /Review edition/);
   assert.ok(read('README.md').includes('https://bensonlee5.github.io/crosswalk/manual/'));
@@ -50,7 +56,11 @@ test('all manual links, fragments, scripts, styles and shared art resolve beneat
     const source = html(path);
     const ids = [...source.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
     assert.equal(new Set(ids).size, ids.length, `Duplicate IDs: ${path}`);
+    for (const match of source.matchAll(/aria-(?:labelledby|describedby|controls)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids.includes(id), `Broken ARIA reference: ${path}/${id}`);
+    for (const match of source.matchAll(/<label\b[^>]*for="([^"]+)"/g)) assert.ok(ids.includes(match[1]), `Broken form label: ${path}/${match[1]}`);
     assert.equal([...source.matchAll(/<h1\b/g)].length, 1, path);
+    assert.ok(source.includes('Crosswalk Travel Guide'), `Missing guide branding: ${path}`);
+    assert.doesNotMatch(source, /Crosswalk manual|illustrated manual|Manual home|Return to the manual/i, path);
     const url = new URL(`${prefix}manual/${path.replace(/index\.html$/, '')}`, origin);
     for (const match of source.matchAll(/\b(?:href|src|action)="([^"]+)"/g)) {
       const ref = decode(match[1]);
@@ -76,7 +86,7 @@ test('all manual links, fragments, scripts, styles and shared art resolve beneat
       references++;
     }
   }
-  assert.equal(paintings.size, 73);
+  assert.equal(paintings.size, artCount);
   assert.ok(references > 1500);
   assert.doesNotMatch(html('assets/site.css'), /(?:https?:|url\s*\()/i);
   assert.doesNotMatch(html('assets/site.js'), /(?:fetch\s*\(|XMLHttpRequest|localStorage|sessionStorage|supabase|eval\s*\(|innerHTML\s*=)/i);

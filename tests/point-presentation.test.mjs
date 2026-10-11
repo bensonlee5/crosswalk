@@ -69,8 +69,8 @@ test('world discovery and closure consequences render regional names without cha
  const {p,g}=room(true);p.world.discoveredPlacesByRegion.alder=['APARTMENTS','WORK','THE PARK','CORNER CAFÉ','COMMUNITY'];
  const explore=W.worldChoices(p,g).find(c=>c.key==='explore');assert.equal(explore.title,'Follow the covered service lanes');
  assert.ok(explore.previewText.includes('Discover: MARKET, TRANSIT'),'engine IDs are deliberately unchanged');
- assert.ok(choiceHtml(explore,p,g).includes('Discover: Ferry Market, Alder Ferry &amp; Rail'));
- assert.ok(render(WorldStory,{g,p,disabled:false,onAction:()=>assert.fail()}).includes('Discover: Ferry Market, Alder Ferry &amp; Rail'));
+ assert.ok(choiceHtml(explore,p,g).includes('Discover: Ferry Bell Market, Alder Ferry &amp; Rail'));
+ assert.ok(render(WorldStory,{g,p,disabled:false,onAction:()=>assert.fail()}).includes('Discover: Ferry Bell Market, Alder Ferry &amp; Rail'));
 });
 test('world discoveries use evolved shared venues and destination names before travel',()=>{
  const {p,g}=room(true);p.world.discoveredPlacesByRegion.alder=['APARTMENTS','WORK','THE PARK','CORNER CAFÉ','COMMUNITY'];

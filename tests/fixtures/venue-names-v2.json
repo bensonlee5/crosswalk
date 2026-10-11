@@ -1,0 +1,926 @@
+{
+  "source": "Frozen guide and game venue naming contract, version 2",
+  "venues": [
+    {
+      "regionId": "alder",
+      "placeId": "APARTMENTS",
+      "name": "Rainwell Court",
+      "evolvedNames": [],
+      "previousName": "Quayside Apartments"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "WORK",
+      "name": "Clockhouse Workrooms",
+      "evolvedNames": [],
+      "previousName": "Clockhouse Workrooms"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "CAMPUS",
+      "name": "Bellweather College",
+      "evolvedNames": [],
+      "previousName": "Riverside College"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "CAREER HUB",
+      "name": "The Next Landing",
+      "evolvedNames": [],
+      "previousName": "Quay Career Desk"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "CORNER CAFÉ",
+      "name": "Ferry Corner Café",
+      "evolvedNames": [],
+      "previousName": "Ferry Corner Café"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "COMMUNITY",
+      "name": "Common Table Hall",
+      "evolvedNames": [],
+      "previousName": "Quayside Community Room"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "THE PARK",
+      "name": "Willow Park",
+      "evolvedNames": [],
+      "previousName": "Willow Park"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "LIBRARY",
+      "name": "Brickhouse Library",
+      "evolvedNames": [
+        "Brickhouse Library · seed and tool loans"
+      ],
+      "previousName": "Brickhouse Library"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "MARKET",
+      "name": "Ferry Bell Market",
+      "evolvedNames": [
+        "Ferry Bell Market · advance-order counter"
+      ],
+      "previousName": "Ferry Market"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "FITNESS",
+      "name": "Second Wind Studio",
+      "evolvedNames": [],
+      "previousName": "Quay Fitness Studio"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "MAKERSPACE",
+      "name": "Foundry Makerspace",
+      "evolvedNames": [
+        "Foundry Makerspace · listening room"
+      ],
+      "previousName": "Foundry Makerspace"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "CINEMA",
+      "name": "Lantern Cinema",
+      "evolvedNames": [],
+      "previousName": "Lantern Cinema"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "TRANSIT",
+      "name": "Alder Ferry & Rail",
+      "evolvedNames": [
+        "Alder Ferry & Rail · staffed welcome table"
+      ],
+      "previousName": "Alder Ferry & Rail"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "GARDEN",
+      "name": "Willowbank Allotments",
+      "evolvedNames": [
+        "Willowbank Allotments · supper garden"
+      ],
+      "previousName": "Canal Allotments"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "ARCADE",
+      "name": "Clocktower Arcade",
+      "evolvedNames": [],
+      "previousName": "Clocktower Arcade"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "APARTMENTS",
+      "name": "Three Arches Court",
+      "evolvedNames": [],
+      "previousName": "Courtyard Apartments"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "WORK",
+      "name": "Towpath Workrooms",
+      "evolvedNames": [],
+      "previousName": "Canal Workrooms"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "CAMPUS",
+      "name": "Azulejo College",
+      "evolvedNames": [],
+      "previousName": "Arcade College"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "CAREER HUB",
+      "name": "Next Crossing Careers",
+      "evolvedNames": [],
+      "previousName": "Harbor Career Desk"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "CORNER CAFÉ",
+      "name": "Bridge Corner Café",
+      "evolvedNames": [],
+      "previousName": "Bridge Corner Café"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "COMMUNITY",
+      "name": "Casa del Patio",
+      "evolvedNames": [],
+      "previousName": "Courtyard Community Room"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "THE PARK",
+      "name": "Lemonshade Park",
+      "evolvedNames": [],
+      "previousName": "Shade Garden Park"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "LIBRARY",
+      "name": "Blue Tile Library",
+      "evolvedNames": [
+        "Blue Tile Library · neighborhood subtitle desk"
+      ],
+      "previousName": "Canal Library"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "MARKET",
+      "name": "Three Arches Market",
+      "evolvedNames": [
+        "Three Arches Market · shared oven mornings"
+      ],
+      "previousName": "Arcade Food Market"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "FITNESS",
+      "name": "The Cool Hour",
+      "evolvedNames": [],
+      "previousName": "Courtyard Fitness"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "MAKERSPACE",
+      "name": "Kiln & Current",
+      "evolvedNames": [],
+      "previousName": "Ceramic Makerspace"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "CINEMA",
+      "name": "Six Chairs Cinema",
+      "evolvedNames": [],
+      "previousName": "Courtyard Cinema"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "TRANSIT",
+      "name": "Water Tower Landing",
+      "evolvedNames": [
+        "Water Tower Landing · electric launch bench"
+      ],
+      "previousName": "Canal Ferry Station"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "GARDEN",
+      "name": "Above the Arcade",
+      "evolvedNames": [],
+      "previousName": "Rooftop Garden"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "ARCADE",
+      "name": "The Long Game",
+      "evolvedNames": [],
+      "previousName": "Canal Game Arcade"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "APARTMENTS",
+      "name": "Copperline Court",
+      "evolvedNames": [],
+      "previousName": "Hillside Apartments"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "WORK",
+      "name": "Rail Hall Workrooms",
+      "evolvedNames": [],
+      "previousName": "Rail Hall Workrooms"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "CAMPUS",
+      "name": "Switchback Institute",
+      "evolvedNames": [],
+      "previousName": "Terrace College"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "CAREER HUB",
+      "name": "The Next Platform",
+      "evolvedNames": [],
+      "previousName": "Rail Career Desk"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "CORNER CAFÉ",
+      "name": "Platform Corner Café",
+      "evolvedNames": [],
+      "previousName": "Platform Corner Café"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "COMMUNITY",
+      "name": "Reunion Hall",
+      "evolvedNames": [],
+      "previousName": "Railway Community Room"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "THE PARK",
+      "name": "Windbreak Park",
+      "evolvedNames": [],
+      "previousName": "Terrace Park"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "LIBRARY",
+      "name": "Switchback Library",
+      "evolvedNames": [
+        "Switchback Library · winter reading room"
+      ],
+      "previousName": "Switchback Library"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "MARKET",
+      "name": "The Goods Exchange",
+      "evolvedNames": [
+        "The Goods Exchange · repaired goods guarantee"
+      ],
+      "previousName": "Station Market"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "FITNESS",
+      "name": "Second Summit",
+      "evolvedNames": [],
+      "previousName": "Highland Fitness"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "MAKERSPACE",
+      "name": "The Copper Bench",
+      "evolvedNames": [],
+      "previousName": "Copper Makerspace"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "CINEMA",
+      "name": "Signal Light Cinema",
+      "evolvedNames": [],
+      "previousName": "Rail Hall Cinema"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "TRANSIT",
+      "name": "Glasssteppe Rail Station",
+      "evolvedNames": [
+        "Glasssteppe Rail Station · step-free transfer desk"
+      ],
+      "previousName": "Glasssteppe Rail Station"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "GARDEN",
+      "name": "Short Summer Garden",
+      "evolvedNames": [],
+      "previousName": "Terrace Kitchen Garden"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "ARCADE",
+      "name": "Off Duty",
+      "evolvedNames": [],
+      "previousName": "Station Game Arcade"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "APARTMENTS",
+      "name": "Stiltwalk Apartments",
+      "evolvedNames": [],
+      "previousName": "Stiltwalk Apartments"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "WORK",
+      "name": "Tide Ledger Workrooms",
+      "evolvedNames": [],
+      "previousName": "Harbor Workrooms"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "CAMPUS",
+      "name": "Tideworks College",
+      "evolvedNames": [],
+      "previousName": "Tideworks College"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "CAREER HUB",
+      "name": "Farther Shore Careers",
+      "evolvedNames": [],
+      "previousName": "Harbor Career Desk"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "CORNER CAFÉ",
+      "name": "Dome Corner Café",
+      "evolvedNames": [],
+      "previousName": "Dome Corner Café"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "COMMUNITY",
+      "name": "The Dry Room",
+      "evolvedNames": [],
+      "previousName": "Harbor Community Room"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "THE PARK",
+      "name": "Highwater Promenade",
+      "evolvedNames": [],
+      "previousName": "Raised Promenade Park"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "LIBRARY",
+      "name": "Tidal Library",
+      "evolvedNames": [
+        "Tidal Library · ordinary lives archive"
+      ],
+      "previousName": "Tidal Library"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "MARKET",
+      "name": "First Ferry Market",
+      "evolvedNames": [
+        "First Ferry Market · resilient harvest table"
+      ],
+      "previousName": "Harbor Food Market"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "FITNESS",
+      "name": "Stillwater Studio",
+      "evolvedNames": [],
+      "previousName": "Promenade Fitness"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "MAKERSPACE",
+      "name": "Floodworks Makerspace",
+      "evolvedNames": [],
+      "previousName": "Floodworks Makerspace"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "CINEMA",
+      "name": "The Lantern Dome",
+      "evolvedNames": [],
+      "previousName": "Dome Cinema"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "TRANSIT",
+      "name": "Gatehouse Landing",
+      "evolvedNames": [
+        "Gatehouse Landing · tide-safe crossing board"
+      ],
+      "previousName": "Island Ferry Station"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "GARDEN",
+      "name": "Salt & Seed Garden",
+      "evolvedNames": [],
+      "previousName": "Raised Harbor Garden"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "ARCADE",
+      "name": "Pierlight Arcade",
+      "evolvedNames": [],
+      "previousName": "Pier Game Arcade"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "APARTMENTS",
+      "name": "Longshadow Court",
+      "evolvedNames": [],
+      "previousName": "Station Apartments"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "WORK",
+      "name": "Roster House",
+      "evolvedNames": [],
+      "previousName": "Mesa Workrooms"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "CAMPUS",
+      "name": "Open Sky College",
+      "evolvedNames": [],
+      "previousName": "Town College"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "CAREER HUB",
+      "name": "Next Mile Careers",
+      "evolvedNames": [],
+      "previousName": "Main Street Career Desk"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "CORNER CAFÉ",
+      "name": "Last Light Diner",
+      "evolvedNames": [],
+      "previousName": "Last Light Diner"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "COMMUNITY",
+      "name": "Waterwise Hall",
+      "evolvedNames": [],
+      "previousName": "Town Community Hall"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "THE PARK",
+      "name": "Cottonwood Park",
+      "evolvedNames": [],
+      "previousName": "Cottonwood Park"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "LIBRARY",
+      "name": "Seed & Story Library",
+      "evolvedNames": [
+        "Seed & Story Library · water-wise seed exchange"
+      ],
+      "previousName": "Main Street Library"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "MARKET",
+      "name": "Sundown Exchange",
+      "evolvedNames": [
+        "Sundown Exchange · evening supper tables"
+      ],
+      "previousName": "Railway Food Market"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "FITNESS",
+      "name": "Good Pace Studio",
+      "evolvedNames": [],
+      "previousName": "Town Fitness Studio"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "MAKERSPACE",
+      "name": "The Second Try",
+      "evolvedNames": [],
+      "previousName": "Modern Repair Shop"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "CINEMA",
+      "name": "Frontier Picture House",
+      "evolvedNames": [],
+      "previousName": "Frontier Picture House"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "TRANSIT",
+      "name": "Mesa Rail Station",
+      "evolvedNames": [
+        "Mesa Rail Station · shared repair roster"
+      ],
+      "previousName": "Mesa Rail Station"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "GARDEN",
+      "name": "The Patient Patch",
+      "evolvedNames": [],
+      "previousName": "Desert Kitchen Garden"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "ARCADE",
+      "name": "One More Round",
+      "evolvedNames": [],
+      "previousName": "Boardwalk Game Arcade"
+    }
+  ],
+  "authorizedRenames": [
+    {
+      "current": "Rainwell Court",
+      "previous": "Quayside Apartments"
+    },
+    {
+      "current": "Bellweather College",
+      "previous": "Riverside College"
+    },
+    {
+      "current": "The Next Landing",
+      "previous": "Quay Career Desk"
+    },
+    {
+      "current": "Common Table Hall",
+      "previous": "Quayside Community Room"
+    },
+    {
+      "current": "Ferry Bell Market",
+      "previous": "Ferry Market"
+    },
+    {
+      "current": "Second Wind Studio",
+      "previous": "Quay Fitness Studio"
+    },
+    {
+      "current": "Willowbank Allotments",
+      "previous": "Canal Allotments"
+    },
+    {
+      "current": "Three Arches Court",
+      "previous": "Courtyard Apartments"
+    },
+    {
+      "current": "Towpath Workrooms",
+      "previous": "Canal Workrooms"
+    },
+    {
+      "current": "Azulejo College",
+      "previous": "Arcade College"
+    },
+    {
+      "current": "Next Crossing Careers",
+      "previous": "Harbor Career Desk"
+    },
+    {
+      "current": "Casa del Patio",
+      "previous": "Courtyard Community Room"
+    },
+    {
+      "current": "Lemonshade Park",
+      "previous": "Shade Garden Park"
+    },
+    {
+      "current": "Blue Tile Library",
+      "previous": "Canal Library"
+    },
+    {
+      "current": "Three Arches Market",
+      "previous": "Arcade Food Market"
+    },
+    {
+      "current": "The Cool Hour",
+      "previous": "Courtyard Fitness"
+    },
+    {
+      "current": "Kiln & Current",
+      "previous": "Ceramic Makerspace"
+    },
+    {
+      "current": "Six Chairs Cinema",
+      "previous": "Courtyard Cinema"
+    },
+    {
+      "current": "Water Tower Landing",
+      "previous": "Canal Ferry Station"
+    },
+    {
+      "current": "Above the Arcade",
+      "previous": "Rooftop Garden"
+    },
+    {
+      "current": "The Long Game",
+      "previous": "Canal Game Arcade"
+    },
+    {
+      "current": "Copperline Court",
+      "previous": "Hillside Apartments"
+    },
+    {
+      "current": "Switchback Institute",
+      "previous": "Terrace College"
+    },
+    {
+      "current": "The Next Platform",
+      "previous": "Rail Career Desk"
+    },
+    {
+      "current": "Reunion Hall",
+      "previous": "Railway Community Room"
+    },
+    {
+      "current": "Windbreak Park",
+      "previous": "Terrace Park"
+    },
+    {
+      "current": "The Goods Exchange",
+      "previous": "Station Market"
+    },
+    {
+      "current": "Second Summit",
+      "previous": "Highland Fitness"
+    },
+    {
+      "current": "The Copper Bench",
+      "previous": "Copper Makerspace"
+    },
+    {
+      "current": "Signal Light Cinema",
+      "previous": "Rail Hall Cinema"
+    },
+    {
+      "current": "Short Summer Garden",
+      "previous": "Terrace Kitchen Garden"
+    },
+    {
+      "current": "Off Duty",
+      "previous": "Station Game Arcade"
+    },
+    {
+      "current": "Tide Ledger Workrooms",
+      "previous": "Harbor Workrooms"
+    },
+    {
+      "current": "Farther Shore Careers",
+      "previous": "Harbor Career Desk"
+    },
+    {
+      "current": "The Dry Room",
+      "previous": "Harbor Community Room"
+    },
+    {
+      "current": "Highwater Promenade",
+      "previous": "Raised Promenade Park"
+    },
+    {
+      "current": "First Ferry Market",
+      "previous": "Harbor Food Market"
+    },
+    {
+      "current": "Stillwater Studio",
+      "previous": "Promenade Fitness"
+    },
+    {
+      "current": "The Lantern Dome",
+      "previous": "Dome Cinema"
+    },
+    {
+      "current": "Gatehouse Landing",
+      "previous": "Island Ferry Station"
+    },
+    {
+      "current": "Salt & Seed Garden",
+      "previous": "Raised Harbor Garden"
+    },
+    {
+      "current": "Pierlight Arcade",
+      "previous": "Pier Game Arcade"
+    },
+    {
+      "current": "Longshadow Court",
+      "previous": "Station Apartments"
+    },
+    {
+      "current": "Roster House",
+      "previous": "Mesa Workrooms"
+    },
+    {
+      "current": "Open Sky College",
+      "previous": "Town College"
+    },
+    {
+      "current": "Next Mile Careers",
+      "previous": "Main Street Career Desk"
+    },
+    {
+      "current": "Waterwise Hall",
+      "previous": "Town Community Hall"
+    },
+    {
+      "current": "Seed & Story Library",
+      "previous": "Main Street Library"
+    },
+    {
+      "current": "Sundown Exchange",
+      "previous": "Railway Food Market"
+    },
+    {
+      "current": "Good Pace Studio",
+      "previous": "Town Fitness Studio"
+    },
+    {
+      "current": "The Second Try",
+      "previous": "Modern Repair Shop"
+    },
+    {
+      "current": "The Patient Patch",
+      "previous": "Desert Kitchen Garden"
+    },
+    {
+      "current": "One More Round",
+      "previous": "Boardwalk Game Arcade"
+    },
+    {
+      "current": "Ferry Bell Market · advance-order counter",
+      "previous": "Ferry Market · advance-order counter"
+    },
+    {
+      "current": "Three Arches Market · shared oven mornings",
+      "previous": "Arcade Food Market · shared oven mornings"
+    },
+    {
+      "current": "Water Tower Landing · electric launch bench",
+      "previous": "Canal Ferry Station · electric launch bench"
+    },
+    {
+      "current": "Blue Tile Library · neighborhood subtitle desk",
+      "previous": "Canal Library · neighborhood subtitle desk"
+    },
+    {
+      "current": "The Goods Exchange · repaired goods guarantee",
+      "previous": "Station Market · repaired goods guarantee"
+    },
+    {
+      "current": "Gatehouse Landing · tide-safe crossing board",
+      "previous": "Island Ferry Station · tide-safe crossing board"
+    },
+    {
+      "current": "First Ferry Market · resilient harvest table",
+      "previous": "Harbor Food Market · resilient harvest table"
+    },
+    {
+      "current": "Seed & Story Library · water-wise seed exchange",
+      "previous": "Main Street Library · water-wise seed exchange"
+    },
+    {
+      "current": "Sundown Exchange · evening supper tables",
+      "previous": "Railway Food Market · evening supper tables"
+    },
+    {
+      "current": "Willowbank Allotments · supper garden",
+      "previous": "Canal Supper Garden"
+    },
+    {
+      "current": "Foundry Makerspace · listening room",
+      "previous": "Foundry Listening Room"
+    }
+  ],
+  "historicalEvolvedNames": [
+    {
+      "regionId": "alder",
+      "placeId": "MARKET",
+      "previous": "Ferry Market · advance-order counter",
+      "current": "Ferry Bell Market · advance-order counter"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "LIBRARY",
+      "previous": "Brickhouse Library · seed and tool loans",
+      "current": "Brickhouse Library · seed and tool loans"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "TRANSIT",
+      "previous": "Alder Ferry & Rail · staffed welcome table",
+      "current": "Alder Ferry & Rail · staffed welcome table"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "MARKET",
+      "previous": "Arcade Food Market · shared oven mornings",
+      "current": "Three Arches Market · shared oven mornings"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "TRANSIT",
+      "previous": "Canal Ferry Station · electric launch bench",
+      "current": "Water Tower Landing · electric launch bench"
+    },
+    {
+      "regionId": "saffron",
+      "placeId": "LIBRARY",
+      "previous": "Canal Library · neighborhood subtitle desk",
+      "current": "Blue Tile Library · neighborhood subtitle desk"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "TRANSIT",
+      "previous": "Glasssteppe Rail Station · step-free transfer desk",
+      "current": "Glasssteppe Rail Station · step-free transfer desk"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "LIBRARY",
+      "previous": "Switchback Library · winter reading room",
+      "current": "Switchback Library · winter reading room"
+    },
+    {
+      "regionId": "glasssteppe",
+      "placeId": "MARKET",
+      "previous": "Station Market · repaired goods guarantee",
+      "current": "The Goods Exchange · repaired goods guarantee"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "TRANSIT",
+      "previous": "Island Ferry Station · tide-safe crossing board",
+      "current": "Gatehouse Landing · tide-safe crossing board"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "LIBRARY",
+      "previous": "Tidal Library · ordinary lives archive",
+      "current": "Tidal Library · ordinary lives archive"
+    },
+    {
+      "regionId": "pelagia",
+      "placeId": "MARKET",
+      "previous": "Harbor Food Market · resilient harvest table",
+      "current": "First Ferry Market · resilient harvest table"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "TRANSIT",
+      "previous": "Mesa Rail Station · shared repair roster",
+      "current": "Mesa Rail Station · shared repair roster"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "LIBRARY",
+      "previous": "Main Street Library · water-wise seed exchange",
+      "current": "Seed & Story Library · water-wise seed exchange"
+    },
+    {
+      "regionId": "embermesa",
+      "placeId": "MARKET",
+      "previous": "Railway Food Market · evening supper tables",
+      "current": "Sundown Exchange · evening supper tables"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "GARDEN",
+      "previous": "Canal Supper Garden",
+      "current": "Willowbank Allotments · supper garden"
+    },
+    {
+      "regionId": "alder",
+      "placeId": "MAKERSPACE",
+      "previous": "Foundry Listening Room",
+      "current": "Foundry Makerspace · listening room"
+    }
+  ]
+}

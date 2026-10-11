@@ -1,6 +1,6 @@
 # Crosswalk
 
-**[Play Crosswalk](https://bensonlee5.github.io/crosswalk/)** · [Character & place manual](https://bensonlee5.github.io/crosswalk/manual/) · [Player guide](https://bensonlee5.github.io/crosswalk/guide/)
+**[Play Crosswalk](https://bensonlee5.github.io/crosswalk/)** · [Travel guide](https://bensonlee5.github.io/crosswalk/manual/) · [Player guide](https://bensonlee5.github.io/crosswalk/guide/)
 
 Make a life, get to know your neighbors, and decide what matters to you. Crosswalk is a turn-based neighborhood life game for **1–4 players**, played solo, pass-and-play, or online in your browser.
 
@@ -22,7 +22,7 @@ There is room to recover from setbacks. Your story is more than a points total.
 2. Try the optional in-game tutorial, or open **Places** and choose somewhere to visit.
 3. Preview an activity's time, cost, and outcome before confirming. Review your bills before ending the month.
 
-The [character and place manual](https://bensonlee5.github.io/crosswalk/manual/) includes all 68 character backstories, illustrated portraits, personality profiles, five location histories, regional geography, and a linked family browser. The [player guide](https://bensonlee5.github.io/crosswalk/guide/) explains how to play. New games draw on 39 regular neighbors and occasional visitors; the wider cast also includes people whose lives remain in the background. Older saved rooms retain their original cast.
+The [Crosswalk Travel Guide](https://bensonlee5.github.io/crosswalk/manual/) starts with five town chapters, covers all 75 visitable venues and meaningful local objects, and includes all 68 character backstories, portraits, personality profiles, regional histories and linked families. The [player guide](https://bensonlee5.github.io/crosswalk/guide/) explains how to play. New games draw on 39 regular neighbors and occasional visitors; the wider cast also includes people whose lives remain in the background. Older saved rooms retain their original cast.
 
 ## Find your way around
 

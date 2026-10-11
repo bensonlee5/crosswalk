@@ -1,5 +1,5 @@
 import type {Game, Player} from './game.ts';
-import {applySharedVenueChange} from './world-life.ts';
+import {applySharedVenueChange,regionDefinitions} from './world-life.ts';
 import {economyAmount,economyWorkReason,recordEconomyPaidHours} from './economy.ts';
 
 /** A bounded seven-beat shared story. Only server lifecycle/choice hooks mutate state.
@@ -28,7 +28,7 @@ const state=(p:Player)=>(p as StoryPlayer).story;
 const decision=(g:Game,id:string)=>room(g)?.decisions[id]?.key;
 const plan=(g:Game)=>decision(g,'quay-replan')??'workshop';
 const venue=(g:Game)=>plan(g)==='garden'?'GARDEN':'MAKERSPACE';
-const venueName=(g:Game)=>plan(g)==='garden'?'Canal Supper Garden':'Foundry Listening Room';
+const venueName=(g:Game)=>`${regionDefinitions.alder.placeNames[venue(g)]} · ${plan(g)==='garden'?'supper garden':'listening room'}`;
 const said=(g:Game,id:string)=>{const d=room(g)?.decisions[id];return d?`${d.by} chose “${decisionTitle[id]?.[d.key]??d.key}” in month ${d.week}.`:'';};
 const decisionTitle:Record<string,Record<string,string>>={
  'quay-credit':{shared_credit:'Put every maker’s name on it',mina_first:'Let Mina lead the first poster',small_scope:'Keep the project small'},
@@ -55,7 +55,7 @@ export function initializeStory(g:Game){if(!enabled(g))return;const q=g as Story
  */
 export function arriveStoryWeek(g:Game){if(!enabled(g)||!room(g)||g.status!=='playing'||room(g)!.arrivedWeek>=g.round)return;const r=room(g)!;
  for(const p of g.players){initializeStoryPlayer(p);const prior=state(p)!;for(const week of [1,2,3,4,5,6,7]){if(week>=g.round)break;const id=sceneId(week);if(prior.receipts.some(x=>x.sceneId===id))continue;prior.receipts.push({id:`${p.id}-${id}-missed`,week,title:missedTitles[week],body:missedText(g,p,week),sceneId:id,characterIds:nids,choiceId:'',outcome:missedText(g,p,week),effects:emptyEffects(),automatic:true});}}
- if(g.round>=3&&!r.notices.some(n=>n.id==='stage-lost')){applySharedVenueChange(g,{id:'arc-stage-lost',region:'alder',place:'CORNER CAFÉ',status:'repurposed',name:'Ferry Corner Café',description:'The daytime café stays open. The evening stage is closed after the building’s sound permit was withdrawn.',reason:'The café can no longer host the promised amplified first set.',use:'food',source:'story',week:g.round});for(const p of g.players)if(p.life)pushUnique(p.life.flags,'mina_show_delayed');pair(g,'mina-eli','Eli offers pantry space; Mina worries her songs will become background music');notice(g,'stage-lost','The café’s evening sound permit is withdrawn. Mina’s original show cannot happen here; the daytime café remains open.');}
+ if(g.round>=3&&!r.notices.some(n=>n.id==='stage-lost')){applySharedVenueChange(g,{id:'arc-stage-lost',region:'alder',place:'CORNER CAFÉ',status:'repurposed',name:regionDefinitions.alder.placeNames['CORNER CAFÉ'],description:'The daytime café stays open. The evening stage is closed after the building’s sound permit was withdrawn.',reason:'The café can no longer host the promised amplified first set.',use:'food',source:'story',week:g.round});for(const p of g.players)if(p.life)pushUnique(p.life.flags,'mina_show_delayed');pair(g,'mina-eli','Eli offers pantry space; Mina worries her songs will become background music');notice(g,'stage-lost','The café’s evening sound permit is withdrawn. Mina’s original show cannot happen here; the daytime café remains open.');}
  if(g.round>=4&&!decision(g,'quay-replan')){publicDecision(g,'quay-replan','workshop','Mina and Jo');notice(g,'default-room','Without a promised venue plan, Mina and Jo choose a small unplugged listening room at the makerspace. They leave a chair for anyone who comes back.');}
  if(g.round>=5&&!decision(g,'quay-friction')){publicDecision(g,'quay-friction','unplug','Mina, Eli and Jo');pair(g,'mina-eli','Mina agrees to an unplugged set so Eli can keep the pantry pump');notice(g,'default-compromise','Jo sends the only spare motor to Eli’s pump. Mina chooses an unplugged set; neither project gets everything it hoped for.');}
  if(g.round>=5&&!r.notices.some(n=>n.id==='room-ready')){applySharedVenueChange(g,{id:'arc-room-ready',region:'alder',place:venue(g),status:'repurposed',name:venueName(g),description:plan(g)==='garden'?'Shared beds still feed the pantry. A covered table and a small unplugged stage now host the supper together.':'Repair benches still work by day. In the evening, a cleared corner becomes a small listening room and recording space.',reason:`A replacement for Mina’s cancelled café set, built around the ${plan(g)==='garden'?'shared supper':'smaller listening-room'} plan.`,use:'social',source:'story',week:g.round});notice(g,'room-ready',`${venueName(g)} opens as a small shared program. ${said(g,'quay-replan')}`);}
