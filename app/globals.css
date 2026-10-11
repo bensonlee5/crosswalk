@@ -51,4 +51,21 @@ html{scroll-padding-top:18px}.topbar{padding-top:max(16px,env(safe-area-inset-to
 .neighborhood-board{display:grid;gap:16px;margin-top:12px}.neighborhood-board section,.life-journal section{background:#f5f1e5;border:1px solid #d8d9c9;border-radius:12px;padding:16px}.neighborhood-board h3,.life-journal h3{font-size:20px;margin:6px 0}.neighborhood-board p,.life-journal p{font-size:14px;line-height:1.55;margin:8px 0}.neighborhood-board small,.life-journal small{font-size:12px}.neighborhood-board strong{display:block;font-size:14px}.neighborhood-board button,.life-journal button{display:block;border:1px solid #6c8b77;background:#e6eecf;color:#254936;border-radius:8px;padding:9px 12px;margin-top:10px;font-size:14px;font-weight:650}.neighborhood-board button:disabled,.life-journal button:disabled{opacity:.5}.neighborhood-board progress{width:100%;height:16px;accent-color:#668f51}.life-journal{display:grid;gap:10px;margin:16px 0}.path-progress{display:grid;grid-template-columns:86px 1fr 64px;gap:10px;align-items:center;font-size:14px}.path-progress progress{width:100%;accent-color:#6a8966}.path-progress strong{text-align:right;font-size:13px}.game-location-dialog .game-location-body{max-height:64dvh;overflow:auto;overscroll-behavior:contain}.game-activity-grid{max-height:30dvh;overflow:auto}.game-menu-dialog{max-height:88dvh;overflow:auto;overscroll-behavior:contain}.game-board-button:focus-visible,.neighborhood-board button:focus-visible,.life-journal button:focus-visible{outline:3px solid #3d7eac;outline-offset:3px}
 @media(max-width:600px){.game-board-button{top:163px;left:12px;padding:8px 12px;font-size:13px}.game-board-button small{font-size:12px}.game-activity-grid{max-height:29dvh}.game-location-dialog .game-location-body{max-height:65dvh}.path-progress{grid-template-columns:72px 1fr 60px;gap:7px}}
 .neighborhood-board section,.life-journal section{color:#27473c}.neighborhood-board section h3,.neighborhood-board section strong,.neighborhood-board section small,.life-journal section strong,.life-journal section small{color:#27473c}.neighborhood-board section p,.life-journal section p{color:#3d594c}
-.sound-dialog{max-width:460px!important}.sound-settings{display:grid;gap:17px}.sound-settings>p{font-size:13px;color:#63705d}.sound-toggle{display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid #d6cbb3;padding-top:15px}.sound-toggle span{display:grid;gap:4px}.sound-toggle small{font-size:11px;color:#68715e}.sound-toggle input{width:23px;height:23px;accent-color:#49623e}.sound-volume{display:grid;grid-template-columns:1fr auto;gap:5px;font-size:12px}.sound-volume input{grid-column:1/-1;accent-color:#567b47;padding:0;height:24px}.sound-volume output{font-variant-numeric:tabular-nums}
+/* Keep the heading and Close fixed while sound controls scroll on short screens. */
+.sound-dialog{
+ --sound-top:max(12px,env(safe-area-inset-top));
+ --sound-bottom:max(12px,env(safe-area-inset-bottom));
+ --sound-left:max(12px,env(safe-area-inset-left));
+ --sound-right:max(12px,env(safe-area-inset-right));
+ width:min(460px,calc(100vw - var(--sound-left) - var(--sound-right)))!important;
+ left:calc((100vw + var(--sound-left) - var(--sound-right))/2);
+ max-width:460px!important;
+ top:calc((100dvh + var(--sound-top) - var(--sound-bottom))/2);
+ max-height:calc(100dvh - var(--sound-top) - var(--sound-bottom));
+ grid-template-rows:auto auto minmax(0,1fr);
+ overflow:hidden;
+}
+.sound-dialog>[data-slot=dialog-title]{padding-right:36px}
+.sound-dialog>[data-slot=dialog-close]{width:44px;height:44px;right:8px;top:8px;display:grid;place-items:center}
+.sound-dialog>.sound-settings{min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:3px 4px 5px}
+.sound-settings{display:grid;gap:17px}.sound-settings>p{font-size:13px;color:#63705d}.sound-toggle{display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid #d6cbb3;padding-top:15px}.sound-toggle span{display:grid;gap:4px}.sound-toggle small{font-size:11px;color:#68715e}.sound-toggle input{width:23px;height:23px;accent-color:#49623e}.sound-volume{display:grid;grid-template-columns:1fr auto;gap:5px;font-size:12px}.sound-volume input{grid-column:1/-1;accent-color:#567b47;padding:0;height:24px}.sound-volume output{font-variant-numeric:tabular-nums}

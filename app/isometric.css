@@ -4,3 +4,59 @@
 @media(max-width:760px){.game-screen .engine-host{inset:223px 0 109px}.game-screen .game-district-tabs{top:141px;left:10px}.game-screen .game-board-button{top:185px;left:10px;right:auto;max-width:155px;padding:5px 8px;font-size:11px}.game-screen .game-news-button{top:141px;right:10px}.game-screen .game-weather-plaque{top:185px;bottom:auto;right:10px;max-width:190px;padding:5px 7px}.game-screen .game-weather-plaque b{font-size:11px}.game-screen .game-camera-controls{top:234px;right:10px}.game-screen .game-camera-controls summary{padding:7px;width:38px;height:38px}.game-screen .game-camera-controls summary span{display:none}.game-screen .game-camera-controls button{width:40px;height:40px}.game-screen .game-status{bottom:85px;font-size:10px;padding:4px 8px}.game-screen .game-bottom-hud{bottom:max(10px,env(safe-area-inset-bottom));width:calc(100% - 20px)}.game-screen .game-bottom-hud button{min-height:62px;padding:8px}.game-screen .game-current-place span{font-size:15px!important}.game-screen .game-bottom-hud span{font-size:13px}.game-screen .game-bottom-hud small{font-size:10px}.game-screen .game-arc-invitation{display:none}.iso-art-caption{font-size:10px;left:9px;bottom:7px}}
 @media(max-height:620px) and (min-width:761px){.game-screen .engine-host{inset:138px 0 103px}.game-screen .game-camera-controls{top:150px}.game-screen .game-bottom-hud button{min-height:54px}.game-screen .game-status{bottom:77px}.game-screen .game-weather-plaque{bottom:110px}}
 @media(prefers-reduced-motion:reduce){.illustrated-town *{animation:none!important}}
+
+/* Let content determine the mobile HUD height instead of reserving fixed bands.
+   The map takes the remaining space, including when labels wrap or phones rotate. */
+.game-header,.game-map-toolbar,.game-map-viewport{display:contents}
+@media(max-width:760px){
+ .game-screen{display:flex;flex-direction:column;padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));gap:7px}
+ .game-header{display:flex;flex-direction:column;gap:8px;position:relative;z-index:3;flex:none;min-width:0}
+ .game-screen .game-top-hud{position:static;gap:5px;min-width:0}
+ .game-screen .game-map-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:stretch;min-width:0}
+ .game-screen .game-district-tabs,.game-screen .game-board-button,.game-screen .game-news-button,.game-screen .game-weather-plaque{position:static;max-width:none;min-width:0;min-height:44px;margin:0;transform:none}
+ .game-screen .game-district-tabs{grid-column:1;grid-row:1;gap:3px;padding:0}
+ .game-screen .game-district-tabs button{flex:1;min-width:0;min-height:44px;padding:5px 8px;font-size:12px}
+ .game-screen .game-news-button{grid-column:2;grid-row:1;padding:5px 8px;font-size:12px;gap:6px}
+ .game-screen .game-board-button{grid-column:1;grid-row:2;padding:5px 8px;font-size:11px}
+ .game-screen .game-weather-plaque{grid-column:2;grid-row:2;padding:5px 7px;gap:5px}
+ .game-screen .game-weather-plaque b{font-size:11px;white-space:normal}
+ .game-screen .game-map-viewport{display:block;position:relative;flex:1;min-height:0;min-width:0;isolation:isolate}
+ .game-screen .engine-host{inset:0}
+ .game-screen .game-camera-controls{top:8px;right:8px}
+ .game-screen .game-camera-controls summary{width:44px;height:44px}
+ .game-screen .game-camera-controls>div{position:absolute;right:50px;top:0;margin:0;grid-template-columns:repeat(4,44px)}
+ .game-screen .game-status{position:static;transform:none;align-self:center;flex:none;max-width:100%;padding:3px 8px;min-height:21px}
+ .game-screen .game-bottom-hud{position:static;transform:none;flex:none;width:100%;min-width:0;gap:4px}
+ .game-screen .game-bottom-hud button{min-height:58px}
+}
+/* Trim secondary badge copy when browser chrome or zoom leaves little height. */
+@media(max-width:760px) and (max-height:560px){
+ .game-screen .game-player-badge small:first-of-type,.game-screen .life-heading-chip{display:none}
+ .game-screen .game-clock-hud{--turn-clock-size:52px}
+}
+/* A single, horizontally scrollable toolbar preserves the short-screen playfield.
+   All controls stay available; the map and footer never depend on a 223px inset. */
+@media(max-width:760px) and (max-height:500px){
+ .game-screen .game-map-toolbar{display:flex;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding-bottom:3px}
+ .game-screen .game-map-toolbar>*{flex-shrink:0}
+ .game-screen .game-district-tabs button{flex:none;padding:5px 9px}
+ .game-screen .game-weather-plaque b{white-space:nowrap}
+}
+@media(max-width:760px) and (max-height:500px) and (min-width:500px){
+ .game-screen{gap:4px;padding-top:max(6px,env(safe-area-inset-top));padding-bottom:max(6px,env(safe-area-inset-bottom))}
+ .game-header{gap:5px}
+ .game-screen .game-top-hud{flex-wrap:nowrap;gap:6px}
+ .game-screen .game-player-badge{min-height:52px;padding:5px 8px;gap:6px}
+ .game-screen .game-player-badge i{width:27px;height:27px}
+ .game-screen .game-player-badge strong{font-size:15px}
+ .game-screen .game-player-badge small{font-size:10px;letter-spacing:0}
+ .game-screen .game-clock-hud{--turn-clock-size:44px;margin:0}
+ .game-screen .game-resource-row{order:0;flex:0 1 43%;width:auto;padding:6px 2px}
+ .game-screen .game-resource-row>span{padding:0 6px;grid-template-columns:1fr;gap:2px}
+ .game-screen .game-resource-row svg{display:none}
+ .game-screen .game-resource-row b{font-size:12px}
+ .game-screen .game-resource-row small{font-size:10px}
+ .game-screen .game-round-button{width:44px;height:44px}
+ .game-screen .game-bottom-hud button{min-height:48px;padding:5px 10px}
+ .game-screen .game-status{padding:1px 8px;min-height:17px}
+}

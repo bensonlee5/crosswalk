@@ -52,7 +52,8 @@
     "supabase": "2.120.0",
     "deno": "2.9.6",
     "esbuild": "0.28.0",
-    "jsdom": "27.4.0"
+    "jsdom": "27.4.0",
+    "postcss": "8.5.23"
   },
   "type": "module"
 }

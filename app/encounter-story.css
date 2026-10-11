@@ -56,3 +56,7 @@
 @media(prefers-reduced-motion:reduce){.person-scene *{animation:none!important;transition:none!important}}
 .encounter-panel .person-continuation{font:13px/1.4 Georgia,serif;margin:8px 0 0;color:#5e6654}.encounter-panel .person-choice-terms{font-size:12px;line-height:1.5;margin:7px 0}
 .person-scene:focus-visible{outline:3px solid #c18a34;outline-offset:2px}
+
+/* Ensemble headers contain text only: keep the names, heading and scene in reading order. */
+.ensemble-scene .encounter-heading{display:block}
+.ensemble-scene .encounter-heading h3{font:25px/1.2 Georgia,serif;margin:7px 0}

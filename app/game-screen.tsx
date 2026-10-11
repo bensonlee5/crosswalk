@@ -521,23 +521,6 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         data-weather={weather?.type || 'none'}
         aria-label="Crosswalk game">
       {!place && !menu && !focusedEncounter && tutorialPanel()}
-      <div
-        ref={host}
-        className="engine-host"
-        tabIndex={0}
-        role="application"
-        aria-label="Illustrated isometric town. Tap a building or person to walk there. Drag to pan, pinch to zoom. Arrow keys pan. Plus and minus zoom. Press L for accessible Places."
-        onKeyDown={e => { if (interfaceLocked.current)
-        return; const moves: Record<string, number[]> = { ArrowLeft: [-75, 0], ArrowRight: [75, 0], ArrowUp: [0, -75], ArrowDown: [0, 75] }; if (moves[e.key]) {
-        e.preventDefault();
-        engine.current?.pan(...moves[e.key] as [
-            number,
-            number
-        ]);
-    } if (e.key === '+' || e.key === '=')
-        engine.current?.zoom(1.15); if (e.key === '-')
-        engine.current?.zoom(.87); if (e.key.toLowerCase() === 'l')
-        showMenu('places'); }}/>
 
       {!ready && <div className="game-loading">
         <strong>
@@ -548,6 +531,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         </span>
       </div>}
 
+      <div className="game-header">
       <div className="game-top-hud">
         <button
             className="game-player-badge"
@@ -605,6 +589,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
       </div>
 
       <div className="game-town-wordmark" aria-hidden="true">Crosswalk<span>A LITTLE LIFE, TOGETHER</span></div>
+      <div className="game-map-toolbar">
       <div className="game-district-tabs" role="group" aria-label="Explore a district">
         <button onClick={() => { setDistrict('main'); engine.current?.district('main'); }} aria-pressed={district === 'main'}><span>01</span> Main Street</button>
         <button onClick={() => { setDistrict('west'); engine.current?.district('west'); }} aria-pressed={district === 'west'}><span>02</span> Westside</button>
@@ -614,7 +599,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
         <Leaf size={18}/>
         <span>Neighborhood board <small>{g.opportunityClaim?.round === g.round ? 'Opportunity claimed' : '1 opportunity open'} · Garden: {gardenStage(projectProgress(g), projectGoal(g), !!g.project?.completed)}</small></span>
       </button>
-      <button className="game-news-button" onClick={onNews}>
+      <button className="game-news-button" aria-label="The Chronicle" onClick={onNews}>
         <Newspaper size={18}/>
         <span>The Chronicle<small>
             {getLifeEvent(p, g)?.pending ? 'A decision awaits' : 'News & forecast'}
@@ -629,6 +614,28 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
           <small>{weather.season} · {economyMonthLabel(g)} of {g.maxRounds} · forecast →</small>
         </span>
       </button>}
+
+      </div>
+      </div>
+
+      <div className="game-map-viewport">
+      <div
+        ref={host}
+        className="engine-host"
+        tabIndex={0}
+        role="application"
+        aria-label="Illustrated isometric town. Tap a building or person to walk there. Drag to pan, pinch to zoom. Arrow keys pan. Plus and minus zoom. Press L for accessible Places."
+        onKeyDown={e => { if (interfaceLocked.current)
+        return; const moves: Record<string, number[]> = { ArrowLeft: [-75, 0], ArrowRight: [75, 0], ArrowUp: [0, -75], ArrowDown: [0, 75] }; if (moves[e.key]) {
+        e.preventDefault();
+        engine.current?.pan(...moves[e.key] as [
+            number,
+            number
+        ]);
+    } if (e.key === '+' || e.key === '=')
+        engine.current?.zoom(1.15); if (e.key === '-')
+        engine.current?.zoom(.87); if (e.key.toLowerCase() === 'l')
+        showMenu('places'); }}/>
       <details className="game-camera-controls">
         <summary aria-label="Map view controls">
           <LocateFixed />
@@ -649,6 +656,7 @@ export default function GameScreen({ g, active, busy, offline, onVisit, onAction
           </button>
         </div>
       </details>
+      </div>
 
       {!place && !menu && !focusedEncounter && !tutorial.visible && !tutorialBlocked && active && (<div className="map-invitations game-arc-invitation">
         <ArcSpotlight g={g} p={p} disabled={busy || moving || offline} onOpen={openEncounter}/>
